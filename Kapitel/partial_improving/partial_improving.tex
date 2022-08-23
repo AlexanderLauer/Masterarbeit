@@ -1,0 +1,21 @@
+\subsection{partial consistency improving}
+
+\begin{definition}[\textbf{improving atomic transformation}]
+Given a graph $G$ and a constraint $c$. 
+An \emph{atomic transformation} is a graph transformation that inserts or deletes one single element. 
+A set of atomic transformations is called \emph{improving set} if the graph derived by application of all transformations in $A$ satisfies $c$.
+$A$ is called a \emph{minimal improving set} if no improving set $B \subset A$ exists. 
+Let $I$ be the set of all minimal improving sets for $G$ regarding $c$.
+The total number of improving atomic transformations  for $G$ regarding $c$ is given by $$\iat(G,c) := | \bigcup_{A \in I} A |$$ 
+\end{definition}
+
+\begin{definition}[\textbf{partial consistency improving transformation}]\label{def_partial_imp}
+Given a constraint $c$ and a rule $r$, a transformation $G \xRightarrow{r,m} H$ is \emph{partial consistency improving} with repect to $c$ if $\iat(H,c) < \iat(G,c)$.  
+
+
+\end{definition}
+
+
+\begin{construction}
+Let a graph $G$ and a constraint $c$ be given. 
+\end{construction}

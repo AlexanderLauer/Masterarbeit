@@ -1,0 +1,18 @@
+\section{application condition}
+
+
+\begin{construction}
+Given a rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$   and a constraint $c$ in ANF with $\nl(c) = 1$. 
+Let $G$ and $H$ be be graphs. We denote the set of all overlaps of $G$ and $H$ as $\overlay(G,H)$.
+We construct the following application conditions: 
+
+\begin{enumerate}
+\item if $c = \forall(a_0: C_0 \to C_1, \false)$: 
+		$$\bigvee_{Q \in \overlay(L,C_1)}\biggl(\exists(a:L \inj Q, \true) \wedge \shift(\neg \exists (b: R \to Q, \true)\biggr)$$
+		
+\item if $c = \exists(a_0: C_0 \to C_1, \true)$:
+		$$\bigvee_{Q \in \overlay(L,C_1)} \bigvee_{Q' \in \sub(Q)} \biggl(\exists(a:L \to Q',\true) \wedge \bigl(\bigvee_{\substack{\overline{Q} \in \sub(Q) \\ \overline{Q} \subset Q'}} \shift(\exists(a: R \to \overline{Q}, \true))\biggr)$$ 
+		
+\end{enumerate}
+
+\end{construction}

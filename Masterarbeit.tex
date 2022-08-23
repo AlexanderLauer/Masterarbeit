@@ -1,0 +1,86 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{array}
+\usepackage{pifont}
+\usepackage{makecell}
+\usepackage{csquotes}
+\usepackage{pdflscape}
+\usepackage{tabularx}
+\usepackage{geometry}
+
+\newcommand{\cmark}{\ding{51}}
+\newcommand{\xmark}{\ding{55}}
+
+\usetikzlibrary{arrows}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=blue,
+    citecolor=blue,
+    pdftitle={Overleaf Example},
+    }
+
+
+\usepackage{graphicx}
+\graphicspath{{./images/}}
+
+
+\newcounter{Figcount}
+\newcounter{tempFigure}
+\newenvironment{TableCaption}{%
+    \renewcommand{\figurename}{Table}
+    \setcounter{tempFigure}{\thefigure}
+    \setcounter{figure}{\theFigcount}
+    }{%
+    \setcounter{figure}{\thetempFigure}
+    \stepcounter{Figcount}
+    }
+
+
+\numberwithin{equation}{section}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{satz}[definition]{Satz}
+\newtheorem{lemma}[definition]{Lemma}
+\newtheorem{fact}[definition]{Fact}
+\newtheorem{construction}[definition]{Construction}
+\title{Masterarbeit }
+
+\author{Alexander Lauer}
+
+\date{\today}
+
+\input{settings/operators}
+
+\begin{document}
+
+\maketitle
+\begin{abstract}
+
+\end{abstract}
+\newpage
+\tableofcontents
+\newpage
+
+\input{Kapitel/preliminaries}
+\input{Kapitel/partial_consistency_improving}
+\input{Kapitel/appl_condition}
+
+
+
+\newpage
+
+\bibliographystyle{abbrv}
+\bibliography{Literatur.bib}
+
+\end{document}

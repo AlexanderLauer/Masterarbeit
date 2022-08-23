@@ -1,0 +1,44 @@
+\section{Preliminaries}
+
+\begin{definition}[\textbf{subgraph}]
+Let $G_1$ and $G_2$ be graphs. 
+The graph $G_2$ is called a \emph{subgraph} of $G_1$ if an injective morphism $f: G_2 \to G_1$ exists. 
+We use the notation $G_2 \subseteq G_1$ if $G_2$ is a subgraph of $G_1$ and $G_2 \subset G_1$ if $f$ is not bijective. 
+The set of all subgraphs of $G_1$ is denoted by $\sub(G_1)$.
+\end{definition}
+
+
+\begin{definition}[\textbf{partial morphism}]
+Let $f : G_1 \to G_2$ and $g: G_3 \to G_4$ be morphisms. 
+The morphism $g$ is called a \emph{partial morphism} of $f$ if $G_3 \subseteq G_1$, $G_4 \subseteq G_2$ and $f|_{G_3} = g$.
+
+\end{definition}
+
+
+
+\begin{definition}[\textbf{nested graph condition}]
+A \emph{graph condition} over a graph $C_0$ is inductively defined as follows:
+
+\begin{itemize}
+	\item \textsf{true} is a graph condition over every graph.
+	\item $\exists(a:C_0 \xhookrightarrow{} C_1,d)$ is a graph condition over $C_0$ if $a$ is a injective graph morphism and $d$ is a graph condition over $C_1$.
+	\item $\neg d$ is a graph condition over $C_0$ if $d$ is a graph condition over $C_0$.
+	\item $d_1 \wedge d_2$ and $d_1 \vee d_2$ are graph conditions over $C_0$ if $d_1$ and $d_2$ are graph conditions over $C_0$.
+
+\end{itemize}
+	Conditions over the empty graph $\emptyset$ are called \emph{constraints}.
+	Every injective morphism $p :C_0 \xhookrightarrow{} G$ satisfies \textsf{true}. 
+	An injective morphism $p$ satisfies $\exists(a:C_0 \xhookrightarrow{} C_1,d)$ if there exists an injective morphism  $q : C_1 \xhookrightarrow{} G$ such that $q \circ a = p$ and $q$ satisfies $c$. 
+	An injective morphism satisfies $\neg d$ if it does not satisfy $d$, it satisfies $d_1 \wedge d_2$ if it satisfies $d_1$ and $d_2$ and it satisfies $d_1 \wedge d_2$ if it satisfies $d_1$ or $d_2$. 
+	A graph $G$ satisfies a constraint $c$, $G \models c$, if $p : \emptyset \xhookrightarrow{} G$ satisfies $c$.
+We use the abbreviation $\forall(a:C_0 \xhookrightarrow{} C_1,d) := \neg \exists(a:C_0 \xhookrightarrow{} C_1,\neg d)$.
+
+The \emph{nesting level} $\nl$ of a condition is defined as $\nl(\textsf{true} = 0$ and  $\nl(\exists(a: P \to Q, d)) := \nl(d) +1$.
+\end{definition}
+
+\begin{definition}[\textbf{alternating quantifier normal form (ANF)}\cite{sandmann2019rule}]
+A graph condition $c$ is in \emph{alternating normal form} (ANF) if it is of the form 
+$$c = Q(a_1 : C_0 \xhookrightarrow{} C_1, \overline{Q}(a_2:C_1 \xhookrightarrow{} C_2, Q(a_3 : C_2 \xhookrightarrow{} C_3, \overline{Q}(a_4 : C_3 \xhookrightarrow{} C_4, \ldots))))$$
+with $Q \in \{ \exists, \forall\}$ and $\overline{Q} = \exists$ if $Q = \forall$, $\overline{Q} = \forall$ if $Q = \exists$.
+\end{definition}
+
