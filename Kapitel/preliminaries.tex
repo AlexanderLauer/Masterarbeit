@@ -7,6 +7,18 @@ We use the notation $G_2 \subseteq G_1$ if $G_2$ is a subgraph of $G_1$ and $G_2
 The set of all subgraphs of $G_1$ is denoted by $\sub(G_1)$.
 \end{definition}
 
+\begin{definition}[\textbf{overlap}]
+Let $G$ and $G'$ be graphs. 
+A graph $H$ is called an \emph{overlap of $G$ and $G'$} if morphisms $p: G \inj H$ and $p' :G' \inj H$ such that $p$ and $p'$ are jointly surjective. 
+The set of all overlaps of $G$ and $G'$ is denoted by $\overlay(G,G')$.
+\end{definition}
+\begin{definition}[\textbf{overlap at morphism}]
+Let $C$,$G$ and $C'$ with $C \subset C'$ be graphs and $p: C \inj G$ a morphism. 
+A graph $H$ is called an \emph{overlap of $G$ and $C'$ at $p$} if a morphism $p': C' \inj H$ with $p'|_C = p$ exists.
+The set of all overlaps of $G$ and $C'$ at $p$ is denoted by $\overlay_p(G, C')$.
+
+\end{definition}
+
 
 \begin{definition}[\textbf{partial morphism}]
 Let $f : G_1 \to G_2$ and $g: G_3 \to G_4$ be morphisms. 

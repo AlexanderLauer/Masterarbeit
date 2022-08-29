@@ -8,23 +8,42 @@
 %
 %\end{definition}
 
+%\begin{definition}[\textbf{partial condition}]\label{def_partial_cond}
+%Let $c$ be a condition over $C_0$. 
+%A partial condition of $c$ over $ C'_0 \subseteq C_0$ is defined as:
+%\begin{enumerate}
+%	\item \textsf{true} is the partial condition of \textsf{true} for every morphism.
+%	\item if $c = \exists(a: C_0 \inj C_1, d)$ a partial condition of $c$ over $C'_0$ is given by $\exists(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 \subseteq C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
+%	\item if $c = \forall(a: C_0 \inj C_1, d$ a partial condition of $c$ over $C'_0$ is given by $\forall(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 = C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
+%	\item if $c = d_1 \wedge d_2$ or $c = d_1 \vee d_2$ the partial condition of $c$ is given by $d'_1 \wedge d'_2$ and  $d'_1 \vee d'_2$, respectively, with $d'_1$ and $d'_2$ being  partial conditions of $d_1$ and $d_2$ over $C'_0$.
+%	
+%	\item if $c = \neg d$ the partial condition of $c$ is given by $\neg d'$ with $d'$ being a partial condition of $d$ over $C'_0$.
+%\end{enumerate}
+%We use the notation $c' \leq c$ if $c'$ is partial condition of $c$ over $ C'_0 \subseteq C_0$ and $c' < c$ if $ C'_0 \subset C_0$.
+%\end{definition}
+
+
 \begin{definition}[\textbf{partial condition}]\label{def_partial_cond}
 Let $c$ be a condition over $C_0$. 
 A partial condition of $c$ over $ C'_0 \subseteq C_0$ is defined as:
 \begin{enumerate}
 	\item \textsf{true} is the partial condition of \textsf{true} for every morphism.
-	\item if $c = \exists(a: C_0 \inj C_1, d)$ a partial condition of $c$ over $C'_0$ is given by $\exists(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 \subseteq C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
-	\item if $c = \forall(a: C_0 \inj C_1, d$ a partial condition of $c$ over $C'_0$ is given by $\forall(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 = C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
+	\item if $c = Q(a: C_0 \inj C_1, d)$, with $Q \in \{\exists, \forall\}$, a partial condition of $c$ over $C'_0$ is given by $\exists(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 \subseteq C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
+
 	\item if $c = d_1 \wedge d_2$ or $c = d_1 \vee d_2$ the partial condition of $c$ is given by $d'_1 \wedge d'_2$ and  $d'_1 \vee d'_2$, respectively, with $d'_1$ and $d'_2$ being  partial conditions of $d_1$ and $d_2$ over $C'_0$.
 	
 	\item if $c = \neg d$ the partial condition of $c$ is given by $\neg d'$ with $d'$ being a partial condition of $d$ over $C'_0$.
 \end{enumerate}
-We use the notation $c' \leq c$ if $c'$ is partial condition of $c$ over $ C'_0 \subseteq C_0$ and $c' < c$ if $ C'_0 \subset C_0$.
+A partial condition $Q(a: C'_0 \inj C'_1, d)$ of $c$ over $C'_0$ is called the \emph{closest partial condition} of $c$ over $C'_0$ if $C'_1 = C_1 \setminus a(C_0 \setminus C'_0)$ and $d$ is the closest partial condition of $d$ over $C'_1$.
+
+We use the notation $c' \leq c$ if $c'$ is partial condition of $c$ over $ C'_0 \subseteq C_0$ and $c' < c$ if $ C'_i \subset C_i$ for any $i$.
 \end{definition}
+
+
 
 \begin{definition}[\textbf{partial satisfiability}]\label{def_part_sat}
 Let a condition $c$ over $C_0$ and a graph $G$ be given. 
-A morphism $p_0: C_0 \to G$ partial satisfies $c$, $p_0 \models_p c$ if a partial morphism $p'_0: C'_0 \ to G$ of $p_0$ satisfies a partial condition of $c$ over $C'_0$.
+A morphism $p_0: C'_0 \to G$, with $C'_0 \subseteq C_0$, partial satisfies $c$, $p_0 \models_p c$, if a partial morphism $p'_0: C''_0 \to G$ of $p_0$ satisfies a partial condition of $c$ over $C''_0$.
 
-Note, that $p_0 \models c$ implies $p_0 \models c$
+Note, that $p_0 \models c$ implies $p_0 \models_p c$
 \end{definition}
