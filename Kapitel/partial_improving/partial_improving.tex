@@ -1,154 +1,32 @@
-\subsection{partial consistency improving}
+\subsection{minimal consistency improving}
+\begin{definition}[\textbf{Condition up to layer}]
+Let $c$ be a condition and $d$ a subcondition of $c$. 
+The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) - 1$.
 
-\begin{definition}[\textbf{improving atomic transformation}]
-Given a graph $G$ a condition $c$ over $C_0$ and a morphism $p: C_0 \to G$ with $p \not \models c$.
-An \emph{atomic transformation} is a rule application that inserts or deletes one single element. 
-A set of  atomic transformations is called \emph{improving set} if the morphism $p': C_0 \to H$ with $p = p'$ and $H$ being the graph derived by applications of all transformations in $A$ satisfies $c$. 
-$A$ is called a \emph{minimal improving set} if no improving set $B \subset A$ exists. 
-Let $I_{c,p}$ be the set of all minimal improving sets for $G$ with respect to $c$ and $p$. 
-A set $A \in I_{G,c}$ with $|A| \leq |A'|$ for all $A' \in I_{c,p}$ is called a \emph{least changing minimal improving set}.
-The total number of improving atomic transformations for $G$ and $p$ with respect to $c$ is given by $$\iat_p(G,c) :=  \sum_{A \in I_{G,c}} |A |$$
-If $c$ is a constraint the following notation is used:
-$$\iat(G,c) :=  \sum_{A \in I_{G,c}} |A |$$
+Let $L$ be the set of subconditions of $c$ with layer $k$. 
+The \emph{condition up to layer} $k$ of $c$ is the condition which is obtained by replacing each $d = Q(a: P \inj P',e) \in L$ by $d = Q(a: P \inj P',\true)$ if $Q = \exists$ and by $Q(a: P \inj P',\false)$ if $Q = \forall$  in $c$. 
 \end{definition}
 
-%\begin{definition}[\textbf{improving atomic transformation}]
-%Given a graph $G$ and a constraint $c$. 
-%An \emph{atomic transformation} is a rule application that inserts or deletes one single element. 
-%A set of atomic transformations is called \emph{improving set} if the graph derived by application of all transformations in $A$ satisfies $c$,
-%$A$ is called a \emph{minimal improving set} if no improving set $B \subset A$ exists. 
-%Let $I_{G,c}$ be the set of all minimal improving sets for $G$ regarding $c$.
-%A set $A \in I_{G,c}$ with $|A| \leq |A'|$ for all $A' \in I_{G,c}$ is called a \emph{least changing minimal improving set}.
-%The total number of improving atomic transformations  for $G$ regarding $c$ is given by $$\iat(G,c) := | \bigcup_{A \in I_{G,c}} A |$$ 
-%\end{definition}
+\begin{definition}[\textbf{layered consistency}]
+	Let $G$ be a graph, $p: C_0 \to G$ a morphism, $c$ a condition over $C_0$ and $d$ the condition up to layer $k$ of $c$ with $k \geq 1$. 
+	The morphism $p$ \emph{satisfies $c$ up to layer} $k$ if $p$ satisfies $d$ and there is no condition $d'$ up to layer $j > k$ such that $p$ satisfies $d'$. 
+	The notation $p \models_k  c$ is used if $p$ satisfies $c$ up to layer $k$. 
+	The notation $G \models_k c$ is used if $c$ is a constraint and $p \models_k c$ for $p: \emptyset \to G$. 
+\end{definition}
 
-\begin{definition}[\textbf{partial consistency improving transformation}]\label{def_partial_imp}
-Given a constraint $c$ and a rule $r$, a transformation $G \xRightarrow{r,m} H$ is \emph{partial consistency improving} with repect to $c$ if $\iat(H,c) < \iat(G,c)$.  
-
+\begin{definition}[\textbf{minimal consistency improving}]
+Given a rule $r$, a constraint $c$ and a graph $G$ with $G \models_k c$.
+A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if $H \models_j c$ and $k < j$. 
+The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
 
 \end{definition}
 
-
-%\begin{construction}
-%Let a graph $G$ and a condition $c$ in ANF be given. 
-%We calculate $\iat(G,c)$ in the following way:
-%\begin{enumerate}
-%	\item $c = \true$, for $p: P \to G$:
-%		$$\rep(c, p) := 0$$
-%	\item $c = \false$, for $p : P \to G$:
-%	$$\rep(c,p) := 0$$			
-%	\item $c = \forall(a:C_0 \inj C_1, d)$, let $e :=  \exists(a:C_0 \inj C_2, \neg d)$:
-%		\begin{enumerate}
-%			\item For $p: C_0 \to G$:
-%				%$$\rep(c,p) := |C_1| + \sum_{\substack{p = q \circ a \\ q \models \neg d}}\rep(d, q)$$
-%				$$\rep(c,p) := \begin{cases}
-%					0, p \models e \\
-%					|C_1| + \sum_{\substack{p = q \circ a}}\rep(d, q)
-%				\end{cases}$$
-%			\item $$repair(c) := \sum_{\substack{p : C_0 \to G \\ p \models e}} \rep(c,p)$$
-%		\end{enumerate}
-%	\item $c = \exists(a:C_0 \inj C_1,d)$:
-%		\begin{enumerate}
-%			\item For $p: C' \to G$ with $C' \subseteq C_0$, $p \models \exists(a': C' \inj Q, \true) \leq \exists(a: C_0 \inj C_1, \true)$ and $d'$ being the closest partial morphism of $d$ over $Q$.
-%				$$\rep(c,p) := |C_1| - |Q| + \sum_{\substack{p = q \circ a'}}\rep(d',q)$$
-%				
-%			\item $$\rep(c) := \sum_{\substack{p : C' \to G \\ C' \subseteq C_0}} \rep(c,p)$$ 
-%		\end{enumerate}
-%		
-%	%\item $c = d_1 \wedge d_2$ or $c = d_1 \vee d_2$:
-%	%		$$\rep(c) := \rep(d_1) + \rep(d_2)$$
-%	
-%\end{enumerate}
-%\end{construction}
-
-%\begin{construction}\label{const_rep}
-%Let a graph $G$ and a condition $c$ in ANF be given. 
-%\begin{enumerate}
-%	\item $c = \true$ for $p: P \inj G$:
-%		$$\rep_G(c,p) := 0$$
-%	\item $c = \false$ for $p: P \inj G$:
-%		$$\rep_G(c,p) := 0$$
-%	\item $c = \forall(a:C_0 \inj C_1, d)$, let $e := \exists(a:C_0 \inj C_1, \neg d)$:
-%	\begin{enumerate}
-%		\item For $p: C_0 \inj G$:
-%		$$\rep_G(c,p) := 	|E_{C_1}| + |\iso(C_1)| + \sum_{\substack{p = q \circ a \\ q \models \neg d}} \rep_G(d,q) $$
-%		\item $$ \rep_G(c) := \sum_{\substack{p : C_0 \inj G \\ p  \models e}} \rep_G(c,p)$$
-%	\end{enumerate}
-%	
-%	 \item $c = \exists(a: C_0 \inj C_1, d)$:
-%	 \begin{enumerate}
-%	 	\item For $p: C' \inj G$ with $C' \subseteq C_0$,$p \models \exists(a':C' \inj Q, \true) \leq \exists(a:C_0 \inj C_1, \true)$
-%	 	$$\rep_G(c,p) := |C_1| - |Q| + \sum_{H \in \overlay_p(G, C_1)} \rep_H(d, q')$$
-%	 	\item $c = \exists(a: \emptyset \inj C_1,d)$ 
-%	 	$$\rep_G(c) := \sum_{\substack{p: C' \inj G \\ C' \subseteq C_1}} \rep_G(c,p) $$
-%	 \end{enumerate}
-%	
-%\end{enumerate}
-%
-%\end{construction}
-
-\begin{construction}\label{const_rep}
-Let a graph $G$ and a condition $c$ in ANF be given.
-\begin{enumerate}
-	\item $c = \true$ and $p: C_0 \to G$:
-		$$ \rep(c,p) := 0$$
-	
-	\item $c = \false$ and $p: C_0 \to G$:
-		$$ \rep(c,p) := 0$$
-	\item $c = \forall(a:C_0 \inj C_1, d)$ and $p: C_0 \to G$:
-		$$\rep(c,p) := \begin{cases}
-						0 &, p \models c \\
-						\sum_{\substack{q: C_1 \to G \\ q \not \models d \\ p = q \circ a}} |C_1 \setminus C_0| + \rep(q,d) &, p \not \models c
-						\end{cases}$$
-	\item $c = \exists(a: C_0 \inj C_1,d)$ and $p: C_0 \to G$:
-		$$\rep(c,p) := \begin{cases}
-						0 &, p \models c \\
-						\sum_{\substack{q: C'_1 \to G \\ p = q \circ a \\ C'_1 \subseteq C_1}}\sum_{\substack{H \in \overlay_q(G,C_1)\\ q':C_1 \to H \\ q \leq q'}} |C_1| - |C'_1| + \rep(q',d) &, p \not \models c
-		
-						\end{cases}$$
-\end{enumerate}
-\end{construction}
-
 \begin{lemma}
-Let a graph $G$ and a condition $c$ over $C_1$ in ANF and a morphism $p: C_1 \to G$ be given. The value $\rep(c,p)$ of construction \ref{const_rep} is an upper bound for $\iat_p(G,c)$.
+Let $G$ be a graph, $p: C_0 \to G$ a morphism and $c = Q(a_1: C_0 \inj C_1, \overline{Q}(a_2: C_1 \inj C_2, \ldots))$ a condition over $C_0$ in ANF with $p \models_k c$.
+If the subcondition $d$ of $c$ with $\lay(d) = k$ is universally bound, $p \models_k c$ implies $p \models c$.
 \end{lemma}
 \begin{proof}
-\begin{enumerate}
-\item $c = \true$:
-	The morphism $p$ satisfies $\true$ and therefore $\iat(p,c) = 0 = repair(c,p)$.
-\item  $c = \false$:
-	There is no set of improving transformations, such that $p \models c$ and therefore $\iat(p,c) = 0 = repair(c,p)$.
-
-\item $c = \forall(a:C_0 \inj C_1, d)$:
-	For every morphism $q:C_1 \to G$ with $q \not \models d$ and $p = q \circ a$ repair sets exists that either (a) delete nodes or edges of $C_1 \setminus C_0$ or (b) repair, such that $q \models d$. 
-	\begin{enumerate}
-		\item For every $q$ minimal improving sets exists that delete exactly one edge or isolated node of $G$. 
-			  The sum of these minimal improving sets is therefore bound by $$\sum_{\substack{q: C_1 \to G \\ p = q \circ a \\ q \not \models d}} |C_1 \setminus C_0|$$.
-		
-		\item For every $q$ minimal improving sets exists that repair $d$. By the induction hypothesis the sum of these sets has the upper bound: $$\rep(d,q)$$ 
-		With (a) and (b) $\iat(p,c) \leq \rep(c,p)$ follows. 
-	\end{enumerate}
-	
-\item $c = \exists(a:C_0 \inj C_1, d)$:
-	For every morphism $q: C'_1 \to G$ with $p = q \circ a$ and $C'_1 \subseteq C_1$ minimal improving sets exist that (a) insert the necessary elements of $C_1 \setminus C'_1$ and afterwards (b) repair, such that $q \models d$. 
-	\begin{enumerate}
-		\item For every $q$ every possible insertion of the elements of $C_1 \setminus C'_1$ is performed in one minimal improving set. Therefore the sum of these operations is exactly $$(|C_1| - |C'_1|)|\overlay_q(G, C_1)|$$
-		\item After the insertions in (a) a minimal improving set exists that repairs $d$ for the morphism $q': C_1 \to H$ with $q \leq q'$ for every $H \in \overlay_q(G,C_1)$.
-		Therefore, the sum of these sets has, by induction hypothesis, the upper bound $$\sum_{\substack{H \in \overlay_p(G,C_1) \\ q': C_1 \to G \\ q \leq q}} repair(q',d)$$
-		With (a) and (b) follows: 
-		\begin{align*}
-			\iat(p,c) &\leq \sum_{\substack{q: C'_1 \to G \\ p = q \circ a \\ C'_1 \subseteq C_1}}(|C_1| - |C'_1|)|\overlay_q(G, C_1)| + \sum_{\substack{H \in \overlay_p(G,C_1) \\ q': C_1 \to G \\ q \leq q}} \rep(q',d)\\
-			 &= \sum_{\substack{q: C'_1 \to G \\ p = q \circ a \\ C'_1 \subseteq C_1}}\sum_{\substack{H \in \overlay_q(G,C_1)\\ q':C_1 \to H \\ q \leq q'}} |C_1| - |C'_1| + \rep(q',d)\\
-			 &= \rep(c,p)
-		\end{align*}
-	\end{enumerate}
-\end{enumerate}
-\end{proof}
-
-\begin{lemma}
-Given a constraint $c$, a rule $r$ and a graph $G$.
-A transformation $G \xRightarrow{r,m} H$ is partial consistency improving if $\rep_G(c) < \rep_H(c)$.
-\end{lemma}
-\begin{proof}
-Noch ein ganz super duper noicer proofböärt
+Let $c' = Q(a_1: C_0 \inj C_1, \ldots \forall(a_k: C_{k-1} \inj C_k, \false) \ldots)$ be the condition up to layer $k$ of $c$ and $d$ be the subcondition of $c$ with $\lay(d) = k + 1$. 
+Since $p \models c'$, there does not exist a morphism $q: C_k \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$.
+Thus, there does not exists a morphism $q: C_k \to G$ with $q \not \models d$ and $p = q \circ a_k \circ \ldots \circ a_1$ and $p \models c$ follows immediately. 
 \end{proof}
