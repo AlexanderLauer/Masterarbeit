@@ -46,15 +46,19 @@ Let $\mathcal{C}_{k,p,e}$ be the set of graphs $C_{k+1} \subseteq C' \subseteq C
 A graph $C' \in \mathcal{C}_{k,p,e}$, such that no $C'' \in \textsc{C}$ with $C' \subseteq C''$ exists is called a \emph{biggest partially
  satisfying graph} of $c$ at level $k$ with $p$ and $e$.
 The set of these graphs is denoted by $\mathcal{B}_{k,p,e}$
-
-
-
 \end{definition}
+\begin{definition}
+ Let $G$ be a graph and $c = Q(a_1: \emptyset \inj C_1, \ldots)$ a constraint in ANF, such that $G \models_k c$ and $G \not \models c$.
+ Let $d = Q(a_1: \emptyset \inj C_1, \ldots  \forall(a_{k+1}: C_k \inj C_{k+1},\exists(a_{k+2}: C_{k+1} \inj C_{k+2}, \true))$ be the condition up to layer $k +2$ of $c$.
+ The number of violations of $c$ up to layer $k+2$ in $G$ is defined as the the number of morphisms $q: C_{k+2} \to G$ that do not satisfy $\exists(a_{k+2}: C_{k+1} \inj C_{k+2}, \true)$. This number is denoted by $\nv_c(k +2, G)$.
+\end{definition}
+
+
 \begin{definition}[\textbf{minimal consistency improving}]
 	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and $G\not \models c$. 
 	With lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ with layer $k$ has to be existentially bound. 
 	
-	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if either $H \models c$ or every $C' \in\mathcal{B}_{k,G,\true}$  is also an element of $\mathcal{C}_{k+2,H,e}$ and for at least one $C'$  an $C'' \in \mathcal{C}_{k+2,H,\true}$ with $C' \subseteq C''$ exists.
+	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if either $H \models c$ or $\nv_c(k +2, G) < \nv_c(k +2, H)$ or every $C' \in\mathcal{B}_{k,G,\true}$  is also an element of $\mathcal{C}_{k+2,H,e}$ and for at least one $C'$  an $C'' \in \mathcal{C}_{k+2,H,\true}$ with $C' \subseteq C''$ exists.
 	The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
 	
 \end{definition}
