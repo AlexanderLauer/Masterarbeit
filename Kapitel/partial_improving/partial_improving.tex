@@ -5,6 +5,7 @@ The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) - 1$.
 
 Let $L$ be the set of subconditions of $c$ with layer $k$. 
 The \emph{condition up to layer} $k$ of $c$ is the condition which is obtained by replacing each $d = Q(a: P \inj P',e) \in L$ by $d = Q(a: P \inj P',\true)$ if $Q = \exists$ and by $Q(a: P \inj P',\false)$ if $Q = \forall$  in $c$. 
+If $k =0$, the condition up to layer $k$ of every condition $c$ is $\true$.
 \end{definition}
 
 \begin{definition}[\textbf{layered consistency}]
@@ -14,14 +15,7 @@ The \emph{condition up to layer} $k$ of $c$ is the condition which is obtained b
 	The notation $G \models_k c$ is used if $c$ is a constraint and $p \models_k c$ for $p: \emptyset \to G$. 
 \end{definition}
 
-\begin{definition}[\textbf{minimal consistency improving}]
-Given a rule $r$, a constraint $c$ and a graph $G$ with $G \models_k c$.
-A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if $H \models_j c$ and $k < j$. 
-The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
-
-\end{definition}
-
-\begin{lemma}
+\begin{lemma}\label{lemma_lay_sat}
 Let $G$ be a graph, $p: C_0 \to G$ a morphism and $c = Q(a_1: C_0 \inj C_1, \overline{Q}(a_2: C_1 \inj C_2, \ldots))$ a condition over $C_0$ in ANF with $p \models_k c$.
 If the subcondition $d$ of $c$ with $\lay(d) = k$ is universally bound, $p \models_k c$ implies $p \models c$.
 \end{lemma}
@@ -30,3 +24,59 @@ Let $c' = Q(a_1: C_0 \inj C_1, \ldots \forall(a_k: C_{k-1} \inj C_k, \false) \ld
 Since $p \models c'$, there does not exist a morphism $q: C_k \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$.
 Thus, there does not exists a morphism $q: C_k \to G$ with $q \not \models d$ and $p = q \circ a_k \circ \ldots \circ a_1$ and $p \models c$ follows immediately. 
 \end{proof}
+
+\begin{lemma}\label{lemma_part_satisfiability}
+	Let $c = Q(a_1: C_0, \inj C_1, \ldots)$ be a condition in ANF over $C_0$ and $p: C_0 \to G$ a morphism with $p \models_k c$. 
+	Let $d = Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q'}(a_{k+2}: C_{k+1} \inj C_{k+2},e))$ be the subcondition of $c$ with layer $k+1$. 
+	There does exist a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ such that $p \models Q(a_1: C_0, \inj C_1, \ldots Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q'}(a_{k+2}: C_{k+1} \inj C',f))$ with $f$ being a $Q'$ bound condition over $C'$.
+\end{lemma}
+\begin{proof}
+If $Q' = \exists$, with lemma \ref{lemma_lay_sat} follows that $p \models c$, therefore we can choose $C' = C_{k+2}$ and $f = e$.
+If $Q = \forall$, we choose $C' = C_{k+1}$ and $f = \true$. Let $q: C_{k} \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$.
+This morphism must exists since $p \models_k c$. 
+Let $q': C_{k+1} \to G$ be a morphism with $q = q' \circ a_{k+1}$.  Since $C' = C_{k+1}$, the morphism $a_{k+2}$ has to be the identity and therefore $q' = q' \circ a_{k+2}$. It follows that $q' \models \exists(a_{k+2}: C_{k+1} \inj C', \true)$ and therefore $p \models Q(a_1: C_0, \inj C_1, \ldots Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q'}(a_{k+2}: C_{k+1} \inj C',f))$.
+\end{proof}
+
+\begin{definition}[\textbf{biggest partially satisfying graph}]
+Let $G$ be a graph, $c = Q(a_1: C_0, \inj C_1, \ldots)$ a condition in ANF and $p: C_0 \to G$ a morphism with $p \models_k c$. 
+Let $d = Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q'}(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with $\lay(d) = k+1)$.
+	With lemma \ref{lemma_part_satisfiability} there exists a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ and an $Q'$ bound condition $e$ over $C'$ in ANF with $p \models  Q(a_1: C_0, \inj C_1, \ldots Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q}(a_{k+2}: C_{k+1} \inj C',e)) =: d_{C',e}$. 	
+Let $\mathcal{C}_{k,p,e}$ be the set of graphs $C_{k+1} \subseteq C' \subseteq C_{k+2}$ with  $p \models d_{C',e}$.
+
+A graph $C' \in \mathcal{C}_{k,p,e}$, such that no $C'' \in \textsc{C}$ with $C' \subseteq C''$ exists is called a \emph{biggest partially
+ satisfying graph} of $c$ at level $k$ with $p$ and $e$.
+The set of these graphs is denoted by $\mathcal{B}_{k,p,e}$
+
+
+
+\end{definition}
+\begin{definition}[\textbf{minimal consistency improving}]
+	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and $G\not \models c$. 
+	With lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ with layer $k$ has to be existentially bound. 
+	
+	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if either $H \models c$ or every $C' \in\mathcal{B}_{k,G,\true}$  is also an element of $\mathcal{C}_{k+2,H,e}$ and for at least one $C'$  an $C'' \in \mathcal{C}_{k+2,H,\true}$ with $C' \subseteq C''$ exists.
+	The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
+	
+\end{definition}
+
+\begin{lemma}
+	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF  with $G \models_k c$ and $G \not \models c$. 
+	A transformation $G \xRightarrow{r,m} H$ is minimal consistency improving if $G \models_j c$ and  $k < j$.
+	
+\end{lemma}
+\begin{proof}
+Let $G \models_k c$ and  $H \models_j c$ with $k < j$. 
+With lemma \ref{lemma_lay_sat} the subcondition of $c$ with layer $k$ is existentially bound. 
+	If an $n \in \mathbb{N}$ with $j -k = 2n -1$ exists, the subcondition of $c$ with layer $j$ has to be universally bound and therefore $H \models c$. 
+	
+
+	Otherwise, $H$ satisfies the condition up to layer $k+2$ of $c$, 	Let $d = \exists(a_{k+2}: C_{k+1} \inj C_{k+2}, e)$ be the subcondition of $c$ with layer $k+2$, and $\mathcal{C}_{k+2,H,\true}$ contains every graph $C'$ with $C_{k+1} \subseteq C' \subseteq C_{k+2}$. 
+	Since $G \not \models_{k+2} c$, $C_{k+2} \not \in \mathcal{C}_{k+2,G,\true}$ and for every $C'' \in \mathcal{B}_{k+2,G, \true}$ it holds that $C'' \in \mathcal{C}_{k+2,H,\true}$ and $C'' \subset C_{k+2} \in \mathcal{C}_{k+2,H, \true}$.
+\end{proof}
+%\begin{definition}[\textbf{minimal consistency improving}]
+%Given a rule $r$, a constraint $c$ and a graph $G$ with $G \models_k c$.
+%A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if $H \models_j c$ and $k < j$. 
+%The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
+%
+%\end{definition}
+
