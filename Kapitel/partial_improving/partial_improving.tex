@@ -65,18 +65,20 @@ A graph $C' \in \mathcal{C}_{k,p,e}$, such that no $C'' \in \textsc{C}$ with $C'
  satisfying graph} of $c$ at level $k$ with $p$ and $e$.
 The set of these graphs is denoted by $\mathcal{B}_{k,p,e}$
 \end{definition}
+
+
 \begin{definition}
- Let $G$ be a graph and $c = Q(a_1: \emptyset \inj C_1, \ldots)$ a constraint in ANF, such that $G \models_k c$ and $G \not \models c$.
- Let $d = Q(a_1: \emptyset \inj C_1, \ldots  \forall(a_{k+1}: C_k \inj C_{k+1},\exists(a_{k+2}: C_{k+1} \inj C_{k+2}, \true))$ be the condition up to layer $k +2$ of $c$.
- The number of violations of $c$ up to layer $k+2$ in $G$ is defined as the the number of morphisms $q: C_{k+2} \to G$ that do not satisfy $\exists(a_{k+2}: C_{k+1} \inj C_{k+2}, \true)$. This number is denoted by $\nv_c(k +2, G)$.
+ Let $G$ be a graph and $c $ a constraint in ANF, such that $G \models_k c$ and $G \not \models c$.
+ Let $d = \forall(a_{k+1}: C_k \inj C_{k+1},\exists(a_{k+2}: C_{k+1} \inj C_{k+2}, \true))$ be the condition up to layer $k +2$ of of the condition at layer $k+1$ of $c$.
+ The number of violations of $c$ up to layer $k+2$ in $G$ is defined as the the number of morphisms $q: C_{k+1} \to G$ that do not satisfy $\exists(a_{k+2}: C_{k+1} \inj C', \true)$, with $C'$ being the smallest graph such that $\cup_{D \in \mathcal{B}_{k,p,e}} D \subset C'$ if $G \not \models_k c$ and $0$ otherwise. This number is denoted by $\nvc(k +2, G)$.
 \end{definition}
 
 
 \begin{definition}[\textbf{minimal consistency improving}]
 	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and $G\not \models c$. 
-	With lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ with layer $k$ has to be existentially bound. 
+
 	
-	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if either $H \models c$ or $\nv_c(k +2, G) < \nv_c(k +2, H)$ or every $C' \in\mathcal{B}_{k,G,\true}$  is also an element of $\mathcal{C}_{k+2,H,e}$ and for at least one $C'$  an $C'' \in \mathcal{C}_{k+2,H,\true}$ with $C' \subseteq C''$ exists.
+	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if  $\nvc(k +2, G) < \nvc(k +2, H)$
 	The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
 	
 \end{definition}
@@ -106,19 +108,25 @@ Then $p \models_j c$ for all $j < k$ such that the subcondition of $c$ at layer 
 	A transformation $G \xRightarrow{r,m} H$ is minimal consistency improving if $G \models_j c$ and  $k < j$.
 	
 \end{lemma}
+
 \begin{proof}
-\begin{enumerate}
-	Since $G \not \models c$, with lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound. 
-	\item The subcondition of $c$ at layer $j$ is existentially bound:
-	With lemma \ref{lem_ex_lower} follows that $H \models_{k+2} c$.
-	Let $d = \exists(a_{k+2}: C_{k+1} \inj C_{k+2}, e)$ be the subcondition of $c$ with layer $k+2$.
-	The set $\mathcal{C}_{k+2,H,\true}$ contains every graph $C'$ with $C_{k+1} \subseteq C' \subseteq C_{k+2}$. 
-	Since $G \not \models_{k+2} c$, $C_{k+2} \not \in \mathcal{C}_{k+2,G,\true}$ and for every $C'' \in \mathcal{B}_{k+2,G, \true}$ it holds that $C'' \in \mathcal{C}_{k+2,H,\true}$ and $C'' \subset C_{k+2} \in \mathcal{C}_{k+2,H, \true}$.
-	
-	\item The subcondition of $c$ at layer $j$ is universally bound:
-	With lemmas \ref{lemma_help_lay_sat} and \ref{lemma_lay_sat}, $H \models_{k+2} c$ follows and $1.$ can be applied. 
-\end{enumerate}
+Since $G \not \models c$, with lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound and since $k$ is the biggest number such that $G\models_k c$ it follows that $\nvc(k+1,G) > 0$.
+If the subcondition of $c$ at layer $j$ is universally bound, $H \models c$ follows with lemma  \ref{lemma_lay_sat} and lemma \ref{lem_ex_lower} $H \models_{k+2} c$. Therefore $\nvc(k+2,H) = 0$. 
+Otherwise the subcondition of $c$ at layer $j$ is existentially bound and therefore $G \models_{k+2} c$ and $\nvc(k+2,H) = 0$ follows immediately.
 \end{proof}
+%\begin{proof}
+%\begin{enumerate}
+%	Since $G \not \models c$, with lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound. 
+%	\item The subcondition of $c$ at layer $j$ is existentially bound:
+%	With lemma \ref{lem_ex_lower} follows that $H \models_{k+2} c$.
+%	Let $d = \exists(a_{k+2}: C_{k+1} \inj C_{k+2}, e)$ be the subcondition of $c$ with layer $k+2$.
+%	The set $\mathcal{C}_{k+2,H,\true}$ contains every graph $C'$ with $C_{k+1} \subseteq C' \subseteq C_{k+2}$. 
+%	Since $G \not \models_{k+2} c$, $C_{k+2} \not \in \mathcal{C}_{k+2,G,\true}$ and for every $C'' \in \mathcal{B}_{k+2,G, \true}$ it holds that $C'' \in \mathcal{C}_{k+2,H,\true}$ and $C'' \subset C_{k+2} \in \mathcal{C}_{k+2,H, \true}$.
+%	
+%	\item The subcondition of $c$ at layer $j$ is universally bound:
+%	With lemmas \ref{lemma_help_lay_sat} and \ref{lemma_lay_sat}, $H \models_{k+2} c$ follows and $1.$ can be applied. 
+%\end{enumerate}
+%\end{proof}
 %\begin{definition}[\textbf{minimal consistency improving}]
 %Given a rule $r$, a constraint $c$ and a graph $G$ with $G \models_k c$.
 %A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if $H \models_j c$ and $k < j$. 
