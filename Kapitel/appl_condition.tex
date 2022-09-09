@@ -1,18 +1,72 @@
 \section{application condition}
 
 
-\begin{construction}
-Given a rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$   and a constraint $c$ in ANF with $\nl(c) = 1$. 
-Let $G$ and $H$ be be graphs. We denote the set of all overlaps of $G$ and $H$ as $\overlay(G,H)$.
-We construct the following application conditions: 
+\begin{definition}[\textbf{extended overlap}]
+Let $G$ and $C_0 \subset C_1$ be graphs and $C'$ an overlap of $G$ and $C_0$ with overlap morphisms $p: G \inj C'$ and $q: C_0 \inj C'$
+An overlap $C''$ of $G$ and $C_1$ is called the \emph{extended overlap of} $C'$ with $C''$ if $C' \subset C''$ and a morphism $q': C_1 \inj C''$ with $q'_{|C_0} = q$ exists. 
+
+\end{definition}
+
+\begin{definition}[\textbf{overlap shift}]
+Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$. 
+An overlap $G$ of $R$ and $C$ is called an \emph{overlap shifted graph} of $C'$ if 
+$$G = C'\setminus(L \setminus(K \cap C)) \cup R\setminus (K \cap C) \dot \cup R\setminus (K \setminus (K \cap C))$$
+
+\end{definition}
+
+
+\begin{definition}[\textbf{minimal consistency improving application condition}]
+Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule and $c$ a constraint in ANF. 
+Let $d = \forall(a_k : C_k \inj C_{k+1}, \exists(b: C_{k+1} \inj C_{k+2}, e)$ be the condition at layer $k$ of $c$. 
+The application condition $\ap_k$ of the condition at layer $k$ of $c$ and $C_{k+1} \subset C' \subseteq C_{k+2}$ is defined as:
+	\begin{equation}
+	\begin{split}
+		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k+1})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k+1})}\ex(P,C') \bigr) \wedge (\bigwedge_{P \in \overlay(L,C_{k+1})}\rem(P,C'))	
+	\end{split}
+	\end{equation}
+ 
+ with 
+ \begin{enumerate}
+ 	\item Let $Q$ be the extended overlap of $P$ with $C'$. 
+ 		$$\nex(P,C') := \exists(a: L \inj P,\neg \exists(b: P \inj Q, \true))$$
+ 	\item Let $Q$ be the extended overlap of $P$ with $C'$,$Q'$ the overlap shifted graph of $Q$ and $P'$ the overlap shifted graph of $P$.
+ 	$$\rep(P,C') := \shift(\forall(a: L \inj P',\neg \exists(b: P' \inj Q', \true)),r)$$
+ 	\item Let $P'$ be the overlap shifted graph of $P$. 
+ 		$$ \del(P,C') := \shift(\neg \exists(a:R \inj P', \true), r)$$
+ 	\item Let $Q$ be the extended overlap of $P$ with $C'$ and $Q'$ the overlap shifted graph of $Q$.
+ 		$$ \ex(P, C') := \exists(a: L \inj Q, \true) \implies \shift(\exists(a: R \inj Q', \true), r)$$ 
+ 	\item $Q$ be the extended overlap of $P$ with $C'$ and $Q'$ the overlap shifted graph of $Q$.
+ 	$$\rem(P,C') := \exists(a: L \inj Q, \true) \implies \shift( \exists(b: R \inj Q', \true),r)$$
+ \end{enumerate}
+
+\end{definition}
+
+
+\begin{lemma}
+Let $G$ be a graph, $c$ a constraint in ANF, such that $G \models_k c$ and $r$ a plain rule.
+Let $d = \forall(a_k : C_k \inj C_{k+1}, \exists(b: C_{k+1} \inj C_{k+2}, e)$ be the condition at layer $k$ of $c$. 
+Then, every application of $r$, equipped with $\ap(k, C')$ with $C' \not \in \mathcal{B}_{k,\true}$, such that a $C\in \mathcal{B}_{k,\true}$ with $C \subset C'$ exists is minimal consistency improving. 
+
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+\begin{lemma}
+Let $G$ be a graph, $c$ a constraint in ANF, such that $G\models_k c$, and $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ a plain rule.
+Let $d = \forall(a_k : C_k \inj C_{k+1}, \exists(b: C_{k+1} \inj C_{k+2}, e)$ be the condition at layer $k$ of $c$ and $\ap(k, C')$ with $C' \not \in \mathcal{B}_{k,\true}$, such that a $C\in \mathcal{B}_{k,\true}$ with $C \subset C'$ exists.
+The following simplifications apply:
 
 \begin{enumerate}
-\item if $c = \forall(a_0: C_0 \to C_1, \false)$: 
-		$$\bigvee_{Q \in \overlay(L,C_1)}\biggl(\exists(a:L \inj Q, \true) \wedge \shift(\neg \exists (b: R \to Q', \true)\biggr)$$ with $Q' \setminus (R\setminus (K \cup C_1)) = Q \setminus (L\setminus (K \cup C_1))$. 
-		
-\item if $c = \exists(a_0: C_0 \to C_1, \true)$:
-		$$\bigvee_{Q \in \overlay(L,C_1)} \bigvee_{Q' \subset Q} \biggl(\exists(a:L \to Q',\true) \wedge \bigl(\bigvee_{\substack{\overline{Q} \subset Q \\ Q' \subset \overline{Q}}} \shift(\exists(a: R \to \overline{Q}, \true))\biggr)$$ 
-		
+	\item Let $P \in \overlay(L,C_{k+1})$. 
+		  If an injective morphism $p : P \inj G$ does not exist, $\nex(P,C')$, $\rep(P,C')$, $\del(P,C')$  and $\ex(P,C')$ can be replaced by $\false$.
+	\item If $(L\setminus K) \cap C_{k+1} = \emptyset$, every $\del(P,C')$ can be replaced by $\false$. 
+	\item If $(R\setminus K) \cap C' = \emptyset$, every $\rep(P,C')$ can be replaced by $\false$.
+	\item If $1.$ and $2.$ apply, $\ap(k,C')$ can be replaced by $\false$. 
+	\item If$(R \setminus K) \cap C_{k+1} = \emptyset$, every $\rem(P,C')$ can be replaced by $\true$.
+	
 \end{enumerate}
+\end{lemma}
+\begin{proof}
 
-\end{construction}
+\end{proof}
