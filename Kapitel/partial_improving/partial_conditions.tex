@@ -1,49 +1,110 @@
-\subsection{partial-conditions and -satisfiability}
-
-%\begin{definition}[\textbf{partial condition}]\label{def_partial_cond}
-%Let $c := \exists(a_0: C_0 \inj C_1, \forall(a_1:C_1 \inj C_2, d))$ be a condition in ANF. 
-%The \emph{partial condition} of $c$ over $C'_0 \subseteq C_0$ is defined as 
-%$$\exists(a'_0:C'_0 \to C'_1, \forall(a'_1 C'_1 \to C'_2,d'))$$ with $a'_0$ and $a'_1$ being partial morphisms of $a_0$ and $a_1$, respectively, $C'_1 := C_1 \setminus a_1(c_0 \setminus C'_0)$, $C'_2 := C_2 \setminus a_1(c_1 \setminus C'_1)$ and $d'$ being the partial morphism of $d$ over $C'_2$. 
-%
-%
-%\end{definition}
-
-%\begin{definition}[\textbf{partial condition}]\label{def_partial_cond}
-%Let $c$ be a condition over $C_0$. 
-%A partial condition of $c$ over $ C'_0 \subseteq C_0$ is defined as:
-%\begin{enumerate}
-%	\item \textsf{true} is the partial condition of \textsf{true} for every morphism.
-%	\item if $c = \exists(a: C_0 \inj C_1, d)$ a partial condition of $c$ over $C'_0$ is given by $\exists(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 \subseteq C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
-%	\item if $c = \forall(a: C_0 \inj C_1, d$ a partial condition of $c$ over $C'_0$ is given by $\forall(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 = C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
-%	\item if $c = d_1 \wedge d_2$ or $c = d_1 \vee d_2$ the partial condition of $c$ is given by $d'_1 \wedge d'_2$ and  $d'_1 \vee d'_2$, respectively, with $d'_1$ and $d'_2$ being  partial conditions of $d_1$ and $d_2$ over $C'_0$.
-%	
-%	\item if $c = \neg d$ the partial condition of $c$ is given by $\neg d'$ with $d'$ being a partial condition of $d$ over $C'_0$.
-%\end{enumerate}
-%We use the notation $c' \leq c$ if $c'$ is partial condition of $c$ over $ C'_0 \subseteq C_0$ and $c' < c$ if $ C'_0 \subset C_0$.
-%\end{definition}
+\subsection{conditions up to layer}
+\begin{definition}[\textbf{Layer of a subcondition}]
+Let $c$  be a condition and $d$ a subcondition of $c$. 
+The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) -1$. 
 
 
-\begin{definition}[\textbf{partial condition}]\label{def_partial_cond}
-Let $c$ be a condition over $C_0$. 
-A partial condition of $c$ over $ C'_0 \subseteq C_0$ is defined as:
+\end{definition}
+
+\begin{definition}[\textbf{substitution at layer}]
+Let $c$ be a condition, such that the subcondition of $c$ with layer $0 \leq k \leq \nl(c)$ is an condition over $C_k$. 
+Let $e$ be a condition over $C_k$. 
+The \emph{substitution of $c = Q(a: C_0 \inj C_1, d)$ at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
 \begin{enumerate}
-	\item \textsf{true} is the partial condition of \textsf{true} for every morphism.
-	\item if $c = Q(a: C_0 \inj C_1, d)$, with $Q \in \{\exists, \forall\}$, a partial condition of $c$ over $C'_0$ is given by $\exists(a':C'_0 \inj C'_1, d')$ with $a'_1$ being a partial morphism of $a$, $C'_1 \subseteq C_1 \setminus a(C_0 \setminus C'_0)$ and $d'$ is a partial condition of $d$ over $C'_1$.
+\item If $k = 0$:
+		$$\sub(0, c, e) := e$$
 
-	\item if $c = d_1 \wedge d_2$ or $c = d_1 \vee d_2$ the partial condition of $c$ is given by $d'_1 \wedge d'_2$ and  $d'_1 \vee d'_2$, respectively, with $d'_1$ and $d'_2$ being  partial conditions of $d_1$ and $d_2$ over $C'_0$.
-	
-	\item if $c = \neg d$ the partial condition of $c$ is given by $\neg d'$ with $d'$ being a partial condition of $d$ over $C'_0$.
+\item If $k > 0$:
+		$$\sub(k,c,e) := Q\bigl(a: C_0 \inj C_1, \sub(k-1,d,e)\bigr)$$
+		
 \end{enumerate}
-A partial condition $Q(a: C'_0 \inj C'_1, d)$ of $c$ over $C'_0$ is called the \emph{closest partial condition} of $c$ over $C'_0$ if $C'_1 = C_1 \setminus a(C_0 \setminus C'_0)$ and $d$ is the closest partial condition of $d$ over $C'_1$.
-
-We use the notation $c' \leq c$ if $c'$ is partial condition of $c$ over $ C'_0 \subseteq C_0$ and $c' < c$ if $ C'_i \subset C_i$ for any $i$.
 \end{definition}
 
 
+\begin{definition}[\textbf{Condition up to layer}]
+Let $c$ be a condition and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
+The \emph{condition up to layer} $k$ of $c$, $\cond(k,c)$ is defined as
 
-\begin{definition}[\textbf{partial satisfiability}]\label{def_part_sat}
-Let a condition $c$ over $C_0$ and a graph $G$ be given. 
-A morphism $p_0: C'_0 \to G$, with $C'_0 \subseteq C_0$, partial satisfies $c$, $p_0 \models_p c$, if a partial morphism $p'_0: C''_0 \to G$ of $p_0$ satisfies a partial condition of $c$ over $C''_0$.
+$$ \cond(k,c) := \begin{cases}
+					\sub(k,c,\true)&, \text{if } k = 0 \vee \text{$d$ is existentially bound} \\
+					\sub(k,c,\false)&, \text{if $d$ is universally bound.} \\
+				\end{cases}$$
 
-Note, that $p_0 \models c$ implies $p_0 \models_p c$
+\end{definition}
+
+
+\begin{definition}[\textbf{Satisfaction up to layer}]
+Let $G$ be a graph and $c$ be a condition over $C_0$. 
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ up to layer $k$}, $p \models_k c$, if $$p\models \cond(k,c).$$
+
+A graph $G$ satisfies a constraint $c$ up to layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cond(k,c)$.
+\end{definition}
+
+
+\begin{lemma}\label{lemma_help_lay_sat}
+Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
+If the subcondition $d = Q(a_k:C_{k-1} \inj C_k, e)$ of $c$ at layer $k$ is universally bound, then for any condition $f$ over $C_k$ holds:
+$$p \models \sub(k,c,f)$$
+\end{lemma}
+
+
+
+
+\begin{proof}
+Let $k$ be the smallest number such that $p \models_k c$ and the subcondition of $c$ with layer $k$ is universally bound, let $d = \forall(a_k: C_{k-1} \inj C_k, e)$ be this subcondition.
+Let $q: G_{k-1} \to G$ be a morphism such that $q \models \forall(a_k:C_{k-1} \inj C_k, \false)$. 
+This must exist, since $p \models_k c$ and $k$ is the smallest number such that $p \models_k v$ and the subcondition of $c$ with layer $k$ is universally bound. 
+
+Therefore, there does not exist a morphism $q': C_k \to G$ with $q = q' \circ a_k$.
+Hence, for every condition $f$ over $C_k$ a morphism $q': C_k \to G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
+It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$.
+\end{proof}
+
+
+
+\begin{lemma}\label{lemma_lay_sat}
+
+Let $G$ be a graph, $p: C_0 \to G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
+If the subcondition $d$ of $c$ with $\lay(d) = k$ is universally bound, $$p \models_k c \implies p \models c.$$
+\end{lemma}
+\begin{proof}
+Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to the subcondition of $c$ with layer $k+1$.
+\end{proof}
+
+
+
+\begin{lemma}\label{lemma_part_satisfiability}
+	Let $c$ be a condition in ANF over $C_0$ and $p: C_0 \inj G$ a morphism with $p \models_k c$. 
+	Let $d = Q(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with layer $k+2$. 
+	There does exist a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ such that $$p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$$ with $f$ being a $\overline{Q}$ bound condition over $C'$.
+\end{lemma}
+\begin{proof}
+If $p \models c$, we can choose $C' = C_{k+2}$ and $f = e$.
+
+If $p \not \models c$, there does not exists a $j$ with $p \models_j c$ and the subcondition of $c$ with layer $j$ is universally bound and $Q = \exists$ follows immediately.
+We choose $C' = C_{k+1}$ and $f = \true$. Let $q: C_{k} \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$ and $q \circ \ldots \circ a_{\ell}$ satisfying the condition up to $\ell - k$ of the subcondition of $c$ at layer $\ell$  for all $0 \leq \ell \leq k$.
+This morphism must exists since $p \models_k c$ and $p \not \models c$. 
+Let $q': C_{k+1} \to G$ be a morphism with $q = q' \circ a_{k+1}$.  Since $C' = C_{k+1}$, the morphism $a'_{k+2}$ has to be the identity and therefore $q' = q' \circ a'_{k+2}$. It follows that $q' \models \exists(a'_{k+2}: C_{k+1} \inj C', \true)$ and therefore $p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$.
+\end{proof}
+
+
+\begin{definition}[\textbf{partial condition}]
+Let $c$ be a condition in ANF over $C_0$. 
+Let $d$ be the subcondition of $c$ at layer $k +1$. 
+The \emph{partial condition of $c$ at layer $k$ with $C'$}, $\parcond(k,c,C')$ is defined as:
+\begin{enumerate}
+\item If $d$ is universally bound, let $e = \exists(a: C_{k+1} \inj C_{k+2},f)$ be the subcondition of $c$ at layer $k+2$ with $C_{k+1} \subseteq C' \subseteq C_{k+2}$:
+$$\parcond(k,c,C') := \sub\bigl(k+2,c,\exists(a:C_{k+1} \inj C', \true)\bigr)$$
+\item If $d = \exists(a:C_k\inj C_{k+1},f)$ is existentially bound with $C_{k} \subseteq C' \subseteq C_{k+1}$:
+$$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a:C_{k+1} \inj C', \true)\bigr)$$
+\end{enumerate}
+\end{definition}
+
+\begin{definition}[\textbf{biggest partially satisfying condition}]
+Let $G$ be a graph, $c$ a condition over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$. 
+
+A partial condition $c = \parcond(k,c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition} if there does not exist a graph $C' \subset C''$ with $p \models \parcond(k,c,C'')$. 
+
+The set of graphs $C'$ such that $\parcond(k,c,C')$ is a biggest partially satisfying condition is denoted by $\mathcal{G}_{k,c}$. 
+
 \end{definition}

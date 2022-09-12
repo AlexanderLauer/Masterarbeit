@@ -1,118 +1,23 @@
 \subsection{minimal consistency improving}
 
-\begin{definition}[\textbf{Layer of a subcondition}]
-Let $c$  be a condition and $d$ a subcondition of $c$. 
-The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) -1$. 
 
 
-\end{definition}
-
-\begin{definition}[\textbf{substitution at layer}]
-Let $c$ be a condition, such that the subcondition of $c$ with layer $0 \leq k \leq \nl(c)$ is an condition over $C_k$. 
-Let $e$ be a condition over $C_k$. 
-The \emph{substitution of $c = Q(a: C_0 \inj C_1, d)$ at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
+\begin{definition}[\textbf{number of violations}]
+Let $G$ be a graph and $c$ a constraint in ANF, such that $G \models_k c$ and $G \not \models c$. 
+The \emph{number of violations $\nvc(k,G)$ at layer $k$ in $G$} is set to $0$ if there does exist a $j >k$ with $G \models_j c$ and otherwise:
 \begin{enumerate}
-\item If $k = 0$:
-		$$\sub(0, c, e) := e$$
-
-\item If $k > 0$:
-		$$\sub(k,c,e) := Q\bigl(a: C_0 \inj C_1, \sub(k-1,d,e)\bigr)$$
-		
+\item If $k = 0$ and $c = \exists(a:C_0 \inj C_1,e)$ is existentially bound:
+	$$\nvc(k,G) := |\{C' \mid G \not \models \parcond(0,c,C') \wedge C_0 \subseteq C' \subseteq C_1\}|$$
+	
+\item If $k \neq 0$, let $d = \forall(a_k: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ at layer $k+1$.
+$$\nvc(k,G) := \sum_{C \in \mathcal{G}_{k,c}} \sum_{C \subset C'} |\{q \mid q:C_{k+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
 \end{enumerate}
-\end{definition}
 
-
-\begin{definition}[\textbf{Condition up to layer}]
-Let $c$ be a condition and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
-The \emph{condition up to layer} $k$ of $c$, $\cond(k,c)$ is defined as
-
-$$ \cond(k,c) := \begin{cases}
-					\sub(k,c,\true)&, \text{if } k = 0 \vee \text{$d$ is existentially bound} \\
-					\sub(k,c,\false)&, \text{if $d$ is universally bound.} \\
-				\end{cases}$$
-
-\end{definition}
-
-
-\begin{definition}[\textbf{Satisfaction up to layer}]
-Let $G$ be a graph and $c$ be a condition over $C_0$. 
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ up to layer $k$}, $p \models_k c$, if $p$ satisfies $\cond(k,c)$.
-
-A graph $G$ satisfies a constraint $c$ up to layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cond(k,c)$.
-\end{definition}
-
-
-%\begin{lemma}\label{lemma_help_lay_sat}
-%Let $G$ be a graph $p: C_0 \to G$ a morphism and $c = Q(a_1: C_0 \inj C_1, \overline{Q}(a_2: C_1 \inj C_2, \ldots))$ a condition over $C_0$ in ANF with $p \models_k c$.
-%If the subcondition $d = \forall(a_k: C_{k-1} \inj C_k,e)$ of $c$ at layer $k$ is universally bound, $p \models Q(a_1: C_0 \inj C_1, \overline{Q}(a_2: C_1 \inj C_2, \ldots \forall(a_k: C_{k-1} \inj C_k,f)))$ for every condition $f$ over $C_k$.
-%\end{lemma}
-\begin{lemma}\label{lemma_help_lay_sat}
-Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
-If the subcondition $d = Q(a_k:C_{k-1} \inj C_k, e)$ of $c$ at layer $k$ is universally bound, then for any condition $f$ over $C_k$ holds:
-$$p \models \sub(k,c,f)$$
-\end{lemma}
-
-
-
-
-\begin{proof}
-Let $k$ be the smallest number such that $p \models_k c$ and the subcondition of $c$ with layer $k$ is universally bound, let $d = \forall(a_k: C_{k-1} \inj C_k, e)$ be this subcondition.
-Let $q: G_{k-1} \to G$ be a morphism such that $q \models \forall(a_k:C_{k-1} \inj C_k, \false)$. 
-This must exist, since $p \models_k c$ and $k$ is the smallest number such that $p \models_k v$ and the subcondition of $c$ with layer $k$ is universally bound. 
-
-Therefore, there does not exist a morphism $q': C_k \to G$ with $q = q' \circ a_k$.
-Hence, for every condition $f$ over $C_k$ a morphism $q': C_k \to G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
-It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$.
-\end{proof}
-
-
-
-\begin{lemma}\label{lemma_lay_sat}
-
-Let $G$ be a graph, $p: C_0 \to G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
-If the subcondition $d$ of $c$ with $\lay(d) = k$ is universally bound, $$p \models_k c \implies p \models c.$$
-\end{lemma}
-\begin{proof}
-Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to the subcondition of $c$ with layer $k+1$.
-\end{proof}
-
-
-
-\begin{lemma}\label{lemma_part_satisfiability}
-	Let $c$ be a condition in ANF over $C_0$ and $p: C_0 \inj G$ a morphism with $p \models_k c$. 
-	Let $d = Q(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with layer $k+2$. 
-	There does exist a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ such that $$p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$$ with $f$ being a $\overline{Q}$ bound condition over $C'$.
-\end{lemma}
-\begin{proof}
-If $p \models c$, we can choose $C' = C_{k+2}$ and $f = e$.
-
-If $p \not \models c$, there does not exists a $j$ with $p \models_j c$ and the subcondition of $c$ with layer $j$ is universally bound and $Q = \exists$ follows immediately.
-We choose $C' = C_{k+1}$ and $f = \true$. Let $q: C_{k} \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$ and $q \circ \ldots \circ a_{\ell}$ satisfying the condition up to $\ell - k$ of the subcondition of $c$ at layer $\ell$  for all $0 \leq \ell \leq k$.
-This morphism must exists since $p \models_k c$ and $p \not \models c$. 
-Let $q': C_{k+1} \to G$ be a morphism with $q = q' \circ a_{k+1}$.  Since $C' = C_{k+1}$, the morphism $a'_{k+2}$ has to be the identity and therefore $q' = q' \circ a'_{k+2}$. It follows that $q' \models \exists(a'_{k+2}: C_{k+1} \inj C', \true)$ and therefore $p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$.
-\end{proof}
-
-\begin{definition}[\textbf{biggest partially satisfying graph}]
-Let $G$ be a graph, $c = Q(a_1: C_0, \inj C_1, \ldots)$ a condition in ANF and $p: C_0 \to G$ a morphism with $p \models_k c$. 
-Let $d = Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q'}(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with $\lay(d) = k+1)$.
-	With lemma \ref{lemma_part_satisfiability} there exists a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ and an $Q'$ bound condition $e$ over $C'$ in ANF with $p \models  Q(a_1: C_0, \inj C_1, \ldots Q'(a_{k+1}: C_{k} \inj C_{k+1}, \overline{Q}(a_{k+2}: C_{k+1} \inj C',e)) =: d_{C',e}$. 	
-Let $\mathcal{C}_{k,p,e}$ be the set of graphs $C_{k+1} \subseteq C' \subseteq C_{k+2}$ with  $p \models d_{C',e}$.
-
-A graph $C' \in \mathcal{C}_{k,p,e}$, such that no $C'' \in \textsc{C}$ with $C' \subseteq C''$ exists is called a \emph{biggest partially
- satisfying graph} of $c$ at level $k$ with $p$ and $e$.
-The set of these graphs is denoted by $\mathcal{B}_{k,e}$
-\end{definition}
-
-
-\begin{definition}
- Let $G$ be a graph and $c $ a constraint in ANF, such that $G \models_k c$ and $G \not \models c$.
- Let $d = \forall(a_{k+1}: C_k \inj C_{k+1},e)$ be the condition up to layer $k +2$ of of the condition at layer $k+1$ of $c$.
- The number of violations of $c$ up to layer $k+2$ in $G$ is defined as the the number of morphisms $q: C_{k+1} \to G$ that do not satisfy $e$, with $C'$ being a smallest graph such that $C \subset C'$ for at least one $C \in \mathcal{B}_{k,\true}$ if $G \not \models_{k+2} c$ and $0$ otherwise. This number is denoted by $\nvc(k +2, G)$.
 \end{definition}
 
 
 \begin{definition}[\textbf{minimal consistency improving}]
-	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and $G\not \models c$. 
+	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and an $j >k$ with $G \models_j c$ does not exist. 
 
 	
 	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving}, if  $$\nvc(k, H) < \nvc(k, G).$$

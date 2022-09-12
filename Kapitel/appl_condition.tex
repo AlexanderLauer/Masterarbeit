@@ -6,13 +6,34 @@ Let $G$ and $C_0 \subset C_1$ be graphs and $C'$ an overlap of $G$ and $C_0$ wit
 An overlap $C''$ of $G$ and $C_1$ is called the \emph{extended overlap of} $C'$ with $C''$ if $C' \subset C''$ and a morphism $q': C_1 \inj C''$ with $q'_{|C_0} = q$ exists. 
 
 \end{definition}
+%
+%\begin{definition}[\textbf{overlap shift}]
+%Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$. 
+%An overlap $G$ of $R$ and $C$ is called an \emph{overlap shifted graph} of $C'$ if 
+%$$G = C'\setminus(L \setminus(K \cap C)) \cup R\setminus (K \cap C) \dot \cup R\setminus (K \setminus (K \cap C))$$
+%
+%\end{definition}
+%
+%\begin{definition}[\textbf{overlap shift}]
+%Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : \ell: L \inj C$ and $k: K \inj C$. 
+%Let $r = L \xhookleftarrow{l} K' \xhookrightarrow{r} R$ be the rule with 
+%$$K' := K \cup (L \cap C) \cup (R \cap C)$$
+%The graph $H$, of the transformation $G \xRightarrow{r,p} H$ is called the \emph{overlap shifted graph} of $C'$.
+%\end{definition} 
+
 
 \begin{definition}[\textbf{overlap shift}]
-Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$. 
-An overlap $G$ of $R$ and $C$ is called an \emph{overlap shifted graph} of $C'$ if 
-$$G = C'\setminus(L \setminus(K \cap C)) \cup R\setminus (K \cap C) \dot \cup R\setminus (K \setminus (K \cap C))$$
-
-\end{definition}
+Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : L \inj C'$, $k: K \inj C'$, $c:C \inj C'$ and the partial morphism $q: R \inj C'$. 
+We define 
+\begin{equation}
+\begin{split}
+	D := \{e \in C' \mid &(\exists e' \in L: p(e') = e \\ &\vee \exists e' \in R: q(e') = e) \\ &\wedge \exists e' \in C: c(e') = e \}
+\end{split}
+\end{equation}
+Let $r = L \xhookleftarrow{l} K' \xhookrightarrow{r} R$ be the rule with 
+$$K' := K \cup D$$
+The graph $H$, of the transformation $G \xRightarrow{r,p} H$ is called the \emph{overlap shifted graph} of $C'$.
+\end{definition} 
 
 
 \begin{definition}[\textbf{minimal consistency improving application condition}]
