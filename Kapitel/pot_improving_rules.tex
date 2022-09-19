@@ -1,0 +1,52 @@
+\subsection{potentially minimal improving rules}
+
+\begin{definition}[\textbf{potentially minimal improving rule}]
+Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j >k$, and a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+
+Let $E$ be the set of all existentially bound graphs and $U$ be the set of all universally bound graphs $C_j$ of $c$ with $j \leq k$. 
+The rule $r$ is called \emph{potentially minimal improving}, if
+$$(L \setminus K) \cap \bigcup_{C_j \in E} C_j\setminus C_{j-1} = \emptyset$$
+and $$(R \setminus K) \cap \bigcup_{C_j \in U} C_j\setminus C_{j-1} = \emptyset$$ 
+and either
+	$$(L \setminus K) \cap (C_{k+1} \setminus C_k) \neq \emptyset$$
+or 
+$$(R \setminus K) \cap (C_{k+2} \setminus C') \neq \emptyset$$
+\end{definition}
+
+
+\begin{definition}[\textbf{appl. conditions for potentially minimal improving rules}]
+Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j >k$, and a potentially minimal improving rule  $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+
+$$\ap(k, C) := \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true))$$
+
+$$\ap(k,C) :=  \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true)) \wedge \shift(\exists(R \inj Q', \true)$$
+
+
+
+\end{definition}
+
+\begin{definition}
+Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models c$ for all $j >k$, and a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+
+Let $E$ be the set of all existentially bound graphs and $U$ be the set of all universally bound graphs $C_j$ of $c$ with $j \leq k$. 
+The rule $r$ is called \emph{potentially minimal improving}, if
+$$(L \setminus K) \cap \bigcup_{C_j \in E} C_j\setminus C_{j-1} = \emptyset$$
+and $$(R \setminus K) \cap \bigcup_{C_j \in U} C_j\setminus C_{j-1} = \emptyset$$ 
+and either
+	$ L \subseteq C_{k+1}$ with $(L \setminus K)\cap C_{k+1} \neq \emptyset$
+or 
+	$C' \subseteq R$ with $(R \setminus K) \cap (C_{k+2} \setminus C') \neq \emptyset$.
+\end{definition}
+
+
+
+\begin{definition}[\textbf{appl. conditions for potentially minimal improving rules}]
+Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j >k$, and a potentially minimal improving rule  $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+
+$$\ap(k, C) := \exists\bigl(L \inj C_{k+1}, \neg \exists(C_{k+1} \inj C_{k+2}, \true)\bigr)$$
+
+
+
+
+
+\end{definition}

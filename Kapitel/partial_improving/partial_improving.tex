@@ -11,6 +11,8 @@ The \emph{number of violations $\nvc(k,G)$ at layer $k$ in $G$} is set to $0$ if
 	
 \item If $k \neq 0$, let $d = \forall(a_k: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ at layer $k+1$.
 $$\nvc(k,G) := \sum_{C \in \mathcal{G}_{k,c}} \sum_{C \subset C'} |\{q \mid q:C_{k+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
+\item For $j > k$:
+	$$\nvc(k,G) := \infty$$
 \end{enumerate}
 
 \end{definition}
