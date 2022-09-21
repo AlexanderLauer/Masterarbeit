@@ -1,10 +1,10 @@
 \subsection{potentially minimal improving rules}
 
 \begin{definition}[\textbf{potentially minimal improving rule}]
-Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j >k$, and a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+Let a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
 
 Let $E$ be the set of all existentially bound graphs and $U$ be the set of all universally bound graphs $C_j$ of $c$ with $j \leq k$. 
-The rule $r$ is called \emph{potentially minimal improving}, if
+The rule $r$ is called \emph{potentially minimal improving} at layer $k$, if
 $$(L \setminus K) \cap \bigcup_{C_j \in E} C_j\setminus C_{j-1} = \emptyset$$
 and $$(R \setminus K) \cap \bigcup_{C_j \in U} C_j\setminus C_{j-1} = \emptyset$$ 
 and either
@@ -19,34 +19,70 @@ Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not
 
 $$\ap(k, C) := \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true))$$
 
-$$\ap(k,C) :=  \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true)) \wedge \shift(\exists(R \inj Q', \true)$$
+$$\ap(k,C) :=  \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true)) \wedge \shift(\exists(R \inj Q', \true),r)$$
 
 
 
 \end{definition}
 
 \begin{definition}
-Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models c$ for all $j >k$, and a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+Let a constraint $c$, and a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
 
 Let $E$ be the set of all existentially bound graphs and $U$ be the set of all universally bound graphs $C_j$ of $c$ with $j \leq k$. 
-The rule $r$ is called \emph{potentially minimal improving}, if
+The rule $r$ is called \emph{potentially minimal improving} at layer $k$ with $C_k \subseteq C \subseteq C_{k+1}$, if
 $$(L \setminus K) \cap \bigcup_{C_j \in E} C_j\setminus C_{j-1} = \emptyset$$
 and $$(R \setminus K) \cap \bigcup_{C_j \in U} C_j\setminus C_{j-1} = \emptyset$$ 
-and either
-	$ L \subseteq C_{k+1}$ with $(L \setminus K)\cap C_{k+1} \neq \emptyset$
-or 
-	$C' \subseteq R$ with $(R \setminus K) \cap (C_{k+2} \setminus C') \neq \emptyset$.
+and either \ref{pot_min_impr_1} or \ref{pot_min_impr_2} applies. 
+
+\begin{enumerate}
+\item \label{pot_min_impr_1}
+	$$ L \subseteq C_{k}$$ with $(L \setminus K)\cap (C_{k} \setminus C_{k-1}) \neq \emptyset$
+\item \label{pot_min_impr_2}
+	 $$C' \subseteq R$$ with $(R \setminus K) \cap (C_{k+1} \setminus C') \neq \emptyset$ and $C_{k-1} \subseteq C \subseteq C' \subseteq C_{k}$.
+If \ref{pot_min_impr_1} applies, $r$ is called a \emph{deleting potentially improving rule}.
+If \ref{pot_min_impr_2} applies, $r$ is called a \emph{inserting potentially improving rule}.
+\end{enumerate}
+
+
 \end{definition}
 
 
 
 \begin{definition}[\textbf{appl. conditions for potentially minimal improving rules}]
-Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j >k$, and a potentially minimal improving rule  $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+Let a constraint $c$ in EANF and a potentially minimal improving rule  $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$  at layer $k$  with $C$ be given. 
 
-$$\ap(k, C) := \exists\bigl(L \inj C_{k+1}, \neg \exists(C_{k+1} \inj C_{k+2}, \true)\bigr)$$
-
-
-
-
+$$\ap(j, C) := \begin{cases}
+				\exists\bigl(L \inj C_k, \neg \exists(C_k \inj C, \true)\bigr) &\text{, if j = k} \\
+				\false &\text{, if } j \neq k
+				\end{cases}$$
 
 \end{definition}
+
+\begin{lemma}
+Let a graph $G$, a constraint $c$ with $G \models \parcond(k,c,C')$ and $G\not \models_j c$ for all $j>k$ and a potentially minimal improving rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $k$ with $C'$ be given. 
+Then, the rule $r$, equipped with $\ap(k,C)$ is a minimal  consistency improving rule. 
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+\begin{definition}[\textbf{repairing rule set}]
+Let a graph $G$, a constraint $c$ with $G \not \models c$ and a set of rules $\mathcal{R}$ be given. 
+Then, $\mathcal{R}$ is called a \emph{repairing rule set} if a sequence 
+$$G = G_0 \Rightarrow_{r_0} \ldots \Rightarrow_{r_{n-1}} G_n = H$$
+exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0,\ldots, n-1\}$ and $H \models c$. 
+
+\end{definition}
+
+\begin{lemma}
+Let a graph $G$, a constraint $c$ in EANF with $G \models \parcond(k,c,C')$ and $G\not \models_j c$ for all $j>k$ and a set of rules $\mathcal{R}$ be given. 
+Then, $\mathcal{R}$ is a repairing set if either \ref{category_repair_set_1} or \ref{category_repair_set_2} apply
+
+\begin{enumerate}
+\item \label{category_repair_set_1}
+A rule $r \in \mathcal{R}$ exists, such that $r$ is a deleting potentially minimal improving rule at layer $j <k$. 
+\item \label{category_repair_set_2}
+Let $k'$ be the biggest number, such that a deleting potentially improving rule for $k'$ exists in $\mathcal{R}$. 
+Then, for every $j = 2i + k$ with $i \in \{0, \ldots, (k'-k)/2 - 1\}$ a inserting potentially improving rule exists. 
+\end{enumerate}
+\end{lemma}

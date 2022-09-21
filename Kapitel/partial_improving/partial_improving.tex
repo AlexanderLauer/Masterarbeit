@@ -3,14 +3,12 @@
 
 
 \begin{definition}[\textbf{number of violations}]
-Let $G$ be a graph and $c$ a constraint in ANF, such that $G \models_k c$ and $G \not \models c$. 
+Let $G$ be a graph and $c$ a constraint in EANF, such that $G \models_k c$. 
 The \emph{number of violations $\nvc(k,G)$ at layer $k$ in $G$} is set to $0$ if there does exist a $j >k$ with $G \models_j c$ and otherwise:
 \begin{enumerate}
-\item If $k = 0$ and $c = \exists(a:C_0 \inj C_1,e)$ is existentially bound:
-	$$\nvc(k,G) := |\{C' \mid G \not \models \parcond(0,c,C') \wedge C_0 \subseteq C' \subseteq C_1\}|$$
-	
+
 \item If $k \neq 0$, let $d = \forall(a_k: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ at layer $k+1$.
-$$\nvc(k,G) := \sum_{C \in \mathcal{G}_{k,c}} \sum_{C \subset C'} |\{q \mid q:C_{k+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
+$$\nvc(k,G) := \sum_{C \in \mathcal{G}_{k,c}} \sum_{C' \in \mathcal{U}_{C,C_{k+2}}} |\{q \mid q:C_{k+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
 \item For $j > k$:
 	$$\nvc(k,G) := \infty$$
 \end{enumerate}
@@ -22,7 +20,7 @@ $$\nvc(k,G) := \sum_{C \in \mathcal{G}_{k,c}} \sum_{C \subset C'} |\{q \mid q:C_
 	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and an $j >k$ with $G \models_j c$ does not exist. 
 
 	
-	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving}, if  $$\nvc(k, H) < \nvc(k, G).$$
+	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving}, if  $$\nvc(k, H) < \nvc(k, G) \vee (G \models c \implies H \models c)$$
 	A rule $r$ is called \emph{minimal consistency improving}, if all of its applications are. 
 	
 \end{definition}
@@ -60,16 +58,51 @@ Otherwise the subcondition of $c$ at layer $j$ is existentially bound and theref
 \end{proof}
 
 \begin{definition}[\textbf{direct minimal consistency improving}]
-Let $G$ be a graph, $r$ a plain rule and $c$ a constraint in ANF with $G \models_k$ and $G \not \models c$. 
+Let $G$ be a graph, $r$ a plain rule and $c$ a constraint in ANF with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j <k$. 
 Let $d = \forall(a_k: C_k \inj C_{k+1}, e)$ be the condition at layer $k$ of $c$. 
-A transformation $t: G \xRightarrow{r,m} H$ is called \emph{direct minimal consistency improving} if the transformation is minimal consistency improving and 
-\begin{equation}
+A transformation $t: G \xRightarrow{r,m} H$ is called \emph{direct minimal consistency improving} if $H \models_k c$ and 
+\begin{equation}\label{direct_improving_1}
 \begin{split}
-	& \forall p: C_{k+1} \inj G(( p \models e \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models p) \wedge \\ & \forall p': C_{k+1} \inj H (\neg \exists p : C \inj G(p' = \track_t \circ p) \implies p' \models d).
+	& \forall p: C_{k+1} \inj G(( p \models \parcond(1,d,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,d,C')) \wedge \\ & \forall p': C_{k+1} \inj H (\neg \exists p : C \inj G(p' = \track_t \circ p) \implies p' \models \parcond(1,d,C')) 
+\end{split}
+\end{equation}
+and 
+\begin{equation}\label{direct_improving_2}
+\begin{split}
+\exists p': C_k \inj G\Big(p \not \models \parcond(1,d,C'') \implies &\big((\track_t \circ p' \text{is total } \wedge \track_t \circ p  \models \parcond(1,d,C'')) \\ &\vee  \track_t \circ p \text{ is not total}\big)\Big).
 \end{split}
 \end{equation}
 
 \end{definition}
+
+\begin{lemma}
+Let a graph $G$, a constraint $c$ and a direct minimal improving transformation $t: G \Rightarrow_{r,m} H$ w.r.t. $c$ be given. 
+Then, $t$ is also a minimal improving transformation. 
+\end{lemma}
+
+\begin{proof}
+
+
+Let $k$ be such that $G\models_k c$ and no $j >k$ with $G \models_j c$ exists and let $C_{k+1} \subseteq C \subseteq C_{k+2}$ such that $G \models \parcond(k,c,C)$ and no $C \subset C' \subseteq C_{k+2}$ with   $G \models \parcond(k,c,C')$ exists. 
+Let $d$ be the subcondition of $c$ at layer $k+1$.
+
+\begin{enumerate}
+\item \label{proof_direct_minimal_4} We show that equation (\ref{direct_improving_1}) implies that $\nvc(H,k) \leq \nvc(G,k)$. 
+Assume that $\nvc(H,c) > \nvc(G,c)$. Therefore a morphism $p: C_k \to G$ with $p \not \models \parcond(1,d,C')$ for a $C' \in \mathcal{U}_C$ exists, such that either \ref{proof_direct_minimal_1} or \ref{proof_direct_minimal_2} is satisfied.
+\begin{enumerate}
+	\item \label{proof_direct_minimal_1}
+		There does not exist a morphism $q : C_k \to G$ such that $p = \track_t \circ q$. 
+	\item \label{proof_direct_minimal_2}
+		There does exist a morphism $q': C_k \to G$ with $q' \models \parcond(1,d,C')$ and $p = \track_t \circ q'$. 
+\end{enumerate}
+This is a contradiction, since if \ref{proof_direct_minimal_1} is satisfied, $q$ does not satisfy the first part of equation \ref{direct_improving_1} and if \ref{proof_direct_minimal_2} is satisfied $q'$ does not satisfy the second part of equation \ref{direct_improving_1}.
+
+\item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied, a morphism $p:C_k \inj G$ with $p \not \models \parcond(1,d,C'')$, such that either $\track \circ p$ is total and $p  \models \parcond(1,d,C'')$ or $\track \circ p$ is not total.
+In both cases the following holds $$\track \circ p \notin \{q \mid q:C_{k+2} \inj H \wedge q \not \models \parcond(1,e,C')\}.$$
+
+\end{enumerate}
+With \ref{proof_direct_minimal_4} and \ref{proof_direct_minimal_3} follows that $\nvc(k,G) < \nvc(k,G)$ and therefore $t$ is a minimal improving transformation. 
+\end{proof}
 %\begin{proof}
 %\begin{enumerate}
 %	Since $G \not \models c$, with lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound. 

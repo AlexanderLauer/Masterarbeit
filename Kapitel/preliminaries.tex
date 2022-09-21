@@ -4,7 +4,14 @@
 Let $G_1$ and $G_2$ be graphs. 
 The graph $G_2$ is called a \emph{subgraph} of $G_1$ if an injective morphism $f: G_2 \to G_1$ exists. 
 We use the notation $G_2 \subseteq G_1$ if $G_2$ is a subgraph of $G_1$ and $G_2 \subset G_1$ if $f$ is not bijective. 
-The set of all subgraphs of $G_1$ is denoted by $\sub(G_1)$.
+
+\end{definition}
+
+\begin{definition}[\textbf{minimal uppergraph}]
+Let $G_1$ and $G_2$ be graphs with $G_1 \subseteq G_2$. 
+A graph $C$ is called an \emph{minimal uppergraph} of $G_1$ w.r.t $G_2$, if $G_1 \subset C \subseteq G_2$ and no graph $C' \subset C$ with $G_1 \subset C \subseteq G_2$ exists.
+The set of minimal uppergraphs of $G_1$ w.r.t. $G_2$ is denoted by $\mathcal{U}_{G_1,G_2}$.
+
 \end{definition}
 
 \begin{definition}[\textbf{overlap}]
