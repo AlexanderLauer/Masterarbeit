@@ -7,9 +7,9 @@ The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) -1$.
 \end{definition}
 
 \begin{definition}[\textbf{substitution at layer}]
-Let $c$ be a condition, such that the subcondition of $c$ with layer $0 \leq k \leq \nl(c)$ is an condition over $C_k$. 
+Let $c = Q(a: C_0 \inj C_1, d)$ be a condition in ANF, such that the subcondition of $c$ with layer $0 \leq k \leq \nl(c)$ is a condition over $C_k$. 
 Let $e$ be a condition over $C_k$. 
-The \emph{substitution of $c = Q(a: C_0 \inj C_1, d)$ at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
+The \emph{substitution in $c$  at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
 \begin{enumerate}
 \item If $k = 0$:
 		$$\sub(0, c, e) := e$$
@@ -22,8 +22,8 @@ The \emph{substitution of $c = Q(a: C_0 \inj C_1, d)$ at layer $k$ with $e$}, $\
 
 
 \begin{definition}[\textbf{Condition up to layer}]
-Let $c$ be a condition and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
-The \emph{condition up to layer} $k$ of $c$, $\cond(k,c)$ is defined as
+Let $c$ be a condition in ANF and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
+The \emph{condition up to layer} $k$ of $c$, $\cond(k,c)$, is defined as
 
 $$ \cond(k,c) := \begin{cases}
 					\sub(k,c,\true)&, \text{if } k = 0 \vee \text{$d$ is existentially bound} \\
@@ -43,8 +43,8 @@ A graph $G$ satisfies a constraint $c$ up to layer $k$, $G \models_k c$, if $q: 
 
 \begin{lemma}\label{lemma_help_lay_sat}
 Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
-If the subcondition $d = Q(a_k:C_{k-1} \inj C_k, e)$ of $c$ at layer $k$ is universally bound, then for any condition $f$ over $C_k$ holds:
-$$p \models \sub(k,c,f)$$
+If the subcondition $d = Q(a_k:C_{k-1} \inj C_k, e)$ of $c$ at layer $k$ is universally bound, then for any condition $f$ over $C_k$ it holds that
+$$p \models \sub(k,c,f).$$
 \end{lemma}
 
 

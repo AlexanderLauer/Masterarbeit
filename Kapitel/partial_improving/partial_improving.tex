@@ -3,73 +3,76 @@
 
 
 \begin{definition}[\textbf{number of violations}]
-Let $G$ be a graph and $c$ a constraint in EANF, such that $G \models_k c$. 
-The \emph{number of violations $\nvc(k,G)$ at layer $k$ in $G$} is set to $0$ if there does exist a $j >k$ with $G \models_j c$ and otherwise:
+Let $G$ be a graph and $c$ a constraint in EANF, such that $G \models_k c$ and no $j > k$ with $G \models_k c$ exists. 
+The \emph{number of violations $\nvc(j,G)$ at layer $j$ in $G$} is defined as:
 \begin{enumerate}
-
-\item If $k \neq 0$, let $d = \forall(a_k: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ at layer $k+1$.
-$$\nvc(k,G) := \sum_{C \in \mathcal{G}_{k,c}} \sum_{C' \in \mathcal{U}_{C,C_{k+2}}} |\{q \mid q:C_{k+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
-\item For $j > k$:
-	$$\nvc(k,G) := \infty$$
+\item If $j < k$:
+	$$\nvc(j,G) := 0$$
+\item If $j = k$, let $d = \forall(a_k: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ at layer $j+1$.
+$$\nvc(j,G) := \sum_{C \in \mathcal{G}_{j,c}} \sum_{C' \in \mathcal{U}_{C,C_{j+2}}} |\{q \mid q:C_{j+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
+\item If $j > k$:
+	$$\nvc(j,G) := \infty$$
 \end{enumerate}
 
 \end{definition}
 
 
 \begin{definition}[\textbf{minimal consistency improving}]
-	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF with $G \models_k c$ and an $j >k$ with $G \models_j c$ does not exist. 
+	Let a graph $G$, a rule $r$ and a constraint $c$ in ANF be given. 
 
 	
-	A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving}, if  $$\nvc(k, H) < \nvc(k, G) \vee (G \models c \implies H \models c)$$
-	A rule $r$ is called \emph{minimal consistency improving}, if all of its applications are. 
+	A transformation $G \Longrightarrow_{r,m} H$ is called \emph{minimal consistency improving}, if  $$\nvc(k, H) < \nvc(k, G) $$
+	for any $0 \leq k \leq \nl(c)$.
+	A rule $r$ is called \emph{minimal consistency improving}, if all of its applications to graphs $G$ with $G \not \models c$ are. 
 	
 \end{definition}
 
 \begin{lemma}\label{lem_ex_lower}
-Let $G$ be $p: C_0 \to G$ a morphism, $c$ a constraint in ANF over $C_0$ with $p \models_k c$.
-Then $p \models_j c$ for all $j < k$ such that the subcondition of $c$ at layer $j$ is existentially bound. 
+Let a graph $G$, a morphism $p: C_0 \to G$ and a constraint $c$ in ANF over $C_0$ with $p \models_k c$ be given.
+Then, $p \models_j c$ for all $j < k$ such that the subcondition of $c$ at layer $j$ is existentially bound. 
 
 \end{lemma}
 \begin{proof}
 \begin{enumerate}
 	\item The subcondition of $c$ at layer $k$ is existentially bound:	
 	If an $j < k$ with $p \models_j c$ exists such that the subcondition of $c$ at layer $j$ is universally bound, let $j_1$ be the smallest of these. With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c $ for all $j_1 < j_2$.
-	Let $\ell < j_1$, such that the subcondition of $c$ at layer $j$ is existentially bound and let $d = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of the subcondition of $c$ at layer $\ell$. 
+	Let $\ell < j_1$, such that the subcondition of $c$ at layer $\ell$ is existentially bound and let $d = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of the subcondition of $c$ at layer $\ell$. 
 	Since $\ell < j_1$, a morphism $q:  C_{\ell} \to G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\to G$ with $q = q' \circ a_k$ must exists. 
 	If follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
 	
 	\item The subcondition of $c$ at layer $k$ is universally bound:
 	With lemma \ref{lemma_help_lay_sat} follows that $p \models_{k+1} c$. 
-	Since $c$ is in ANF  $1.$ can be applied  to $k+1$. 
+	Since $c$ is in ANF,  $1.$ can be applied  to $k+1$. 
 \end{enumerate}
 \end{proof}
 
-\begin{lemma}
-	Let $G$ be a graph, $r$ a rule and $c$ a constraint in ANF  with $G \not \models c$. 
-	Let $k$ be the biggest number, such that $G \models_k c$.
-	A transformation $G \xRightarrow{r,m} H$ is minimal consistency improving if $G \models_j c$ and  $k < j$.
+\begin{theorem}
+	Let a graph $G$, a rule $r$ and a constraint $c$ in ANF be given.
+	Let $k < \nl(c)$ be the biggest number, such that $G \models_k c$.
+	A transformation $G \Longrightarrow_{r,m} H$ is minimal consistency improving if $G \models_j c$ and  $k < j$.
 	
-\end{lemma}
+\end{theorem}
 
 \begin{proof}
-Since $G \not \models c$, with lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound and since $k$ is the biggest number such that $G\models_k c$ it follows that $\nvc(k+1,G) > 0$.
-If the subcondition of $c$ at layer $j$ is universally bound, $H \models c$ follows with lemma  \ref{lemma_lay_sat} and lemma \ref{lem_ex_lower} $H \models_{k+2} c$. Therefore $\nvc(k+2,H) = 0$. 
-Otherwise the subcondition of $c$ at layer $j$ is existentially bound and therefore $G \models_{k+2} c$ and $\nvc(k+2,H) = 0$ follows immediately.
+Since $k < \nl(c)$, it follows that $G \not \models c$. 
+With lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound and since $k$ is the biggest number such that $G\models_k c$ it follows that $\nvc(k+1,G) > 0$.
+If the subcondition of $c$ at layer $j$ is universally bound, $H \models c$ follows with lemma  \ref{lemma_lay_sat} and with lemma \ref{lem_ex_lower} $H \models_{k+2} c$ follows. Therefore, $\nvc(k+2,H) = 0$. 
+Otherwise, if the subcondition of $c$ at layer $j$ is existentially bound and therefore $G \models_{k+2} c$, $\nvc(k+2,H) = 0$ follows immediately.
 \end{proof}
 
 \begin{definition}[\textbf{direct minimal consistency improving}]
 Let $G$ be a graph, $r$ a plain rule and $c$ a constraint in ANF with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j <k$. 
-Let $d = \forall(a_k: C_k \inj C_{k+1}, e)$ be the condition at layer $k$ of $c$. 
-A transformation $t: G \xRightarrow{r,m} H$ is called \emph{direct minimal consistency improving} if $H \models_k c$ and 
+Let $d = \forall(a_k: C_{k-1} \inj C_{k}, e)$ be the condition at layer $k$ of $c$. 
+A transformation $t: G \Longrightarrow_{r,m} H$ is called \emph{direct minimal consistency improving} if $H \models_k c$ and 
 \begin{equation}\label{direct_improving_1}
 \begin{split}
-	& \forall p: C_{k+1} \inj G(( p \models \parcond(1,d,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,d,C')) \wedge \\ & \forall p': C_{k+1} \inj H (\neg \exists p : C \inj G(p' = \track_t \circ p) \implies p' \models \parcond(1,d,C')) 
+	& \forall p: C_{k} \inj G(( p \models \parcond(1,d,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,d,C')) \wedge \\ & \forall p': C_{k} \inj H (\neg \exists p : C \inj G(p' = \track_t \circ p) \implies p' \models \parcond(1,d,C')) 
 \end{split}
 \end{equation}
 and 
 \begin{equation}\label{direct_improving_2}
 \begin{split}
-\exists p': C_k \inj G\Big(p \not \models \parcond(1,d,C'') \implies &\big((\track_t \circ p' \text{is total } \wedge \track_t \circ p  \models \parcond(1,d,C'')) \\ &\vee  \track_t \circ p \text{ is not total}\big)\Big).
+\bigvee_{C'' \in \mathcal{U}(C', C_{k+1})}\exists p': C_k \inj G \Big(&p \not \models \parcond(1,d,C'') \implies \big((\track_t \circ p' \text{is total } \wedge \\ &\track_t \circ p  \models \parcond(1,d,C''))  \vee \\ &\track_t \circ p \text{ is not total}\big)\Big).
 \end{split}
 \end{equation}
 
