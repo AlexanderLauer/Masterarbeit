@@ -3,14 +3,20 @@
 
 
 \begin{definition}[\textbf{number of violations}]
-Let $G$ be a graph and $c$ a constraint in EANF, such that $G \models_k c$ and no $j > k$ with $G \models_k c$ exists. 
+Let $G$ be a graph and $c$ a constraint in EANF. 
 The \emph{number of violations $\nvc(j,G)$ at layer $j$ in $G$} is defined as:
 \begin{enumerate}
-\item If $j < k$:
+\item If $j < c_{\max}$:
 	$$\nvc(j,G) := 0$$
-\item If $j = k$, let $d = \forall(a_k: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ at layer $j+1$.
-$$\nvc(j,G) := \sum_{C \in \mathcal{G}_{j,c}} \sum_{C' \in \mathcal{U}_{C,C_{j+2}}} |\{q \mid q:C_{j+2} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
-\item If $j > k$:
+\item If $j = c_{\max}$, let $d = \forall(a_k: C_{j} \inj C_{j+1},e)$ be the subcondition of $c$ at layer $j+1$.
+\begin{enumerate}
+\item if $e \neq \false$:
+$$\nvc(j,G) := \sum_{C \in \mathcal{G}_{c}} \sum_{C' \in \mathcal{U}_{C,C_{j+1}}} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
+\item if $e = \false$:
+$$\nvc(j,G) := |\{q \mid q: C_{j+1} \inj G\}|$$
+\end{enumerate}
+
+\item If $j > c_{\max}$:
 	$$\nvc(j,G) := \infty$$
 \end{enumerate}
 

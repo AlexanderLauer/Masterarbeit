@@ -38,6 +38,7 @@ Let $G$ be a graph and $c$ be a condition over $C_0$.
 A morphism $p: C_0 \inj G$ \emph{satisfies $c$ up to layer $k$}, $p \models_k c$, if $$p\models \cond(k,c).$$
 
 A graph $G$ satisfies a constraint $c$ up to layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cond(k,c)$.
+The biggest $k$ with $G \models_k c$ such that no $j >k$ with $G \models_j c$ exists is denoted by $c_{\max}$.
 \end{definition}
 
 
@@ -103,8 +104,10 @@ $$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a:C_{k+1} \inj C', \true)\bigr)$$
 \begin{definition}[\textbf{biggest partially satisfying condition}]
 Let $G$ be a graph, $c$ a condition over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$. 
 
-A partial condition $c = \parcond(k,c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition} if there does not exist a graph $C' \subset C''$ with $p \models \parcond(k,c,C'')$. 
+A partial condition $c = \parcond(c_{\max},c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition} if there does not exist a graph $C' \subset C''$ with $p \models \parcond(c_{max},c,C'')$. 
 
-The set of graphs $C'$ such that $\parcond(k,c,C')$ is a biggest partially satisfying condition is denoted by $\mathcal{G}_{k,c}$. 
+The set of biggest partially satisfying conditions of $c$ is denoted by $\mathcal{P}_c$. 
+
+The set of graphs $C'$ such that $\parcond(c_{\max},c,C')$ is a biggest partially satisfying condition is denoted by $\mathcal{G}_{c}$. 
 
 \end{definition}
