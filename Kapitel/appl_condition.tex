@@ -2,114 +2,76 @@
 
 
 \begin{definition}[\textbf{extended overlap}]
-Let $G$ and $C_0 \subset C_1$ be graphs and $C'$ an overlap of $G$ and $C_0$ with overlap morphisms $p: G \inj C'$ and $q: C_0 \inj C'$
-An overlap $C''$ of $G$ and $C_1$ is called the \emph{extended overlap of} $C'$ with $C''$ if $C' \subset C''$ and a morphism $q': C_1 \inj C''$ with $q'_{|C_0} = q$ exists. 
+Let $G$ and $C_0 \subseteq C_1$ be graphs. 
+Let $C$ be an overlap of $C_0$ and $G$ with the overlap morphism:  $q: C_0 \inj C$. 
 
+Let $p = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule with $K = C_0$, $L = K$ and $R = C_1$. 
+The graph $H$, derived by the transformation 
+$$C \Longrightarrow_{p,q} H$$ 
+is called the \emph{extended overlap of $C$ with $C_1$}. The extended overlap of an overlap $C$ with an graph $C_1$ is denoted by $\eol(C,C_1)$. 
 \end{definition}
-%
-%\begin{definition}[\textbf{overlap shift}]
-%Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$. 
-%An overlap $G$ of $R$ and $C$ is called an \emph{overlap shifted graph} of $C'$ if 
-%$$G = C'\setminus(L \setminus(K \cap C)) \cup R\setminus (K \cap C) \dot \cup R\setminus (K \setminus (K \cap C))$$
-%
-%\end{definition}
-%
-%\begin{definition}[\textbf{overlap shift}]
-%Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : \ell: L \inj C$ and $k: K \inj C$. 
-%Let $r = L \xhookleftarrow{l} K' \xhookrightarrow{r} R$ be the rule with 
-%$$K' := K \cup (L \cap C) \cup (R \cap C)$$
-%The graph $H$, of the transformation $G \xRightarrow{r,p} H$ is called the \emph{overlap shifted graph} of $C'$.
-%\end{definition} 
 
+\begin{lemma}
+Let graphs $G$, $C_0 \subset C_1$ and an overlap $C$ of $G$ and $C_0$ be given. 
+Then, $\eol(C,C_1)$ is an overlap of $G$ and $C_1$ and $C \subset \eol(C,C_1)$. 
+\end{lemma}
+\begin{proof}
+The graph $\eol(C,C_1)$ is constructed by the transformation $C \Longrightarrow_{p,q} \eol(C,C_1)$ with  $p = C_0 \xhookleftarrow{} C_0 \xhookrightarrow{} C_1$.
+Since the comatch $n: C_1 \inj \eol(C,C_1)$ exists, $\eol(C, C_1)$ is an overlap of $G$ and $C_1$. 
+Because $L = K$, the transformation does not delete any elements and $C \subset \eol(C,C_1)$ follows.
+\end{proof}
 
 \begin{definition}[\textbf{overlap shift}]
-Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : L \inj C'$, $k: K \inj C'$, $c:C \inj C'$ and the partial morphism $q: R \inj C'$. 
+Let $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : L \inj C'$, $k: K \inj C'$, $c:C \inj C'$ and the partial morphism $q: R \inj C'$. 
 We define 
 \begin{equation}
 \begin{split}
 	D := \{e \in C' \mid &(\exists e' \in L: p(e') = e \\ &\vee \exists e' \in R: q(e') = e) \\ &\wedge \exists e' \in C: c(e') = e \}
 \end{split}
 \end{equation}
-Let $r = L \xhookleftarrow{l} K' \xhookrightarrow{r} R$ be the rule with 
+Let $r = L \xhookleftarrow{} K' \xhookrightarrow{} R$ be the rule with 
 $$K' := K \cup D$$
 The graph $H$ derived by the transformation $G \Rightarrow_{r,p} H$ is called the \emph{overlap shifted graph} of $C'$.
+The overlap shifted graph of an graph $C$ is denoted by $\ols(C)$.
 \end{definition} 
 
 
-%\begin{definition}[\textbf{minimal consistency improving application condition}]
-%Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule and $c$ a constraint in ANF. 
-%Let $d = \forall(a_k : C_k \inj C_{k+1}, \exists(b: C_{k+1} \inj C_{k+2}, e)$ be the condition at layer $k$ of $c$. 
-%The application condition $\ap_k$ of the condition at layer $k$ of $c$ and $C_{k+1} \subset C' \subseteq C_{k+2}$ is defined as:
-%	\begin{equation}
-%	\begin{split}
-%		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k+1})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k+1})}\ex(P,C') \bigr) \wedge (\bigwedge_{P \in \overlay(L,C_{k+1})}\rem(P,C'))	
-%	\end{split}
-%	\end{equation}
-% 
-% with 
-% \begin{enumerate}
-% 	\item Let $Q$ be the extended overlap of $P$ with $C'$. 
-% 		$$\nex(P,C') := \exists(a: L \inj P,\neg \exists(b: P \inj Q, \true))$$
-% 	\item Let $Q$ be the extended overlap of $P$ with $C'$,$Q'$ the overlap shifted graph of $Q$ and $P'$ the overlap shifted graph of $P$.
-% 	$$\rep(P,C') := \shift(\forall(a: L \inj P',\neg \exists(b: P' \inj Q', \true)),r)$$
-% 	\item Let $P'$ be the overlap shifted graph of $P$. 
-% 		$$ \del(P,C') := \shift(\neg \exists(a:R \inj P', \true), r)$$
-% 	\item Let $Q$ be the extended overlap of $P$ with $C'$ and $Q'$ the overlap shifted graph of $Q$.
-% 		$$ \ex(P, C') := \exists(a: L \inj Q, \true) \implies \shift(\exists(a: R \inj Q', \true), r)$$ 
-% 	\item $Q$ be the extended overlap of $P$ with $C'$ and $Q'$ the overlap shifted graph of $Q$.
-% 	$$\rem(P,C') := \exists(a: L \inj Q, \true) \implies \shift( \exists(b: R \inj Q', \true),r)$$
-% \end{enumerate}
-%
-%\end{definition}
+
 
 \begin{definition}
-Let $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be a plain rule and $c$ a constraint in ANF. 
-The application condition $\ap_k$ of the condition at layer $k$ of $c$ is defined as:
-\begin{enumerate}
-\item If $d = \exists(a_k: C_k \inj C_{k+1},e)$ is the condition at layer $k$ of $c$, with $C_k \subseteq C \subseteq C_{k+1}$, let $P'$ be the overlap shifted graph  of $P$ with $C$:
-	$$\ap(k,C) := \bigvee_{P \in \overlay(L, C_{k+1})} \neg \exists(L \inj P, \true)  \wedge \shift(\exists(R\inj P', \true),r)$$
-	
-\item If $d = \forall(a_k: C_k \inj C_{k+1},e)$ is the condition at layer $k$ of $c$:
-\begin{enumerate}
-\item If $e = \false$, for all $C_{k +1} \subseteq C$:
-\begin{equation}
-\begin{split}
-\ap(k,C) := &\bigvee_{P \in \overlay(L, C_{k+1})} \del(P,C) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k+1})}\ex(P,C') \bigr) \wedge \\ &(\bigwedge_{P \in \overlay(R,C_{k+1})}\rem(P,C'))
-\end{split}
-\end{equation}
+Let $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule and $c$ a constraint in EANF. 
+Let $d = \forall(a_k: C_{k-1} \inj C_{k},\exists(a_{k+1}: C_{k} \inj C_{k+1},e))$  be the subcondition of $c$ at layer $k$ with $k = 2i -1$ for an $i \in \mathbb{N}$.
+The application condition $\ap_k$ of the condition at layer $k$ of $c$ with $C' \in \mathcal{U}(C_k, C_{k+1})$ is defined as:
 
 
-\item If $e = \exists(a_{k+1}: C_{k+1} \inj C_{k+2},f)$ with $C_{k+1} \subseteq C \subseteq C_{k+2}$:
+
 \begin{equation}
 	\begin{split}
-		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k+1})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k+1})}\ex(P,C') \bigr) \wedge \\&(\bigwedge_{P \in \overlay(R,C_{k+1})}\rem(P,C'))	
+		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k})}\ex(P,C') \bigr) \wedge \\&(\bigwedge_{P \in \overlay(R,C_{k})}\rem(P,C'))	
 	\end{split}
 	\end{equation}
-\end{enumerate}
-	
- 	
-\end{enumerate}
+
 with 
 \begin{enumerate}
-\item Let $Q$ be the extended overlap of $P$ with $C'$. 
- 		$$\nex(P,C') := \exists(a: L \inj P,\neg \exists(b: P \inj Q, \true))$$
- 	\item Let $Q$ be the extended overlap of $P$ with $C'$,$Q'$ the overlap shifted graph of $Q$ and $P'$ the overlap shifted graph of $P$.
- 	$$\rep(P,C') := \shift(\forall(a: R \inj P',\exists(b: P' \inj Q', \true)),r)$$
+\item 
+ 		$$\nex(P,C') := \exists(a: L \inj P,\neg \exists(b: P \inj \eol(P,C'), \true))$$
+ 	\item 
+ 	$$\rep(P,C') := \shift(\forall(a: R \inj \ols(P),\exists(b: \ols(P) \inj \ols(\eol(P,C')), \true)),r)$$
  	
  	\item Let $i_1 : L \inj P$ and $i_2: C_k \inj P$ be the overlap morphisms of $P$:
- 	$$\del(P,C) := \begin{cases}
+ 	$$\del(P,C') := \begin{cases}
 						\exists(L \inj P, \true) &\text{, if } i_1(L\setminus K) \cap i_2(C_k\setminus C_{k-1}) \neq \emptyset \\
 						\false &\text{, otherwise} 					
  					\end{cases}$$
  					
  	\item Let $i': L \inj P$ and $i_j: C_j \inj P$ be the inclusion morphisms for all $j \leq k$, let $E$ be the set of all existentially bound graphs $C_j$ with $j \leq k$:
- 	$$\ex(P,C) := \begin{cases}
+ 	$$\ex(P,C') := \begin{cases}
  					\neg \exists(L \inj P, \true) &\text{, if } \bigcup_{C_j \in E} \bigr(i_j(C_j \setminus C_{j-1}) \cap i'(L\setminus K)\bigl) \neq \emptyset\\
  					\true &\text{, otherwise}
  				\end{cases}  $$
  				
  	\item Let $i': R \inj P$ and $i_j: C_j \inj P$ be the inclusion morphisms for all $j \leq k$, let $U$ be the set of all universally bound graphs $C_j$ with $j \leq k$:
- 	$$\rem(P,C) := \begin{cases}
+ 	$$\rem(P,C') := \begin{cases}
  					\shift(\neg \exists(R \inj P, \true),r) &\text{, if } \bigcup_{C_j \in U} \bigr(i_j(C_j \setminus C_{j-1}) \cap i'(R\setminus K)\bigl) \neq \emptyset\\
  					\true &\text{, otherwise}
  				\end{cases}  $$
@@ -118,9 +80,9 @@ with
 
 
 \begin{lemma}
-Let $G$ be a graph, $c$ a constraint in ANF, such that $G \models_k c$ and $r$ a plain rule.
-Let $d = \forall(a_k : C_k \inj C_{k+1}, \exists(b: C_{k+1} \inj C_{k+2}, e)$ be the condition at layer $k$ of $c$. 
-Then, every application of $r$, equipped with $\ap(k, C')$ with $C' \not \in \mathcal{B}_{k,\true}$, such that a $C\in \mathcal{B}_{k,\true}$ with $C \subset C'$ exists is minimal consistency improving. 
+Let $G$ be a graph, $c$ a constraint in EANF, with $G \not \models c$, and $r$ a plain rule.
+Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e)$ be the condition at layer $\cmax$ of $c$. 
+Then, every application of $(r,\ap(\cmax, C'))$ with $$C' \in \bigcap_{C \in \mathcal{G}_c^G} \mathcal{U}(C, C_{k+1})$$ is direct minimal consistency improving. 
 
 \end{lemma}
 \begin{proof}
