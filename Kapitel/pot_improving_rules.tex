@@ -26,19 +26,29 @@
 %\end{definition}
 
 \begin{definition}[\textbf{potentially minimal improving rule}]
-Let a constraint $c$, and a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
-Let $E$ be the set of all existentially bound graphs and $U$ be the set of all universally bound graphs $C_j$ of $c$ with $j \leq k$. 
-The rule $r$ is called \emph{potentially minimal improving} at layer $k$ with $C_k \subseteq C \subseteq C_{k+1}$, if
-$$(L \setminus K) \cap \bigcup_{C_j \in E} C_j\setminus C_{j-1} = \emptyset$$
+Let a constraint $c$ and a plain rule $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be given.
+The rule $r$ is called \emph{potentially minimal improving} w.r.t $c$ at layer $k$ with $C_k \subseteq C \subseteq C_{k+1}$, if
+\begin{equation}\label{pot_1}
+	(L \setminus K) \cap C_{k+1} = \emptyset
+\end{equation}
+
 and 
-$$(R \setminus K) \cap \bigcup_{C_j \in U} C_j\setminus C_{j-1} = \emptyset$$ 
-and either \ref{pot_min_impr_1} or \ref{pot_min_impr_2} applies. 
+\begin{equation}\label{pot_2}
+	(R \setminus K) \cap C_k = \emptyset 
+\end{equation}
+
+and either \ref{pot_min_impr_1}. or \ref{pot_min_impr_2}. applies. 
 
 \begin{enumerate}
-\item \label{pot_min_impr_1}
-	$$ L \subseteq C_{k}$$ with $(L \setminus K)\cap (C_{k} \setminus C_{k-1}) \neq \emptyset$
-\item \label{pot_min_impr_2}
-	 $$C' \subseteq R$$ with $(R \setminus K) \cap (C_{k+1} \setminus C') \neq \emptyset$ and $C_{k-1} \subseteq C \subseteq C' \subseteq C_{k}$.
+\item \label{pot_min_impr_1} The rule deletes elements of $C_k \setminus C_{k-1}$:
+	\begin{equation} \label{pot_del}
+		L \subseteq C_{k} \quad \text{with} \quad (L \setminus K)\cap (C_{k} \setminus C_{k-1}) \neq \emptyset
+	\end{equation}
+
+\item \label{pot_min_impr_2} The rule creates an instance of an upper-graph of $C$:
+	\begin{equation}\label{pot_ins}
+		C' \subseteq R \quad \text{with} \quad (R \setminus K) \cap (C_{k+1} \setminus C') \neq \emptyset \quad \text{for any} \quad C' \in \mathcal{U}(C, C_{k+1})
+	\end{equation}
 If \ref{pot_min_impr_1} applies, $r$ is called a \emph{deleting potentially improving rule}.
 If \ref{pot_min_impr_2} applies, $r$ is called an \emph{inserting potentially improving rule}.
 \end{enumerate}
@@ -49,28 +59,41 @@ If \ref{pot_min_impr_2} applies, $r$ is called an \emph{inserting potentially im
 
 
 \begin{definition}[\textbf{appl. conditions for potentially minimal improving rules}]
-Let a constraint $c$ in EANF and a potentially minimal improving rule  $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$  at layer $k$  with $C$ be given. 
+Let a constraint $c$ in EANF and a potentially minimal improving rule  $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ w.r.t $c$ at layer $k$  with $C_k \subseteq C \subseteq C_{k+1}$ be given. 
+We define the application condition for $r$ as:
 
-$$\ap(j, C) := \begin{cases}
+$$\api(j, C) := \begin{cases}
 				\exists\bigl(L \inj C_k, \neg \exists(C_k \inj C, \true)\bigr) &\text{, if j = k} \\
-				\false &\text{, if } j \neq k
+				\false &\text{, if } j \neq k.
 				\end{cases}$$
 
 \end{definition}
 
-\begin{lemma}
-Let a graph $G$, a constraint $c$ with $G \models \parcond(k,c,C')$ and $G\not \models_j c$ for all $j>k$ and a potentially minimal improving rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $k$ with $C'$ be given. 
-Then, every 
-\end{lemma}
-\begin{lemma}
-Let a constraint $c$ and a potentially minimal improving rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $k$ with $C$ be given. 
-The, the rule $r' = (r, \ap(k,C))$ is a direct minimal consistency improving rule. 
-\end{lemma}
+\begin{theorem}
+Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\cmax, c, C)$ and $\parcond(\cmax, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ at layer $\cmax$ with $C_{\cmax+1}\subseteq C \subseteq C_{\cmax+2}$ be given. 
+Then, the rule $r' = (r, \api(k,C))$ is a direct minimal consistency improving rule. 
+\end{theorem}
 \begin{proof}
-Let $G$ be a graph with $G \models_k c$ and $G \not \models_j c$ for all $j > k$ and let $G \Rightarrow_{r', m} H$ be a transformation. 
-Since $r$ is a potentially improving rule, $r$ cannot destroy any occurrences of existentially bound graphs $C_j$ with $j \leq k+1$ and cannot create any new occurrences of universally bound graphs $C_j$ with $j \leq k$. 
-Hence, $H \models_k c$ and equation (\ref{direct_improving_1}) is satisfied. 
-Since $G \models_k c$ and $\ap(k,C)$ has been evaluated to $\true$, equation (\ref{direct_improving_2}) is also satisfied.
+Let $t:G \Longrightarrow_{r',m} H$ be a transformation, $k = \cmax+1$ and $e$ be the subcondition of $c$ at layer $k+1$. 
+We show that $t$ is a direct minimal consistency improving transformation and with that, the statement follows.
+Firstly, we show that equation (\ref{direct_improving_1}) is satisfied.
+Let $p: C_{k} \inj G$ be a morphism. 
+If $r$ is a deleting minimal improving rule, either \ref{proof_api_1}. or  \ref{proof_api_2}. applies and if $r$ is a inserting and not  an deleting minimal improving rule, only \ref{proof_api_2}. applies, because $c$ cannot destroy any occurrence of $C_k$. 
+\begin{enumerate}
+	\item\label{proof_api_1} If $p(C_k) \cap m(L\setminus K) \neq \emptyset$, $\track_t \circ p$ is not total, since at least one element of $p(C_k)$ has been deleted by $t$ and $p$ does satisfy $\bigwedge_{C' \in \mathbf{G}}(p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,e,C'))$. 
+	\item\label{proof_api_2} If $p(C_k \cap L) \cap m(L\setminus K) = \emptyset$, $\track_t \circ p$ is total. 
+	Because (\ref{pot_1}) holds, $t$ does not delete any elements of $C_{k+1}$ and therefore $p \models \parcond(1,e,C') \implies \track_t \circ p \models \parcond(1,e,C')$ for all $C_k \subseteq C' \subseteq C_{k+1}$.
+\end{enumerate} 
+With \ref{proof_api_1}. and  \ref{proof_api_2}. follows that (\ref{direct_improving_1}) is satisfied. 
+
+Secondly, we show that equation (\ref{direct_improving_1_2}) is satisfied.
+Let $p':C_k \inj H$ be a morphism. 
+Because (\ref{pot_2}) is satisfied, $t$ does not create any elements of $C_k$ and therefore, there must exist an morphism $p : C_k \inj G$ with $\track_t \circ p = p'$. If follows that (\ref{direct_improving_1_2}) is satisfied. 
+
+Lastly, we show that equation (\ref{direct_improving_2}) is satisfied. 
+Since $\api(k,C)$ is satisfied, a morphism $p: C_k \inj G$ with $p \not \models \exists(C_k \inj C, \true) = \parcond(1,e,C)$ and $p(C_k) \cap m(L) \neq \emptyset$ must exist. 
+If $r$ is an deleting improving rule, $t$ deletes at least one element of $C_k$, it follows that $\track_k \circ p$ is not total and therefore (\ref{direct_improving_2}) is satisfied. 
+If $r$ is an inserting improving rule and not an deleting one, no element of $C_k$ is deleted by $t$ and therefore $\track_t \circ p$ is total. Because (\ref{pot_ins}) holds, $\track_t \circ p  \models \exists(C_k  \inj C', \true) = \parcond(1,e,C')$ for an $C' \in \mathcal{U}(C, C_{k+1})$ and with that (\ref{direct_improving_2}) is satisfied.   
 \end{proof}
 
 \begin{definition}[\textbf{repairing rule set}]

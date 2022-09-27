@@ -69,25 +69,25 @@ Since $j >k$, $\nvc(k,H) = 0$ and it follows immediately that the transformation
 
 \begin{definition}[\textbf{direct minimal consistency improving}]
 Let $G$ be a graph, $r$ a plain rule and $c$ a constraint in EANF.
-Let $d = \forall(a_k: C_{k-1} \inj C_{k}, e)$ be the condition at layer $k$ of $c$ and $$\mathbf{G} := \bigcup_{C' \in \mathcal{G}_c^G} \mathcal{U}(C',C_{k+1})$$ be the set of all minimal upper-graphs of all biggest partially satisfying graphs. 
-A transformation $t: G \Longrightarrow_{r,m} H$ is called \emph{direct minimal consistency improving} if $H \models_k c$ and equations (\ref{direct_improving_1}), (\ref{direct_improving_1_2}) and (\ref{direct_improving_2}) hold. 
+Let $d = \forall(a_k: C_{k-1} \inj C_{k}, e)$ be the condition at layer $k = \cmax + 1 \leq \nl(c)$ of $c$ and $$\mathbf{G} := \bigcup_{C' \in \mathcal{G}_c^G} \mathcal{U}(C',C_{k+1})$$ be the set of all minimal upper-graphs of all biggest partially satisfying graphs. 
+A transformation $t: G \Longrightarrow_{r,m} H$ is called \emph{direct minimal consistency improving} if $G \models_{k-1}c$ and equations (\ref{direct_improving_1}), (\ref{direct_improving_1_2}) and (\ref{direct_improving_2}) hold. 
 
-Every occurrence of $C_k$ in $G$ that satisfies $\parcond(1,d,C')$ for any $C' \in \mathbf{G}$ still satisfies $\parcond(1,d,C')$ in $H$. 
+Every occurrence of $C_k$ in $G$ that satisfies $\parcond(1,e,C')$ for any $C' \in \mathbf{G}$ still satisfies $\parcond(1,e,C')$ in $H$. 
 \begin{equation}\label{direct_improving_1}
 \begin{split}
-	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}\big(& p \models \parcond(1,d,C') \wedge \track_t \circ p \text{ is total}\big) \\ &\implies  \track_t \circ p \models \parcond(1,d,C') \Big) 
+	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}\big(& p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}\big) \\ &\implies  \track_t \circ p \models \parcond(1,e,C') \Big) 
 \end{split}
 \end{equation}
-Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,d,C')$ for all $C' \in \mathbf{G}$.
+Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,e,C')$ for all $C' \in \mathbf{G}$.
 \begin{equation}\label{direct_improving_1_2}
 \begin{split}
-\forall p': C_{k} \inj H \Big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \big(\bigwedge_{C' \in \mathbf{G}} p' \models \parcond(1,d,C')\big)\Big) 
+\forall p': C_{k} \inj H \Big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \big(\bigwedge_{C' \in \mathbf{G}} p' \models \parcond(1,e,C')\big)\Big) 
 \end{split}
 \end{equation}
-At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,d,C')$, for any $C' \in \mathbf{G}$, either has been destroyed by $t$ or satisfies $\parcond(1,d,C')$ in $H$. 
+At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathbf{G}$, either has been destroyed by $t$ or satisfies $\parcond(1,e,C')$ in $H$. 
 \begin{equation}\label{direct_improving_2}
 \begin{split}
-\exists p': C_k \inj G \Big(&\track_t \circ p \text{ is not total } \vee  \\&\bigvee_{C' \in \mathbf{G}}\big( p \not \models \parcond(1,d,C') \\ &\implies (\track_t \circ p' \text{is total } \wedge \track_t \circ p  \models \parcond(1,d,C'))\big) \Big) 
+\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathbf{G}}\big( p \not \models \parcond(1,e,C') &\wedge \track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{is total } \wedge \track_t \circ p  \models \parcond(1,e,C'))\big) \Big) 
 \end{split}
 \end{equation}
 

@@ -38,7 +38,7 @@ The overlap shifted graph of an graph $C$ is denoted by $\ols(C)$.
 
 
 
-\begin{definition}
+\begin{definition}\label{general_app_cond}
 Let $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule and $c$ a constraint in EANF. 
 Let $d = \forall(a_k: C_{k-1} \inj C_{k},\exists(a_{k+1}: C_{k} \inj C_{k+1},e))$  be the subcondition of $c$ at layer $k$ with $k = 2i -1$ for an $i \in \mathbb{N}$.
 The application condition $\ap_k$ of the condition at layer $k$ of $c$ with $C' \in \mathcal{U}(C_k, C_{k+1})$ is defined as:
@@ -47,7 +47,7 @@ The application condition $\ap_k$ of the condition at layer $k$ of $c$ with $C' 
 
 \begin{equation}
 	\begin{split}
-		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k})}\ex(P,C') \bigr) \wedge \\&(\bigwedge_{P \in \overlay(R,C_{k})}\rem(P,C'))	
+		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k})}\ex(P,C') \bigr) \wedge \\&(\bigwedge_{P \in \overlay(R,C_{k+1})}\rem(P,C'))	
 	\end{split}
 	\end{equation}
 
@@ -56,7 +56,7 @@ with
 \item 
  		$$\nex(P,C') := \exists(a: L \inj P,\neg \exists(b: P \inj \eol(P,C'), \true))$$
  	\item 
- 	$$\rep(P,C') := \shift(\forall(a: R \inj \ols(P),\exists(b: \ols(P) \inj \ols(\eol(P,C')), \true)),r)$$
+ 	$$\rep(P,C') := \shift(\forall(a: R \inj \ols(P),\exists(b: \ols(P) \inj \ols(\eol(P,C')), \true),r)$$
  	
  	\item Let $i_1 : L \inj P$ and $i_2: C_k \inj P$ be the overlap morphisms of $P$:
  	$$\del(P,C') := \begin{cases}
@@ -81,7 +81,7 @@ with
 
 \begin{lemma}
 Let $G$ be a graph, $c$ a constraint in EANF, with $G \not \models c$, and $r$ a plain rule.
-Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e)$ be the condition at layer $\cmax$ of $c$. 
+Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax$. 
 Then, every application of $(r,\ap(\cmax, C'))$ with $$C' \in \bigcap_{C \in \mathcal{G}_c^G} \mathcal{U}(C, C_{k+1})$$ is direct minimal consistency improving. 
 
 \end{lemma}
@@ -90,22 +90,47 @@ Then, every application of $(r,\ap(\cmax, C'))$ with $$C' \in \bigcap_{C \in \ma
 \end{proof}
 
 \begin{lemma}
-Let $G$ be a graph, $c$ a constraint in ANF, such that $G\models_k c$, and $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ a plain rule.
-Let $d = \forall(a_k : C_k \inj C_{k+1}, \exists(b: C_{k+1} \inj C_{k+2}, e)$ be the condition at layer $k$ of $c$ and $\ap(k, C')$ with $C' \not \in \mathcal{B}_{k,\true}$, such that a $C\in \mathcal{B}_{k,\true}$ with $C \subset C'$ exists.
-The following simplifications apply:
+Let $G$ be a graph, $c$ a constraint in EANF, with $\cmax < \nl(c)$,  and $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
+Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax + 1$ and $\ap(\cmax, C')$ the application condition constructed by definition \ref{general_app_cond} with $C'\in \mathcal{U}(C, C_{k+1})$ for any $C \in \mathcal{G}_c^G$.
+The following simplifications can be applied:
 
 \begin{enumerate}
-	\item Let $P \in \overlay(L,C_{k+1})$. 
-		  If an injective morphism $p : P \inj G$ does not exist, $\nex(P,C')$, $\rep(P,C')$, $\del(P,C')$  and $\ex(P,C')$ can be replaced by $\false$.
-	\item If $(L\setminus K) \cap C_{k+1} = \emptyset$, every $\del(P,C')$ can be replaced by $\false$. 
-	\item If $(R\setminus K) \cap C' = \emptyset$, every $\rep(P,C')$ can be replaced by $\false$.
-	\item If $1.$ and $2.$ apply, $\ap(k,C')$ can be replaced by $\false$. 
-	\item If$(R \setminus K) \cap C_{k+1} = \emptyset$, every $\rem(P,C')$ can be replaced by $\true$.
+	\item \label{simplification_appl_1}
+	Let $P \in \overlay(L,C_{k})$. 
+		  If an injective morphism $p : P \inj G$ does not exist, $\nex(P,C')$ can be replaced by $\false$.
+	\item \label{simplification_appl_2}
+	If $(L\setminus K) \cap C_{k} = \emptyset$, every $\del(P,C')$ can be replaced by $\false$ and $\ex(P,C')$ can be replaced by $\true$. 
+	\item \label{simplification_appl_3}
+	If $(R\setminus K) \cap C' = \emptyset$, every $\rep(P,C')$ can be replaced by $\false$.
+	\item \label{simplification_appl_4}
+	If \ref{simplification_appl_2}. and \ref{simplification_appl_3}. apply, $\ap(k,C')$ can be replaced by $\false$. 
+	\item \label{simplification_appl_5}
+	If $(R \setminus K) \cap C_{k+1} = \emptyset$, every $\rem(P,C')$ can be replaced by $\true$.
 	
 \end{enumerate}
 \end{lemma}
 \begin{proof}
+Let $m: L \inj G$ be the match of the application of $r$. 
+We show the simplifications by showing that the replaced parts of $\ap(\cmax,C')$ will be evaluated to the values they have been replaced with, if the required conditions are met. 
+Note that $C_j \subseteq C_{k'}$ for all $0 \leq j \leq k'$ and $k' \in \{0, \ldots, \nl(c)\}$.  
+\begin{itemize}
+\item Proof of \ref{simplification_appl_1}.: Let $P \in \overlay(L,C_k)$ with $a: L \inj P$, such that no morphism $p: P \inj G$ exists. 
+Therefore, no morphism $q: P \inj G$ with $m = p \circ a$ exists and $\nex(P,C')$ will be evaluated to $\false$. 
 
+\item Proof of \ref{simplification_appl_2}.: Let $(L \setminus K) \cap C_k = \emptyset$ and $P \in \overlay(L,C_k)$ with $i': L \inj P$ and $i_j:C_j \inj P$ for all $j \leq k$.
+If follows that $i'(L \setminus K) \cap i_k(C_k \setminus C_{k-1}) = \emptyset$ and with that $\del(P, C') = \false$ for every  $P \in \overlay(L,C_k)$.
+Similar it follows that $$\bigcup_{j \leq k} i_j(C_j \setminus C_{j-1}) \cap i'(L \setminus K) = \emptyset$$ and with that $\ex(P,C') = \true$ for every  $P \in \overlay(L,C_k)$.
+
+\item Proof of \ref{simplification_appl_3}.: work in progress. 
+
+\item Proof of \ref{simplification_appl_4}.: Let the simplifications \ref{simplification_appl_2}. and \ref{simplification_appl_3}. apply. 
+Every $\del(P,C')$ and every $\rep(P,C')$ have been replaced by $\false$. 
+Therefore, the expression $$\bigvee_{P \in \overlay(L, C_{k})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))$$ will be evaluated to $\false$ and with that $\ap(k,C')$ will also be evaluated to $\false$.
+
+\item Proof of \ref{simplification_appl_5}.: Let $(R \setminus K) \cap C_{k+1} = \emptyset$ and $P \in \overlay(R, C_{k+1})$ with the morphisms $i':R \inj P$ and $i_j:C_j \inj P$ for all $j \leq k$.   
+If follows that $$\bigcup_{j \leq k} i'(R\setminus K) \cap i_j(C_j\setminus C_{j-1}) = \emptyset.$$
+Therefore $\rem(P,C') = \true$ for all $P \in \overlay(R, C_{k+1})$.
+\end{itemize}
 \end{proof}
 
 \input{Kapitel/pot_improving_rules}
