@@ -29,9 +29,9 @@
 Let a constraint $c$ and a plain rule $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be given.
 The rule $r$ is called \emph{potentially minimal improving} w.r.t $c$ at layer $k$ with $C_k \subseteq C \subseteq C_{k+1}$, if
 \begin{equation}\label{pot_1}
-	(L \setminus K) \cap C_{k+1} = \emptyset
+	(L \setminus K) \cap (C_{k-1} \cup (C_{k+1} \setminus C_k)) = \emptyset
 \end{equation}
-
+	
 and 
 \begin{equation}\label{pot_2}
 	(R \setminus K) \cap C_k = \emptyset 
@@ -40,9 +40,9 @@ and
 and either \ref{pot_min_impr_1}. or \ref{pot_min_impr_2}. applies. 
 
 \begin{enumerate}
-\item \label{pot_min_impr_1} The rule deletes elements of $C_k \setminus C_{k-1}$:
+\item \label{pot_min_impr_1} The rule deletes edges and no node of $C_k \setminus C_{k-1}$:
 	\begin{equation} \label{pot_del}
-		L \subseteq C_{k} \quad \text{with} \quad (L \setminus K)\cap (C_{k} \setminus C_{k-1}) \neq \emptyset
+		 L \subseteq C_k \wedge (L \setminus K)\cap (E_{C_{k}} \setminus E_{C_{k-1}}) \neq \emptyset \wedge (L \setminus K)\cap (V_{C_{k}} \setminus V_{C_{k-1}}) = \emptyset
 	\end{equation}
 
 \item \label{pot_min_impr_2} The rule creates an instance of an upper-graph of $C$:
@@ -63,13 +63,13 @@ Let a constraint $c$ in EANF and a potentially minimal improving rule  $r = L \x
 We define the application condition for $r$ as:
 
 $$\api(j, C) := \begin{cases}
-				\exists\bigl(L \inj C_k, \neg \exists(C_k \inj C, \true)\bigr) &\text{, if j = k} \\
+				\exists\bigl(a_0: L \inj C_k, \neg \exists(a_1:C_k \inj C, \true)\bigr) &\text{, if j = k} \\
 				\false &\text{, if } j \neq k.
 				\end{cases}$$
 
 \end{definition}
 
-\begin{theorem}
+\begin{theorem}\label{api_direct_proof}
 Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\cmax, c, C)$ and $\parcond(\cmax, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ at layer $\cmax$ with $C_{\cmax+1}\subseteq C \subseteq C_{\cmax+2}$ be given. 
 Then, the rule $r' = (r, \api(k,C))$ is a direct minimal consistency improving rule. 
 \end{theorem}
@@ -98,19 +98,72 @@ If $r$ is an inserting improving rule and not an deleting one, no element of $C_
 
 \begin{definition}[\textbf{repairing rule set}]
 Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$ be given. 
-Then, $\mathcal{R}$ is called a \emph{repairing rule set} if for all graphs $G$ a sequence 
+Then, $\mathcal{R}$ is called a \emph{repairing rule set for $c$ at layer $k$}  if for all graphs $G$ with $k = \cmax$ a sequence 
 $$G = G_0 \Rightarrow_{r_0} \ldots \Rightarrow_{r_{n-1}} G_n = H$$
 exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0,\ldots, n-1\}$ and $H \models c$. 
 
 \end{definition}
 
-\begin{lemma}
-Let a constraint $c$ in EANF w and a set of rules $\mathcal{R}$ be given. 
-Then $\mathcal{R}$ is a repairing set for $c$ if either \ref{categories_repair_set_1}. applies for every layer of $c$ or \ref{categories_repair_set_2}. applies.
+\begin{corollary}
+	Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$ be given. 
+	If $\mathcal{R}$ is a repairing rule set for $c$ at layer $k$, $\mathcal{R}$ is a repairing rule set w.r.t $c$ at layer $j$ for all $k < j \leq \nl(c)$. 
+\end{corollary}
+\begin{corollary}
+	Let a constraint $c$ in EANF and a repairing rule set $\mathcal{R}$ for $c$ at layer $0$  be given. 
+	Then, for all graphs $G$, a sequence
+	$$G = G_0 \Rightarrow_{r_0} \ldots \Rightarrow_{r_{n-1}} G_n = H$$
+	exists, such that $r_j \in \mathcal{R}$ for all $k \in \{0, \ldots, n-1\}$ and $H \models c$. 
+\end{corollary}
+
+\begin{theorem}\label{characterization_rep_rule_set}
+Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$ be given. 
+Then, $\mathcal{R}$ is a repairing set for $c$ at layer $k \leq \nl(c)$ if either \ref{categories_repair_set_1}. or \ref{categories_repair_set_2}. applies.
 \begin{enumerate}
-\item \label{categories_repair_set_1}
-Let $C_j$ be a existentially bound graph of $c$.
-A set of graphs $$C_{k-1} \subset C_0' \subset \ldots \subset C_n' = C_k$$ exists, such that $\mathcal{R}$ contains a inserting potentially minimal improving rule at layer $j$ with $C_{\ell}$ with $\ell = 0, \ldots n$.
-\item \label{categories_repair_set_2}For one universally bound graph $C_j$ of $c$, $\mathcal{R}$ contains a deleting potentially minimal improving rule and for every existentially bound graph $C_{\ell}$ with $\ell < k$ \ref{categories_repair_set_1} applies. 
+\item \label{categories_repair_set_1} 
+For any universally bound graph $C_j$ at layer $j \leq k$ of $c$, $\mathcal{R}$ contains $(r, \api(j, C_{j+1}))$ and $r$ is a deleting potentially minimal improving rule at layer $j$ with $C_{j+1}$.
+\item \label{categories_repair_set_2}
+Either \ref{categories_repair_set_a} applies for all $j \in \{k+2, \ldots, \nl(c)\}$ or \ref{categories_repair_set_b} applies. 
+	\begin{enumerate}
+	\item \label{categories_repair_set_a}
+	Let $C_j$ be the existentially bound graph of $c$ at layer $j$. 
+	 A set of graphs 
+	 $$C_{j-1} = C_0' \subset \ldots \subset C_n' = C_j$$ 
+	 exists, such that $\mathcal{R}$ contains $(r_{\ell}, \api(j, C_{\ell}'))$ and $r_{\ell} = L_{\ell} \xhookleftarrow{} K_{\ell} \xhookrightarrow{} R_{\ell}$ with $L_{\ell} \subset C_{\ell -1}$ is an inserting potentially minimal improving rule at layer $j$ with $C_{\ell}$, for all $\ell \in \{0, \ldots,n \}$.
+	 \item\label{categories_repair_set_b}
+	 For an universally bound graph $C_{\ell}'$ at layer $\ell > k$, $\mathcal{R}$ contains $(r, \api(j,C_{\ell}))$, $r$ is a deleting potentially minimal improving rule at layer $\ell$ and \ref{categories_repair_set_a} applies for all $j \in \{k +1, \ldots, j-1\}$.  
+	\end{enumerate}
 \end{enumerate}
-\end{lemma}
+\end{theorem}
+
+\begin{proof}
+Let a constraint $c$ in EANF, a rule set $\mathcal{R}$ and a graph $G$ with $k = \cmax$ and $\cmax < \nl(c)$ be given. 
+We show that a sequence $G = C_0' \Rightarrow \ldots \Rightarrow C_n' = H$ with rules of $\mathcal{R}$ exists, such that $H \models c$ if \ref{categories_repair_set_1}. or \ref{categories_repair_set_2}.  of theorem \ref{characterization_rep_rule_set} is satisfied.
+\begin{enumerate}
+\item Assume that \ref{categories_repair_set_1} of theorem \ref{characterization_rep_rule_set} holds. holds and let $(r, \api(j, C_{j+1})) \in \mathcal{R}$, such that $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ is a deleting potentially minimal improving rule at layer $j \leq k$ with $C_{j+1}$ and $C_j$ is a universally bound graph of $c$.
+Let $q: C_j \inj G$ be a morphism such that  $q \not \models \exists(C_j \inj C_{j+1}, \true)$.
+Since $L \subseteq C_j$ we can construct a morphism $m_1: L \inj G$ with $m_1(L) = q(L)$.
+It holds that $m_1 = q \circ a$, therefore $m_1 \models \api(j,C_{j+1})$.
+Since $r$ only deletes edges a transformation $t: G = G_0 \Rightarrow_{r,m_1} G_1$ exists and $\track_t \circ p$ is not total. 
+Because $r$ does not insert any elements of $C_j$ 
+$$|\{q: C_k \inj G_0 \mid  q \not \models  d\}| < |\{q: C_k \inj G_1 \mid  q \not \models  d\}|$$
+with $d = \exists(C_j \inj C_{j+1}, \true)$.
+By iteratively applying this construction, we generate a finite sequence of transformations
+$$G = G_0 \Rightarrow_{r, m_1} G_1 \Rightarrow_{r, m_2} \ldots \Rightarrow_{r,m_n} G_n = H$$
+such that $|\{q: C_k \inj G_n \mid  q \not \models  d\}| = 0$ and therefore $H \models_j c$. 
+With lemma \ref{lemma_lay_sat}, $H \models c$ follows. 
+
+\item  Assume that \ref{categories_repair_set_2}. of theorem \ref{characterization_rep_rule_set} holds. 
+	 Let $  k < j < \nl(c)$, such that $(r, \api(,j,C_{j+1})) \in \mathcal{R}$ and $r$ is a deleting potentially minimal improving rule at layer $j$. If no such $j$ exists, we set $j = \nl(c) +1$. 
+	 \begin{itemize}
+	 	\item Let $k < \ell < j$, such that the subcondition of $c$ at layer $\ell$ is existentially bound and let $C_{\ell}$ be the bound graph. 
+	 	There exists a set of graphs $C_{\ell -1} = C_0' \subset \ldots \subset C_n' = C_{\ell}$ such that $(r_i, \api(i,C_i')) \in \mathcal{R}$ and $r_i= L_i \xhookleftarrow{} K_i \xhookrightarrow{} R_i$ is an inserting potentially minimal improving rule at layer $\ell$ with $C_i'$ for all $i \in \{0, \ldots, n\}$.
+	 Let $q: C_{\ell -1} \inj G$ be a morphism, such that $q \not \models \exists(C_{\ell -1 } \inj C_1, \true)$.
+	 Since $L_1 \subset C_{\ell -1}$, we can construct a morphism $m: L_1 \inj G$ with $m(L_1) = q(L_1)$. 
+	 
+	 	
+	 	  
+	 \end{itemize}
+
+
+\end{enumerate}  
+\end{proof}
