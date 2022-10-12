@@ -1,33 +1,8 @@
 \subsection{potentially minimal improving rules}
-%
-%\begin{definition}[\textbf{potentially minimal improving rule}]
-%Let a plain rule $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
-%
-%Let $E$ be the set of all existentially bound graphs and $U$ be the set of all universally bound graphs $C_j$ of $c$ with $j \leq k$. 
-%The rule $r$ is called \emph{potentially minimal improving} at layer $k$, if
-%$$(L \setminus K) \cap \bigcup_{C_j \in E} C_j\setminus C_{j-1} = \emptyset$$
-%and $$(R \setminus K) \cap \bigcup_{C_j \in U} C_j\setminus C_{j-1} = \emptyset$$ 
-%and either
-%	$$(L \setminus K) \cap (C_{k+1} \setminus C_k) \neq \emptyset$$
-%or 
-%$$(R \setminus K) \cap (C_{k+2} \setminus C') \neq \emptyset$$
-%\end{definition}
-%
-%
-%\begin{definition}[\textbf{appl. conditions for potentially minimal improving rules}]
-%Let a graph $G$, a constraint $c$, with $G \models \parcond(k,c,C')$ and $G \not \models_j c$ for all $j >k$, and a potentially minimal improving rule  $r = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
-%
-%$$\ap(k, C) := \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true))$$
-%
-%$$\ap(k,C) :=  \bigvee_{P \in \overlay(L, C_{k+1})} \exists(L \inj P, \neg \exists(P \inj Q, \true)) \wedge \shift(\exists(R \inj Q', \true),r)$$
-%
-%
-%
-%\end{definition}
 
-\begin{definition}[\textbf{potentially minimal improving rule}]
-Let a constraint $c$ and a plain rule $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be given.
-The rule $r$ is called \emph{potentially minimal improving} w.r.t $c$ at layer $k$ with $C_k \subset P \subseteq C_{k+1}$ and $k \in \{1,3, \ldots , \nl(c)\}$, if
+\begin{definition}[\textbf{basic improving rule}]
+Let a constraint $c$ and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
+The rule $\rho$ is called \emph{basic improving} w.r.t $c$ at layer $k$ with $C_k \subset P \subseteq C_{k+1}$, $p : C_k \inj P$ being the inclusion, and $k \in \{1,3, \ldots , \nl(c)\}$, if
 \begin{equation}\label{pot_1}
 	(L \setminus K) \cap (C_{k-1} \cup (C_{k+1} \setminus C_k)) = \emptyset
 \end{equation}
@@ -40,17 +15,18 @@ and
 and either \ref{pot_min_impr_1}. or \ref{pot_min_impr_2}. applies. 
 
 \begin{enumerate}
-\item \label{pot_min_impr_1} The rule $r$ deletes  elements of $C_k \setminus C_{k-1}$:
+\item \label{pot_min_impr_1} The rule $\rho$ deletes  elements of $C_k \setminus C_{k-1}$:
 	\begin{equation}
-				 L \subseteq C_k \wedge L \setminus K \neq \emptyset
+				 L \subseteq C_k \wedge L \setminus K \neq \emptyset 
 	\end{equation}
-	Then, $r$ is called a \emph{deleting potentially minimal improving rule}.
+	Then, $\rho$ is called a \emph{deleting basic improving rule}.
 
-\item \label{pot_min_impr_2} The rule $r$ creates an instance of $P$:
+\item \label{pot_min_impr_2} The rule $\rho$ creates an instance of $P$:
 	\begin{equation}\label{pot_ins}
-		L = C_k \wedge P \subseteq R 
+		L = C_k \wedge P \subseteq R
 	\end{equation}
-	Then, $r$ is is called an \emph{inserting potentially minimal improving rule}.
+	and $p$ is a partial morphism of $r$. 
+	Then, $\rho$ is  called an \emph{inserting basic improving rule}.
 \end{enumerate}
 
 
@@ -58,22 +34,27 @@ and either \ref{pot_min_impr_1}. or \ref{pot_min_impr_2}. applies.
 
 
 
-\begin{definition}[\textbf{appl. conditions for potentially minimal improving rules}]
-Let a constraint $c$ in EANF and a potentially minimal improving rule  $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ w.r.t $c$ at layer $k$  with $C_{k} \subseteq P \subseteq C_{k+1}$ be given. 
+\begin{definition}[\textbf{application conditions for basic improving rules}]
+Let a constraint $c$ in EANF and a basic improving rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$  with $C_{k} \subseteq P \subseteq C_{k+1}$ be given. 
 We define the application condition for $r$ as:
  
 \begin{enumerate}
-\item If $r$ is a deleting potentially minimal improving rule:
+\item If $\rho$ is a deleting potentially minimal improving rule:
 $$\api(j, P) := \begin{cases}
-				\exists\bigl(a_0: L \inj C_{k}, \neg \exists(a_1:C_{k} \inj C_{k+1}, \true)\bigr) &\text{, if j = k} \\
+				\exists\bigl(b: L \inj C_{k}, \neg \exists(a_{k+1}:C_{k} \inj C_{k+1}, \true)\bigr) &\text{, if j = k} \\
 				\false &\text{, if } j \neq k.
 				\end{cases}$$
-
-\item If $r$ is an inserting potentially minimal improving rule:				
+with
+$$ b(e) := \begin{cases}
+				e &\text{, if } e \not \in C_{k-1} \\
+				a_k(e) &\text{, otherwise}
+			\end{cases}$$
+\item If $\rho$ is an inserting potentially minimal improving rule:				
 $$\api(j, P) := \begin{cases}
 				\neg \exists(b: L \inj P, \true) &\text{, if j = k}\\
 				\false	&\text{, if } j \neq k
 				\end{cases}$$
+with $b$ being a partial morphism of $a_{k+1}$.
 
 \end{enumerate}
 
@@ -82,15 +63,15 @@ $$\api(j, P) := \begin{cases}
 \end{definition}
 
 \begin{theorem}\label{api_direct_proof}
-Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\cmax, c, C)$ and $\parcond(\cmax, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ at layer $\cmax$ with $C_{\cmax+1}\subseteq P \subseteq C_{\cmax+2}$ be given. 
-Then, $r' = (r, \api(\cmax+1,P))$ is a direct minimal consistency improving rule. 
+Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\cmax, c, C)$ and $\parcond(\cmax, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $\cmax$ with $C_{\cmax+1}\subseteq P \subseteq C_{\cmax+2}$ be given. 
+Then, $\rho' = (\rho, \api(\cmax+1,P))$ is a direct minimal consistency improving rule. 
 \end{theorem}
 \begin{proof}
-Let $t:G \Longrightarrow_{r',m} H$ be a transformation, $k = \cmax+1$ and $e$ be the subcondition of $c$ at layer $k+1$. 
+Let $t:G \Longrightarrow_{\rho',m} H$ be a transformation, $k = \cmax+1$ and $e$ be the subcondition of $c$ at layer $k+1$. 
 We show that $t$ is a direct minimal consistency improving transformation.
 Firstly, we show that equation (\ref{direct_improving_1}) is satisfied.
 Let $p: C_{k} \inj G$ be a morphism. 
-If $r$ is a deleting potentially minimal improving rule, either \ref{proof_api_1}. or  \ref{proof_api_2}. applies, if $r$ is an inserting and not  a deleting potentially  minimal improving rule, only \ref{proof_api_2}. applies, because $r$ cannot destroy any occurrences of $C_k$ in $G$. 
+If $\rho$ is a deleting potentially minimal improving rule, either \ref{proof_api_1}. or  \ref{proof_api_2}. applies, if $\rho$ is an inserting and not a deleting potentially  minimal improving rule, only \ref{proof_api_2}. applies, because $\rho$ cannot destroy any occurrences of $C_k$ in $G$. 
 \begin{enumerate}
 	\item\label{proof_api_1} If $p(C_k) \cap m(L\setminus K) \neq \emptyset$, $\track_t \circ p$ is not total, since at least one element of $p(C_k)$ has been deleted by $t$ and $p$ does satisfy $\bigwedge_{C' \in \mathbf{G}}(p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,e,C'))$. 
 	\item\label{proof_api_2} If $p(C_k) \cap m(L\setminus K) = \emptyset$, $\track_t \circ p$ is total, since no element of $p(C_k)$ has been deleted by $t$.  
@@ -103,16 +84,16 @@ Let $p':C_k \inj H$ be a morphism.
 Because (\ref{pot_2}) is satisfied, $t$ does not create any elements of $C_k$ and therefore, there must exist an morphism $p : C_k \inj G$ with $\track_t \circ p = p'$. If follows that (\ref{direct_improving_1_2}) is satisfied. 
 
 Lasty, we show that (\ref{direct_improving_2}) is satisfied. 
-We consider the cases that $r$ is a deleting minimal potentially improving rule and that $r$ is an inserting minimal potentially improving rule. 
+We consider the cases that firstly, $\rho$ is a deleting minimal potentially improving rule and secondly, that $\rho$ is an inserting and not a deleting minimal potentially improving rule. 
 
 \begin{enumerate}
-\item If $r$ is a deleting potentially minimal improving rule, the condition $\api(k,P) = \exists\bigl(a_0: L \inj C_{k}, \neg \exists(a_1:C_{k} \inj C_{k+1}, \true)\bigr)$ is satisfied by $m$. 
-Therefore a morphism $p :C_k \inj G$ with $p \not \models \neg \exists(a_1:C_k \inj C_{k+1}, \true) = \parcond(1,e,C_{k+1})$ and $m = p \circ a_0$ must exist. 
-Since $r$ is a deleting rule, at least one element of $p(C_k)$ has been deleted by $t$ and therefore $\track_t \circ p$ is not total. 
+\item If $\rho$ is a deleting potentially minimal improving rule, the condition $\api(k,P) = \exists\bigl(b: L \inj C_{k}, \neg \exists(a_{k+2}:C_{k} \inj C_{k+1}, \true)\bigr)$ is satisfied by $m$. 
+Therefore a morphism $p :C_k \inj G$ with $p \not \models \neg \exists(a_{k+1}:C_k \inj C_{k+1}, \true) = \parcond(1,e,C_{k+1})$ and $m = p \circ b$ must exist. 
+Since $\rho$ is a deleting rule, at least one element of $p(C_k)$ has been deleted by $t$ and therefore $\track_t \circ p$ is not total. 
 It follows that (\ref{direct_improving_2}) is satisfied. 
 
 \item 
-If $r$ is a inserting potentially minimal improving rule, $\api(k,P) = \neg \exists(b: L \inj P, \true)$ is satisfied by $m$. 
+If $\rho$ is an inserting and not a deleting potentially minimal improving rule, $\api(k,P) = \neg \exists(b: L \inj P, \true)$ is satisfied by $m$. 
 Because $L = C_k$, $m \models \neg \exists(b: C_k \inj P, \true) = \parcond(1,e,P)$.
 Since (\ref{pot_ins}) is satisfied, $\track \circ p$ is total and $\track_t \circ p \models \parcond(1,e,P)$. Therefore, (\ref{direct_improving_2}) is satisfied. 
 In total follows that $t$ is a direct minimal consistency improving transformation and therefore $r'$ is direct minimal consistency improving rule. 
@@ -144,7 +125,8 @@ exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0,\ldots, n-1\}$ and $H
 \begin{definition}[\textbf{decomposition of a graph}]
 Let graphs $G_0 \subset G_1$ be given. 
 
-A decomposition of $G_1$ with $G_0$ is a set $$\mathbf{P} := \{P_v \mid v \in V_{C_1 \setminus C_0} \}$$ of subgraphs of $C_1$, such that every $P_v$ is constructed in the following way:
+A decomposition of $G_1$ with $G_0$ is a minimal set 
+ $$\mathbf{P} \subseteq \{P_v \mid v \in V_{C_1 \setminus C_0} \}$$ of subgraphs of $G_1$, such that every element of $G_1$ is contained in at least one $P \in \mathbf{P}$  and  every $P_v$ is constructed in the following way:
 $G_0 \subset P_v$, $v \in P$ and for all nodes $v' \in P \setminus C_k$ is holds that $P$ contains all edges $e \in E_{G_1 \setminus G_0}$ and all nodes $u \in V_{G_1}$ such that  either $\tar(e) = v' \wedge \src(e) = u$ or  $\src(e) = u \wedge \tar(e) = v'$ holds. 
 \end{definition}
 
@@ -155,8 +137,9 @@ $$(P\setminus C_k)\cap (P' \setminus C_k) = \emptyset$$
 \end{lemma}
 
 \begin{proof}
- Assume that $(P\setminus C_k)\cap (P' \setminus C_k) \neq \emptyset$, therefore a node $v \in G_1 \setminus G_0$ with $v \in P \cap P'$. 
- By the construction of $P$ and $P'$ it follows that $P = P_v$ and $P' = P_v$ and therefore $P = P'$.
+ Assume that $(P\setminus C_k)\cap (P' \setminus C_k) \neq \emptyset$, therefore a node $v \in G_1 \setminus G_0$ with $v \in P \cap P'$ exists. 
+ By the construction of $P$ and $P'$ it follows that $P = P_v$ and $P' = P_v$ and therefore $P = P'$. 
+This is a contradiction.
 \end{proof}
 
 \begin{lemma}
@@ -166,16 +149,16 @@ Then, $$ G_1 = \bigcup_{P \in \mathbf{P}} P.$$
 \end{lemma}
 
 \begin{proof}
-Let $\mathbf{P} = \{P_v \mid v \in V_{C_1 \setminus C_0} \}$ and $H = \bigcup_{P \in \mathbf{P}} P$.
+Let $H := \bigcup_{P \in \mathbf{P}} P$.
 Firstly, we show that $H \subseteq G_1$.
-Since every $P_v \in \mathbf{P}$ is a subgraph of $G_1$ it follows that $V_H \subseteq V_{G_1}$ and $E_H \subseteq E_{G_1}$
+Since every $P \in \mathbf{P}$ is a subgraph of $G_1$ it follows that $V_H \subseteq V_{G_1}$ and $E_H \subseteq E_{G_1}$
 
-Secondly, we show that $G_1 \subseteq H_1$.
-Let $u \in V_{G_1}$ be a node, if $u \in V_{G_0}$, then $u$ is contained in every $P_v$ and therefore $u \in V_H$. 
-Otherwise, if $u \not \in V_{G_0}$, then $u$ is contained in $P_u$ and therefore $V_H \subseteq V_{G_1}$. 
+Secondly, we show that $G_1 \subseteq H$.
+Let $u \in V_{G_1}$ be a node, if $u \in V_{G_0}$, then $u$ is contained in every $P \in \mathbf{P}$ and therefore $u \in V_H$. 
+Otherwise, if $u \not \in V_{G_0}$, then $u$ has to be, by the definition of $\mathbf{P}$, contained in at least one $P \in \mathbf{P}$ and  $V_{G_1} \subseteq V_H$ follows. 
 Let $e \in E_{G_1}$ be an edge. 
-If $e \in E_{G_0}$, then $e$ is contained in every $P_v$ and therefore $e \in E_H$. 
-Otherwise, if $e \not  \in E_{G_0}$, either $\src(e) \not \in V_{G_0}$, and therefore $e \in P_{\src(e)}$ or $\tar(e) \not \in V_{G_0}$ and therefore $e \in P_{\tar(e)}$. 
+If $e \in E_{G_0}$, then $e$ is contained in every $P \in \mathbf{P}$ and $e \in E_H$. 
+Otherwise, if $e \not  \in E_{G_0}$, by the definition of $\mathbf{P}$, $e$ has to be contained in at least one $P \in \mathbf{P}$. 
 It follows that $e \in E_H$ and with that $E_{G_1} \subseteq E_H$. 
 \end{proof}
 
@@ -187,36 +170,35 @@ Then, $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nl(c)$ if either
 
 \begin{enumerate}
 	\item \label{cat_rep_set_1}
-	 For any universally bound graph $C_j$ at layer $j \leq k$ of $c$, $(r, \api(j, C_{j+1})) \in \mathcal{R}$ and $r= L \xhookleftarrow{} K \xhookrightarrow{} R$ is a deleting potentially minimal improving rule at layer $j$ with $C_{j+1}$, such that $r$ only deletes edges of $C_j$:
+	 For any universally bound graph $C_j$ at layer $j \leq k$ of $c$, $(\rho, \api(j, C_{j+1})) \in \mathcal{R}$ and $\rho$ is a deleting potentially minimal improving rule at layer $j$ with $C_{j+1}$, such that $\rho$ only deletes edges of $C_j$.
 	\item \label{cat_rep_set_2}
-	A decomposition $\mathbf{P}$ of $C_k$ with $C_{k-1}$ exists, such that for each $P \in \mathbf{P}$ a rule $(r, \api(k,P)) \in \mathcal{R}$ exists, such that $r$ is an inserting basic improving rule at layer $k$ with $P\cup C_{k-1}$.
+	A decomposition $\mathbf{P}$ of $C_k$ with $C_{k-1}$ exists, such that for each $P \in \mathbf{P}$ a rule $(\rho, \api(k,P)) \in \mathcal{R}$ exists, such that $\rho$ is an inserting basic improving rule at layer $k$ with $P$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
 Let a constraint $c$ in EANF, a rule set $\mathcal{R}$ and a graph $G$ with $k = \cmax$ and $\cmax < \nl(c)$ be given. 
-We show that a sequence $G = C_0' \Rightarrow \ldots \Rightarrow C_n' = H$ with rules of $\mathcal{R}$ exists, such that $H \models_{k+2} c$ if \ref{cat_rep_set_1}. or \ref{cat_rep_set_2}.  of theorem \ref{carachter_rep_rule_set_at_layer} is satisfied.
+We show that a sequence $G = C_0' \Rightarrow \ldots \Rightarrow C_n' = H$ with rules of $\mathcal{R}$ exists, such that $H \models_{k+2} c$ if \ref{cat_rep_set_1}. or \ref{cat_rep_set_2}.  of theorem \ref{caracter_rep_rule_set_at_layer} is satisfied.
 \begin{enumerate}
 \item
- Assume that \ref{cat_rep_set_1}. of theorem \ref{caracter_rep_rule_set_at_layer} holds. Let $(r, \api(j, C_{j+1})) \in \mathcal{R}$, such that $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ is a deleting potentially minimal improving rule at layer $j \leq k$ with $C_{j+1}$ and $C_j$ is a universally bound graph of $c$.
-Then, $\api(j, C_{j+1}) = \exists\bigl(a: L \inj C_{j}, \neg \exists(a_j:C_{j} \inj C_{j+1}, \true)\bigr)$.
+ Assume that \ref{cat_rep_set_1}. of theorem \ref{caracter_rep_rule_set_at_layer} holds. Let $(\rho, \api(j, C_{j+1})) \in \mathcal{R}$, such that $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ is a deleting potentially minimal improving rule at layer $j \leq k$ with $C_{j+1}$ and $C_j$ is a universally bound graph of $c$.
+Then, $\api(j, C_{j+1}) = \exists\bigl(b: L \inj C_{j}, \neg \exists(a_j:C_{j} \inj C_{j+1}, \true)\bigr)$.
 Let $q: C_j \inj G$ be a morphism such that  $q \not \models \exists(a_j: C_j \inj C_{j+1}, \true)$.
-Since $L \subseteq C_j$, we can construct a morphism $m_1: L \inj G$ with $m_1(L) = q(L)$.
-It holds that $m_1 = q \circ a_0$, therefore $m_1 \models \api(j,C_{j+1})$.
+Since $L \subseteq C_j$, we can construct a morphism $m_1: L \inj G$ with $m_1 = q \circ b$ and therefore $m_1 \models \api(j,C_{j+1})$.
 Since $r$ only deletes edges, a transformation $t: G = G_0 \Rightarrow_{r,m_1} G_1$ exists and $\track_t \circ p$ is not total. 
 Because $r$ does not insert any elements of $C_j$: 
 $$|\{q: C_k \inj G_0 \mid  q \not \models  d\}| < |\{q: C_k \inj G_1 \mid  q \not \models  d\}|$$
 with $d = \exists(a_j: C_j \inj C_{j+1}, \true)$.
-By iteratively applying this construction, we generate a finite sequence of transformations
+By iteratively applying this construction, we can generate a finite sequence of transformations
 $$G = G_0 \Rightarrow_{r, m_1} G_1 \Rightarrow_{r, m_2} \ldots \Rightarrow_{r,m_n} G_n = H$$
 such that $|\{q: C_k \inj G_n \mid  q \not \models  d\}| = 0$ and therefore $H \models_j c$. 
 With lemma \ref{lemma_lay_sat}, $H \models_{k+2} c$ and $H \models c$ follows. 
 
 \item 
 Assume that \ref{cat_rep_set_2}. of theorem \ref{caracter_rep_rule_set_at_layer} holds. 
-Let $r_0 = (r, \api(k,P)) \in \mathcal{R}$ be an inserting basic improving rule of $c$ at layer $k$ with $P \in \mathbf{P}$. 
+Let $\rho_0 = (\rho, \api(k,P)) \in \mathcal{R}$, such that $\rho$ is an inserting basic improving rule of $c$ at layer $k$ with $P \in \mathbf{P}$. 
 Then, $\api(k, P) = \neg \exists(b: L \inj P, \true)$.
-Let $q_0 : C_k \inj G$ be a morphism, such that $q_0 \not \models \exists(a'_k: C_k \inj P, \true)$.
+Let $q_0 : C_k \inj G$ be a morphism, such that $q_0 \not \models \exists(a'_k: C_k \inj P, \true)$ with $a'_k$ being a partial morphism of $a_k$.
 Since $L = C_k$, we set $m_0: C_k \inj G$ with $m_0 = q_0$. 
 It follows that $m_0 \models \neg \exists(a'_k: C_k \inj P, \true) = \api(k,P)$.
 Because $r$ does not delete any elements, a transformation $t_0: G \Longrightarrow_{r_0,m_0} G_1$ exists and $\track_t \circ q \models \exists(a'_k: C_k \inj P, \true)$.  
@@ -224,21 +206,21 @@ We set $q_1 = \track_{t_0} \circ q_0$ and apply the same method to $q_1$.
 
 By iteratively applying this, we can construct a finite sequence of transformations 
 $$G \Longrightarrow_{r_0, m_0} G_0 \Longrightarrow_{r_1,m_1} \ldots \Longrightarrow_{r_n,m_n} G_n$$ 
-such that $m_i = \track_{t_{i-1}} \circ \ldots \circ \track_{t_0} \circ m_0$ and $q\models \exists(b_i: C_k \inj P_i \cup C_k, \true)$ for all $P_i \in \mathbf{P}$ with $q = \track_{t_n} \circ q_0$.
-Let $p_i: P_i \cup C_k \inj G_n$ be the morphism, such that  $m_n = p_i \circ b_i$. 
+such that $m_i = \track_{t_{i-1}} \circ \ldots \circ \track_{t_0} \circ m_0$ and $q\models \exists(b_i: C_k \inj P_i, \true)$ for all $P_i \in \mathbf{P}$ with $q = \track_{t_n} \circ q_n$.
+Let $p_i: P_i \inj G_n$ be the morphism, such that  $q = p_i \circ b_i$. 
 
 Now, we can construct a morphism $p: C_{k+1} \inj G$ with 
 $$ p(e) := \begin{cases}
 			p_1(e) &\text{,if } e \in P_1\\
 			&\vdots\\
-			p_j(e) &\text{,if } e \in P_j
-		\end{cases}$$.
+			p_j(e) &\text{,if } e \in P_j.
+		\end{cases}$$
 		
-Since $q(e) = p_i \circ b_i(e)$ and $q(e) = p_{\ell} \circ b_{\ell}(e)$ and $b_i$ and $b_{\ell}$ are both partial morphisms of $a_k$, it follows that $p_i (e) = p_{\ell} (e)$ 
-Because $P_i \cap P_{\ell})C_k = \emptyset$ for all $i \neq \ell$, $p$ is a morphism and by the definition of $p$ it follows that 
+Let $e \in C_k$, because $q(e) = p_i \circ b_i(e)$ and $q(e) = p_{\ell} \circ b_{\ell}(e)$ and $b_i$ and $b_{\ell}$ are both partial morphisms of $a_k$, it follows that $b_i(e) = b_{\ell} (e)$ and therfore $p_i (e) = p_{\ell} (e)$. 
+Because $(P_i \cap P_{\ell})\setminus C_k = \emptyset$ for all $i \neq \ell$, $p$ is a morphism and by the definition of $p$ it follows that 
 $q = p \circ a_k$ and therefore $q \models \exists(a_k: C_k \inj C_{k+1}, \true)$.
 
-By iteratively applying this to all occurrences of $C_k$ that do not satisfy $\exists(a_k:C_k \inj C_{k+1},\true)$ the derived graph graph $H$ does not contain any occurrences of $C_k$ not satisfying $\exists(a_k: C_k \inj C_{k+1},\true)$ and therefore  $H \models_{k+2} c$. 
+By iteratively applying this whole construction to all occurrences of $C_k$ that do not satisfy $\exists(a_k:C_k \inj C_{k+1},\true)$ the derived graph graph $H$ does not contain any occurrences of $C_k$ not satisfying $\exists(a_k: C_k \inj C_{k+1},\true)$ and therefore  $H \models_{k+2} c$. 
 
 \end{enumerate}
 \end{proof}
