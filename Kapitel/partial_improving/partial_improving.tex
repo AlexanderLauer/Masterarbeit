@@ -6,9 +6,9 @@
 Let $G$ be a graph and $c$ a constraint in EANF. 
 The \emph{number of violations $\nvc(j,G)$ at layer $j$ in $G$} is defined as:
 \begin{enumerate}
-\item If $j < c_{\max}$:
+\item If $j < c_{\max}+1$:
 	$$\nvc(j,G) := 0$$
-\item If $j = c_{\max}$, let $d = \forall(a_k: C_{j} \inj C_{j+1},e)$ be the subcondition of $c$ at layer $j+1$.
+\item If $j = c_{\max}+1$, let $d = \forall(a_k: C_{j} \inj C_{j+1},e)$ be the subcondition of $c$ at layer $j+1$.
 
 
 $$\nvc(j,G) := \sum_{C \in \mathcal{G}_{c}} \sum_{C' \in \mathcal{U}(C,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
@@ -24,9 +24,9 @@ $$\nvc(j,G) := \sum_{C \in \mathcal{G}_{c}} \sum_{C' \in \mathcal{U}(C,{C_{j+1}}
 	Let a graph $G$, a rule $r$ and a constraint $c$ in ANF be given. 
 
 	
-	A transformation $G \Longrightarrow_{r,m} H$ is called \emph{minimal consistency improving}, if  $$\nvc(k, H) < \nvc(k, G) $$
+	A transformation $G \Longrightarrow_{r,m} H$ is called \emph{minimal consistency improving w.rt $c$}, if  $$\nvc(k, H) < \nvc(k, G) $$
 	for any $0 \leq k \leq \nl(c)$.
-	A rule $r$ is called \emph{minimal consistency improving}, if all of its applications to graphs $G$ with $G \not \models c$ are. 
+	A rule $r$ is called \emph{minimal consistency improving}, if all of its applications are. 
 	
 \end{definition}
 
@@ -65,6 +65,27 @@ Then, $p \models_j c$ for all $j < k$ such that the subcondition of $c$ at layer
 \begin{proof}
 No $\ell >k$ with $G\models_{\ell} c$ exists and $G \models_k c$. Hence, $\nvc(k,G) > 0$ and $\nvc(k,G) \neq \infty$. 
 Since $j >k$, $\nvc(k,H) = 0$ and it follows immediately that the transformation is minimal consistency improving. 
+\end{proof}
+
+
+\begin{theorem}
+Let a constraint $c$ in EANF be given. 
+Every sequence of minimal consistency improving transformation w.r.t $c$ is finite.
+
+\end{theorem}
+
+\begin{proof}
+Let $G_0$ be a graph and 
+$$G_0 \Longrightarrow_{\rho_1} G_1 \Longrightarrow_{\rho_2} G_2 \Longrightarrow_{\rho_3} \ldots$$
+be a sequence of minimal consistency improving transformations w.r.t $c$.
+We assume that $\maxc{G_0} < \nl(c)$, otherwise $\nvc(j,G_0) = 0$ for all $j \in \{0, \ldots, \nl(c)\}$ and no transformation $G_0 \Longrightarrow H$ is minimal consistency improving. 
+
+We show that after at most $j := \nvc(\cmax_{G_0}+1,G_0)$ transformations $G_j \models_{\maxc{G_0} + 2} c$ holds. 
+Note that $j$ has to be finite, since $G_0$ contains only a finite number of occurrences of $C_{j+1}$.
+After each transformation it holds that $\nvc(\maxc{G_{i+1}}+1,G_{i+1}) \leq \nvc(\maxc{G_i}+1,G_{i})-1$.
+Therefore, after $j$ transformations $\nvc(\maxc{G_0}+1,G_{j}) \leq \nvc(\maxc{G_0}+1,G_{0})-j = 0$ holds and with that $G_j \models_{\maxc{G_0}+ 2} c$.
+By iteratively applying this, it follows that after a finite number of transformations a graph $G_k$ with $G_k \models c$ exists. 
+Since no minimal consistency improving transformation $G_k \Longrightarrow G_{k+1}$ exists, the sequence has to be finite. 
 \end{proof}
 
 \begin{definition}[\textbf{direct minimal consistency improving}]
@@ -130,23 +151,76 @@ $$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| < |\{q \mid q
 \end{enumerate}
 With \ref{proof_direct_minimal_4} and \ref{proof_direct_minimal_3} follows that $\nvc(k,G) < \nvc(k,G)$ and therefore $t$ is a minimal improving transformation. 
 \end{proof}
-%\begin{proof}
-%\begin{enumerate}
-%	Since $G \not \models c$, with lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound. 
-%	\item The subcondition of $c$ at layer $j$ is existentially bound:
-%	With lemma \ref{lem_ex_lower} follows that $H \models_{k+2} c$.
-%	Let $d = \exists(a_{k+2}: C_{k+1} \inj C_{k+2}, e)$ be the subcondition of $c$ with layer $k+2$.
-%	The set $\mathcal{C}_{k+2,H,\true}$ contains every graph $C'$ with $C_{k+1} \subseteq C' \subseteq C_{k+2}$. 
-%	Since $G \not \models_{k+2} c$, $C_{k+2} \not \in \mathcal{C}_{k+2,G,\true}$ and for every $C'' \in \mathcal{B}_{k+2,G, \true}$ it holds that $C'' \in \mathcal{C}_{k+2,H,\true}$ and $C'' \subset C_{k+2} \in \mathcal{C}_{k+2,H, \true}$.
-%	
-%	\item The subcondition of $c$ at layer $j$ is universally bound:
-%	With lemmas \ref{lemma_help_lay_sat} and \ref{lemma_lay_sat}, $H \models_{k+2} c$ follows and $1.$ can be applied. 
-%\end{enumerate}
-%\end{proof}
-%\begin{definition}[\textbf{minimal consistency improving}]
-%Given a rule $r$, a constraint $c$ and a graph $G$ with $G \models_k c$.
-%A transformation $G \xRightarrow{r,m} H$ is called \emph{minimal consistency improving} if $H \models_j c$ and $k < j$. 
-%The rule $r$ is called \emph{minimal consistency improving} if all of its applications are. 
-%
-%\end{definition}
 
+\subsection{Comparison with other consistency concepts}
+
+\begin{lemma}\label{comp_guaranteeing_minimal}
+Let a constraint $c$ in ANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. Then, 
+$$t \text{ is c-guaranteeing } \implies t \text{ is minimal consistency improving w.r.t c}$$
+and 
+$$t \text{ is minimal consistency improving w.r.t c} \centernot\implies t \text{ is c-guaranteeing }$$
+\end{lemma}
+
+
+\begin{proof}
+Let $c'$ be the equivalent constraint in EANF. 
+\begin{enumerate}
+ \item Let $t$ be c-guaranteeing transformation, then $H \models c$. 
+Since $G \not \models c$, $G \not \models c'$  follows and $\nvc(\maxc{G} + 1, G) > 0$ and $\nvc(\maxc{G} + 1, H) = 0$. Therefore $t$ is minimal consistency improving. 
+
+\item Let $t$ be a minimal consistency improving transformation w.r.t $c'$, such that $\nvc(\maxc{G} + 1, H)> \nvc(\maxc{G} + 1, H) > 1$.
+Then, $H \not \models c'$ and in particular $H \not \models c'$ and therefore $t$ is not a guaranteeing transformation. 
+\end{enumerate}
+
+\end{proof}
+
+\begin{corollary}
+Let $c$ be an existentially bound constraint in ANF. 
+Then, a transformation $t$ is $c$-guaranteeing if and only if it is consistency improving. 
+With lemma \ref{comp_guaranteeing_minimal} follows:
+$$t \text{ is consistency guaranteeing w.r.t c } \implies t \text{ is minimal consistency improving w.r.t c}$$
+and 
+$$t \text{ is minimal consistency improving w.r.t c} \centernot\implies t \text{ is consistency improving w.r.t c }$$
+\end{corollary}
+
+\begin{lemma}
+	let a universally bound constraint $c$ with $\nl(c) = 1$ in ANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. 
+	Then,
+	$$t \text{ is consistency improving } \iff \text{ is minimal consistency improving}$$ 
+	
+\end{lemma}
+
+\begin{proof}
+Let $c = \forall(a: \emptyset \inj C, \false)$. Then, the equivalent constraint in EANF is $c' = \forall(a:\emptyset \inj C, \exists(\id: C \inj C, \false)$. 
+Since $\mathcal{U}(C,C) = \{C\}$, $\nvc(1,G)$ is the number of occurrences of $C$ in $G$. 
+This is exactly the definition of the number of violations for consistency improving transformations and 
+$$t \text{ is minimal consistency improving } \iff t \text{ is consistency improving}$$
+follows immediately.
+\end{proof}
+
+\begin{lemma}
+Let a universally bound constraint $c$ with $\nl(c) \geq 2$ in ANF, graphs $G$ and $H$ with $G\not \models c$ and a transformation $t: G \Longrightarrow H$ be given. Then,
+
+$$t \text{ is consistency improving } \centernot \implies t \text{ is minimal consistency improving}$$ 
+	and 
+	$$t \text{ is minimal consistency improving } \centernot \implies t \text{ is consistency improving}$$ 
+\end{lemma}
+
+\begin{proof}
+
+Let $c = \forall(a_0: \emptyset \inj C_0, \exists(a_1: C_0 \inj C_1, \true))$ be a constraint.
+\begin{enumerate}
+\item Let $G = C_0$ and a rule $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ with $K = L = C_0$,$R = C'$ with  
+$C_0 \subset C' \subset C_1$ and the transformation $t: G \Longrightarrow_{\rho, \id} H$ be given. 
+Then, $t$ is a (direct) minimal consistency improving and not a consistency improving transformation, since the number of occurrences of $C_0$ in $G$ as well as in $H$ not satisfying $\exists(a_1: C_0 \inj C_1, \true)$ is equal to $1$. 
+\item Let $V_{G_0} = V_{G_1}$ and $|E_{G_1}| - |E_{G_0}| = 2$. Let $G = C_0 \dot \cup C_0$ with the occurrences $p_1: C_0 \inj G$ and $p_2: C_0 \inj G$, such that $p_i \models \exists(a_1':C_0 \inj C' \true)$ for $C' = C_1 \setminus \{e\}$ with $e \in E_{C_1}$ and $ i = 1,2$. It follows that $\nvc(1,G) = 2$.
+Let $t: G \Longrightarrow H$ be a transformation, such that $H = C_0$. 
+Then, $t$ is a consistency improving transformation, since $H$ contains only one occurrence of $C_0$ not satisfying $\exists(a_1':C_0 \inj C' \true)$ and $t$ is not minimal consistency improving since $\nvc(1,H) = 4$.
+\end{enumerate}
+
+\end{proof}
+
+\begin{enumerate}
+\item Ein Test
+\item Ein zweiter Test, Hallo
+\end{enumerate}
