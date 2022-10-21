@@ -1,25 +1,14 @@
 \section{application condition}
 
 
-\begin{definition}[\textbf{extended overlap}]
-Let $G$ and $C_0 \subseteq C_1$, with the inclusion $i: C_0 \inj C_1$, be graphs. 
-Let $C$ be an overlap of $C_0$ and $G$ with the inclusion:  $q: C_0 \inj C$. 
 
-Let $p = L \xhookleftarrow{\id} K \xhookrightarrow{i} R$ be a plain rule with $K = C_0$, $L = K$ and $R = C_1$. 
-The graph $H$, derived by the transformation 
-$$C \Longrightarrow_{p,q} H$$ 
-is called the \emph{extended overlap of $C$ with $i$}. The extended overlap of an overlap $C$ with an graph $C_1$ is denoted by $\eol(C,C_1)$. 
+\begin{definition}[\textbf{extended overlaps}]
+Let $G$ and $C_0 \subseteq C_1$ with the inclusion $i:C_0 \inj C_1$ be graphs. 
+Let $C$ be an overlap of $C_0$ and $G$ with the inclusion $q : C_0 \inj C$. 
+The set of \emph{extended overlaps of $C$ with $i$}, $\eol(C,i)$, is the set of all overlaps $C'$ of $G$ and $C_1$, such that $C \subseteq C'$ and $q \models \exists(i: C_0 \inj C_1, \true)$. 
 \end{definition}
 
-\begin{lemma}
-Let graphs $G$, $C_0 \subset C_1$ and an overlap $C$ of $G$ and $C_0$ be given. 
-Then, $\eol(C,C_1)$ is an overlap of $G$ and $C_1$ and $C \subset \eol(C,C_1)$. 
-\end{lemma}
-\begin{proof}
-The graph $\eol(C,C_1)$ is constructed by the transformation $C \Longrightarrow_{p,q} \eol(C,C_1)$ with  $p = C_0 \xhookleftarrow{} C_0 \xhookrightarrow{} C_1$.
-Since the comatch $n: C_1 \inj \eol(C,C_1)$ exists, $\eol(C, C_1)$ is an overlap of $G$ and $C_1$. 
-Because $L = K$, the transformation does not delete any elements and $C \subset \eol(C,C_1)$ follows.
-\end{proof}
+
 
 \begin{definition}[\textbf{overlap shift}]
 Let $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : L \inj C'$, $k: K \inj C'$, $c:C \inj C'$ and the partial morphism $q: R \inj C'$. 
@@ -38,94 +27,49 @@ The overlap shifted graph of an graph $C$ is denoted by $\ols_{\rho}(C,C')$.
 
 
 
-%\begin{definition}\label{general_app_cond}
-%Let $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule and $c$ a constraint in EANF. 
-%Let $d = \forall(a_k: C_{k-1} \inj C_{k},\exists(a_{k+1}: C_{k} \inj C_{k+1},e))$  be the subcondition of $c$ at layer $k$ with $k = 2i -1$ for an $i \in \mathbb{N}$.
-%The application condition $\ap_k$ of the condition at layer $k$ of $c$ with $C' \in \mathcal{U}(C_k, C_{k+1})$ is defined as:
-%
-%
-%
-%\begin{equation}
-%	\begin{split}
-%		\ap(k, C') := &\bigr(\bigvee_{P \in \overlay(L, C_{k})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))\bigl) \wedge \\ &\bigl(\bigwedge_{P \in \overlay(L,C_{k})}\ex(P,C') \bigr) \wedge \\&(\bigwedge_{P \in \overlay(R,C_{k+1})}\rem(P,C'))	
-%	\end{split}
-%	\end{equation}
-%
-%with 
-%\begin{enumerate}
-%\item 
-% 		$$\nex(P,C') := \exists(a: L \inj P,\neg \exists(b: P \inj \eol(P,C'), \true))$$
-% 	\item 
-% 	$$\rep(P,C') := \shift(\forall(a: R \inj \ols(P),\exists(b: \ols(P) \inj \ols(\eol(P,C')), \true),r)$$
-% 	
-% 	\item Let $i_1 : L \inj P$ and $i_2: C_k \inj P$ be the overlap morphisms of $P$:
-% 	$$\del(P,C') := \begin{cases}
-%						\exists(L \inj P, \true) &\text{, if } i_1(L\setminus K) \cap i_2(C_k\setminus C_{k-1}) \neq \emptyset \\
-%						\false &\text{, otherwise} 					
-% 					\end{cases}$$
-% 					
-% 	\item Let $i': L \inj P$ and $i_j: C_j \inj P$ be the inclusion morphisms for all $j \leq k$, let $E$ be the set of all existentially bound graphs $C_j$ with $j \leq k$:
-% 	$$\ex(P,C') := \begin{cases}
-% 					\neg \exists(L \inj P, \true) &\text{, if } \bigcup_{C_j \in E} \bigr(i_j(C_j \setminus C_{j-1}) \cap i'(L\setminus K)\bigl) \neq \emptyset\\
-% 					\true &\text{, otherwise}
-% 				\end{cases}  $$
-% 				
-% 	\item Let $i': R \inj P$ and $i_j: C_j \inj P$ be the inclusion morphisms for all $j \leq k$, let $U$ be the set of all universally bound graphs $C_j$ with $j \leq k$:
-% 	$$\rem(P,C') := \begin{cases}
-% 					\shift(\neg \exists(R \inj P, \true),r) &\text{, if } \bigcup_{C_j \in U} \bigr(i_j(C_j \setminus C_{j-1}) \cap i'(R\setminus K)\bigl) \neq \emptyset\\
-% 					\true &\text{, otherwise}
-% 				\end{cases}  $$
-%\end{enumerate}
-%\end{definition}
-
-\begin{definition}
+\begin{definition}[\textbf{application condition}]
 Let $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule and $c$ a constraint in EANF. 
 Let $d = \forall(a_k: C_{k-1} \inj C_{k},\exists(a_{k+1}: C_{k} \inj C_{k+1},e))$ be the subcondition of $c$ at layer $k$ with $k$ being and even number.
 
-The application condition $\ap_k$ of the $c$ at layer $k$ with $C' \in \mathcal{U}(C_k, C_{k+1})$, and $i: C_k \inj C'$ is defined as:
-
+The application condition $\ap_k$ of $c$ at layer $k$ with $C' \in \mathcal{U}(C_k, C_{k+1})$ and $i:C_k \inj C'$ is defined as:
 \begin{equation}
-	\begin{split}
-		\ap(k,C') := &\big(\bigvee_{P \in  \overlay(L, C_k)} \del(P,C') \vee  \rep(P,C') \big) \\ 
-		&\wedge \bigwedge_{j = 1}^{k/2} \bigwedge_{P \in \overlay(L, C_{2j-1})} \ex(P,C') \bigwedge_{P \in \overlay(R, C_{2j})} \rem(P,C')
-	\end{split}
+\ap(k,C') := \big(\bigvee_{P \in \overlay(L,C_k)} \nex(P,C') \wedge \rep(P,C')\big) \wedge \nin \wedge \rem
 \end{equation}
 
-with 
+with
 \begin{enumerate}
+\item 
+	$$\nex(P,C') := 
+			\begin{cases}
+			\exists (i_L: L \inj P, \true) &\textit{, if } C_k = C_{k+1} \\
+			\bigwedge_{Q \in \eol(P,i)} \exists(i_L: L \inj P, \neg \exists(i_P: P \inj Q, \true)) &\textit{, otherwise}
+			\end{cases}			
+			$$
+			
+	
+\item Let $\mathbf{P}$ be the set of all overlaps of $R$ and $C'$, such that $i_R(R\setminus K) \cap i_{C'} \neq \emptyset$:
+\begin{enumerate}
+	\item If $C_k = C_{k+1}$: 
+		$$ \rep(P,C') := \begin{cases}
+							\true &\textit{, if } i_L(L \setminus K) \cap i_{C_k} (C_k) \neq \emptyset\\
+							\false &\textit{, otherwise}
+						  \end{cases}$$
+\item Otherwise:
+	$$ \rep(P,C') := \begin{cases}
+						\true &\textit{, if } i_L(L \setminus K) \cap i_{C_k}(C_k) \neq \emptyset \\
+						\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R: R \inj P', \true), \rho) &\textit{, otherwise}
+					 \end{cases}$$
+\end{enumerate}					 
+\item Let $E$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being even and let $\mathbf{P}_{C_j}$ be the set all overlaps of $L$ and $C_j$ with $i_L(L \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$. 
+$$\rem := \bigwedge_{C \in E} \bigwedge_{C' \in  \mathbf{P}_{C_j}} \neg \exists(i_L: L \inj C', \true)$$
 
-\item Let $i_1: L \inj P$ and $i_2: C_k \inj P$ be the inclusions of $L$ and $C_k$ in $P$ and $i_3: P \inj \eol(P,C')$ be the inclusion of $P$ in $\eol(P,C')$. If $i_1(L \setminus K) \cap i_2(C_k) = \emptyset$ holds, we set 
-$$\del(P,C') := \false$$
-and otherwise
- $$\del(P,C') := \exists(i_1: L \inj P, \neg \exists(i_3:P \inj \eol(P,C'), \true)) $$
- 
-\item Let $i_1: L \inj P$ and $i_2: C_k\inj P$ be the inclusions of $L$ and $C_k$ in $P$ and $i_3: P \inj \eol(P,C')$ be the inclusion of $P$ in $\eol(P,C')$. If $i_1(L \setminus K) \cap i_2(C_k) \neq \emptyset$ holds, we set  
-$$\rep(P,C') := \false$$
-and otherwise
-$$\rep(P,C') := \exists(i_1: L \inj P, \neg \exists(i_3:P\inj \eol(P,C'), \true) \wedge \exists(i_4: P \inj Q, \true))$$
-
-with $Q$ being constructed in the following way: 
-Firstly, we construct the overlap shift $P'$ of $\eol(P,C')$ with $C_{k+1}$ and  $\rho$.
-Secondly, $Q$ is the overlap shift of $P'$ with $P$ and $\rho^{-1}$.  
-
-\item Let $P$ be an overlap of $L$ and $C_j$ with the inclusions  $i_1: L \inj P$ and $i_2: C_j \inj P$ and let $i_3: R \inj \ols(P,C')$ be the inclusion of $P$ in $\ols(P,C')$. If $i_1(L \setminus K) \cap i_2(C_j\setminus C_{j-1}) = \emptyset$ holds, we set 
-$$\ex(P,C') := \true$$
-and otherwise
-$$\ex(P,C') := \neg \exists(i_1: L \inj P, \true)$$ 
-if $j < k+1$ and 
-$$\ex(P,C') := \shift(\exists(i_3:R \inj \ols(P,C'), \true), \rho)$$
-if $j = k+1$. 
-
-\item Let $P$ be an overlap of $R$ and $C_j$ with the inclusions $i_1: R \inj P$ and $i_2: C_j \inj P$.
-If $i_1(R\setminus K) \cap i_2(C_j) = \emptyset$, 
-we set 
-$$\rem(P,C') := \false$$ 
-and otherwise
-$$\rem(P,C') := \shift(\neg \exists(i_1: R \inj P, \true),\rho)$$
+\item Let $U$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being odd and let $\mathbf{P_{C_j}} $ be the set of all overlaps of $R$ and $C_j$ with $i_R(R \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$.
+$$\nin := \bigwedge_{C \in U} \bigwedge_{C' \in \mathbf{P}_{C_j}} \shift(\neg \exists(i_R: R \inj C', \true), \rho)$$
 \end{enumerate}
-
-
 \end{definition}
+
+
+
 
 
 \begin{lemma}

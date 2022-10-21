@@ -11,7 +11,7 @@ The \emph{number of violations $\nvc(j,G)$ at layer $j$ in $G$} is defined as:
 \item If $j = c_{\max}+1$, let $d = \forall(a_k: C_{j} \inj C_{j+1},e)$ be the subcondition of $c$ at layer $j+1$.
 
 
-$$\nvc(j,G) := \sum_{C \in \mathcal{G}_{c}} \sum_{C' \in \mathcal{U}(C,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
+$$\nvc(j,G) := \sum_{C' \in \mathcal{U}(C_j,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
 
 \item If $j > c_{\max}$:
 	$$\nvc(j,G) := \infty$$
@@ -89,26 +89,26 @@ Since no minimal consistency improving transformation $G_k \Longrightarrow G_{k+
 \end{proof}
 
 \begin{definition}[\textbf{direct minimal consistency improving}]
-Let $G$ be a graph, $r$ a plain rule and $c$ a constraint in EANF.
-Let $d = \forall(a_k: C_{k-1} \inj C_{k}, e)$ be the condition at layer $k = \cmax + 1 \leq \nl(c)$ of $c$ and $$\mathbf{G} := \bigcup_{C' \in \mathcal{G}_c^G} \mathcal{U}(C',C_{k+1})$$ be the set of all minimal upper-graphs of all biggest partially satisfying graphs. 
-A transformation $t: G \Longrightarrow_{r,m} H$ is called \emph{direct minimal consistency improving} if $G \models_{k-1}c$ and equations (\ref{direct_improving_1}), (\ref{direct_improving_1_2}) and (\ref{direct_improving_2}) hold. 
+Let $G$ be a graph, $\rho$ a plain rule and $c$ a constraint in EANF.
+Let $d = \forall(a_k: C_{k-1} \inj C_{k}, e)$ be the condition at layer $k = \maxc{G} + 1 \leq \nl(c)$ of $c$.
+A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{direct minimal consistency improving} if $G \models_{k-1}c$ and equations (\ref{direct_improving_1}), (\ref{direct_improving_1_2}) and (\ref{direct_improving_2}) hold. 
 
-Every occurrence of $C_k$ in $G$ that satisfies $\parcond(1,e,C')$ for any $C' \in \mathbf{G}$ still satisfies $\parcond(1,e,C')$ in $H$. 
+Every occurrence of $C_k$ in $G$ that satisfies $\parcond(1,e,C')$ for any $C' \in \mathcal{U}(C_k, C_{k+1})$ still satisfies $\parcond(1,e,C')$ in $H$. 
 \begin{equation}\label{direct_improving_1}
 \begin{split}
-	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}\big(& p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}\big) \\ &\implies  \track_t \circ p \models \parcond(1,e,C') \Big) 
+	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathcal{U}(C_k, C_{k+1})}\big(& p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}\big) \\ &\implies  \track_t \circ p \models \parcond(1,e,C') \Big) 
 \end{split}
 \end{equation}
-Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,e,C')$ for all $C' \in \mathbf{G}$.
+Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,e,C_{k+1})$.
 \begin{equation}\label{direct_improving_1_2}
 \begin{split}
-\forall p': C_{k} \inj H \Big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \big(\bigwedge_{C' \in \mathbf{G}} p' \models \parcond(1,e,C')\big)\Big) 
+\forall p': C_{k} \inj H \big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \ p' \models \parcond(1,e,C_{k+1})\big) 
 \end{split}
 \end{equation}
-At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathbf{G}$, either has been destroyed by $t$ or satisfies $\parcond(1,e,C')$ in $H$. 
+At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathcal{U}(C_k, C_{k+1})$, either has been destroyed by $t$ or satisfies $\parcond(1,e,C')$ in $H$. 
 \begin{equation}\label{direct_improving_2}
 \begin{split}
-\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathbf{G}}\big( p \not \models \parcond(1,e,C') &\wedge \track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{is total } \wedge \track_t \circ p  \models \parcond(1,e,C'))\big) \Big) 
+\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathcal{U}(C_k, C_{k+1})}\big( p \not \models \parcond(1,e,C') &\wedge \track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{is total } \wedge \track_t \circ p  \models \parcond(1,e,C'))\big) \Big) 
 \end{split}
 \end{equation}
 
@@ -156,7 +156,8 @@ With \ref{proof_direct_minimal_4} and \ref{proof_direct_minimal_3} follows that 
 
 \begin{lemma}\label{comp_guaranteeing_minimal}
 Let a constraint $c$ in ANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. Then, 
-$$t \text{ is c-guaranteeing } \implies t \text{ is minimal consistency improving w.r.t c}$$
+$$t \text{ is c-guaranteeing } \implies t \text{ is minimal consistency improving w.r.t c}$$,
+$$t \text{ is c-guaranteeing } \centernot \implies t \text{ is direct minimal consistency improving w.r.t c}$$
 and 
 $$t \text{ is minimal consistency improving w.r.t c} \centernot\implies t \text{ is c-guaranteeing }$$
 \end{lemma}
@@ -168,8 +169,12 @@ Let $c'$ be the equivalent constraint in EANF.
  \item Let $t$ be c-guaranteeing transformation, then $H \models c$. 
 Since $G \not \models c$, $G \not \models c'$  follows and $\nvc(\maxc{G} + 1, G) > 0$ and $\nvc(\maxc{G} + 1, H) = 0$. Therefore $t$ is minimal consistency improving. 
 
-\item Let $t$ be a minimal consistency improving transformation w.r.t $c'$, such that $\nvc(\maxc{G} + 1, H)> \nvc(\maxc{G} + 1, H) > 1$.
-Then, $H \not \models c'$ and in particular $H \not \models c'$ and therefore $t$ is not a guaranteeing transformation. 
+\item Let a constraint $c = \exists(a_0: \emptyset \inj C_0, \forall(a_1: C_0 \inj C_1, \exists(a_2:C_1 \inj C_2, \true)))$ and a graph $G = C' \dot{\cup} C'$ with $C' = C_2 \setminus \{e\}$ for an $e \in E_{C_2\setminus C_1}$ and the occurrences $p_1: C_1 \inj G$ and $p_2: C_1 \inj G$  be given. 
+Let $t: G \Longrightarrow H$ be a transformation with $H = C_2 \dot{\cup} C''$ and $C'' = C' \setminus\{e'\}$ for an $e' \in E_{C_2 \setminus C_1}$, such that $\track_t \circ p_1$ and $\track_t \circ p_2$ are total. 
+Then, $t$ is $c$-guaranteeing and not direct minimal consistency improving, since $p_i \models \exists(a'_2:C_1 \inj C', \true)$  for $i = 1,2$ and either $\track_t \circ p_1 \not \models \exists(a'_2:C_1 \inj C', \true)$ or $\track_t \circ p_2 \not \models \exists(a'_2:C_1 \inj C', \true)$.
+
+\item Let $t$ be a minimal consistency improving transformation w.r.t $c'$, such that $\nvc(\maxc{G} + 1, H)> \nvc(\maxc{G} + 1, H) > 1$ and $H \not \models_{\maxc{G} + 2} c'$.
+Then,$H \not \models c'$ and $t$ is not a guaranteeing transformation. 
 \end{enumerate}
 
 \end{proof}
@@ -201,26 +206,27 @@ follows immediately.
 \begin{lemma}
 Let a universally bound constraint $c$ with $\nl(c) \geq 2$ in ANF, graphs $G$ and $H$ with $G\not \models c$ and a transformation $t: G \Longrightarrow H$ be given. Then,
 
-$$t \text{ is consistency improving } \centernot \implies t \text{ is minimal consistency improving}$$ 
-	and 
-	$$t \text{ is minimal consistency improving } \centernot \implies t \text{ is consistency improving}$$ 
+$$t \text{ is direct consistency improving } \centernot \implies t \text{ is minimal consistency improving}$$ 
+and 
+$$t \text{ is direct minimal consistency improving } \centernot \implies t \text{ is consistency sustaining}$$ 
 \end{lemma}
 
 \begin{proof}
-
-Let $c = \forall(a_0: \emptyset \inj C_0, \exists(a_1: C_0 \inj C_1, \true))$ be a constraint.
 \begin{enumerate}
-\item Let $G = C_0$ and a rule $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ with $K = L = C_0$,$R = C'$ with  
-$C_0 \subset C' \subset C_1$ and the transformation $t: G \Longrightarrow_{\rho, \id} H$ be given. 
-Then, $t$ is a (direct) minimal consistency improving and not a consistency improving transformation, since the number of occurrences of $C_0$ in $G$ as well as in $H$ not satisfying $\exists(a_1: C_0 \inj C_1, \true)$ is equal to $1$. 
-\item Let $V_{G_0} = V_{G_1}$ and $|E_{G_1}| - |E_{G_0}| = 2$. Let $G = C_0 \dot \cup C_0$ with the occurrences $p_1: C_0 \inj G$ and $p_2: C_0 \inj G$, such that $p_i \models \exists(a_1':C_0 \inj C' \true)$ for $C' = C_1 \setminus \{e\}$ with $e \in E_{C_1}$ and $ i = 1,2$. It follows that $\nvc(1,G) = 2$.
+\item Let $c = \forall(a_0: \emptyset \inj C_0, \exists(a_1: C_0 \inj C_1, \true))$ be a constraint.
+Let $V_{C_0} = V_{C_1}$ and $|E_{C_1}| - |E_{C_0}| = 2$. Let $G = C' \dot \cup C'$ with $C' = C_1 \setminus \{e\}$ with $e \in E_{C_1}\setminus E_{C_0} $ and the occurrences $p_1: C_0 \inj G$ and $p_2: C_0 \inj G$ be given. It follows that $\nvc(1,G) = 2$.
 Let $t: G \Longrightarrow H$ be a transformation, such that $H = C_0$. 
-Then, $t$ is a consistency improving transformation, since $H$ contains only one occurrence of $C_0$ not satisfying $\exists(a_1':C_0 \inj C' \true)$ and $t$ is not minimal consistency improving since $\nvc(1,H) = 4$.
+Then, $t$ is a direct consistency improving transformation, since $H$ contains only one occurrence of $C_0$ not satisfying $\exists(a_1:C_0 \inj C_1 \true)$. But, $t$ is not minimal consistency improving since $\nvc(1,H) = 3$.
+
+\item Let $c := \forall(a_0: \emptyset \inj C_0, \exists(a_1: C_0 \inj C_1, \forall(a_2: C_1 \inj C_2, \exists(a_3: C_2 \inj C_3, \true))))$ be a constraint.
+
+Let a graph $G = C_0$ with the morphism $q: C_0 \inj G$ and a transformation $t: G \Longrightarrow H$ with $H := C_2 \dot{\cup} C_2$ be given, such that $\track_t \circ q$ is total. 
+	Then $t$ is a direct minimal consistency improving transformation but not a consistency sustaining one, since $H$ contains more occurrences of $C_0$ not satisfying $\exists(a_1: C_0 \inj C_1, \forall(a_2: C_1 \inj C_2, \exists(a_3: C_2 \inj C_3, \true)))$ than $G$. 
 \end{enumerate}
+
+
 
 \end{proof}
 
-\begin{enumerate}
-\item Ein Test
-\item Ein zweiter Test, Hallo
-\end{enumerate}
+
+
