@@ -27,13 +27,13 @@ The overlap shifted graph of an graph $C$ is denoted by $\ols_{\rho}(C,C')$.
 
 
 
-\begin{definition}[\textbf{application condition}]
+\begin{definition}[\textbf{application condition}]\label{def_appl_cond}
 Let $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule and $c$ a constraint in EANF. 
 Let $d = \forall(a_k: C_{k-1} \inj C_{k},\exists(a_{k+1}: C_{k} \inj C_{k+1},e))$ be the subcondition of $c$ at layer $k$ with $k$ being and even number.
 
 The application condition $\ap_k$ of $c$ at layer $k$ with $C' \in \mathcal{U}(C_k, C_{k+1})$ and $i:C_k \inj C'$ is defined as:
 \begin{equation}
-\ap(k,C') := \big(\bigvee_{P \in \overlay(L,C_k)} \nex(P,C') \wedge \rep(P,C')\big) \wedge \nin \wedge \rem
+\ap(k,C') := \big(\bigvee_{P \in \overlay(L,C_k)} \nex(P,C') \wedge \rep(P,C')\big) \wedge \nin \wedge \rem \wedge \nwo
 \end{equation}
 
 with
@@ -47,7 +47,7 @@ with
 			$$
 			
 	
-\item Let $\mathbf{P}$ be the set of all overlaps of $R$ and $C'$, such that $i_R(R\setminus K) \cap i_{C'} \neq \emptyset$:
+\item Let $\mathbf{P}$ be the set of all overlaps of $R$ and $C'$, such that $i_R(R\setminus K) \cap i_{C'}(C') \neq \emptyset$:
 \begin{enumerate}
 	\item If $C_k = C_{k+1}$: 
 		$$ \rep(P,C') := \begin{cases}
@@ -60,11 +60,14 @@ with
 						\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R: R \inj P', \true), \rho) &\textit{, otherwise}
 					 \end{cases}$$
 \end{enumerate}					 
-\item Let $E$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being even and let $\mathbf{P}_{C_j}$ be the set all overlaps of $L$ and $C_j$ with $i_L(L \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$. 
+\item Let $E$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being odd and let $\mathbf{P}_{C_j}$ be the set all overlaps of $L$ and $C_j$ with $i_L(L \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$. 
 $$\rem := \bigwedge_{C \in E} \bigwedge_{C' \in  \mathbf{P}_{C_j}} \neg \exists(i_L: L \inj C', \true)$$
 
-\item Let $U$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being odd and let $\mathbf{P_{C_j}} $ be the set of all overlaps of $R$ and $C_j$ with $i_R(R \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$.
+\item Let $U$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being even and let $\mathbf{P_{C_j}} $ be the set of all overlaps of $R$ and $C_j$ with $i_R(R \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$.
 $$\nin := \bigwedge_{C \in U} \bigwedge_{C' \in \mathbf{P}_{C_j}} \shift(\neg \exists(i_R: R \inj C', \true), \rho)$$
+
+\item Let $E$ be the set of all overlaps of $L$ and $C_k$, such that each $P \in E$ is also an overlap of $L$ and $C'' \in \mathcal{U}(C_k, C_{k+1})$, $i_{C_k} \models \exists(a'_k: C_k \inj C'', \true)$ and  $i_L(L\setminus K) \cap i_{C''}(C'' \setminus C_k) \neq \emptyset$.
+$$\nwo := \bigwedge_{P \in E} \neg \exists(i_L: L \inj P, \true) $$
 \end{enumerate}
 \end{definition}
 
@@ -73,57 +76,57 @@ $$\nin := \bigwedge_{C \in U} \bigwedge_{C' \in \mathbf{P}_{C_j}} \shift(\neg \e
 
 
 \begin{lemma}
-Let $G$ be a graph, $c$ a constraint in EANF, with $G \not \models c$, and $r$ a plain rule.
-Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax$. 
-Then, every application of $(r,\ap(\cmax, C'))$ with $$C' \in \bigcap_{C \in \mathcal{G}_c^G} \mathcal{U}(C, C_{k+1})$$ is direct minimal consistency improving. 
+Let a graph $G$, a constraint $c$ in EANF, with $G \not \models c$, and a plain rule $\rho$ be given. 
+Then, the rule $\rho'(\rho, \ap(\maxc{G},C))$ for a graph $C \in \mathcal{U}(C_{\maxc{G}}, C_{\maxc{G}+1})$ is a minimal consistency improving rule.  
 
 \end{lemma}
 \begin{proof}
+Let $t: G \Longrightarrow_{\rho', m} H$ be a transformation and $k = \maxc{G}+1$. 
+We show, by contradiction, that this transformation is direct minimal consistency improving by showing that (\ref{direct_improving_1}), (\ref{direct_improving_1_2}), (\ref{direct_improving_2}), (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. 
+With that, it follows that $\rho'$ is a minimal consistency improving rule. 
+Let $d = \forall(a_k: C_k \inj C_{k+1},e)$ be the subcondition of $c$ at layer $k$. 
 
+\begin{enumerate}
+\item Assume that (\ref{direct_improving_1}) does not hold. 
+Then, there does exist an morphism $p: C_k \inj G$, such that $p \models \parcond(1,e,C')$, $\track_t \circ p$ is total and $\track_t \circ p \not \models \parcond(1,e,C')$ for a graph $C' \in \mathcal{U}(C_k, C_{k+1})$. 
+There has to exist an overlap $P$ of $L$ and $C'$ such that $i_{C_k} \models \exists(a^p_k: C_k \inj C', \true)$ and $m \models \exists(i_L: L \inj P, \true)$. 
+Then, $\nwo$ and with that $\ap(\maxc{G},C)$ is not satisfied. 
+
+\item Assume that  (\ref{direct_improving_1_2}) does not hold. Then, a morphism $p': C_k \inj H$ with $p' \not \models \parcond(1,e,C_{k+1})$ exists, such that there does not exist a morphism $p :C_k \inj G$ with $\track_t \circ p = p'$. 
+Then, an overlap $P$ of $R$ and $C_k$ with $i_R(R\setminus K) \cap i_R(C_k) \neq \emptyset$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$. 
+Then, $m \not \models \ap(\maxc{G},C)$. 
+
+\item Assume that (\ref{direct_improving_2}) does not hold. 
+Then, there does not exist a morphism $p: C_k \inj G$ with $p \not \models \parcond(1,e,C)$, such that $\track_t \circ p$ is not total or $\track_t \circ p \models \parcond(1,e,C)$ and $\track_t \circ p$ is total.
+Then, no overlap $P$ of $L$ and $C_k$ with $i_L(L\setminus K) \cap i_{C_k}(C_k) \neq \emptyset$ exists, such that $m \models \nex(P,C)$.
+Also, no overlap $P$ of $C$ and $R$ with $i_R(R\setminus K) \cap i_{C}(C) \neq \emptyset$ and $m \models \nex(P,C)$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$ and therefore $\rep(P,C) = \false$. 
+It follows that for all $P \in \overlay(L,C_k)$ it holds that $\nex(P,C) \wedge \rep(P,C) = \false$ and with that $m \not \models \ap(\maxc{G}, C)$.
+
+\item Assume that (\ref{direct_improving_3}) does not hold.
+Then, there does exist a morphism $p: C_j \inj G$ with $j < k$ and $i$ being even, such that no morphism $p': C_j \inj G$ with $\track_t \circ p' = p$ exists. 
+Then, an overlap $P$ of $C_j$ and $R$ with $i_R(R \setminus K) \cap i_{C_j} \neq \emptyset$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$. 
+It follows that $m \not \models \rem$ and with that $m \not \models \ap(\maxc{G}, C)$. 
+
+\item Assume that (\ref{direct_improving_4}) does not hold.
+Then, there does exist and morphism $p :C_j \inj G$ with $j < k$ and $j$ being odd, such that $\track_t \circ p$ is not total. 
+Then, an overlap $P$ of $C_j$ and $L$ with $i_L(L \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$ exists, such that $m \models \exists(i_L:L \inj P, \true)$. 
+It follows that $m \not \models \rem$ and with that $m \not \models \ap(\maxc{G}, C)$.
+
+\end{enumerate}
+In total follows that if $m \models \ap(\maxc{G}, C)$, then $t$ is a direct minimal improving transformation. 
 \end{proof}
 
 \begin{lemma}
-Let $G$ be a graph, $c$ a constraint in EANF, with $\cmax < \nl(c)$,  and $r = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
-Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax + 1$ and $\ap(\cmax, C')$ the application condition constructed by definition \ref{general_app_cond} with $C'\in \mathcal{U}(C, C_{k+1})$ for any $C \in \mathcal{G}_c^G$.
-The following simplifications can be applied:
-
-\begin{enumerate}
-	\item \label{simplification_appl_1}
-	Let $P \in \overlay(L,C_{k})$. 
-		  If an injective morphism $p : P \inj G$ does not exist, $\nex(P,C')$ can be replaced by $\false$.
-	\item \label{simplification_appl_2}
-	If $(L\setminus K) \cap C_{k} = \emptyset$, every $\del(P,C')$ can be replaced by $\false$ and $\ex(P,C')$ can be replaced by $\true$. 
-	\item \label{simplification_appl_3}
-	If $(R\setminus K) \cap C' = \emptyset$, every $\rep(P,C')$ can be replaced by $\false$.
-	\item \label{simplification_appl_4}
-	If \ref{simplification_appl_2}. and \ref{simplification_appl_3}. apply, $\ap(k,C')$ can be replaced by $\false$. 
-	\item \label{simplification_appl_5}
-	If $(R \setminus K) \cap C_{k+1} = \emptyset$, every $\rem(P,C')$ can be replaced by $\true$.
-	
-\end{enumerate}
+Let $G$ be a graph, $c$ a constraint in EANF, with $\maxc{G} < \nl(c)$,  and $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
+Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax + 1$ and $\ap(\cmax, C')$ the application condition constructed by definition \ref{def_appl_cond} with $C'\in \mathcal{U}(C, C_{k+1})$ for any $C \in \mathcal{G}_c^G$.
+If 
+$$((R \setminus K) \cap C_{k+1}) \cup ((L \setminus K) \cap C_{k+1}) = \emptyset$$
+$\ap(\cmax, C')$ can be replaced by $\false$. 
 \end{lemma}
 \begin{proof}
-Let $m: L \inj G$ be the match of the application of $r$. 
-We show the simplifications by showing that the replaced parts of $\ap(\cmax,C')$ will be evaluated to the values they have been replaced with, if the required conditions are met. 
-Note that $C_j \subseteq C_{k'}$ for all $0 \leq j \leq k'$ and $k' \in \{0, \ldots, \nl(c)\}$.  
-\begin{itemize}
-\item Proof of \ref{simplification_appl_1}.: Let $P \in \overlay(L,C_k)$ with $a: L \inj P$, such that no morphism $p: P \inj G$ exists. 
-Therefore, no morphism $q: P \inj G$ with $m = p \circ a$ exists and $\nex(P,C')$ will be evaluated to $\false$. 
-
-\item Proof of \ref{simplification_appl_2}.: Let $(L \setminus K) \cap C_k = \emptyset$ and $P \in \overlay(L,C_k)$ with $i': L \inj P$ and $i_j:C_j \inj P$ for all $j \leq k$.
-If follows that $i'(L \setminus K) \cap i_k(C_k \setminus C_{k-1}) = \emptyset$ and with that $\del(P, C') = \false$ for every  $P \in \overlay(L,C_k)$.
-Similar it follows that $$\bigcup_{j \leq k} i_j(C_j \setminus C_{j-1}) \cap i'(L \setminus K) = \emptyset$$ and with that $\ex(P,C') = \true$ for every  $P \in \overlay(L,C_k)$.
-
-\item Proof of \ref{simplification_appl_3}.: work in progress. 
-
-\item Proof of \ref{simplification_appl_4}.: Let the simplifications \ref{simplification_appl_2}. and \ref{simplification_appl_3}. apply. 
-Every $\del(P,C')$ and every $\rep(P,C')$ have been replaced by $\false$. 
-Therefore, the expression $$\bigvee_{P \in \overlay(L, C_{k})} \nex(P, C') \wedge (\rep(P, C') \vee \del(P,C'))$$ will be evaluated to $\false$ and with that $\ap(k,C')$ will also be evaluated to $\false$.
-
-\item Proof of \ref{simplification_appl_5}.: Let $(R \setminus K) \cap C_{k+1} = \emptyset$ and $P \in \overlay(R, C_{k+1})$ with the morphisms $i':R \inj P$ and $i_j:C_j \inj P$ for all $j \leq k$.   
-If follows that $$\bigcup_{j \leq k} i'(R\setminus K) \cap i_j(C_j\setminus C_{j-1}) = \emptyset.$$
-Therefore $\rem(P,C') = \true$ for all $P \in \overlay(R, C_{k+1})$.
-\end{itemize}
+There does not exist an overlap $P$ of $C_k$ and $L$ with $i_L(L \setminus K) \cap i_{C_k}(C_k) \neq \emptyset$ and $\rep(P,C')$ will be equal to $\false$, if $C_k = C_{k+1}$, or equal to $\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R: R \inj P', \true), \rho)$. 
+Since the set $\mathbf{P}$ has to be empty, this expression can be replaced by $\false$. 
+If follows that $\rep(P,C') = \false$ for all $P \in \overlay(L,C_k)$ and therefore $\ap(\cmax, C')$ will always be evaluated to $\false$.
 \end{proof}
 
 \input{Kapitel/pot_improving_rules}
