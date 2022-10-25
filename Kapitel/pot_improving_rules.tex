@@ -63,41 +63,47 @@ with $b$ being a partial morphism of $a_{k+1}$.
 \end{definition}
 
 \begin{theorem}\label{api_direct_proof}
-Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\cmax, c, C)$ and $\parcond(\cmax, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $\cmax$ with $C_{\cmax+1}\subseteq P \subseteq C_{\cmax+2}$ be given. 
-Then, $\rho' = (\rho, \api(\cmax+1,P))$ is a direct minimal consistency improving rule. 
+Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\maxc{G}, c, C)$ and $\parcond(\maxc{G}, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $\maxc{G}$ with $C_{\cmax+1}\subseteq P \subseteq C_{\cmax+2}$ be given. 
+Then, $\rho' = (\rho, \api(\maxc{G}+1,P))$ is a direct minimal consistency improving rule. 
 \end{theorem}
 \begin{proof}
-Let $t:G \Longrightarrow_{\rho',m} H$ be a transformation, $k = \cmax+1$ and $e$ be the subcondition of $c$ at layer $k+1$. 
+Let $t:G \Longrightarrow_{\rho',m} H$ be a transformation, $k = \maxc{G}+1$ and $e$ be the subcondition of $c$ at layer $k$. 
 We show that $t$ is a direct minimal consistency improving transformation.
-Firstly, we show that equation (\ref{direct_improving_1}) is satisfied.
+First, we show that equation (\ref{direct_improving_1}) is satisfied.
 Let $p: C_{k} \inj G$ be a morphism. 
 If $\rho$ is a deleting potentially minimal improving rule, either \ref{proof_api_1}. or  \ref{proof_api_2}. applies, if $\rho$ is an inserting and not a deleting potentially  minimal improving rule, only \ref{proof_api_2}. applies, because $\rho$ cannot destroy any occurrences of $C_k$ in $G$. 
 \begin{enumerate}
-	\item\label{proof_api_1} If $p(C_k) \cap m(L\setminus K) \neq \emptyset$, $\track_t \circ p$ is not total, since at least one element of $p(C_k)$ has been deleted by $t$ and $p$ does satisfy $\bigwedge_{C' \in \mathbf{G}}(p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,e,C'))$. 
+	\item\label{proof_api_1} If $p(C_k) \cap m(L\setminus K) \neq \emptyset$, $\track_t \circ p$ is not total, since at least one element of $p(C_k)$ has been deleted by $t$ and $p$ does satisfy $\bigwedge_{C' \in \mathcal{U}(C_k, C_{k+1})}(p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,e,C'))$. 
 	\item\label{proof_api_2} If $p(C_k) \cap m(L\setminus K) = \emptyset$, $\track_t \circ p$ is total, since no element of $p(C_k)$ has been deleted by $t$.  
-	Because (\ref{pot_1}) holds, $t$ does not delete any elements of $C_{k+1}\setminus C_k$ and therefore $p \models \parcond(1,e,C') \implies \track_t \circ p \models \parcond(1,e,C')$ for all $C_k \subseteq C' \subseteq C_{k+1}$.
+	Because (\ref{pot_1}) holds, $t$ does not delete any elements of $C_{k+1}\setminus C_k$ and $p \models \parcond(1,e,C') \implies \track_t \circ p \models \parcond(1,e,C')$ for all $C' \in \mathcal(U) (C_k, C_{k+1})$.
 \end{enumerate} 
 With \ref{proof_api_1}. and  \ref{proof_api_2}. follows that (\ref{direct_improving_1}) is satisfied. 
 
-Secondly, we show that equation (\ref{direct_improving_1_2}) is satisfied.
+Second, we show that equation (\ref{direct_improving_1_2}) is satisfied.
 Let $p':C_k \inj H$ be a morphism. 
-Because (\ref{pot_2}) is satisfied, $t$ does not create any elements of $C_k$ and therefore, there must exist an morphism $p : C_k \inj G$ with $\track_t \circ p = p'$. If follows that (\ref{direct_improving_1_2}) is satisfied. 
+Because (\ref{pot_2}) is satisfied, $t$ does not create any elements of $C_k$ and there must exist a morphism $p : C_k \inj G$ with $\track_t \circ p = p'$. If follows that (\ref{direct_improving_1_2}) is satisfied. 
 
-Lasty, we show that (\ref{direct_improving_2}) is satisfied. 
+Third, we show that (\ref{direct_improving_2}) is satisfied. 
 We consider the cases that firstly, $\rho$ is a deleting minimal potentially improving rule and secondly, that $\rho$ is an inserting and not a deleting minimal potentially improving rule. 
 
 \begin{enumerate}
 \item If $\rho$ is a deleting potentially minimal improving rule, the condition $\api(k,P) = \exists\bigl(b: L \inj C_{k}, \neg \exists(a_{k+2}:C_{k} \inj C_{k+1}, \true)\bigr)$ is satisfied by $m$. 
 Therefore a morphism $p :C_k \inj G$ with $p \not \models \neg \exists(a_{k+1}:C_k \inj C_{k+1}, \true) = \parcond(1,e,C_{k+1})$ and $m = p \circ b$ must exist. 
-Since $\rho$ is a deleting rule, at least one element of $p(C_k)$ has been deleted by $t$ and therefore $\track_t \circ p$ is not total. 
+Since $\rho$ is a deleting rule, at least one element of $p(C_k)$ has been deleted by $t$ and $\track_t \circ p$ is not total. 
 It follows that (\ref{direct_improving_2}) is satisfied. 
 
 \item 
 If $\rho$ is an inserting and not a deleting potentially minimal improving rule, $\api(k,P) = \neg \exists(b: L \inj P, \true)$ is satisfied by $m$. 
 Because $L = C_k$, $m \models \neg \exists(b: C_k \inj P, \true) = \parcond(1,e,P)$.
 Since (\ref{pot_ins}) is satisfied, $\track \circ p$ is total and $\track_t \circ p \models \parcond(1,e,P)$. Therefore, (\ref{direct_improving_2}) is satisfied. 
-In total follows that $t$ is a direct minimal consistency improving transformation and therefore $r'$ is direct minimal consistency improving rule. 
+
 \end{enumerate}
+
+Last, since (\ref{pot_2}) and (\ref{pot_1}) are satisfied, $\rho$ cannot create any occurrence of $C_j$ with $j \leq k$ and $j$ being even and $\rho$ cannot delete any occurrences of $C_j$ with $j \leq k$ and $j$ being odd. 
+Therefore, (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. 
+
+
+In total follows that $t$ is a direct minimal consistency improving transformation and $\rho'$ is a direct minimal consistency improving rule. 
 \end{proof}
 
 \begin{definition}[\textbf{repairing rule set}]

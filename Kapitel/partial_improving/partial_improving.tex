@@ -116,14 +116,14 @@ No occurrence of a universally bound graph $C_j$ with $j < k$ gets inserted.
 \begin{equation}\label{direct_improving_3}
 \bigwedge_{\substack{i < k \\ i \textit{ even}}} \forall p: C_i \inj H ( \exists p': C_i \inj G (p' = \track_t \circ p))
 \end{equation}
-No occurrence of an existentially bound graph $C_j$ with $j < k$ gets inserted. 
+No occurrence of an existentially bound graph $C_j$ with $j < k$ gets deleted. 
 \begin{equation}\label{direct_improving_4}
 \bigwedge_{\substack{i < k \\ i \textit{ odd}}} \forall p: C_i \inj G( \track_t \circ p \textit{ is total})
 \end{equation}
 
 \end{definition}
 
-\begin{lemma}
+\begin{lemma}\label{lemma_consistent}
 	Let a transformation $t: G \Longrightarrow H$ and a constraint $c$ in EANF be given, such that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) of definition \ref{def_direct_improving} are satisfied. Then,
 	$$H \models_{\maxc{G}} c.$$
 \end{lemma}
@@ -139,18 +139,19 @@ This is a contradiction.
 
 
 \begin{lemma}
-Let a graph $G$, a constraint $c$ and a direct minimal improving transformation $t: G \Rightarrow_{r,m} H$ w.r.t. $c$ be given. 
+Let a graph $G$, a constraint $c$ in EANF and a direct minimal improving transformation $t: G \Rightarrow_{r,m} H$ w.r.t. $c$ be given. 
 Then, $t$ is also a minimal improving transformation. 
 \end{lemma}
 
 \begin{proof}
 
-Let $G$ be a graph with $k = \cmax$ and $G \models \parcond(k,c,C)$ with $\parcond(k,c,C)\in \mathcal{P}_c^G$
-Let $d$ be the subcondition of $c$ at layer $k+1$.
+Let $G$ be a graph with $k = \maxc{G}+1$ and $G \models \parcond(k,c,C)$ with $\parcond(k,c,C)\in \mathcal{P}_c^G$
+Let $d$ be the subcondition of $c$ at layer $k$.
+With lemma \ref{lemma_consistent} follows that $\maxc{H} \geq \maxc{G}$ and with that $\nvc(k,H) \neq \infty$.
 
 \begin{enumerate}
 \item \label{proof_direct_minimal_4} We show that equations (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply that $\nvc(k,H) \leq \nvc(k,G)$. 
-Assume that $\nvc(k,H) > \nvc(k,G)$. Therefore, a morphism $p: C_k \inj G$ with $p \not \models \parcond(1,d,C')$ for any $C' \in \mathcal{U}(C,C_{k+1})$ exists, such that either \ref{proof_direct_minimal_1} or \ref{proof_direct_minimal_2} is satisfied.
+Assume that $\nvc(k,H) > \nvc(k,G)$. Therefore, a morphism $p: C_k \inj H$ with $p \not \models \parcond(1,d,C')$ for any $C' \in \mathcal{U}(C,C_{k+1})$ exists, such that either \ref{proof_direct_minimal_1} or \ref{proof_direct_minimal_2} is satisfied.
 \begin{enumerate}
 	\item \label{proof_direct_minimal_1}
 		There does exist a morphism $q': C_k \inj G$ with $q' \models \parcond(1,d,C')$ and $p = \track_t \circ q'$. 
@@ -159,21 +160,24 @@ Assume that $\nvc(k,H) > \nvc(k,G)$. Therefore, a morphism $p: C_k \inj G$ with 
 		There does not exist a morphism $q : C_k \inj G$, such that $p = \track_t \circ q$. 		
 \end{enumerate}
 This is a contradiction, if \ref{proof_direct_minimal_1} is satisfied, $q'$ does not satisfy equation (\ref{direct_improving_1}) and if \ref{proof_direct_minimal_2} is satisfied $q$ does not satisfy equation (\ref{direct_improving_1_2}).
+It also follows that 
+$$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| \leq |\{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}|$$
+for all $C' \in \mathcal{U}(C_k, C_{k+1})$.
 
-\item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied, a morphism $p:C_k \inj G$ with $p \not \models \parcond(1,d,C')$, such that either $\track \circ p$ is total and $p  \models \parcond(1,d,C')$ or $\track \circ p$ is not total exists, for any $C' \in \mathbf{G}$.
+\item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied, a morphism $p:C_k \inj G$ with $p \not \models \parcond(1,d,C')$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \parcond(1,d,C')$ or $\track \circ p$ is not total exists, for any $C' \in \mathcal{U}(C_k, C_{k+1})$.
 In both cases the following holds 
 \begin{equation*}
 \begin{split}
 	p &\in \{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\} \wedge \\
-	\track \circ p &\notin \{q \mid q:C_{k+2} \inj H \wedge q \not \models \parcond(1,e,C')\}.
+	\track \circ p &\notin \{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}.
 \end{split}
 \end{equation*}
-With that and \ref{proof_direct_minimal_4} it follows that
-$$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| < |\{q \mid q:C_{k+2} \inj H \wedge q \not \models \parcond(1,e,C')\}|.$$
+With that and \ref{proof_direct_minimal_4}. it follows that
+$$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| < |\{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}|.$$
 
 
 \end{enumerate}
-With \ref{proof_direct_minimal_4} and \ref{proof_direct_minimal_3} follows that $\nvc(k,G) < \nvc(k,G)$ and therefore $t$ is a minimal improving transformation. 
+In total  $\nvc(k,H) < \nvc(k,G)$ follows and  $t$ is a minimal improving transformation. 
 \end{proof}
 
 \subsection{Comparison with other consistency concepts}
