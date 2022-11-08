@@ -105,10 +105,10 @@ Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,e,C_{k+1})$.
 \forall p': C_{k} \inj H \big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \ p' \models \parcond(1,e,C_{k+1})\big)
 \end{split}
 \end{equation}
-At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathcal{U}(C_k, C_{k+1})$, either has been destroyed by $t$ or satisfies $\parcond(1,e,C')$ in $H$. 
+At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathcal{U}(C_k, C_{k+1})$, either has been destroyed by $t$ or satisfies $\parcond(1,e,C')$ in $H$.
 \begin{equation}\label{direct_improving_2}
 \begin{split}
-\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathcal{U}(C_k, C_{k+1})}\big( p \not \models \parcond(1,e,C') &\wedge (\track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{ is total } \wedge \track_t \circ p  \models \parcond(1,e,C')))\big) \Big) 
+\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathcal{U}(C_k, C_{k+1})}\big( &p \not \models \parcond(1,e,C') \wedge (\track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{ is total } \wedge \track_t \circ p  \models \parcond(1,e,C')))\big) \Big) 
 \end{split}
 \end{equation}
 
@@ -164,7 +164,7 @@ It also follows that
 $$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| \leq |\{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}|$$
 for all $C' \in \mathcal{U}(C_k, C_{k+1})$.
 
-\item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied, a morphism $p:C_k \inj G$ with $p \not \models \parcond(1,d,C')$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \parcond(1,d,C')$ or $\track \circ p$ is not total exists, for any $C' \in \mathcal{U}(C_k, C_{k+1})$.
+\item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied,  a morphism $p:C_k \inj G$ with $p \not \models \parcond(1,d,C')$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \parcond(1,d,C')$ or $\track \circ p$ is not total exists, for any $C' \in \mathcal{U}(C_k, C_{k+1})$.
 In both cases the following holds 
 \begin{equation*}
 \begin{split}
@@ -251,10 +251,18 @@ Then, $t$ is a direct consistency improving transformation, since $H$ contains o
 Let a graph $G = C_0$ with the morphism $q: C_0 \inj G$ and a transformation $t: G \Longrightarrow H$ with $H := C_2 \dot{\cup} C_2$ be given, such that $\track_t \circ q$ is total. 
 	Then $t$ is a direct minimal consistency improving transformation but not a consistency sustaining one, since $H$ contains more occurrences of $C_0$ not satisfying $\exists(a_1: C_0 \inj C_1, \forall(a_2: C_1 \inj C_2, \exists(a_3: C_2 \inj C_3, \true)))$ than $G$. 
 \end{enumerate}
-
-
-
 \end{proof}
 
+\begin{lemma}
+Let a universally bound constraint $c$ with $\nl(c) \geq 2$ in ANF, graphs $G$ and $H$ with $G \not \models c$ and a transformation $t: G \Longrightarrow H$ be given. 
+If $t$ satisfies $(\ref{direct_improving_1})$ and $(\ref{direct_improving_1_2})$, $H \models_{\maxc{G}} c$ and 
+$$\exists p:C_0 \inj G(p \not \models \parcond(\maxc{G} + 2, c, \true) \wedge \track_t \circ p \models c).$$
+Then,  
+$$t \text{ is consistency improving} \implies t \text{ is minimal consistency improving}.$$ 
+
+\end{lemma}
+\begin{proof}
+
+\end{proof}
 
 

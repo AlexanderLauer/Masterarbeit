@@ -5,42 +5,62 @@ The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) -1$.
 
 
 \end{definition}
+We define a notion of partial consistency, called \emph{satisfaction at layer}, which will be used for the definition of consistency increasing. 
+First, two operators are introduced to modify given constraints on a certain layer. 
 
 \begin{definition}[\textbf{substitution at layer}]
 Let $c = Q(a: C_0 \inj C_1, d)$ be a condition in ANF, such that the subcondition of $c$ with layer $0 \leq k \leq \nl(c)$ is a condition over $C_k$. 
 Let $e$ be a condition over $C_k$. 
 The \emph{substitution in $c$  at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
 \begin{enumerate}
-\item If $k = 0$:
+\item If $k \leq 1$:
 		$$\sub(0, c, e) := e$$
 
-\item If $k > 0$:
+\item If $k > 1$:
 		$$\sub(k,c,e) := Q\bigl(a: C_0 \inj C_1, \sub(k-1,d,e)\bigr)$$
 		
 \end{enumerate}
 \end{definition}
 
+\begin{example}
+Let the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $d = \exists(a'_1: C_1 \inj C_3, e)$ be given. 
+Then, 
+$$\sub(2, c,d) = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$ 
+\end{example}
 
+Through this, we define \emph{condition up to layer}.
+Intuitively, a condition is cut off at a certain layer, by replacing the subcondition at this layer by $\true$ or $\false$, depending on the quantifier, the replaced subcondition is bound by.
 \begin{definition}[\textbf{Condition up to layer}]
-Let $c$ be a condition in ANF and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
+Let $c$ be a condition in EANF and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
 The \emph{condition up to layer} $k$ of $c$, $\cond(k,c)$, is defined as
 
 $$ \cond(k,c) := \begin{cases}
-					\sub(k,c,\true)&, \text{if } k = 0 \vee \text{$d$ is existentially bound} \\
-					\sub(k,c,\false)&, \text{if $d$ is universally bound.} \\
+					\sub(k+1,c,\true)&\text{if $d$ is existentially bound} \\
+					\sub(k+1,c,\false)&\text{if $d$ is universally bound.} \\
 				\end{cases}$$
 
 \end{definition}
 
-
-\begin{definition}[\textbf{Satisfaction up to layer}]
+\begin{example}
+Let the condition $c = \forall(a_0: C_0 \inj C_1, \exists(a_1:C_1 \inj C_2, d))$ be given. 
+Then,
+$$ \cond(2,c) = \forall(a_0: C_0 \inj C_1, \true).$$
+\end{example}
+Now, we are ready to define satisfaction at layer, which is a key ingredient to define consistency increasing. 
+\begin{definition}[\textbf{Satisfaction at layer}]
 Let $G$ be a graph and $c$ be a condition over $C_0$. 
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ up to layer $k$}, $p \models_k c$, if $$p\models \cond(k,c).$$
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $k$}, $p \models_k c$, if $$p\models \cond(k,c).$$
 
-A graph $G$ satisfies a constraint $c$ up to layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cond(k,c)$.
-The biggest $k$ with $G \models_k c$ such that no $j >k$ with $G \models_j c$ exists is denoted by $c_{\max}$.
+A graph $G$ satisfies a constraint $c$ at layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cond(k,c)$.
+The biggest $k$ with $G \models_k c$ such that no $j >k$ with $G \models_j c$ exists is denoted by $\maxc{G}$.
 \end{definition}
 
+\begin{example}
+\end{example}
+
+
+The following lemmas arise as a direct consequence of the definition of satisfaction at layer. 
+If a graph satisfies a constraint up to a certain layer, let $c$ be this condition up to this layer, that ends with  $\forall(a: C \inj C', \false)$, the graph satisfies all constraints starting with $c$. 
 
 \begin{lemma}\label{lemma_help_lay_sat}
 Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
@@ -61,7 +81,7 @@ Hence, for every condition $f$ over $C_k$ a morphism $q': C_k \to G$ with $q \no
 It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$.
 \end{proof}
 
-
+As a direct consequence of the previous lemma, a graph satisfying a condition up to layer ending with $\forall(a: C \inj C', \false)$ also satisfies the whole constraint. 
 
 \begin{lemma}\label{lemma_lay_sat}
 

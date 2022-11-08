@@ -1,49 +1,40 @@
 \subsection{extended alternating quantifier normal form}
+To prevent the need of case discrimination, a new normal form for conditions, called \emph{extended alternating quantifier normal form} (EANF), will be introduced. 
+The sets of conditions in ANF and EANF do intersect and we show that both sets are expressively equivalent. 
 
 \begin{definition}[\textbf{extended alternating quantifier normal form}]
-A condition $c$ is in \emph{extended alternating quantifier normal form} (EANF) if it is in ANF, universally bound and ends with a condition of the form $\exists(a_k : C_k \inj C_{k+1}, e)$ with $e \in \{\true, \false\}$.
+A conditions $c$ is in \emph{extended alternating quantifier normal form} (EANF) if it is of the form $\forall(a_0:C_0 \inj C_1,d)$ and $d$ is a condition in ANF.
 \end{definition}
-Note that, given a condition $c$ in EANF, every subcondition of $c$ at layer $1 \leq k \leq \nl(c)$ is universally bound, if $k$ is an odd number and existentially bound, if $k$ is an even number. Additionally, $\nl(c)$ is always an even number. 
+
+
+Note that, given a condition $c$ in EANF, every subcondition of $c$ at layer $1 \leq k \leq \nl(c)$ is universally bound, if $k$ is an odd number and existentially bound, if $k$ is an even number.  
+
+
+
 \begin{lemma}
-Any condition in ANF can be transformed into an equivalent condition in EANF. 
+Any condition in ANF can be transformed into an equivalent condition in EANF and vice versa. 
 \end{lemma}
 
 \begin{proof}
-Let $c$ be a condition in ANF. 
-If $c$ is universally bound and ends with a condition of the form $\exists(a_k: C_k \inj C_{k+1},e)$ with $e \in \{\true, \false\}$, $c$ is already in EANF. 
-We construct the equivalent condition in EANF by two steps and show that, after each step, the constructed condition is equivalent to $c$. 
-
-\begin{enumerate}
-	\item If $c = \exists(a_1: C_0 \inj C_1,e)$ is existentially bound, we show that $c$ is equivalent to $d := \forall(\id_{C_0}: C_0 \inj C_0, c)$.
-Let $G$ be a graph.
 
 \enquote{$\Longrightarrow$}:
-Let $p: C_0 \inj G$ be a morphism with $p \models c$, therefore a morphism $q : C_0 \to G$ with $q \models e$ and $p = q \circ a_1$ exists.
+Let a graph $G$ and a constraint $c$ in ANF be given.
+If $c$ is universally, $c$ is already in EANF. 
+
+If $c = \exists(a_0: C_0 \inj C_1,d)$, we show that $c$ is equivalent to $c' := \forall(\id_{C_0}: C_0 \inj C_0, c)$.
+\begin{enumerate}
+\item 
+Let $p :C_0 \inj G$ be a morphism, such that $q \models c$. 
+Therefore a morphism $q : C_0 \to G$ with $q \models e$ and $p = q \circ a_1$ exists.
 Then, $p \models d$, since $p$ is the only morphism from $C_0$ to $G$ with $p = p \circ \id_{C_0}$ and $p \models c$. 
 
+\item 
+Let $p:C_0 \inj G$ be a morphism with $p \models c'$, therefore all morphisms $q:C_0 \inj G$ with $p = q \circ \id_{C_0}$ satisfy $c$. Since $p = p \circ \id_{C_0}$, $p \models c$ follows immediately.
+\end{enumerate}
 \enquote{$\Longleftarrow$}:
-Let $p: C_0 \inj G$ be a morphism with $p \models d$, therefore all morphisms $q : C_0 \inj G$ with $p = q \circ \id_{C_0}$ satisfy $c$. 
-Since $p = p \circ \id_{C_0}$, $p \models c$ follows immediately.
+Let a graph $G$ and a constraint $c$ in EANF be given. 
+If $c = \forall(a_0: C_0 \inj C_1,d)$ with $C_0 \neq C_1$, $c$ is already in ANF. 
 
-\item If $c$ ends with a condition of the form $ d := \forall(a_k: C_k \inj C_{k+1}, e)$ with $e \in \{ \true, \false\}$, we show that $d$ is equivalent to $d' := \forall(a_k: C_k \inj C_{k+1}, \exists(\id_{C_{k+1}}: C_{k+1} \inj C_{k+1}, e))$. 
-Let $G$ be a graph. 
+Otherwise, the equivalence of $c$ with $d$ can be shown analogously to the first case.
 
-\begin{enumerate}
-	\item If $e = \true$.
-	Let $p: C_k \inj G$ be a morphism, we show that $p \models d$ and $p \models d'$.
-	Since every morphism satisfies $\true$, a morphism $q: C_{k+1} \inj G$ with $p = q \circ a_k $ and $p \not \models \true$ cannot exist, therefore $p \models d$. 
-	The morphism $\id_{C_{k+1}}$ is the identity on $C_{k+1}$ and therefore for every $q: C_{k+1} \inj G$ with $p = q \circ a_k$ it holds that $q = q \circ \id_{C_{k+1}}$ and therefore $q \models \exists(\id_{C_{k+1}}: C_{k+1} \inj C_{k+1},\true)$. 
-	It follows that $p \models d'$. 
-	\item If $e = \false$:
-	
-	\enquote{$\Longrightarrow$}:
-	Let $p: C_k \inj G$ be a morphism with $p \models d$. 
-	Since $e = \false$,  no morphism $q: C_{k+1} \inj G$ with $p =q \circ a_k$ exists. 
-Therefore, no morphism $q: C_{k+1} \inj G$ with $p = q \circ a_k $ and $q \not \models \exists(\id_{C_{k+1}}: C_{k+1} \inj C_{k+1}, \false)$ exists. It follows that $p \models d'$.
-	
-	\enquote{$\Longleftarrow$}:
-	Let $p: C_k \inj G$ be a morphism with $p \models d'$.
-	Since no morphism satisfies $\false$, no morphism $q: C_{k+1} \inj G$ satisfies $\exists(\id_{C_{k+1}}: C_{k+1} \inj C_{k+1}, \false)$. Hence, there does not exist a morphism $q: C_{k+1} \inj G$ with $p = q\circ a_k$ and $p \models d$ follows. 
-\end{enumerate}
-\end{enumerate}
 \end{proof}
