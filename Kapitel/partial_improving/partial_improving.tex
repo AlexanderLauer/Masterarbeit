@@ -30,24 +30,6 @@ $$\nvc(j,G) := \sum_{C' \in \mathcal{U}(C_j,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj
 	
 \end{definition}
 
-\begin{lemma}\label{lem_ex_lower}
-Let a graph $G$, a morphism $p: C_0 \to G$ and a constraint $c$ in ANF over $C_0$ with $p \models_k c$ be given.
-Then, $p \models_j c$ for all $j < k$ such that the subcondition of $c$ at layer $j$ is existentially bound. 
-
-\end{lemma}
-\begin{proof}
-\begin{enumerate}
-	\item The subcondition of $c$ at layer $k$ is existentially bound:	
-	If an $j < k$ with $p \models_j c$ exists such that the subcondition of $c$ at layer $j$ is universally bound, let $j_1$ be the smallest of these. With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c $ for all $j_1 < j_2$.
-	Let $\ell < j_1$, such that the subcondition of $c$ at layer $\ell$ is existentially bound and let $d = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of the subcondition of $c$ at layer $\ell$. 
-	Since $\ell < j_1$, a morphism $q:  C_{\ell} \to G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\to G$ with $q = q' \circ a_k$ must exists. 
-	If follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
-	
-	\item The subcondition of $c$ at layer $k$ is universally bound:
-	With lemma \ref{lemma_help_lay_sat} follows that $p \models_{k+1} c$. 
-	Since $c$ is in ANF,  $1.$ can be applied  to $k+1$. 
-\end{enumerate}
-\end{proof}
 
 \begin{theorem}
 	Let a graph $G$, a rule $r$ and a constraint $c$ in ANF be given.

@@ -2,9 +2,14 @@
 \begin{definition}[\textbf{Layer of a subcondition}]
 Let $c$  be a condition and $d$ a subcondition of $c$. 
 The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) -1$. 
-
-
 \end{definition}
+
+\begin{definition}[\textbf{Subcondition at layer}]
+Let $c$ be a condition. 
+The \emph{subcondition at layer $k$}, denoted by $\scond{c}{k}$ , is the subcondition $d$ of $c$ with $\lay(d) = k$.
+\end{definition}
+
+
 We define a notion of partial consistency, called \emph{satisfaction at layer}, which will be used for the definition of consistency increasing. 
 First, two operators are introduced to modify given constraints on a certain layer. 
 
@@ -63,50 +68,72 @@ The following lemmas arise as a direct consequence of the definition of satisfac
 If a graph satisfies a constraint up to a certain layer, let $c$ be this condition up to this layer, that ends with  $\forall(a: C \inj C', \false)$, the graph satisfies all constraints starting with $c$. 
 
 \begin{lemma}\label{lemma_help_lay_sat}
-Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
+Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in EANF with $p \models_k c$.
 If the subcondition $d = Q(a_k:C_{k-1} \inj C_k, e)$ of $c$ at layer $k$ is universally bound, then for any condition $f$ over $C_k$ it holds that
-$$p \models \sub(k,c,f).$$
+$$p \models \sub(k + 1,c,f).$$
 \end{lemma}
 
 
 
 
 \begin{proof}
-Let $k$ be the smallest number such that $p \models_k c$ and the subcondition of $c$ with layer $k$ is universally bound, let $d = \forall(a_k: C_{k-1} \inj C_k, e)$ be this subcondition.
-Let $q: G_{k-1} \to G$ be a morphism such that $q \models \forall(a_k:C_{k-1} \inj C_k, \false)$. 
-This must exist, since $p \models_k c$ and $k$ is the smallest number such that $p \models_k v$ and the subcondition of $c$ with layer $k$ is universally bound. 
+Let $k$ be the smallest number with  $\scond{c}{k} = \forall(a_k:C_{k-1} \inj C_k, \false)$ being universally bound and $p \models_k c$.
+Let $q: G_{k-1} \inj G$ be a morphism such that $q \models \forall(a_k:C_{k-1} \inj C_k, \false)$. 
+This must exist, since $p \models_k c$ and $k$ is the smallest even number such that $p \models_k c$.
 
-Therefore, there does not exist a morphism $q': C_k \to G$ with $q = q' \circ a_k$.
-Hence, for every condition $f$ over $C_k$ a morphism $q': C_k \to G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
-It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$.
+Therefore, there does not exist a morphism $q': C_k \inj G$ with $q = q' \circ a_k$.
+Hence, for every condition $f$ over $C_k$ a morphism $q': C_k \inj G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
+It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$ and with that $p \models \sub(k + 1,c,f)$.
+For every $j >k$ even, such that $p \models_j c$, and every condition $d$ over $C_j$, with the first part, it holds that $p \models \sub(k + 1,c,f)$ with $f = \sub(j-k + 1, \scond{c}{k+1},d)$ and since $\sub(k+1,c,f) = \sub(j+1,c,d)$ it follows that $p \models \sub(j + 1,c,d)$.
 \end{proof}
 
 As a direct consequence of the previous lemma, a graph satisfying a condition up to layer ending with $\forall(a: C \inj C', \false)$ also satisfies the whole constraint. 
 
 \begin{lemma}\label{lemma_lay_sat}
 
-Let $G$ be a graph, $p: C_0 \to G$ a morphism and $c$ a condition over $C_0$ in ANF with $p \models_k c$.
-If the subcondition $d$ of $c$ with $\lay(d) = k$ is universally bound, $$p \models_k c \implies p \models c.$$
+Let $G$ be a graph, $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in EANF with $p \models_k c$.
+If $\scond{c}{k}$ is universally bound, $$p \models_k c \implies p \models c.$$
 \end{lemma}
 \begin{proof}
-Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to the subcondition of $c$ with layer $k+1$.
+Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to $\scond{c}{k+1}$.
 \end{proof}
 
 
 
-\begin{lemma}\label{lemma_part_satisfiability}
-	Let $c$ be a condition in ANF over $C_0$ and $p: C_0 \inj G$ a morphism with $p \models_k c$. 
-	Let $d = Q(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with layer $k+2$. 
-	There does exist a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ such that $$p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$$ with $f$ being a $\overline{Q}$ bound condition over $C'$.
+%\begin{lemma}\label{lemma_part_satisfiability}
+%	Let $c$ be a condition in ANF over $C_0$ and $p: C_0 \inj G$ a morphism with $p \models_k c$. 
+%	Let $d = Q(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with layer $k+2$. 
+%	There does exist a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ such that $$p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$$ with $f$ being a $\overline{Q}$ bound condition over $C'$.
+%\end{lemma}
+%\begin{proof}
+%If $p \models c$, we can choose $C' = C_{k+2}$ and $f = e$.
+%
+%If $p \not \models c$, there does not exists a $j$ with $p \models_j c$ and the subcondition of $c$ with layer $j$ is universally bound and $Q = \exists$ follows immediately.
+%We choose $C' = C_{k+1}$ and $f = \true$. Let $q: C_{k} \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$ and $q \circ \ldots \circ a_{\ell}$ satisfying the condition up to $\ell - k$ of the subcondition of $c$ at layer $\ell$  for all $0 \leq \ell \leq k$.
+%This morphism must exists since $p \models_k c$ and $p \not \models c$. 
+%Let $q': C_{k+1} \to G$ be a morphism with $q = q' \circ a_{k+1}$.  Since $C' = C_{k+1}$, the morphism $a'_{k+2}$ has to be the identity and therefore $q' = q' \circ a'_{k+2}$. It follows that $q' \models \exists(a'_{k+2}: C_{k+1} \inj C', \true)$ and therefore $p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$.
+%\end{proof}
+
+
+\begin{lemma}\label{lem_ex_lower}
+Let a graph $G$, a morphism $p: C_0 \inj G$ and a constraint $c$ in EANF be given.
+Then, $p \models_j c$ for all $j < \maxc{G}$ such that $\scond{c}{j}$ is existentially bound. 
+
 \end{lemma}
 \begin{proof}
-If $p \models c$, we can choose $C' = C_{k+2}$ and $f = e$.
-
-If $p \not \models c$, there does not exists a $j$ with $p \models_j c$ and the subcondition of $c$ with layer $j$ is universally bound and $Q = \exists$ follows immediately.
-We choose $C' = C_{k+1}$ and $f = \true$. Let $q: C_{k} \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$ and $q \circ \ldots \circ a_{\ell}$ satisfying the condition up to $\ell - k$ of the subcondition of $c$ at layer $\ell$  for all $0 \leq \ell \leq k$.
-This morphism must exists since $p \models_k c$ and $p \not \models c$. 
-Let $q': C_{k+1} \to G$ be a morphism with $q = q' \circ a_{k+1}$.  Since $C' = C_{k+1}$, the morphism $a'_{k+2}$ has to be the identity and therefore $q' = q' \circ a'_{k+2}$. It follows that $q' \models \exists(a'_{k+2}: C_{k+1} \inj C', \true)$ and therefore $p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$.
+\begin{enumerate}
+	\item The subcondition of $c$ at layer $\maxc{G}$ is existentially bound:	
+	If a $j < \maxc{G}$ with $p \models_j c$ exists such that $\scond{c}{j}$ is universally bound, let $j_1$ be the smallest of these. With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c $ for all $j_1 < j_2$.
+	Let $\ell < j_1$, such that $\scond{c}{\ell}$ is existentially bound and let $d = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of $\scond{c}{\ell}$. 
+	Since $\ell < j_1$, a morphism $q:  C_{\ell} \inj G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_k$ must exists. 
+	It follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
+	
+	\item The subcondition of $c$ at layer $\maxc{G}$ is universally bound:
+	With lemma \ref{lemma_help_lay_sat} follows that $p \models_{k+1} c$. 
+	Since $c$ is in EANF,  $1.$ can be applied  to $k+1$. 
+\end{enumerate}
 \end{proof}
+
 
 
 \begin{definition}[\textbf{partial condition}]
