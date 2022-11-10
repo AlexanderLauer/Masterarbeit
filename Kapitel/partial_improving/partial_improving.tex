@@ -1,5 +1,10 @@
-\subsection{minimal consistency improving}
+\subsection{consistency increasing transformations and rules}
 
+With the results above, we are now ready to define the notions of \emph{consistency increasing} and \emph{direct consistency increasing}, with direct increasing being a more restrictive version of increasing, yielding the advantage that second-order logic formulas can be used in order to determine whether a transformation is (direct) consistency increasing or not. 
+
+These notions are designed to only detect transformations that increase the consistency of the first two unsatisfied layer of a constraint $c$. 
+That means, given a graph $G$ and a constraint $c$ and let $k = \maxc{G}$ and $\forall(a_{k+1}: C_{k} \inj C_{k+1}, \exists(a_{k+2}: C_{k+1} \inj C_{k+2},d) =: \cond(k+2,c)$.  
+A transformation $ G \Longrightarrow H$ is considered as (direct) consistency increasing if $\maxc{G} \leq \maxc{H}$, i.e. the satisfaction up to layer is not decreased, and at least one occurrence of $C_{k+2}$ has been deleted or elements of 
 
 
 \begin{definition}[\textbf{number of violations}]

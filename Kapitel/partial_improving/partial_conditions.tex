@@ -134,27 +134,51 @@ Then, $p \models_j c$ for all $j < \maxc{G}$ such that $\scond{c}{j}$ is existen
 \end{enumerate}
 \end{proof}
 
+Through satisfaction at layer an increase of consistency can be detected in the following way. 
+Let $G \Longrightarrow H$ be a transformation. 
+If $\maxc{G} < \maxc{H}$, the transformation can be considered as consistency increasing, since $H$ satisfies more layers of the constraint than $G$. 
+The notion of consistency increasing should also be able to detect the smallest transformations that lead to a increase of consistency, namely the inserting of a single edge or node of an existentially bound graph.
+To remedy this issue, we introduce \emph{partial conditions}.
+Intuitively, given a constraint $c$ in EANF ending with $\scond{c}{k} =\exists(a_k :C_k \inj C_{k+1}, d)$, the condition $\scond{c}{k}$ is replaced by $\exists(a^p_k: C_k \inj C', \true)$ with $C' \in \mathcal{U}(C_k, C_{k+1})$.
+
+The construction of partial conditions is designed to only replace graphs in existentially bound layers, since the replacement in an universally bound layer would lead to a more restrictive constraint than the original condition up to layer. 
+That means, given the condition $c = \forall(a_0: C_0 \inj C_1, \false)$ and let $C' \in \mathcal{U}(C_0, C_1)$. 
+If the condition $c'= \forall(a^p_0: C_0 \inj C_1, \false)$ is satisfied this implies that $c$ is also satisfied but the backwards implication does not hold.
 
 
 \begin{definition}[\textbf{partial condition}]
-Let $c$ be a condition in ANF over $C_0$. 
-Let $d$ be the subcondition of $c$ at layer $k +1$. 
-The \emph{partial condition of $c$ at layer $k$ with $C'$}, $\parcond(k,c,C')$ is defined as:
+Let $c$ be a condition in EANF. 
+
+The \emph{partial condition of $c$ at layer $k < \nl(c)$ with} with 
+$$ C' \in \begin{cases}
+			\mathcal{U}(C_k, C_{k+1}) &\text{if $k$ is even} \\
+			\mathcal{U}(C_{k+1}, C_{k+2}) &\text{if $k$ is odd},
+		   \end{cases}
+$$
+$\parcond(k,c,C')$, is defined as:
 \begin{enumerate}
-\item If $d$ is universally bound, let $e = \exists(a: C_{k+1} \inj C_{k+2},f)$ be the subcondition of $c$ at layer $k+2$ with $C_{k+1} \subseteq C' \subseteq C_{k+2}$:
-$$\parcond(k,c,C') := \sub\bigl(k+2,c,\exists(a:C_{k+1} \inj C', \true)\bigr)$$
-\item If $d = \exists(a:C_k\inj C_{k+1},f)$ is existentially bound with $C_{k} \subseteq C' \subseteq C_{k+1}$:
-$$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a:C_{k+1} \inj C', \true)\bigr)$$
+\item If $k$ is odd, let $\scond{c}{k+1} = \exists(a: C_{k+1} \inj C_{k+2},f)$:
+$$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
+\item If $k$ is even, let $\scond{c}{k+1} = \exists(a:C_k\inj C_{k+1},f)$:
+$$\parcond(k,c,C') := \sub\bigl(k,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
 \end{enumerate}
 \end{definition}
 
+\begin{example}
+\end{example}
+
+
+If a graph $G$ does not satisfy the condition up to layer $k := \maxc{G} + 2$ of a given constraint $c$, with $k$ being even, there does exists a graph $C' \in \mathcal{U}(C_{k-1}, C_k)$, such that $G$ satisfies $\parcond(k,c,C')$, note that $G$ always satisfies $\parcond(k,c,C_{k-1})$. 
+For the biggest of these graphs, we define the notions of \emph{biggest partially satisfying conditions and graphs}.
+
+
 \begin{definition}[\textbf{biggest partially satisfying condition}]
-Let $G$ be a graph, $c$ a condition over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$. 
+Let $G$ be a graph, $c$ a condition in EANF over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$ and $p \not \models c$. 
 
-A partial condition $c = \parcond(c_{\max},c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition} if there does not exist a graph $C' \subset C''$ with $p \models \parcond(c_{max},c,C'')$. 
-The graph $C'$ is called a \emph{biggest partially satisfying graph}.
+A partial condition $c = \parcond(k+2,c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition w.r.t $c$ of $p$} if there does not exist a graph  $C''$, such that $C'$ is a subgraph of $C''$, with $p \models \parcond(c_{max},c,C'')$. 
+The graph $C'$ is then called a \emph{biggest partially satisfying graph w.r.t $c$ of $p$}.
 
-The set of biggest partially satisfying conditions of $c$ is denoted by $\mathcal{P}_c^G$. 
+Given a constraint $c$, the set of biggest partially satisfying conditions w.r.t $c$ of $p: \emptyset \inf G$ is denoted by $\mathcal{P}_c^G$. 
 
-The set of all biggest partially satisfying graphs is denoted by $\mathcal{G}_{c}^G$. 
+The set of all biggest partially satisfying graphs w.r.t $c$ of $p$ is denoted by $\mathcal{G}_{c}^G$. 
 \end{definition}
