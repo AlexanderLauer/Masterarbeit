@@ -3,77 +3,92 @@
 With the results above, we are now ready to define the notions of \emph{consistency increasing} and \emph{direct consistency increasing}, with direct increasing being a more restrictive version of increasing, yielding the advantage that second-order logic formulas can be used in order to determine whether a transformation is (direct) consistency increasing or not. 
 
 These notions are designed to only detect transformations that increase the consistency of the first two unsatisfied layer of a constraint $c$. 
-That means, given a graph $G$ and a constraint $c$ and let $k = \maxc{G}$ and $\forall(a_{k+1}: C_{k} \inj C_{k+1}, \exists(a_{k+2}: C_{k+1} \inj C_{k+2},d) =: \cond(k+2,c)$.  
-A transformation $ G \Longrightarrow H$ is considered as (direct) consistency increasing if $\maxc{G} \leq \maxc{H}$, i.e. the satisfaction up to layer is not decreased, and at least one occurrence of $C_{k+2}$ has been deleted or elements of 
+That means, given a graph $G$ and a constraint $c$, let $k = \maxc{G}$ and $\forall(a_{k+1}: C_{k} \inj C_{k+1}, \exists(a_{k+2}: C_{k+1} \inj C_{k+2},d)) =: \scond{c}{k+1}$.  
+A transformation $ t:G \Longrightarrow H$ is considered as (direct) consistency increasing if $\maxc{G} \leq \maxc{H}$, i.e. the satisfaction up to layer is not decreased, and more increasing insertions or deletions have been performed than decreasing ones. 
+An increasing deletion is the deletion of an occurrence of $C_{k+1}$ that does not satisfy $\exists(a_{k+2}: C_{k+1} \inj C_{k+2},\true)$, an increasing insertion is the insertion of elements of $C_{k+2}$, such that for at least one occurrence $p$ of $C_{k+1}$ it holds that $p \not \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$ and $\track_t \circ p \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$ for an $C' \in \mathcal{U}(C_{k+1}, C_{k+2})$. 
+A decreasing insertion is the creation of an occurrence of $C_{k+1}$ not satisfying $\exists(a_{k+2}: C_{k+1} \inj C_{k+2},\true)$ and a decreasing deletion is the deletion of elements of $C_{k+2}$ such that for an occurrence $p$ of $C_{k+1}$ with $p \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$ it holds that $\track_t \circ p \not \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$.
 
+To evaluate this, we define the \emph{number of violations}.
+Intuitively, for all occurrences $p$ of $C_{k+1}$ the number of graphs $C' \in \mathcal{U}(C_{k+1}, C_{k+2})$ with $p \not \models \exists C'$ is add up and it can be determined whether more increasing or decreasing actions have been performed by a transformation. 
+
+Note, that the number of violations is defined for each layer of the constraint, but only for the first unsatisfied layer the sum is calculated as described above.
+For all layer $k$ with $k \leq \maxc{G}$ it is set to $0$ and for all  layer $k$ with $k > \maxc{G} + 1$ it is set to $\infty$. 
+Through this, a transformation $t G \Longrightarrow H$ that increases the partial consistency can easily detected since the number of violations in $H$ at layer $\maxc{G} + 1$ will be set to $0$. 
 
 \begin{definition}[\textbf{number of violations}]
 Let $G$ be a graph and $c$ a constraint in EANF. 
 The \emph{number of violations $\nvc(j,G)$ at layer $j$ in $G$} is defined as:
 \begin{enumerate}
-\item If $j < c_{\max}+1$:
+\item If $j < \maxc{G}+1$:
 	$$\nvc(j,G) := 0$$
 \item If $j = c_{\max}+1$, let $d = \forall(a_k: C_{j} \inj C_{j+1},e)$ be the subcondition of $c$ at layer $j+1$.
 
 
-$$\nvc(j,G) := \sum_{C' \in \mathcal{U}(C_j,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| $$
+$$\nvc(j,G) := \begin{cases}
+					\sum_{C' \in \mathcal{U}(C_j,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| &  \text{if $e \neq \false$}\\
+					|\{q \mid q:C_{j+1} \inj G\}| & \text{if $e = \false$} 
+				\end{cases}$$
 
-\item If $j > c_{\max}$:
+\item If $j > \maxc{G}+1$:
 	$$\nvc(j,G) := \infty$$
 \end{enumerate}
 
 \end{definition}
 
+Via the number of violations, we now define \emph{consistency increasing} transformations and rules, by checking whether the number of violations has decreased for any layer of the constraint.
 
-\begin{definition}[\textbf{minimal consistency improving}]
-	Let a graph $G$, a rule $r$ and a constraint $c$ in ANF be given. 
+\begin{definition}[\textbf{consistency increasing}]
+	Let a graph $G$, a rule $\rho$ and a constraint $c$ in EANF be given. 
 
 	
-	A transformation $G \Longrightarrow_{r,m} H$ is called \emph{minimal consistency improving w.rt $c$}, if  $$\nvc(k, H) < \nvc(k, G) $$
+	A transformation $G \Longrightarrow_{\rho,m} H$ is called \emph{consistency increasing w.r.t $c$}, if  $$\nvc(k, H) < \nvc(k, G) $$
 	for any $0 \leq k \leq \nl(c)$.
-	A rule $r$ is called \emph{minimal consistency improving}, if all of its applications are. 
+	A rule $r$ is called \emph{consistency increasing w.r.t $c$}, if all of its applications are. 
 	
 \end{definition}
 
+Note that if $G \models c$ there does not exist a consistency increasing transformation w.r.t $c$, since $\nvc(j,G) = 0$ for all $1 \leq j \leq \nl(c)$.
+Also, no plain rule $\rho$ is  consistency increasing w.r.t $c$, since a graph $G$ satisfying $c$, such that a transformation $t: G \Longrightarrow_{\rho,m} H$ exists can always be constructed. 
+Therefore, each consistency increasing rule has to be equipped with at least one application condition.
+
+As mentioned above, a transformation should be detected as consistency increasing if it increases the partial consistency, which is shown by the following theorem. 
 
 \begin{theorem}
-	Let a graph $G$, a rule $r$ and a constraint $c$ in ANF be given.
-	Let $k < \nl(c)$ be the biggest number, such that $G \models_k c$.
-	A transformation $G \Longrightarrow_{r,m} H$ is minimal consistency improving if $G \models_j c$ and  $k < j$.
-	
+	Let a graph $G$, a rule $\rho$ and a constraint $c$ in EANF be given.
+	A transformation $t: G \Longrightarrow_{\rho,m} H$ is consistency increasing if $\maxc{G} < \maxc{H}$.	
 \end{theorem}
 
-%\begin{proof}
-%Since $k < \nl(c)$, it follows that $G \not \models c$. 
-%With lemma \ref{lemma_lay_sat} follows that the subcondition of $c$ at layer $k$ has to be existentially bound and since $k$ is the biggest number such that $G\models_k c$ it follows that $\nvc(k+1,G) > 0$.
-%If the subcondition of $c$ at layer $j$ is universally bound, $H \models c$ follows with lemma  \ref{lemma_lay_sat} and with lemma \ref{lem_ex_lower} $H \models_{k+2} c$ follows. Therefore, $\nvc(k+2,H) = 0$. 
-%Otherwise, if the subcondition of $c$ at layer $j$ is existentially bound and therefore $G \models_{k+2} c$, $\nvc(k+2,H) = 0$ follows immediately.
-%\end{proof}
 \begin{proof}
-No $\ell >k$ with $G\models_{\ell} c$ exists and $G \models_k c$. Hence, $\nvc(k,G) > 0$ and $\nvc(k,G) \neq \infty$. 
-Since $j >k$, $\nvc(k,H) = 0$ and it follows immediately that the transformation is minimal consistency improving. 
+No $\ell >\maxc{G}$ with $G\models_{\ell} c$ exists. Hence, $\nvc(\maxc{G} + 1,G) > 0$ and $\nvc(\maxc{G} + 1,G) \neq \infty$. 
+Since $\maxc{H} > \maxc{G}$, $\nvc(k+1,H) = 0$ and it follows immediately that $t$ is consistency increasing. 
 \end{proof}
 
+Since no consistency increasing transformation originating in consistent graphs exist, there do not exist infinite long sequences of consistency increasing transformations.
+Additionally, if a set of rules $\mathcal{R}$ is given, and a sequence of consistency increasing transformations with rules of $\mathcal{R}$ ends with a graph $G$, then either $G$ satisfies the constraint or there do not exist any consistency increasing transformations $G \Longrightarrow_{\rho, m} H$ with $\rho \in \mathcal{R}$.
 
 \begin{theorem}
-Let a constraint $c$ in EANF be given. 
-Every sequence of minimal consistency improving transformation w.r.t $c$ is finite.
+Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$ be given. 
+Every sequence of minimal consistency improving transformation w.r.t $c$ with rules in $\mathcal{R}$ is finite.
 
 \end{theorem}
 
 \begin{proof}
 Let $G_0$ be a graph and 
 $$G_0 \Longrightarrow_{\rho_1} G_1 \Longrightarrow_{\rho_2} G_2 \Longrightarrow_{\rho_3} \ldots$$
-be a sequence of minimal consistency improving transformations w.r.t $c$.
-We assume that $\maxc{G_0} < \nl(c)$, otherwise $\nvc(j,G_0) = 0$ for all $j \in \{0, \ldots, \nl(c)\}$ and no transformation $G_0 \Longrightarrow H$ is minimal consistency improving. 
+be a sequence of minimal consistency improving transformations w.r.t $c$ with $\rho_i \in \mathcal{R}$.
+We assume that $\maxc{G_0} < \nl(c)$, otherwise $\nvc(j,G_0) = 0$ for all $j \in \{0, \ldots, \nl(c)\}$ and no transformation $G_0 \Longrightarrow H$ is consistency increasing. 
 
 We show that after at most $j := \nvc(\cmax_{G_0}+1,G_0)$ transformations $G_j \models_{\maxc{G_0} + 2} c$ holds. 
 Note that $j$ has to be finite, since $G_0$ contains only a finite number of occurrences of $C_{j+1}$.
 After each transformation it holds that $\nvc(\maxc{G_{i+1}}+1,G_{i+1}) \leq \nvc(\maxc{G_i}+1,G_{i})-1$.
-Therefore, after $j$ transformations $\nvc(\maxc{G_0}+1,G_{j}) \leq \nvc(\maxc{G_0}+1,G_{0})-j = 0$ holds and with that $G_j \models_{\maxc{G_0}+ 2} c$.
-By iteratively applying this, it follows that after a finite number of transformations a graph $G_k$ with $G_k \models c$ exists. 
-Since no minimal consistency improving transformation $G_k \Longrightarrow G_{k+1}$ exists, the sequence has to be finite. 
+Therefore, after $j$ transformations, $\nvc(\maxc{G_0}+1,G_{j}) \leq \nvc(\maxc{G_0}+1,G_{0})-j = 0$ holds and with that $G_j \models_{\maxc{G_0}+ 2} c$.
+By iteratively applying this, it follows that after a finite number of transformations a graph $G_k$ with $G_k \models c$ has to exist. 
+Since no consistency increasing transformation $G_k \Longrightarrow G_{k+1}$ exists, the sequence has to be finite.
+Also, for some $G_{k'}$ there may not exist a consistency increasing transformation $G_{k'} \Longrightarrow_{\rho} H$ with $\rho \in \mathcal{R}$ and therefore the sequence is also finite, but does not end with a consistent graph.  
 \end{proof}
+
+A transformation $t$ is considered as consistency increasing if the number of introduced violations is smaller than the number of deleted 
+
 
 \begin{definition}[\textbf{direct minimal consistency improving}]\label{def_direct_improving}
 Let $G$ be a graph, $\rho$ a plain rule and $c$ a constraint in EANF.
