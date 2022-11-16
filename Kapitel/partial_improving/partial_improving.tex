@@ -87,43 +87,58 @@ Since no consistency increasing transformation $G_k \Longrightarrow G_{k+1}$ exi
 Also, for some $G_{k'}$ there may not exist a consistency increasing transformation $G_{k'} \Longrightarrow_{\rho} H$ with $\rho \in \mathcal{R}$ and therefore the sequence is also finite, but does not end with a consistent graph.  
 \end{proof}
 
-A transformation $t$ is considered as consistency increasing if the number of introduced violations is smaller than the number of deleted 
+The replacement of a graph not satisfying a constraint $c$ by a $c$ satisfying graph via a transformation is a consistency increasing transformation. 
+Therefore, a consistency increasing transformation can perform insertions or deletions that are unnecessary in order to increase the consistency.
+That is, the deletion of occurrences of existentially bound graphs, the deletions of occurrences of graphs $C_k$ satisfying $\exists C_{k+1}$ or the insertion of occurrences of universally bound graphs and the insertion of existentially bound graphs $C_k$, such that the corresponding occurrence of $C_{k-1}$ already satisfied $\exists C_k$. 
+
+\emph{Direct consistency increasing} transformations are more restricted, in the sense, that these unnecessary deletions and insertions are leading a transformation to not being direct increasing. 
+The presence of these unnecessary actions can be checked via second-order logic formulas.
+Additionally, it is secured that no new violations are introduced since these can always be considered as a unnecessary insertion or deletion.
+With that, the removal of one violation is sufficient to state that the transformation is (direct) consistency increasing, which can be checked via an additional second order logic formula.
+Intuitively, it is checked by the first two formulas, that no new violations are introduced. 
+The third formula secures that at least one violation has been removed and the last formulas secure that the partial consistency is not decreased. 
 
 
-\begin{definition}[\textbf{direct minimal consistency improving}]\label{def_direct_improving}
-Let $G$ be a graph, $\rho$ a plain rule and $c$ a constraint in EANF.
-Let $d = \forall(a_k: C_{k-1} \inj C_{k}, e)$ be the condition at layer $k = \maxc{G} + 1 \leq \nl(c)$ of $c$.
-A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{direct minimal consistency improving} if the following equations hold. 
+\begin{definition}[\textbf{direct consistency increasing}]\label{def_direct_improving}
+Let $G$ be a graph, $\rho$ a plain rule, $c$ a constraint in EANF and  $\scond{c}{\maxc{G} + 1} = \forall(a_k: C_{k-1} \inj C_{k}, e)$. 
+A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{direct consistency increasing} if the following equations hold.
+Let $$ \mathbf{G} = \begin{cases}
+					\mathcal{U}(C_k, C_{k+1}) &\text{if $e \neq  \false$} \\
+					\{C_k\} &\text{otherwise}
+					\end{cases}$$ 
 
-Every occurrence of $C_k$ in $G$ that satisfies $\parcond(1,e,C')$ for any $C' \in \mathcal{U}(C_k, C_{k+1})$ still satisfies $\parcond(1,e,C')$ in $H$. 
+Every occurrence of $C_k$ in $G$ that satisfies $\parcond(1,e,C')$ for any $C' \in \mathbf{G}$ still satisfies $\parcond(1,e,C')$ in $H$. 
 \begin{equation}\label{direct_improving_1}
 \begin{split}
-	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathcal{U}(C_k, C_{k+1})}\big(& p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}\big) \\ &\implies  \track_t \circ p \models \parcond(1,e,C') \Big) 
+	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}\big(& p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}\big) \\ &\implies  \track_t \circ p \models \parcond(1,e,C') \Big) 
 \end{split}
 \end{equation}
-Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,e,C_{k+1})$.
+Let $C' = C_{k+1}$ if $e \neq \false$ and $C' = C_k$ otherwise.
+Every new inserted occurrence of $C_k$ by $t$ satisfies $\parcond(1,e,C')$.
 \begin{equation}\label{direct_improving_1_2}
 \begin{split}
-\forall p': C_{k} \inj H \big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \ p' \models \parcond(1,e,C_{k+1})\big)
+\forall p': C_{k} \inj H \big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \ p' \models \parcond(1,e,C')\big)
 \end{split}
 \end{equation}
-At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathcal{U}(C_k, C_{k+1})$, either has been destroyed by $t$ or satisfies $\parcond(1,e,C')$ in $H$.
+At least one occurrence of $C_k$ in $G$ that does not satisfy $\parcond(1,e,C')$, for any $C' \in \mathbf{G}$, either has been removed or satisfies $\parcond(1,e,C')$ in $H$.
 \begin{equation}\label{direct_improving_2}
 \begin{split}
-\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathcal{U}(C_k, C_{k+1})}\big( &p \not \models \parcond(1,e,C') \wedge (\track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{ is total } \wedge \track_t \circ p  \models \parcond(1,e,C')))\big) \Big) 
+\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathbf{G}}\big( &p \not \models \parcond(1,e,C') \wedge (\track_t \circ p \text{ is not total } \\&\vee(\track_t \circ p \text{ is total } \wedge \track_t \circ p  \models \parcond(1,e,C')))\big) \Big) 
 \end{split}
 \end{equation}
 
 No occurrence of a universally bound graph $C_j$ with $j < k$ gets inserted. 
 \begin{equation}\label{direct_improving_3}
-\bigwedge_{\substack{i < k \\ i \textit{ even}}} \forall p: C_i \inj H ( \exists p': C_i \inj G (p' = \track_t \circ p))
+\bigwedge_{\substack{i < k \\ i \textit{ odd}}} \forall p: C_i \inj H ( \exists p': C_i \inj G (p' = \track_t \circ p))
 \end{equation}
 No occurrence of an existentially bound graph $C_j$ with $j < k$ gets deleted. 
 \begin{equation}\label{direct_improving_4}
-\bigwedge_{\substack{i < k \\ i \textit{ odd}}} \forall p: C_i \inj G( \track_t \circ p \textit{ is total})
+\bigwedge_{\substack{i < k \\ i \textit{ even}}} \forall p: C_i \inj G( \track_t \circ p \textit{ is total})
 \end{equation}
 
 \end{definition}
+
+Note that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) not only secure that the partial consistency does not decrease, as shown in the following lemma, but also prevent further unnecessary insertions and deletions, since the insertion of a universally and the deletion of a existentially bound graph will never lead to an increase of consistency. 
 
 \begin{lemma}\label{lemma_consistent}
 	Let a transformation $t: G \Longrightarrow H$ and a constraint $c$ in EANF be given, such that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) of definition \ref{def_direct_improving} are satisfied. Then,
@@ -131,24 +146,25 @@ No occurrence of an existentially bound graph $C_j$ with $j < k$ gets deleted.
 \end{lemma}
 \begin{proof}
 Assume that $G \not \models_{\maxc{G}}c$. 
-Then, either a new occurrence of an universally bound graph of $c$ has been inserted or an occurrence of an existentially bound graph of $c$ has been destroyed. 
+Then, either a new occurrence of an universally bound graph $C_k$, with $k \leq \maxc{G}$, of $c$ has been inserted or an occurrence of an existentially bound graph $C_k$, with $k \leq \maxc{G}$,  of $c$ has been destroyed. 
 Therefore, the following holds:
-$$ \exists p: C_i \inj G(\neg \exists p': C_i \inj (p' = \track_t \circ p) \vee \exists p:C_j \inj G(\track_t \circ p \textit{ is not total})$$
-with $i, j < k$, $i$ being odd and $j$ being even. 
+$$ \exists p: C_i \inj G(\neg \exists p': C_i \inj (p' = \track_t \circ p)) \vee \exists p:C_j \inj G(\track_t \circ p \textit{ is not total})$$
+with $i, j \leq \maxc{G}$, $i$ being odd and $j$ being even. 
 It follows immediately that either (\ref{direct_improving_3}) or (\ref{direct_improving_4}) is not satisfied. 
 This is a contradiction. 
 \end{proof}
 
+Now, we will show the already indicated relationship between direct increasing and increasing, namely that a direct increasing transformation is also increasing. 
+Counterexamples showing that the inversion of the implication does not hold can easily be constructed, showing that these notions are not identical, but related. 
 
 \begin{lemma}
-Let a graph $G$, a constraint $c$ in EANF and a direct minimal improving transformation $t: G \Rightarrow_{r,m} H$ w.r.t. $c$ be given. 
-Then, $t$ is also a minimal improving transformation. 
+Let a graph $G$, a constraint $c$ in EANF and a direct increasing transformation $t: G \Longrightarrow_{\rho,m} H$ w.r.t. $c$ be given. 
+Then, $t$ is also a increasing transformation. 
 \end{lemma}
 
 \begin{proof}
 
-Let $G$ be a graph with $k = \maxc{G}+1$ and $G \models \parcond(k,c,C)$ with $\parcond(k,c,C)\in \mathcal{P}_c^G$
-Let $d$ be the subcondition of $c$ at layer $k$.
+Let $G$ be a graph, $k = \maxc{G}+1 \leq \nl(c)$ and $d = \scond{c}{k}$.
 With lemma \ref{lemma_consistent} follows that $\maxc{H} \geq \maxc{G}$ and with that $\nvc(k,H) \neq \infty$.
 
 \begin{enumerate}
@@ -162,16 +178,16 @@ Assume that $\nvc(k,H) > \nvc(k,G)$. Therefore, a morphism $p: C_k \inj H$ with 
 		There does not exist a morphism $q : C_k \inj G$, such that $p = \track_t \circ q$. 		
 \end{enumerate}
 This is a contradiction, if \ref{proof_direct_minimal_1} is satisfied, $q'$ does not satisfy equation (\ref{direct_improving_1}) and if \ref{proof_direct_minimal_2} is satisfied $q$ does not satisfy equation (\ref{direct_improving_1_2}).
-It also follows that 
+It follows that 
 $$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| \leq |\{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}|$$
 for all $C' \in \mathcal{U}(C_k, C_{k+1})$.
 
 \item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied,  a morphism $p:C_k \inj G$ with $p \not \models \parcond(1,d,C')$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \parcond(1,d,C')$ or $\track \circ p$ is not total exists, for any $C' \in \mathcal{U}(C_k, C_{k+1})$.
-In both cases the following holds 
+In both cases the following holds: 
 \begin{equation*}
 \begin{split}
 	p &\in \{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\} \wedge \\
-	\track \circ p &\notin \{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}.
+	\track \circ p &\notin \{q \mid q:C_{k} \inj H \wedge q \not \models \parcond(1,e,C')\}
 \end{split}
 \end{equation*}
 With that and \ref{proof_direct_minimal_4}. it follows that
@@ -179,18 +195,41 @@ $$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| < |\{q \mid q
 
 
 \end{enumerate}
-In total  $\nvc(k,H) < \nvc(k,G)$ follows and  $t$ is a minimal improving transformation. 
+In total, $\nvc(k,G) < \nvc(k,G)$ and  $t$ is an increasing transformation.
+ 
+For the special case that $k = \nl(c) -1$ and $c$ ends with $\forall(a_k:C_{k-1} \inj C_k,\false)$ it can be shown in a similar way that  (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply that 
+$$|\{q \mid q:C_k \inj G\}| \leq |\{q \mid q:C_k \inj H\}|$$
+and that (\ref{direct_improving_2}) implies 
+$$|\{q \mid q:C_k \inj G\}| < |\{q \mid q:C_k \inj H\}|.$$
+It follows that $t$ is an increasing transformation. 
 \end{proof}
 
 \subsection{Comparison with other consistency concepts}
+In this chapter, the notions of (direct) consistency increasing are compared to the already known concepts of consistency guaranteeing \cite{habel2009correctness} and (direct) consistency increasing and sustaining \cite{kosiol2022sustaining} in order to reveal relationships between them and secure that (direct) increasing is indeed a new notion of consistency. 
+These relations are displayed in figure \ref{fig:consistency_relations}.
+
+\input{figures/consistency_relations}
+
+First we compare (direct) consistency increasing with the notions of consistency-guaranteeing and -preserving transformations.
+As already mentioned, given a constraint $c$ and a graph $G$ with $G \models c$, there does not exist a (direct) increasing transformation $t: G \Longrightarrow H$ and it follows immediately that (direct) increasing w.r.t $c$ implies $c$-preserving. 
+
+Obviously, guaranteeing implies increasing, this property is embedded in the definition of increasing. 
+The inversion of this implication does not holds, since increasing is a way stricter notion, in the sense, that the number of removed violations has to be greater than the number of introduced violations.
+For guaranteeing transformations this is not the case, an arbitrary number of violations can be inserted, long as the derived graph satisfies the constraint and therefore guaranteeing does not imply direct increasing, since a direct increasing transformations is not allowed to introduce any new violations.
+
 
 \begin{lemma}\label{comp_guaranteeing_minimal}
 Let a constraint $c$ in ANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. Then, 
-$$t \text{ is c-guaranteeing } \implies t \text{ is minimal consistency improving w.r.t c}$$,
-$$t \text{ is c-guaranteeing } \centernot \implies t \text{ is direct minimal consistency improving w.r.t c}$$
-and 
-$$t \text{ is minimal consistency improving w.r.t c} \centernot\implies t \text{ is c-guaranteeing }$$
+\begin{alignat*}{3}
+&t \text{ is $c$-guaranteeing } &&\implies t \text{ is increasing w.r.t $c$ } &\wedge \\
+&t \text{ is $c$-guaranteeing } &&\centernot\implies t \text{ is direct increasing w.r.t $c$ } &\wedge \\
+&t \text{ is increasing w.r.t $c$} &&\centernot \implies t \text{ is $c$-guaranteeing.} 
+\end{alignat*}
 \end{lemma}
+
+
+
+
 
 
 \begin{proof}

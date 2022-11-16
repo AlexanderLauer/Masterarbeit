@@ -1,0 +1,19 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+	
+		
+		\node(guaran) at (4,2) {$c$-guaranteeing};
+		\node(pres) at (2,0) {$c$-preserving};
+		\node (incr) at (6,0) {increasing w.r.t $c$};
+		\node (direct) at (8,2) {direct increasing w.r.t $c$};
+		
+		\draw[-implies,double equal sign distance] (guaran) --  (incr); 
+		\draw[-implies,double equal sign distance] (guaran) --  (pres);
+		\draw[-implies,double equal sign distance] (incr) --  (pres);
+		\draw[-implies,double equal sign distance] (direct) --  (incr);    
+		    
+	\end{tikzpicture}
+	\caption{General relations of consistency notions.}\label{fig:consistency_relations}
+\end{figure}
+
