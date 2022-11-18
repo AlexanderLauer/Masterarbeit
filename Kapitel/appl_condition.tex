@@ -1,55 +1,81 @@
-\section{application condition}
+\section{general application conditions}
 
+To guarantee that each transformation $t: G \Longrightarrow_{\rho,m} H$, given a rule $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$  , is (direct) consistency increasing w.r.t to a constraint $c$, we present applications conditions ensuring this property. 
+It has to be ensured that at least one violation will be removed. 
+For this, it is necessary (a) to check that an occurrence $p$ of the the universally bound graph $C_{\maxc{G} +1}$ exists, such that $p$ and the match $m$ do overlap, i.e $p(C_{\maxc{G} + 1}) \cap m(L) \neq \emptyset$, and (b) that $p$ does not satisfy $c' = \exists C_{\maxc{G} + 2}$. 
+Only in this case, it is possible that the transformation does remove a violation. 
+To ensure that $p$ does not satisfy $c'$, the non-existence of all possible overlaps of $L$ and $C_{\maxc{G} + 2}$ such that $p \models c'$ has to be checked. 
+For this, we introduce \emph{extended overlaps}.
+Intuitively, given an overlap $C$ of $L$ and $C_{\maxc{G} + 1}$ with $p: C_{\maxc{G} + 1} \inj C$, the set of extended overlaps contains all overlaps $C'$ of $L$ and $C_{\maxc{G} + 2}$, such that $p \models c'$ if one of these overlaps exists.
 
 
 \begin{definition}[\textbf{extended overlaps}]
-Let $G$ and $C_0 \subseteq C_1$ with the inclusion $i:C_0 \inj C_1$ be graphs. 
+Let $G$, $C_0$ and $C_1$ with $i:C_0 \inj C_1$ be graphs. 
 Let $C$ be an overlap of $C_0$ and $G$ with the inclusion $q : C_0 \inj C$. 
-The set of \emph{extended overlaps of $C$ with $i$}, $\eol(C,i)$, is the set of all overlaps $C'$ of $G$ and $C_1$, such that $C \subseteq C'$ and $q \models \exists(i: C_0 \inj C_1, \true)$. 
+The set of \emph{extended overlaps of $C$ with $i$}, $\eol(C,i)$, is the set of all overlaps $C'$ of $G$ and $C_1$, such that an injective morphism $i_C: C \inj C'$ with $i_C \circ q \models \exists(i: C_0 \inj C_1, \true)$ exists. 
 \end{definition}
 
 
-
-\begin{definition}[\textbf{overlap shift}]
-Let $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : L \inj C'$, $k: K \inj C'$, $c:C \inj C'$ and the partial morphism $q: R \inj C'$. 
-We define 
-\begin{equation}
-\begin{split}
-	D := \{e \in C' \mid &(\exists e' \in L: p(e') = e \\ &\vee \exists e' \in R: q(e') = e) \\ &\wedge \exists e' \in C: c(e') = e \}
-\end{split}
-\end{equation}
-Let $r = L \xhookleftarrow{} K' \xhookrightarrow{} R$ be the rule with 
-$$K' := K \cup D$$
-The graph $H$ derived by the transformation $G \Rightarrow_{r,p} H$ is called the \emph{overlap shifted graph of $C'$ with $C$ and  $\rho$}.
-The overlap shifted graph of an graph $C$ is denoted by $\ols_{\rho}(C,C')$.
-\end{definition} 
-
-
+%
+%\begin{definition}[\textbf{overlap shift}]
+%Let $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule, $C$ a graph and $C'$ an overlap of $C$ and $L$ with morphisms $p : L \inj C'$, $k: K \inj C'$, $c:C \inj C'$ and the partial morphism $q: R \inj C'$. 
+%We define 
+%\begin{equation}
+%\begin{split}
+%	D := \{e \in C' \mid &(\exists e' \in L: p(e') = e \\ &\vee \exists e' \in R: q(e') = e) \\ &\wedge \exists e' \in C: c(e') = e \}
+%\end{split}
+%\end{equation}
+%Let $r = L \xhookleftarrow{} K' \xhookrightarrow{} R$ be the rule with 
+%$$K' := K \cup D$$
+%The graph $H$ derived by the transformation $G \Rightarrow_{r,p} H$ is called the \emph{overlap shifted graph of $C'$ with $C$ and  $\rho$}.
+%The overlap shifted graph of an graph $C$ is denoted by $\ols_{\rho}(C,C')$.
+%\end{definition} 
 
 
-\begin{definition}[\textbf{application condition}]\label{def_appl_cond}
+A direct consistency increasing application condition has to, as mentioned above, (a) ensure that at least one violation will be removed, (b) ensure that no new violations get inserted and (c) secure that the partial consistency is not decreased. 
+In the definition below, $\nex()$ and $\rep()$ ensure that (a) is met, with $\nex()$ ensuring that a violation is present and $\rep()$ ensuring that this violation will be removed. Note, that the construction of these is divided in two cases. 
+Firstly, either $k < \nl(c)-1$ or the constraints ends with a condition of the form $\exists(a: C \inj C', \true)$ and secondly, $k = \nl(c)-1$ and the constraint ends with a condition of the form $\forall(a: C_0 \inj C_1, \false)$.
+
+For $\nex()$, the first case will be checked as already described above. 
+In the second case, it is sufficient to check whether an occurrence $p$ of $C_k$ with $m(L) \cap p(C_k) \neq \emptyset$ exists.
+
+For $\rep()$, in the first case, a violation can be removed by either deleting an occurrence $p$ of $C_k$ or inserting elements of $C_{k+1}$, such that $p \not \models \exists C'$ and $\track_t \circ p \models \exists C'$ for a graph $C' \in \mathcal{U}(C_k, C_{k+1})$.
+In the second case, a violation can only be removed by deleting an occurrence $p$ of $C_1$. 
+This will only occur if $m(L \setminus K) \cap p(C_1) \neq \emptyset$. 
+
+The conditions constructed by $\nin()$ and $\nwo()$ ensure that (2) is me, with $\nin()$ checking that no new occurrence of $C_k$ will be inserted and $\nwo()$ ensuring that for an occurrence $p$ of $C_k$ if $p \models \exists C'$ it is secured that $\track_t \circ p \models \exists C'$ for any $C' \in \mathcal{U}(C_k, C_{k+1})$. 
+
+Additionally, the conditions constructed by $\rem()$ and $\nin()$ ensure (3), with $\rem()$ ensuring that no occurrence of existentially bound graphs $C_j$ with $j \leq k$ will be deleted and $\nin()$ ensuring that no occurrences of universally bound graphs $C_j$ with $j \leq k$ will be inserted. 
+With this, it is guaranteed that the partial consistency will not be decreased. 
+
+
+
+
+
+\begin{definition}[\textbf{general application condition}]\label{def_appl_cond}
 Let $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ be a plain rule and $c$ a constraint in EANF. 
-Let $d = \forall(a_k: C_{k-1} \inj C_{k},\exists(a_{k+1}: C_{k} \inj C_{k+1},e))$ be the subcondition of $c$ at layer $k$ with $k$ being and even number.
+Let $d = \forall(a_k: C_{k-1} \inj C_{k},e)$ be the subcondition of $c$ at layer $k$ with $k$ being an odd number.
 
-The application condition $\ap_k$ of $c$ at layer $k$ with $C' \in \mathcal{U}(C_k, C_{k+1})$ and $i:C_k \inj C'$ is defined as:
+The application condition $\ap_k$ of $c$ at layer $k$ with 
+$C' = C_k$, if $e = \false$, and $C' \in \mathcal{U}(C_k, C_{k+1})$ otherwise is defined as:
 \begin{equation}
 \ap(k,C') := \big(\bigvee_{P \in \overlay(L,C_k)} \nex(P,C') \wedge \rep(P,C')\big) \wedge \nin \wedge \rem \wedge \nwo
 \end{equation}
 
 with
 \begin{enumerate}
-\item 
+\item Let $a^p: C' \inj C_{k+1}$ be a partial morphism of $a_{k+1}$.
 	$$\nex(P,C') := 
 			\begin{cases}
-			\exists (i_L: L \inj P, \true) &\textit{, if } C_k = C_{k+1} \\
-			\bigwedge_{Q \in \eol(P,i)} \exists(i_L: L \inj P, \neg \exists(i_P: P \inj Q, \true)) &\textit{, otherwise}
+			\exists (i_L: L \inj P, \true) &\textit{if } e = \false \\
+			\bigwedge_{Q \in \eol(P,a^p)} \exists(i_L: L \inj P, \neg \exists(i_P: P \inj Q, \true)) &\textit{otherwise}
 			\end{cases}			
 			$$
 			
 	
 \item Let $\mathbf{P}$ be the set of all overlaps of $R$ and $C'$, such that $i_R(R\setminus K) \cap i_{C'}(C') \neq \emptyset$:
 \begin{enumerate}
-	\item If $C_k = C_{k+1}$: 
+	\item If $e = \false$: 
 		$$ \rep(P,C') := \begin{cases}
 							\true &\textit{, if } i_L(L \setminus K) \cap i_{C_k} (C_k) \neq \emptyset\\
 							\false &\textit{, otherwise}

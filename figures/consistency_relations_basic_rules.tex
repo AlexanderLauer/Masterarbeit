@@ -1,0 +1,19 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+	
+		
+		\node(guaran) at (3,4) {$c$-guaranteeing};
+		\node(pres) at (6,0) {sustaining w.r.t $c$};
+		\node (incr) at (6,2) {direct increasing w.r.t $c$};
+		\node (direct) at (9,4) {direct improving w.r.t $c$};
+ 
+		
+		\draw[-implies,double equal sign distance] (guaran) --  (incr); 
+		\draw[-implies,double equal sign distance] (incr) --  (pres);
+		\draw[-implies,double equal sign distance] (direct) --  (incr);
+		\draw[-implies,double equal sign distance] (guaran) --  (direct);    
+		    
+	\end{tikzpicture}
+	\caption{consistency relations for basic rules.}\label{fig:consistency_relations_basic}
+\end{figure}
