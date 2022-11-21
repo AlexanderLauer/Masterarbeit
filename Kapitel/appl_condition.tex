@@ -64,53 +64,80 @@ $C' = C_k$, if $e = \false$, and $C' \in \mathcal{U}(C_k, C_{k+1})$ otherwise is
 
 with
 \begin{enumerate}
-\item Let $a^p: C' \inj C_{k+1}$ be a partial morphism of $a_{k+1}$.
+\item Let $a^p: C' \inj C_{k+1}$ be a partial morphism of $a_{k+1}$ and $i_L$ and $i_P$ the inclusions of $L$ in $P$ and $P$ in $Q$, respectively.
 	$$\nex(P,C') := 
 			\begin{cases}
-			\exists (i_L: L \inj P, \true) &\textit{if } e = \false \\
-			\bigwedge_{Q \in \eol(P,a^p)} \exists(i_L: L \inj P, \neg \exists(i_P: P \inj Q, \true)) &\textit{otherwise}
+			\exists (i_L^P: L \inj P, \true) &\textit{if } e = \false \\
+			\bigwedge_{Q \in \eol(P,a^p)} \exists(i_L^P: L \inj P, \neg \exists(i_P^Q: P \inj Q, \true)) &\textit{otherwise}
 			\end{cases}			
 			$$
 			
 	
-\item Let $\mathbf{P}$ be the set of all overlaps of $R$ and $C'$, such that $i_R(R\setminus K) \cap i_{C'}(C') \neq \emptyset$:
+\item Let $\mathbf{P}$ be the set of all overlaps $P'$ of $R$ and $C'$, such that $i_R^{P'}(R\setminus K) \cap i_{C'}^{P'}(C') \neq \emptyset$:
 \begin{enumerate}
 	\item If $e = \false$: 
 		$$ \rep(P,C') := \begin{cases}
-							\true &\textit{, if } i_L(L \setminus K) \cap i_{C_k} (C_k) \neq \emptyset\\
-							\false &\textit{, otherwise}
+							\true &\textit{if } i_L^{P}(L \setminus K) \cap i_{C_k}^{P} (C_k) \neq \emptyset\\
+							\false &\textit{otherwise}
 						  \end{cases}$$
 \item Otherwise:
 	$$ \rep(P,C') := \begin{cases}
-						\true &\textit{, if } i_L(L \setminus K) \cap i_{C_k}(C_k) \neq \emptyset \\
-						\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R: R \inj P', \true), \rho) &\textit{, otherwise}
+						\true &\textit{if } i_L^P(L \setminus K) \cap i_{C_k}^P(C_k) \neq \emptyset \\
+						\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R^{P'}: R \inj P', \true), \rho) &\textit{otherwise}
 					 \end{cases}$$
 \end{enumerate}					 
-\item Let $E$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being odd and let $\mathbf{P}_{C_j}$ be the set all overlaps of $L$ and $C_j$ with $i_L(L \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$. 
-$$\rem := \bigwedge_{C \in E} \bigwedge_{C' \in  \mathbf{P}_{C_j}} \neg \exists(i_L: L \inj C', \true)$$
+\item Let $E$ be the set of all graphs $C_j$ of $c$ with $j \leq k$, $j$ being odd and let $\mathbf{P}_{C_j}$ be the set all overlaps $P'$ of $L$ and $C_j$ with $i_L^{P'}(L \setminus K) \cap i_{C_j}^{P'}(C_j) \neq \emptyset$. 
+$$\rem := \bigwedge_{C \in E} \bigwedge_{P' \in  \mathbf{P}_{C_j}} \neg \exists(i_L^{P'}: L \inj P', \true)$$
 
-\item Let $U$ be the set of all graphs $C_j$ of $c$ with $j \leq k$ and $j$ being even and let $\mathbf{P_{C_j}} $ be the set of all overlaps of $R$ and $C_j$ with $i_R(R \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$.
-$$\nin := \bigwedge_{C \in U} \bigwedge_{C' \in \mathbf{P}_{C_j}} \shift(\neg \exists(i_R: R \inj C', \true), \rho)$$
+\item Let $U$ be the set of all graphs $C_j$ of $c$ with $j \leq k$, $j$ being even and let $\mathbf{P}_{C_j} $ be the set of all overlaps $P'$ of $R$ and $C_j$ with $i_R^{P'}(R \setminus K) \cap i_{C_j}^{P'}(C_j) \neq \emptyset$.
+$$\nin := \bigwedge_{C \in U} \bigwedge_{P' \in \mathbf{P}_{C_j}} \shift(\neg \exists(i_R^{P'}: R \inj P', \true), \rho)$$
 
-\item Let $E$ be the set of all overlaps of $L$ and $C_k$, such that each $P \in E$ is also an overlap of $L$ and $C'' \in \mathcal{U}(C_k, C_{k+1})$, $i_{C_k} \models \exists(a'_k: C_k \inj C'', \true)$ and  $i_L(L\setminus K) \cap i_{C''}(C'' \setminus C_k) \neq \emptyset$.
-$$\nwo := \bigwedge_{P \in E} \neg \exists(i_L: L \inj P, \true) $$
+\item Let $E$ be the set of all overlaps of $L$ and $C_k$, such that each $P' \in E$ is also an overlap of $L$ and $C'' \in \mathcal{U}(C_k, C_{k+1})$, $i_{C_k}^{P'} \models \exists(a^p_k: C_k \inj C'', \true)$ and  $i_L^{P'}(L\setminus K) \cap i_{C''}^{P'}(C'' \setminus C_k) \neq \emptyset$.
+$$\nwo := \bigwedge_{P' \in E} \neg \exists(i_L^{P'}: L \inj P', \true) $$
 \end{enumerate}
 \end{definition}
 
+\begin{example}
+Ein tolles Beispiel.
+\end{example}
+
+Note that $\ap(k, C')$, for any $C' \in \mathcal{U}(C_k, C_{k+1})$, will only be evaluated with $\true$ if an occurrence $p$ of $C_k$ with $p \not \models \exists(a_k^p:C_k \inj C', \true)$ and $\track_t \circ p \models \exists(a_k^p:C_k \inj C', \true)$ exists. 
+For any smaller improvements, i.e a similar improvement for a subgraph $C'' \in \mathcal{U}(C_k, C_{k+1})$ of $C'$, $\ap(k, C')$ would be evaluated with $\false$.
+For any bigger improvements, i.e the same improvement for a supergraph $C'' \in \mathcal{U}(C_k, C_{k+1})$ of $C'$, $\ap(k, C')$ would be evaluated with $\false$ too, if $p \models \exists(a_k^p:C_k \inj C', \true)$.
+In both cases, the application condition  would prohibit the transformation, even if it would be consistency increasing. 
+To resolve this problem, multiple application conditions can be combined by 
+$$\bigvee_{C' \in \mathcal{U}(C_k, C_{k+1})} \ap(k,C').$$ 
+This application condition will be evaluated with $\true$ if the cases described above do appear, with the drawback that this leads to a huge condition, even if duplicate conditions are removed.
+At least all duplicates of $\rem()$, $\nin()$ and $\nwo()$ can be removed, since they are identical for each $\ap(k,C')$ and only need to be constructed once.
+
+In general, these application conditions are a trade-off between conditions-size and restrictiveness. 
+They are very restrictive, since they do not allow any deletions of occurrences of existentially bound and insertions of universally bound graphs. 
+For example, any of these application conditions with the rule \texttt{moveFeature} and constraint $c_1$ will be equivalent to $\false$; $\nwo()$ will always be evaluated with $\false$ since \texttt{moveFeature} does remove elements of the existentially bound graph $C_2^1$.
+A change of the conditions constructed by $\nwo()$ such that it is checked whether two nodes of the type \texttt{Feature} are  connected to a node \texttt{Class} will yield application conditions that are satisfiable with \texttt{moveFeature}, but for a similar rule moving two nodes of type \texttt{Feature}, this newly constructed $\nwo()$ would still be evaluated with $\false$. 
+Therefore, this only leads to a slight decrease of restrictiveness. 
+
+The conditions constructed by $\rem()$ and $\nin()$ could be changed in a similar fashion.
+For $\rem()$ and the universally bound graph $C_k$, by checking whether there does exist an additional occurrence $p$ of $C_{k+1}$ such that $p \models \scond{\cond(\maxc{G}, c)}{\maxc{G} - k+2}$ and for $\nin()$, by checking whether an introduced occurrence $p$ of $C_k$ does satisfy $\scond{\cond(\maxc{G}, c)}{\maxc{G} - k+1}$.
+The construction of these is similar to the construction of consistency guaranteeing application conditions as introduced by Habel and Pennemann \cite{habel2009correctness}, which is known to construct huge application conditions. 
+Also, they do get more and more restrictive for increasing $k$, since the number of conditions constructed by $\rem()$ and $\nin()$ also increases.
+
+For constraints of the form $c:= \forall C_1 \exists C_2$ it can be shown that $\ap(1,C_2)$ is not only a direct increasing, but also a direct improving application condition. 
 
 
 
+Let us now show that the construction above generates consistency increasing application conditions.
 
-\begin{lemma}
+
+\begin{theorem}
 Let a graph $G$, a constraint $c$ in EANF, with $G \not \models c$, and a plain rule $\rho$ be given. 
-Then, the rule $\rho'(\rho, \ap(\maxc{G},C))$ for a graph $C \in \mathcal{U}(C_{\maxc{G}}, C_{\maxc{G}+1})$ is a minimal consistency improving rule.  
+Then, $\rho'= (\rho, \ap(\maxc{G}+1,C))$ with $C \in \mathcal{U}(C_{\maxc{G}+1}, C_{\maxc{G}+2})$ is a consistency increasing rule.  
 
-\end{lemma}
+\end{theorem}
 \begin{proof}
 Let $t: G \Longrightarrow_{\rho', m} H$ be a transformation and $k = \maxc{G}+1$. 
-We show, by contradiction, that this transformation is direct minimal consistency improving by showing that (\ref{direct_improving_1}), (\ref{direct_improving_1_2}), (\ref{direct_improving_2}), (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. 
-With that, it follows that $\rho'$ is a minimal consistency improving rule. 
-Let $d = \forall(a_k: C_k \inj C_{k+1},e)$ be the subcondition of $c$ at layer $k$. 
+We show, by contradiction, that this transformation is direct consistency increasing by showing that (\ref{direct_improving_1}), (\ref{direct_improving_1_2}), (\ref{direct_improving_2}), (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. 
+With that, $\rho'$ is a consistency increasing rule.
+Let $\scond{c}{k} = \forall(a_k: C_k \inj C_{k+1},e)$ be the subcondition of $c$ at layer $k$. 
 
 \begin{enumerate}
 \item Assume that (\ref{direct_improving_1}) does not hold. 
