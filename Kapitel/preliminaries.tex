@@ -2,34 +2,30 @@
 
 \begin{definition}[\textbf{subgraph}]
 Let $G_1$ and $G_2$ be graphs. 
-The graph $G_2$ is called a \emph{subgraph} of $G_1$ if an injective morphism $f: G_2 \to G_1$ exists. 
-We use the notation $G_2 \subseteq G_1$ if $G_2$ is a subgraph of $G_1$ and $G_2 \subset G_1$ if $f$ is not bijective. 
-
+The graph $G_2$ is called a \emph{subgraph} of $G_1$ if an injective morphism $p: G_2 \inj G_1$ exists. 
 \end{definition}
 
-\begin{definition}[\textbf{uppergraph}]
-Let $G_1$ and $G_2$ be graphs with $G_1 \subseteq G_2$. 
-A graph $C$ is called an \emph{upper-graph} of $G_1$ w.r.t $G_2$, if $G_1 \subset C \subseteq G_2$ 
-The set of uppergraphs of $G_1$ w.r.t. $G_2$ is denoted by $\mathcal{U}(G_1,G_2)$. If $G_1 = G_2$, we set $\mathcal{U}(G_1,G_2) = \{G_1\}$.
+\begin{definition}[\textbf{super-graph}]
+Let $G_1$ and $G_2$ be graphs such that $G_1$ is a subgraph of $G_2$. 
+A graph $C$ is called a \emph{super-graph} of $G_1$ w.r.t $G_2$, if morphisms $p_1: G_1 \inj C$ and $p': C \inj G_2$ exist. 
+The set of super-graphs of $G_1$ w.r.t. $G_2$ is denoted by $\mathcal{U}(G_1,G_2)$. If $G_1 = G_2$, we set $\mathcal{U}(G_1,G_2) = \{G_1\}$.
 
 \end{definition}
 
 \begin{definition}[\textbf{overlap}]
-Let $G$ and $G'$ be graphs. 
-A graph $H$ is called an \emph{overlap of $G$ and $G'$} if morphisms $p: G \inj H$ and $p' :G' \inj H$ such that $p$ and $p'$ are jointly surjective. 
-The set of all overlaps of $G$ and $G'$ is denoted by $\overlay(G,G')$.
-\end{definition}
-\begin{definition}[\textbf{overlap at morphism}]
-Let $C$,$G$ and $C'$ with $C \subset C'$ be graphs and $p: C \inj G$ a morphism. 
-A graph $H$ is called an \emph{overlap of $G$ and $C'$ at $p$} if a morphism $p': C' \inj H$ with $p'|_C = p$ exists.
-The set of all overlaps of $G$ and $C'$ at $p$ is denoted by $\overlay_p(G, C')$.
+Let $G_1$ and $G_2$ be graphs. 
+A graph $H$ is called an \emph{overlap of $G_1$ and $G_2$} if morphisms $p: G_1 \inj H$ and $p' :G_2 \inj H$ exist such that $p$ and $p'$ are jointly surjective and $p(G_1) \cap p'(G_2)\neq \emptyset$. 
+The morphisms $p$ and $p'$ are called \emph{overlap morphisms}.
 
+The set of all overlaps of $G_1$ and $G_2$ is denoted by $\overlay(G_1,G_2)$.
+Given an overlap $H$ of $G_1$ and $G_2$, the overlap morphisms are denoted by $i_{G_1}^H$ and $i_{G_2}^H$, respectively.
 \end{definition}
 
 
 \begin{definition}[\textbf{partial morphism}]
-Let $f : G_1 \to G_2$ and $g: G_3 \to G_4$ be morphisms. 
-The morphism $g$ is called a \emph{partial morphism} of $f$ if $G_3 \subseteq G_1$, $G_4 \subseteq G_2$ and $f|_{G_3} = g$.
+Let graphs $G_1,G_2, G_3, G_4$ and morphisms $p:G_1 \inj G_2$ and $p':G_3 \inj G_4$ be given. 
+Then $p'$ is called a \emph{partial morphism} of $p$ if $G_3$ is a subgraph of $G_1$, $G_4$ is a subgraph of $G_2$ and $p(v) = p'(v)$ for all $v \in G_3$. 
+Given a morphism $a$, we use the notation $a^p$ to denote that $a^p$ is a partial morphism of $a$.
 
 \end{definition}
 

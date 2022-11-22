@@ -59,12 +59,12 @@ Let $d = \forall(a_k: C_{k-1} \inj C_{k},e)$ be the subcondition of $c$ at layer
 The application condition $\ap_k$ of $c$ at layer $k$ with 
 $C' = C_k$, if $e = \false$, and $C' \in \mathcal{U}(C_k, C_{k+1})$ otherwise is defined as:
 \begin{equation}
-\ap(k,C') := \big(\bigvee_{P \in \overlay(L,C_k)} \nex(P,C') \wedge \rep(P,C')\big) \wedge \nin \wedge \rem \wedge \nwo
+\ap(k,C') := \big(\bigvee_{P \in \overlay(L,C_k)} \nex(P,C') \wedge \rep(P,C')\big) \wedge \nin() \wedge \rem() \wedge \nwo()
 \end{equation}
 
 with
 \begin{enumerate}
-\item Let $a^p: C' \inj C_{k+1}$ be a partial morphism of $a_{k+1}$ and $i_L$ and $i_P$ the inclusions of $L$ in $P$ and $P$ in $Q$, respectively.
+\item Let $a^p: C_k \inj C'$ be a partial morphism of $a_{k+1}$ and $i_L$ and $i_P$ the inclusions of $L$ in $P$ and $P$ in $Q$, respectively.
 	$$\nex(P,C') := 
 			\begin{cases}
 			\exists (i_L^P: L \inj P, \true) &\textit{if } e = \false \\
@@ -72,28 +72,25 @@ with
 			\end{cases}			
 			$$
 			
-	
-\item Let $\mathbf{P}$ be the set of all overlaps $P'$ of $R$ and $C'$, such that $i_R^{P'}(R\setminus K) \cap i_{C'}^{P'}(C') \neq \emptyset$:
-\begin{enumerate}
-	\item If $e = \false$: 
-		$$ \rep(P,C') := \begin{cases}
-							\true &\textit{if } i_L^{P}(L \setminus K) \cap i_{C_k}^{P} (C_k) \neq \emptyset\\
-							\false &\textit{otherwise}
-						  \end{cases}$$
-\item Otherwise:
-	$$ \rep(P,C') := \begin{cases}
-						\true &\textit{if } i_L^P(L \setminus K) \cap i_{C_k}^P(C_k) \neq \emptyset \\
-						\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R^{P'}: R \inj P', \true), \rho) &\textit{otherwise}
-					 \end{cases}$$
-\end{enumerate}					 
+\item If $i_L^P(L \setminus K) \cap i_{C_k}^P(C_k) \neq \emptyset$, we set
+$$\rep(P,C') := \true.$$
+Otherwise, let $P'$ be the graph derived the transformation $P \Longrightarrow_{\rho,m} P'$. Then, $P'$ is an overlap of $R$ and $C_k$.
+If this transformation does not exist, we set 	$\rep(P,C') := \false$.
+Let $a^p:C_k \inj C'$ be a partial morphism of $a_{k+1}$, then 
+
+$$\rep(P,C') := \begin{cases}
+			\false &\text{if $e = \false$}\\
+			\bigvee_{Q \in \eol(P', a^p)} \shift(\exists (i_R^{Q}: R \inj Q, \true), \rho) & \text{otherwise}
+		\end{cases} $$
+ 
 \item Let $E$ be the set of all graphs $C_j$ of $c$ with $j \leq k$, $j$ being odd and let $\mathbf{P}_{C_j}$ be the set all overlaps $P'$ of $L$ and $C_j$ with $i_L^{P'}(L \setminus K) \cap i_{C_j}^{P'}(C_j) \neq \emptyset$. 
-$$\rem := \bigwedge_{C \in E} \bigwedge_{P' \in  \mathbf{P}_{C_j}} \neg \exists(i_L^{P'}: L \inj P', \true)$$
+$$\rem() := \bigwedge_{C \in E} \bigwedge_{P' \in  \mathbf{P}_{C_j}} \neg \exists(i_L^{P'}: L \inj P', \true)$$
 
 \item Let $U$ be the set of all graphs $C_j$ of $c$ with $j \leq k$, $j$ being even and let $\mathbf{P}_{C_j} $ be the set of all overlaps $P'$ of $R$ and $C_j$ with $i_R^{P'}(R \setminus K) \cap i_{C_j}^{P'}(C_j) \neq \emptyset$.
-$$\nin := \bigwedge_{C \in U} \bigwedge_{P' \in \mathbf{P}_{C_j}} \shift(\neg \exists(i_R^{P'}: R \inj P', \true), \rho)$$
+$$\nin() := \bigwedge_{C \in U} \bigwedge_{P' \in \mathbf{P}_{C_j}} \shift(\neg \exists(i_R^{P'}: R \inj P', \true), \rho)$$
 
 \item Let $E$ be the set of all overlaps of $L$ and $C_k$, such that each $P' \in E$ is also an overlap of $L$ and $C'' \in \mathcal{U}(C_k, C_{k+1})$, $i_{C_k}^{P'} \models \exists(a^p_k: C_k \inj C'', \true)$ and  $i_L^{P'}(L\setminus K) \cap i_{C''}^{P'}(C'' \setminus C_k) \neq \emptyset$.
-$$\nwo := \bigwedge_{P' \in E} \neg \exists(i_L^{P'}: L \inj P', \true) $$
+$$\nwo() := \bigwedge_{P' \in E} \neg \exists(i_L^{P'}: L \inj P', \true) $$
 \end{enumerate}
 \end{definition}
 
@@ -129,7 +126,7 @@ Let us now show that the construction above generates consistency increasing app
 
 
 \begin{theorem}
-Let a graph $G$, a constraint $c$ in EANF, with $G \not \models c$, and a plain rule $\rho$ be given. 
+Let a graph $G$, a constraint $c$ in EANF with $G \not \models c$ and a plain rule $\rho$ be given. 
 Then, $\rho'= (\rho, \ap(\maxc{G}+1,C))$ with $C \in \mathcal{U}(C_{\maxc{G}+1}, C_{\maxc{G}+2})$ is a consistency increasing rule.  
 
 \end{theorem}
@@ -138,48 +135,66 @@ Let $t: G \Longrightarrow_{\rho', m} H$ be a transformation and $k = \maxc{G}+1$
 We show, by contradiction, that this transformation is direct consistency increasing by showing that (\ref{direct_improving_1}), (\ref{direct_improving_1_2}), (\ref{direct_improving_2}), (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. 
 With that, $\rho'$ is a consistency increasing rule.
 Let $\scond{c}{k} = \forall(a_k: C_k \inj C_{k+1},e)$ be the subcondition of $c$ at layer $k$. 
+Let 
+$$\mathbf{G} := \begin{cases}
+					\mathcal{U}(C_k, C_{k+1} & \text{if $e \neq \false$} \\
+					\{C_k \} &\text{otherwise.}
+				\end{cases}$$
 
 \begin{enumerate}
 \item Assume that (\ref{direct_improving_1}) does not hold. 
-Then, there does exist an morphism $p: C_k \inj G$, such that $p \models \parcond(1,e,C')$, $\track_t \circ p$ is total and $\track_t \circ p \not \models \parcond(1,e,C')$ for a graph $C' \in \mathcal{U}(C_k, C_{k+1})$. 
-There has to exist an overlap $P$ of $L$ and $C'$ such that $i_{C_k} \models \exists(a^p_k: C_k \inj C', \true)$ and $m \models \exists(i_L: L \inj P, \true)$. 
-Then, $\nwo$ and with that $\ap(\maxc{G},C)$ is not satisfied. 
+Then, a morphism $p: C_k \inj G$ exists, such that $p \models \parcond(1,e,C')$, $\track_t \circ p$ is total and $\track_t \circ p \not \models \parcond(1,e,C')$ for a graph $C' \in \mathbf{G}$. 
+Therefore, an overlap $P$ of $L$ and $C'$ such that $i_{C_k}^P \models \exists(a^p_k: C_k \inj C', \true)$ with $i_L^P(L \setminus K) \cap i_{C'}^P(C' \setminus C_k) \neq \emptyset$ exists and $m \models \exists(i_L: L \inj P, \true)$ holds. 
+Thus $\nwo()$ and consequently also $\ap(k,C)$ cannot be satisfied. 
 
-\item Assume that  (\ref{direct_improving_1_2}) does not hold. Then, a morphism $p': C_k \inj H$ with $p' \not \models \parcond(1,e,C_{k+1})$ exists, such that there does not exist a morphism $p :C_k \inj G$ with $\track_t \circ p = p'$. 
-Then, an overlap $P$ of $R$ and $C_k$ with $i_R(R\setminus K) \cap i_R(C_k) \neq \emptyset$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$. 
-Then, $m \not \models \ap(\maxc{G},C)$. 
+\item Assume that  (\ref{direct_improving_1_2}) does not hold and let
+
+$$ d := \begin{cases} 
+		\parcond(1,e,C_{k+1}) & \text{if $e \neq \false$} \\
+		\false &\text{otherwise.}
+	
+	\end{cases}	
+$$
+
+  Then, a morphism $p': C_k \inj H$ with $p' \not \models d$ exists, such that no morphism $p :C_k \inj G$ with $\track_t \circ p = p'$ exists. 
+Therefore, an overlap $P$ of $R$ and $C_k$ with $i_R(R\setminus K) \cap i_R(C_k) \neq \emptyset$ exists, such that $m \models \shift(\exists(i_R^P: R \inj P, \true), \rho)$ and $m$ does not satisfy $\nin()$. 
 
 \item Assume that (\ref{direct_improving_2}) does not hold. 
-Then, there does not exist a morphism $p: C_k \inj G$ with $p \not \models \parcond(1,e,C)$, such that $\track_t \circ p$ is not total or $\track_t \circ p \models \parcond(1,e,C)$ and $\track_t \circ p$ is total.
-Then, no overlap $P$ of $L$ and $C_k$ with $i_L(L\setminus K) \cap i_{C_k}(C_k) \neq \emptyset$ exists, such that $m \models \nex(P,C)$.
-Also, no overlap $P$ of $C$ and $R$ with $i_R(R\setminus K) \cap i_{C}(C) \neq \emptyset$ and $m \models \nex(P,C)$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$ and therefore $\rep(P,C) = \false$. 
-It follows that for all $P \in \overlay(L,C_k)$ it holds that $\nex(P,C) \wedge \rep(P,C) = \false$ and with that $m \not \models \ap(\maxc{G}, C)$.
+Then, no morphism $p: C_k \inj G$ with $p \not \models \parcond(1,e,C')$, such that $\track_t \circ p$ is not total or $\track_t \circ p \models \parcond(1,e,C')$ and $\track_t \circ p$ is total exists, for any $C' \in \mathbf{G}$.
+Then, no overlap $P$ of $L$ and $C_k$ with $i_L^P(L\setminus K) \cap i_{C_k}^P(C_k) \neq \emptyset$ exists, such that $m \models \nex(P,C)$.
+
+Let $P$ be an overlap of $C_k$ and $L$ with $i_L^P(L \setminus K) \cap i_{C_k}^P(C_k) = \emptyset$.
+If $e  = \false$, then $\rep(P,C) = \false$. 
+Otherwise, if $m \models \nex(P,C) \wedge \rep(P,C)$, it holds that $i_{C_k}^P \not \models \parcond(1,e,C)$ and a  graph $Q \in \eol(P', a^p)$ exists, such that $m \models \shift(\exists(i_R^Q:R \inj Q, \true),\rho)$. 
+In this case, $\track_t \circ i_{C_k}^P \models \parcond(1,e,C)$ follows and (\ref{direct_improving_2}) is satisfied. 
+
+In total, $m \not \models \nex(P,C) \wedge \rep(P,C)$ follows for all $P \in \overlay(L,C_K)$ and therefore $m \not \models \ap(k,C)$.
 
 \item Assume that (\ref{direct_improving_3}) does not hold.
-Then, there does exist a morphism $p: C_j \inj G$ with $j < k$ and $i$ being even, such that no morphism $p': C_j \inj G$ with $\track_t \circ p' = p$ exists. 
-Then, an overlap $P$ of $C_j$ and $R$ with $i_R(R \setminus K) \cap i_{C_j} \neq \emptyset$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$. 
-It follows that $m \not \models \rem$ and with that $m \not \models \ap(\maxc{G}, C)$. 
+Then, a morphism $p: C_j \inj H$ with $j < k$ and $j$ being odd exists, such that no morphism $p': C_j \inj G$ with $\track_t \circ p' = p$ exists. 
+Then, an overlap $P$ of $C_j$ and $R$ with $i_R^P(R \setminus K) \cap i_{C_j}^P(C_j) \neq \emptyset$ exists, such that $m \models \shift(\exists(i_R: R \inj P, \true), \rho)$. 
+Hence, $m \not \models \nin()$ and  $m \not \models \ap(k, C)$. 
 
 \item Assume that (\ref{direct_improving_4}) does not hold.
-Then, there does exist and morphism $p :C_j \inj G$ with $j < k$ and $j$ being odd, such that $\track_t \circ p$ is not total. 
-Then, an overlap $P$ of $C_j$ and $L$ with $i_L(L \setminus K) \cap i_{C_j}(C_j) \neq \emptyset$ exists, such that $m \models \exists(i_L:L \inj P, \true)$. 
-It follows that $m \not \models \rem$ and with that $m \not \models \ap(\maxc{G}, C)$.
+Then, a morphism $p :C_j \inj G$ with $j < k$ and $j$ being even exists, such that $\track_t \circ p$ is not total. 
+Then, an overlap $P$ of $C_j$ and $L$ with $i_L^P(L \setminus K) \cap i_{C_j}^P(C_j) \neq \emptyset$ exists, such that $m \models \exists(i_L^P:L \inj P, \true)$. 
+Hence, $m \not \models \rem()$ and  $m \not \models \ap(k, C)$.
 
 \end{enumerate}
-In total follows that if $m \models \ap(\maxc{G}, C)$, then $t$ is a direct minimal improving transformation. 
+In total, if $\models \ap(k,C)$, then $t$ is a direct consistency increasing transformation.
 \end{proof}
 
-\begin{lemma}
-Let $G$ be a graph, $c$ a constraint in EANF, with $\maxc{G} < \nl(c)$,  and $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
-Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax + 1$ and $\ap(\cmax, C')$ the application condition constructed by definition \ref{def_appl_cond} with $C'\in \mathcal{U}(C, C_{k+1})$ for any $C \in \mathcal{G}_c^G$.
-If 
-$$((R \setminus K) \cap C_{k+1}) \cup ((L \setminus K) \cap C_{k+1}) = \emptyset$$
-$\ap(\cmax, C')$ can be replaced by $\false$. 
-\end{lemma}
-\begin{proof}
-There does not exist an overlap $P$ of $C_k$ and $L$ with $i_L(L \setminus K) \cap i_{C_k}(C_k) \neq \emptyset$ and $\rep(P,C')$ will be equal to $\false$, if $C_k = C_{k+1}$, or equal to $\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R: R \inj P', \true), \rho)$. 
-Since the set $\mathbf{P}$ has to be empty, this expression can be replaced by $\false$. 
-If follows that $\rep(P,C') = \false$ for all $P \in \overlay(L,C_k)$ and therefore $\ap(\cmax, C')$ will always be evaluated to $\false$.
-\end{proof}
+%\begin{lemma}
+%Let $G$ be a graph, $c$ a constraint in EANF, with $\maxc{G} < \nl(c)-1$,  and $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
+%Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax + 1$ and $\ap(\maxc{G} + 1, C')$ the application condition constructed by definition \ref{def_appl_cond} with $C'\in \mathcal{U}(C, C_{k+1})$.
+%If 
+%$$((R \setminus K) \cap C_{k+1}) \cup ((L \setminus K) \cap C_{k+1}) = \emptyset$$
+%$\ap(\cmax, C')$ can be replaced by $\false$. 
+%\end{lemma}
+%\begin{proof}
+%There does not exist an overlap $P$ of $C_k$ and $L$ with $i_L(L \setminus K) \cap i_{C_k}(C_k) \neq \emptyset$ and $\rep(P,C')$ will be equal to $\false$, if $C_k = C_{k+1}$, or equal to $\bigvee_{P' \in \mathbf{P}} \shift(\exists(i_R: R \inj P', \true), \rho)$. 
+%Since the set $\mathbf{P}$ has to be empty, this expression can be replaced by $\false$. 
+%If follows that $\rep(P,C') = \false$ for all $P \in \overlay(L,C_k)$ and therefore $\ap(\cmax, C')$ will always be evaluated to $\false$.
+%\end{proof}
 
 \input{Kapitel/pot_improving_rules}

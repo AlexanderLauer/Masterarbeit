@@ -1,25 +1,27 @@
 \subsection{conditions up to layer}
 \begin{definition}[\textbf{Layer of a subcondition}]
 Let $c$  be a condition and $d$ a subcondition of $c$. 
-The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) -1$. 
+The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) +1$. 
 \end{definition}
 
+ 
 \begin{definition}[\textbf{Subcondition at layer}]
 Let $c$ be a condition. 
 The \emph{subcondition at layer $k$}, denoted by $\scond{c}{k}$ , is the subcondition $d$ of $c$ with $\lay(d) = k$.
 \end{definition}
 
+For the reminder of this paper, given a constraint $c$ in EANF, $\scond{c}{k}$ is always a condition over the graph $C_k$, for all $1 \leq k \leq \nl(c)$.
 
 We define a notion of partial consistency, called \emph{satisfaction at layer}, which will be used for the definition of consistency increasing. 
 First, two operators are introduced to modify given constraints on a certain layer. 
 
 \begin{definition}[\textbf{substitution at layer}]
-Let $c = Q(a: C_0 \inj C_1, d)$ be a condition in ANF, such that the subcondition of $c$ with layer $0 \leq k \leq \nl(c)$ is a condition over $C_k$. 
+Let $c = Q(a: C_0 \inj C_1, d)$ be a condition in ANF, such that the subcondition of $c$ with layer $0 \leq k < \nl(c)$ is a condition over $C_k$. 
 Let $e$ be a condition over $C_k$. 
 The \emph{substitution in $c$  at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
 \begin{enumerate}
-\item If $k \leq 1$:
-		$$\sub(0, c, e) := e$$
+\item If $k = 1$:
+		$$\sub(1, c, e) := e$$
 
 \item If $k > 1$:
 		$$\sub(k,c,e) := Q\bigl(a: C_0 \inj C_1, \sub(k-1,d,e)\bigr)$$
@@ -49,7 +51,7 @@ $$ \cond(k,c) := \begin{cases}
 \begin{example}
 Let the condition $c = \forall(a_0: C_0 \inj C_1, \exists(a_1:C_1 \inj C_2, d))$ be given. 
 Then,
-$$ \cond(2,c) = \forall(a_0: C_0 \inj C_1, \true).$$
+$$ \cond(2,c) = \forall(a_0: C_0 \inj C_1, \exists(a_1:C_1 \inj C_2, \true)).$$
 \end{example}
 Now, we are ready to define satisfaction at layer, which is a key ingredient to define consistency increasing. 
 \begin{definition}[\textbf{Satisfaction at layer}]
@@ -145,30 +147,47 @@ The construction of partial conditions is designed to only replace graphs in exi
 That means, given the condition $c = \forall(a_0: C_0 \inj C_1, \false)$ and let $C' \in \mathcal{U}(C_0, C_1)$. 
 If the condition $c'= \forall(a^p_0: C_0 \inj C_1, \false)$ is satisfied this implies that $c$ is also satisfied but the backwards implication does not hold.
 
-
 \begin{definition}[\textbf{partial condition}]
-Let $c$ be a condition in EANF. 
-
-The \emph{partial condition of $c$ at layer $k < \nl(c)$ with} with 
-$$ C' \in \begin{cases}
-			\mathcal{U}(C_k, C_{k+1}) &\text{if $k$ is even} \\
-			\mathcal{U}(C_{k+1}, C_{k+2}) &\text{if $k$ is odd},
-		   \end{cases}
+Let a constraint $c$ in ANF be given. 
+Let $k \leq \nl(c)+1$ such that either $\scond{c}{k} = \exists(a_k:C_{k-1} \inj C_k, d)$ is existentially bound or $k = \nl(c) +1$.
+The \emph{partial condition, $\parcond(k,c,C')$, of $c$ at layer $k$ with} 
+$$C' \in \begin{cases}
+			\mathcal{U}(C_k, C_{k+1}) &\text{if $k \leq \nl(c)$}\\
+			C_{\nl(c)} &\text{otherwise}
+		\end{cases}
 $$
-$\parcond(k,c,C')$, is defined as:
-\begin{enumerate}
-\item If $k$ is odd, let $\scond{c}{k+1} = \exists(a: C_{k+1} \inj C_{k+2},f)$:
-$$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
-\item If $k$ is even, let $\scond{c}{k+1} = \exists(a:C_k\inj C_{k+1},f)$:
-$$\parcond(k,c,C') := \sub\bigl(k,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
-\end{enumerate}
+
+is defined as:
+$$\parcond(k,c,C') := \begin{cases}
+							c & \text{if $k = \nl(c)+1$}\\
+							\sub\big(k,c,\exists(a_k^p:C_{k-1} \inj C', \true) \big) &\text{otherwise}
+					   \end{cases}$$
+
 \end{definition}
+
+%\begin{definition}[\textbf{partial condition}]
+%Let $c$ be a condition in EANF. 
+%
+%The \emph{partial condition of $c$ at layer $k < \nl(c)$ with} with 
+%$$ C' \in \begin{cases}
+%			\mathcal{U}(C_k, C_{k+1}) &\text{if $k$ is even} \\
+%			\mathcal{U}(C_{k+1}, C_{k+2}) &\text{if $k$ is odd},
+%		   \end{cases}
+%$$
+%$\parcond(k,c,C')$, is defined as:
+%\begin{enumerate}
+%\item If $k$ is odd, let $\scond{c}{k+1} = \exists(a: C_{k+1} \inj C_{k+2},f)$:
+%$$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
+%\item If $k$ is even, let $\scond{c}{k+1} = \exists(a:C_k\inj C_{k+1},f)$:
+%$$\parcond(k,c,C') := \sub\bigl(k,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
+%\end{enumerate}
+%\end{definition}
 
 \begin{example}
 \end{example}
 
 
-If a graph $G$ does not satisfy the condition up to layer $k := \maxc{G} + 2$ of a given constraint $c$, with $k$ being even, there does exists a graph $C' \in \mathcal{U}(C_{k-1}, C_k)$, such that $G$ satisfies $\parcond(k,c,C')$, note that $G$ always satisfies $\parcond(k,c,C_{k-1})$. 
+If a graph $G$ does not satisfy the condition up to layer $k := \maxc{G} + 2$, $k < \nl(c) +1$, of a given constraint $c$, with $\scond{c}{k}$ being existentially bound, there does exists a graph $C' \in \mathcal{U}(C_{k-1}, C_k)$, such that $G$ satisfies $\parcond(k,c,C')$, note that $G$ always satisfies $\parcond(k,c,C_{k-1})$. 
 For the biggest of these graphs, we define the notions of \emph{biggest partially satisfying conditions and graphs}.
 
 
