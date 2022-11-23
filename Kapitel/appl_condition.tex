@@ -1,5 +1,8 @@
 \section{general application conditions}
 
+\input{figures/fig_rules}
+\input{figures/fig_appl_cond}
+
 To guarantee that each transformation $t: G \Longrightarrow_{\rho,m} H$, given a rule $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$  , is (direct) consistency increasing w.r.t to a constraint $c$, we present applications conditions ensuring this property. 
 It has to be ensured that at least one violation will be removed. 
 For this, it is necessary (a) to check that an occurrence $p$ of the the universally bound graph $C_{\maxc{G} +1}$ exists, such that $p$ and the match $m$ do overlap, i.e $p(C_{\maxc{G} + 1}) \cap m(L) \neq \emptyset$, and (b) that $p$ does not satisfy $c' = \exists C_{\maxc{G} + 2}$. 
@@ -94,9 +97,7 @@ $$\nwo() := \bigwedge_{P' \in E} \neg \exists(i_L^{P'}: L \inj P', \true) $$
 \end{enumerate}
 \end{definition}
 
-\begin{example}
-Ein tolles Beispiel.
-\end{example}
+
 
 Note that $\ap(k, C')$, for any $C' \in \mathcal{U}(C_k, C_{k+1})$, will only be evaluated with $\true$ if an occurrence $p$ of $C_k$ with $p \not \models \exists(a_k^p:C_k \inj C', \true)$ and $\track_t \circ p \models \exists(a_k^p:C_k \inj C', \true)$ exists. 
 For any smaller improvements, i.e a similar improvement for a subgraph $C'' \in \mathcal{U}(C_k, C_{k+1})$ of $C'$, $\ap(k, C')$ would be evaluated with $\false$.
@@ -120,7 +121,14 @@ Also, they do get more and more restrictive for increasing $k$, since the number
 
 For constraints of the form $c:= \forall C_1 \exists C_2$ it can be shown that $\ap(1,C_2)$ is not only a direct increasing, but also a direct improving application condition. 
 
+\begin{example}
+Consider the rule \emph{\texttt{assignFeature}} of figure \ref{fig:rules} and constraint $c_1$ of figure \ref{fig:constraints}. 
+The application condition of $c_1$ at layer $1$ with $C_2^1$ for \emph{\texttt{assignFeature}} constructed by definition \ref{def_appl_cond} is shown in figure \ref{fig:appl_cond}.
+The first two rows are conditions constructed by $\nex(\cdot, \cdot)$ and the third row is the condition constructed by $\rep(\cdot, \cdot)$.
+Note that $\rem()$, $\nin()$ and $nwo()$ did not construct any conditions since \emph{\texttt{assignFeature}}  does not create elements of $C_1^1$ and does not delete elements of $C_2^1$. 
 
+Additionally, this application condition is also a consistency improving application condition w.r.t $c_2$.
+\end{example}
 
 Let us now show that the construction above generates consistency increasing application conditions.
 

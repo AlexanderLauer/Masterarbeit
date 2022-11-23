@@ -1,4 +1,6 @@
 \subsection{conditions up to layer}
+\input{figures/fig_constraints}
+\input{figures/fig_graph}
 \begin{definition}[\textbf{Layer of a subcondition}]
 Let $c$  be a condition and $d$ a subcondition of $c$. 
 The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) +1$. 
@@ -49,9 +51,8 @@ $$ \cond(k,c) := \begin{cases}
 \end{definition}
 
 \begin{example}
-Let the condition $c = \forall(a_0: C_0 \inj C_1, \exists(a_1:C_1 \inj C_2, d))$ be given. 
-Then,
-$$ \cond(2,c) = \forall(a_0: C_0 \inj C_1, \exists(a_1:C_1 \inj C_2, \true)).$$
+Consider constraint $c_2$ given in figure \ref{fig:constraints}.
+Then, $\cond(2,c_2) = \forall C_1^1 \exists C_2^2$
 \end{example}
 Now, we are ready to define satisfaction at layer, which is a key ingredient to define consistency increasing. 
 \begin{definition}[\textbf{Satisfaction at layer}]
@@ -63,6 +64,8 @@ The biggest $k$ with $G \models_k c$ such that no $j >k$ with $G \models_j c$ ex
 \end{definition}
 
 \begin{example}
+Consider the graph $G$ given in figure \ref{fig:graph} and the constraint $c_2$ given in figure \ref{fig:constraints}. 
+This graph does not satisfy $c_2$, since both occurrences of \emph{\texttt{Class}} do not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but is does satisfy $\cond(2,c_2)$ and therefore $$G \models_2 c_2$$
 \end{example}
 
 
@@ -184,6 +187,9 @@ $$\parcond(k,c,C') := \begin{cases}
 %\end{definition}
 
 \begin{example}
+Consider constraint $c_1$ given in figure \ref{fig:constraints}. 
+Since $C_2^2 \in \mathcal{U}(C_1^1,C_1^2)$, we can construct a partial condition of $c_1$ at layer $2$ with $C_2^2$ as $\parcond(2,c_1,C_2^2) = \forall C_1^1 \exists C_2^2$. 
+Whereas $c_2$ checks whether each node of the type \emph{\texttt{Class}} is connected to at least two nodes of the type \emph{\texttt{Feature}}, the partial condition checks whether each nodes of the type \emph{\texttt{Class}} is connected to at least one nodes of the type \emph{\texttt{Feature}}.
 \end{example}
 
 
