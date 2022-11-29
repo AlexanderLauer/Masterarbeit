@@ -1,36 +1,53 @@
 \subsection{potentially minimal improving rules}
 
-\begin{definition}[\textbf{basic improving rule}]
-Let a constraint $c$ and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given.
-The rule $\rho$ is called \emph{basic improving} w.r.t $c$ at layer $k$ with $C_k \subset P \subseteq C_{k+1}$, $p : C_k \inj P$ being the inclusion, and $k \in \{1,3, \ldots , \nl(c)\}$, if
-\begin{equation}\label{pot_1}
-	(L \setminus K) \cap (C_{k-1} \cup (C_{k+1} \setminus C_k)) = \emptyset
-\end{equation}
-	
-and 
-\begin{equation}\label{pot_2}
-	(R \setminus K) \cap C_k = \emptyset 
-\end{equation}
 
-and either \ref{pot_min_impr_1}. or \ref{pot_min_impr_2}. applies. 
+\begin{definition}[\textbf{non-consistency decreasing rule}]
+Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a constraint $c$ in EANF be given. 
+
 
 \begin{enumerate}
-\item \label{pot_min_impr_1} The rule $\rho$ deletes  elements of $C_k \setminus C_{k-1}$:
-	\begin{equation}
-				 L \subseteq C_k \wedge L \setminus K \neq \emptyset 
-	\end{equation}
-	Then, $\rho$ is called a \emph{deleting basic improving rule}.
+\item If $C_k$ is universally bound, let $I$ be the set of all isolated nodes of $C_k$, $P$ be the set of all partial morphisms $p: C_k \inj R$, $m = r$, 
+$$E = \bigcup_{p \in P} p(E_{C_k}) \cap (E_R \setminus E_K)$$ and 
+$$V = \bigcup_{p \in P} p(V_{C_k}) \cap (V_R \setminus V_K).$$
 
-\item \label{pot_min_impr_2} The rule $\rho$ creates an instance of $P$:
-	\begin{equation}\label{pot_ins}
-		L = C_k \wedge P \subseteq R
-	\end{equation}
-	and $p$ is a partial morphism of $r$. 
-	Then, $\rho$ is  called an \emph{inserting basic improving rule}.
+\item If $C_k$ is existentially bound, let $I$ be the set of all isolated nodes of $C_k$, $P$ be the set of al morphisms $p:C_k \inj L$, $m = l$, 
+$$E = \bigcup_{p \in P} p(E_{C_k}) \cap (E_L \setminus E_K)$$ and 
+$$V = \bigcup_{p \in P} p(V_{C_k}) \cap (V_L \setminus V_K).$$
+\end{enumerate}
+Let $I$ be the set of all isolated nodes of $C_k$. Then, $\rho$ is called a \emph{non-consistency decreasing rule at layer $k$ w.r.t $c$} if $I \cap V = \emptyset$ and the following holds:
+\begin{alignat*}{2}
+	&\big(\neg \exists e \in E: \exists v,v' \in V_K: \src(e) = m(v) \wedge \tar(e) = m(v')\big) & \wedge \\
+	&\big(\forall v \in V: \exists e \in E_{C_k}: \exists p \in P: \src(e) = p^{-1}(v) \vee \tar(e) = p^{-1}(v) \\ &\wedge \neg \exists e' \in E: \exists p \in P: p^{-1}(e')=e\big)
+\end{alignat*}
+\end{definition}
+
+\begin{lemma}
+Let a constraint $c$ in EANF  and a non-consistency decreasing rule $\rho$ at layer $k$ w.r.t $c$ be given. 
+Then, it holds that: If $C_k$ is universally bound, for each transformation $t : G \Longrightarrow_{\rho} H$:
+$$\forall p:C_k \inj H: \exists p':C_k \inj G: \track_t \circ p' = p$$
+If $C_k$ is existentially bound, for each transformation $t: G\Longrightarrow_{\rho} H$:
+ $$ \forall p:C_k \inj G: \track_t \circ p \text{ is total}$$
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+\begin{definition}[\textbf{basic improving rule}]
+Let a constraint $c$ and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given. 
+Then, $\rho$ is called a \emph{basic improving w.r.t $c$ at layer $k$} if $\rho$ is a non-consistency decreasing rule at layer $j$ w.r.t $c$ for all $0 \leq j \leq k$ and
+
+\begin{enumerate}
+\item If $C_k$ is universally bound: 
+	There does exist a morphism $i: L \inj C_k$ and 
+	$$\exists e \in C_k\setminus C_{k-1}: \neg \exists e' \in K: i(e) = l(e).$$
+	Then, $\rho$ is called a \emph{deleting basic improving rule}.
+\item If $C_k$ is existentially bound:
+	There does exist a morphism $i: C_k \inj L$ such that $i \not \models \exists (a_k^p: C_k \inj C', \true)$ and $\	r \circ l^{-1} \circ i \models \exists(a_k^p:C_k \inj C', \true)$ for any $C'\in \mathcal{U}(C_k, C_{k+1})$ and for each $C''\in \mathcal{U}(C_k,C_{k+1}$ with $i \models \exists(a_k^p:C_k \inj C'', \true)$ it holds that $r \circ l^{-1} \circ i \models \exists(a_k^p:C_k \inj C'',\true)$ . 
+	Then, $\rho$ is called an \emph{inserting basic improving rule with $C'$.}
 \end{enumerate}
 
-
 \end{definition}
+
 
 
 
