@@ -54,7 +54,7 @@ Note that, with corollary \ref{cor:comp_existentially}, this equivalence does no
 
 
 \begin{lemma}
-	let a universally bound constraint $c$ with $\nl(c) = 1$ in ANF, a graph $G$  with $G \not \models c$ and a transformation $t: G \Longrightarrow H$ be given. 
+	let a universally bound constraint $c$ with $\nlvl(c) = 1$ in ANF, a graph $G$  with $G \not \models c$ and a transformation $t: G \Longrightarrow H$ be given. 
 	Then,
 	$$t \text{ is consistency improving w.r.t $c$ } \iff t \text{ is consistency increasing w.r.t $c$}$$ 
 	
@@ -66,12 +66,12 @@ Since $\mathcal{U}(C,C) = \{C\}$, $\nvc(1,G)$ is the number of occurrences of $C
 This is exactly the definition of the number of violations for consistency improving transformations and the statement follows immediately.
 \end{proof}
 
-For universally bound constraints $c$ with $\nl(c) \geq 2$, (direct) consistency increasing is not related to (direct) consistency improving and sustaining. 
+For universally bound constraints $c$ with $\nlvl(c) \geq 2$, (direct) consistency increasing is not related to (direct) consistency improving and sustaining. 
 As shown in \cite{kosiol2022sustaining}, (direct) consistency improving implies (direct) consistency sustaining. 
 Therefore it is sufficient to show that direct improving does not imply increasing and that direct increasing does not imply consistency sustainment. 
 
 \begin{lemma}
-Let a universally bound constraint $c$ with $\nl(c) \geq 2$ in ANF, a graph $G$ with $G\not \models c$ and a transformation $t: G \Longrightarrow H$ be given. Then,
+Let a universally bound constraint $c$ with $\nlvl(c) \geq 2$ in ANF, a graph $G$ with $G\not \models c$ and a transformation $t: G \Longrightarrow H$ be given. Then,
 \begin{alignat*}{2}
 &t \text{ is direct consistency improving w.r.t $c$ } &&\centernot \implies t \text{ is consistency increasing w.r.t $c$ } \wedge \\
 &t \text{ is direct increasing w.r.t $c$ } &&\centernot \implies t \text{ is consistency sustaining w.r.t $c$ }

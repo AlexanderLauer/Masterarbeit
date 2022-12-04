@@ -42,12 +42,12 @@ Via the number of violations, we now define \emph{consistency increasing} transf
 
 	
 	A transformation $G \Longrightarrow_{\rho,m} H$ is called \emph{consistency increasing w.r.t $c$}, if  $$\nvc(k, H) < \nvc(k, G) $$
-	for any $0 \leq k \leq \nl(c)$.
+	for any $0 \leq k \leq \nlvl(c)$.
 	A rule $r$ is called \emph{consistency increasing w.r.t $c$}, if all of its applications are. 
 	
 \end{definition}
 
-Note that if $G \models c$ there does not exist a consistency increasing transformation w.r.t $c$, since $\nvc(j,G) = 0$ for all $1 \leq j \leq \nl(c)$.
+Note that if $G \models c$ there does not exist a consistency increasing transformation w.r.t $c$, since $\nvc(j,G) = 0$ for all $1 \leq j \leq \nlvl(c)$.
 Also, no plain rule $\rho$ is  consistency increasing w.r.t $c$, since a graph $G$ satisfying $c$, such that a transformation $t: G \Longrightarrow_{\rho,m} H$ exists can always be constructed. 
 Therefore, each consistency increasing rule has to be equipped with at least one application condition.
 
@@ -76,7 +76,7 @@ Every sequence of minimal consistency improving transformation w.r.t $c$ with ru
 Let $G_0$ be a graph and 
 $$G_0 \Longrightarrow_{\rho_1} G_1 \Longrightarrow_{\rho_2} G_2 \Longrightarrow_{\rho_3} \ldots$$
 be a sequence of minimal consistency improving transformations w.r.t $c$ with $\rho_i \in \mathcal{R}$.
-We assume that $\maxc{G_0} < \nl(c)$, otherwise $\nvc(j,G_0) = 0$ for all $j \in \{0, \ldots, \nl(c)\}$ and no transformation $G_0 \Longrightarrow H$ is consistency increasing. 
+We assume that $\maxc{G_0} < \nlvl(c)$, otherwise $\nvc(j,G_0) = 0$ for all $j \in \{0, \ldots, \nlvl(c)\}$ and no transformation $G_0 \Longrightarrow H$ is consistency increasing. 
 
 We show that after at most $j := \nvc(\cmax_{G_0}+1,G_0)$ transformations $G_j \models_{\maxc{G_0} + 2} c$ holds. 
 Note that $j$ has to be finite, since $G_0$ contains only a finite number of occurrences of $C_{j+1}$.
@@ -164,7 +164,7 @@ Then, $t$ is also a increasing transformation.
 
 \begin{proof}
 
-Let $G$ be a graph, $k = \maxc{G}+1 \leq \nl(c)$ and $d = \scond{c}{k}$.
+Let $G$ be a graph, $k = \maxc{G}+1 \leq \nlvl(c)$ and $d = \scond{c}{k}$.
 With lemma \ref{lemma_consistent} follows that $\maxc{H} \geq \maxc{G}$ and with that $\nvc(k,H) \neq \infty$.
 
 \begin{enumerate}
@@ -197,7 +197,7 @@ $$|\{q \mid q:C_k \inj G \wedge q \not \models \parcond(1,e,C')\}| < |\{q \mid q
 \end{enumerate}
 In total, $\nvc(k,G) < \nvc(k,G)$ and  $t$ is an increasing transformation.
  
-For the special case that $k = \nl(c) -1$ and $c$ ends with $\forall(a_k:C_{k-1} \inj C_k,\false)$ it can be shown in a similar way that  (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply that 
+For the special case that $k = \nlvl(c) -1$ and $c$ ends with $\forall(a_k:C_{k-1} \inj C_k,\false)$ it can be shown in a similar way that  (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply that 
 $$|\{q \mid q:C_k \inj G\}| \leq |\{q \mid q:C_k \inj H\}|$$
 and that (\ref{direct_improving_2}) implies 
 $$|\{q \mid q:C_k \inj G\}| < |\{q \mid q:C_k \inj H\}|.$$

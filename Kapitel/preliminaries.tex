@@ -5,10 +5,10 @@ Let $G_1$ and $G_2$ be graphs.
 The graph $G_2$ is called a \emph{subgraph} of $G_1$ if an injective morphism $p: G_2 \inj G_1$ exists. 
 \end{definition}
 
-\begin{definition}[\textbf{super-graph}]
+\begin{definition}[\textbf{intermediate-graph}]
 Let $G_1$ and $G_2$ be graphs such that $G_1$ is a subgraph of $G_2$. 
-A graph $C$ is called a \emph{super-graph} of $G_1$ w.r.t $G_2$, if morphisms $p_1: G_1 \inj C$ and $p': C \inj G_2$ exist. 
-The set of super-graphs of $G_1$ w.r.t. $G_2$ is denoted by $\mathcal{U}(G_1,G_2)$. If $G_1 = G_2$, we set $\mathcal{U}(G_1,G_2) = \{G_1\}$.
+A graph $C$ is called an \emph{intermediate-graph} of $G_1$ and $G_2$, if injective morphisms $p_1: G_1 \inj C$ and $p': C \inj G_2$ exist. 
+The set of intermediate-graphs of $G_1$ and $G_2$ is denoted by $\ig{G_1}{G_2}$.
 
 \end{definition}
 
@@ -48,7 +48,7 @@ A \emph{graph condition} over a graph $C_0$ is inductively defined as follows:
 	A graph $G$ satisfies a constraint $c$, $G \models c$, if $p : \emptyset \xhookrightarrow{} G$ satisfies $c$.
 We use the abbreviation $\forall(a:C_0 \xhookrightarrow{} C_1,d) := \neg \exists(a:C_0 \xhookrightarrow{} C_1,\neg d)$.
 
-The \emph{nesting level} $\nl$ of a condition is defined as $\nl(\textsf{true} = 0$ and  $\nl(\exists(a: P \to Q, d)) := \nl(d) +1$.
+The \emph{nesting level} $\nlvl$ of a condition is defined as $\nlvl(\textsf{true} = 0$ and  $\nlvl(\exists(a: P \to Q, d)) := \nlvl(d) +1$.
 \end{definition}
 
 \begin{definition}[\textbf{alternating quantifier normal form (ANF)}\cite{sandmann2019rule}]

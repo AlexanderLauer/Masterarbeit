@@ -3,47 +3,74 @@
 
 \begin{definition}[\textbf{non-consistency decreasing rule}]
 Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a constraint $c$ in EANF be given. 
+Then, $\rho$ is called a \emph{non-consistency decreasing rule  w.r.t $c$ at layer $k$} if 
+\begin{enumerate}
+\item If $C_k$ is universally bound and for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
+$$\forall p: C_k \inj H: \exists p':C_k \inj G: \track_t \circ p' = p.$$
+
+\item If $C_k$ is existentially bound for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
+$$\forall p: C_k \inj G: \track_t \circ \text{ p is total}.$$
+\end{enumerate}
+The rule $\rho$ is called \emph{non-consistency decreasing w.r.t $c$ up to layer $k$} if $\rho$ is non-consistency decreasing w.r.t $c$ at layer $j$ for all $1 \leq j \leq k$.
+\end{definition}
+
+\begin{corollary}
+Let a graph $G$, a constraint $c$ in EANF and a non-consistency decreasing rule w.r.t $c$ up to layer $\maxc{G}$ be given. 
+Then, for each transformation $t: G \Longrightarrow_{\rho} H$ it holds that 
+$$\maxc{G} \leq \maxc{H}.$$
+\end{corollary}
+
+\begin{lemma}\label{def:non-decreasing}
+Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a constraint $c$ in EANF be given. 
+Then, $\rho$ is a non-consistency decreasing rule at layer $k$ w.r.t $c$ if either \ref{category:non-decreasing_1}. or \ref{category:non-decreasing_2}. applies.  
 
 
 \begin{enumerate}
-\item If $C_k$ is universally bound, let $I$ be the set of all isolated nodes of $C_k$, $P$ be the set of all partial morphisms $p: C_k \inj R$, $m = r$, 
-$$E = \bigcup_{p \in P} p(E_{C_k}) \cap (E_R \setminus E_K)$$ and 
-$$V = \bigcup_{p \in P} p(V_{C_k}) \cap (V_R \setminus V_K).$$
-
-\item If $C_k$ is existentially bound, let $I$ be the set of all isolated nodes of $C_k$, $P$ be the set of al morphisms $p:C_k \inj L$, $m = l$, 
-$$E = \bigcup_{p \in P} p(E_{C_k}) \cap (E_L \setminus E_K)$$ and 
-$$V = \bigcup_{p \in P} p(V_{C_k}) \cap (V_L \setminus V_K).$$
-\end{enumerate}
-Let $I$ be the set of all isolated nodes of $C_k$. Then, $\rho$ is called a \emph{non-consistency decreasing rule at layer $k$ w.r.t $c$} if $I \cap V = \emptyset$ and the following holds:
+\item \label{category:non-decreasing_1}
+If $C_k$ is universally bound, let $I$ be the set of all isolated nodes of $C_k$, $P$ be the set of all partial morphisms $p: C_k \inj R$, 
+$$E = \bigcup_{p \in P} p(E_{C_k}) \cap (E_R \setminus E_K) \text{ and }  V = \bigcup_{p \in P} p(V_{C_k}) \cap (V_R \setminus V_K).$$
+Then, $\rho$ is called a \emph{non-consistency decreasing rule at layer $k$ w.r.t $c$} if 
+$I \cap V = \emptyset$ and
 \begin{alignat*}{2}
-	&\big(\neg \exists e \in E: \exists v,v' \in V_K: \src(e) = m(v) \wedge \tar(e) = m(v')\big) & \wedge \\
+	&\big(\neg \exists e \in E: \exists v,v' \in V_K: \src(e) = r(v) \wedge \tar(e) = r(v')\big) & \wedge \\
 	&\big(\forall v \in V: \exists e \in E_{C_k}: \exists p \in P: \src(e) = p^{-1}(v) \vee \tar(e) = p^{-1}(v) \\ &\wedge \neg \exists e' \in E: \exists p \in P: p^{-1}(e')=e\big)
 \end{alignat*}
-\end{definition}
+holds.
 
-\begin{lemma}
-Let a constraint $c$ in EANF  and a non-consistency decreasing rule $\rho$ at layer $k$ w.r.t $c$ be given. 
-Then, it holds that: If $C_k$ is universally bound, for each transformation $t : G \Longrightarrow_{\rho} H$:
-$$\forall p:C_k \inj H: \exists p':C_k \inj G: \track_t \circ p' = p$$
-If $C_k$ is existentially bound, for each transformation $t: G\Longrightarrow_{\rho} H$:
- $$ \forall p:C_k \inj G: \track_t \circ p \text{ is total}$$
+
+\item \label{category:non-decreasing_2}
+If $C_k$ is existentially bound, let $I$ be the set of all isolated nodes of $C_k$, $P$ be the set of al morphisms $p:C_k \inj L$, 
+$$E = \bigcup_{p \in P} p(E_{C_k}) \cap (E_L \setminus E_K) \text{ and }V = \bigcup_{p \in P} p(V_{C_k}) \cap (V_L \setminus V_K).$$  
+
+\end{enumerate}
+Let $I$ be the set of all isolated nodes of $C_k$. Then, $\rho$ is called a \emph{non-consistency decreasing rule at layer $k$ w.r.t $c$} if $I \cap V = \emptyset$ and 
+\begin{alignat*}{2}
+	&\big(\neg \exists e \in E_{C_k}\setminus E_{C_{k-1}}: \exists p \in P: \exists e' \in E: p(e) = e'\big) &\wedge  \\
+	&\big(\forall v \in V: \exists e \in E_{C_k}: \exists p \in P: \src(e) = p^{-1}(v) \vee \tar(e) = p^{-1}(v) \\ &\wedge \neg \exists e' \in E: \exists p \in P: p^{-1}(e')=e\big)
+\end{alignat*}
 \end{lemma}
 \begin{proof}
 
 \end{proof}
 
-\begin{definition}[\textbf{basic improving rule}]
+
+
+\begin{definition}[\textbf{basic increasing rule}]
 Let a constraint $c$ and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given. 
-Then, $\rho$ is called a \emph{basic improving w.r.t $c$ at layer $k$} if $\rho$ is a non-consistency decreasing rule at layer $j$ w.r.t $c$ for all $0 \leq j \leq k$ and
+Then, $\rho$ is called a \emph{basic increasing w.r.t $c$ at layer $k$} if $\rho$ is a non-consistency decreasing w.r.t $c$ up to layer $k$ and
 
 \begin{enumerate}
 \item If $C_k$ is universally bound: 
 	There does exist a morphism $i: L \inj C_k$ and 
 	$$\exists e \in C_k\setminus C_{k-1}: \neg \exists e' \in K: i(e) = l(e).$$
-	Then, $\rho$ is called a \emph{deleting basic improving rule}.
+	Then, $\rho$ is called a \emph{deleting basic increasing rule}.
 \item If $C_k$ is existentially bound:
-	There does exist a morphism $i: C_k \inj L$ such that $i \not \models \exists (a_k^p: C_k \inj C', \true)$ and $\	r \circ l^{-1} \circ i \models \exists(a_k^p:C_k \inj C', \true)$ for any $C'\in \mathcal{U}(C_k, C_{k+1})$ and for each $C''\in \mathcal{U}(C_k,C_{k+1}$ with $i \models \exists(a_k^p:C_k \inj C'', \true)$ it holds that $r \circ l^{-1} \circ i \models \exists(a_k^p:C_k \inj C'',\true)$ . 
-	Then, $\rho$ is called an \emph{inserting basic improving rule with $C'$.}
+	There does exist a morphism $i: C_{k-1} \inj L$ such that $i \not \models \exists (a_k^p: C_{k-1} \inj C', \true)$ and $\	r \circ l^{-1} \circ i \models \exists(a_k^p:C_{k-1} \inj C', \true)$ for any $C'\in \mathcal{U}(C_{k-1}, C_{k})$, let the sets $E$ and $V$ be constructed as introduced in lemma \ref{def:non-decreasing} it holds that
+	\begin{alignat*}{2}
+		\forall v \in V: \exists v' \in V_K: l(v') = v &\wedge \\
+		\forall e \in E: \exists e' \in E_K: l(e') = e
+	\end{alignat*}
+	Then, $\rho$ is called an \emph{inserting basic increasing rule} and $i$ is called the increasing morphism of $\rho$.
 \end{enumerate}
 
 \end{definition}
@@ -51,19 +78,19 @@ Then, $\rho$ is called a \emph{basic improving w.r.t $c$ at layer $k$} if $\rho$
 
 
 
-\begin{definition}[\textbf{application conditions for basic improving rules}]
-Let a constraint $c$ in EANF and a basic improving rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$  with $C_{k} \subseteq P \subseteq C_{k+1}$ be given. 
-We define the application condition for $r$ as:
+\begin{definition}[\textbf{application conditions for basic increasing rules}]
+Let a constraint $c$ in EANF and a basic increasing rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$  with $C \in \mathcal{U}(C_k, C_{k+1}$ be given. 
+We define the application condition for $\rho$ as:
  
 \begin{enumerate}
-\item If $\rho$ is a deleting potentially minimal improving rule:
+\item If $\rho$ is a deleting increasing rule:
 $$\api(j, P) := \begin{cases}
-				\bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L: L \inj P, \neg \exists(i_P: P \inj P', \true)) &\text{, if j = k} \\
+				\bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}: P \inj P', \true)) &\text{, if j = k} \\
 				\false &\text{, if } j \neq k.
 				\end{cases}$$
-\item If $\rho$ is an inserting potentially minimal improving rule:				
+\item If $\rho$ is an inserting increasing rule. Let $a^p:C_k \inj C$ be a partial morphism of $a_k$ , $e: C_k \inj L$ be the increasing morphism of $c$ and $Q$ be set of all overlaps $P$ of $L$ and $C$ such that $i_L^P \circ e \models \exists(a^p:C_k \inj C, \true)$:				
 $$\api(j, P) := \begin{cases}
-				\neg \exists(a^p_k: L \inj P, \true) &\text{, if j = k}\\
+				\bigvee_{P \in Q} \exists(i_L^P: L \inj P, \true) &\text{, if j = k}\\
 				\false	&\text{, if } j \neq k
 				\end{cases}$$
 
@@ -160,12 +187,9 @@ exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0,\ldots, n-1\}$ and $H
 
 \end{definition}
 
+
 \begin{corollary}
-	Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$ be given. 
-	If $\mathcal{R}$ is a repairing rule set for $c$ at layer $k$, $\mathcal{R}$ is a repairing rule set w.r.t $c$ at layer $j$ for all $k < j \leq \nl(c)$. 
-\end{corollary}
-\begin{corollary}
-	Let a constraint $c$ in EANF and a repairing rule set $\mathcal{R}$ for $c$ at layer $k$, for all $k\in \{1,3,\ldots, \nl(c)\}$, be given. 
+	Let a constraint $c$ in EANF and a repairing rule set $\mathcal{R}$ for $c$ at layer $k$, for all $k\in \{1,3,\ldots, \nlvl(c)\}$, be given. 
 	Then, for all graphs $G$, a sequence
 	$$G = G_0 \Rightarrow_{r_0} \ldots \Rightarrow_{r_{n-1}} G_n = H$$
 	exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0, \ldots, n-1\}$ and $H \models c$. 
@@ -218,18 +242,23 @@ It follows that $e \in E_H$ and with that $E_{G_1} \subseteq E_H$.
 
 \begin{theorem}\label{caracter_rep_rule_set_at_layer}
 Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$   be given. 
-Then, $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nl(c)$ if either \ref{cat_rep_set_1} or \ref{cat_rep_set_2} applies. 
+Then, $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nlvl(c)$ if either \ref{cat_rep_set_1} or \ref{cat_rep_set_2} applies. 
 
 \begin{enumerate}
 	\item \label{cat_rep_set_1}
 	 For any universally bound graph $C_j$ at layer $j \leq k$ of $c$, $(\rho, \api(j, C_{j+1})) \in \mathcal{R}$ and $\rho$ is a deleting potentially minimal improving rule at layer $j$ with $C_{j+1}$, such that $\rho$ only deletes edges of $C_j$.
 	\item \label{cat_rep_set_2}
 	A decomposition $\mathbf{P}$ of $C_k$ with $C_{k-1}$ exists, such that for each $P \in \mathbf{P}$ a rule $(\rho, \api(k,P)) \in \mathcal{R}$ exists, such that $\rho$ is an inserting basic improving rule at layer $k$ with $P$.
+	
+	\item \label{cat_rep_set_3}
+		There does exist a sequence of graphs 
+			$$C_k = C'_0 \inj C'_1 \inj \ldots \inj C'_n = C_{k+1}$$
+		such that a inserting basic increasing rule $\rho_i  = L_i \xhookleftarrow{l_i} K_i \xhookrightarrow{r_i} R_i$ at layer $k$ with $C_i$ exists such that $L_i \inj R_{i-1}$ and $e_i = i_{C{i-1}}^{C_i} \circ e_{i-1}$ with $e_i$ being the increasing morphism of $\rho_i$ for all $i \in \{1, \ldots n\}$.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-Let a constraint $c$ in EANF, a rule set $\mathcal{R}$ and a graph $G$ with $k = \cmax$ and $\cmax < \nl(c)$ be given. 
+Let a constraint $c$ in EANF, a rule set $\mathcal{R}$ and a graph $G$ with $k = \cmax$ and $\cmax < \nlvl(c)$ be given. 
 We show that a sequence $G = C_0' \Rightarrow \ldots \Rightarrow C_n' = H$ with rules of $\mathcal{R}$ exists, such that $H \models_{k+2} c$ if \ref{cat_rep_set_1}. or \ref{cat_rep_set_2}.  of theorem \ref{caracter_rep_rule_set_at_layer} is satisfied.
 \begin{enumerate}
 \item
@@ -277,7 +306,7 @@ By iteratively applying this whole construction to all occurrences of $C_k$ that
 \end{enumerate}
 \end{proof}
 \begin{corollary}
-If a set of rule $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nl(c)$ and \ref{cat_rep_set_1}. of theorem \ref{caracter_rep_rule_set_at_layer} applies, then $\mathcal{R}$ is a repairing set of $c$ at layer $j$ for all $k \leq j \leq \nl(c)$. 
+If a set of rule $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nlvl(c)$ and \ref{cat_rep_set_1}. of theorem \ref{caracter_rep_rule_set_at_layer} applies, then $\mathcal{R}$ is a repairing set of $c$ at layer $j$ for all $k \leq j \leq \nlvl(c)$. 
 \end{corollary}
 
 \begin{lemma}
@@ -287,6 +316,29 @@ $$G_0 \Longrightarrow_{\rho_0, m_0} G_1 \Longrightarrow_{\rho, m_0} \ldots \Long
 such that $\rho_i = (\rho, \api(\maxc{G_0} + 1, P)$ with $\rho \in \mathcal{R}$ being a consistency increasing rule at layer $\maxc{G_0} + 1$ with $P$, it holds that 
 
 \end{lemma}
+
+\begin{figure}
+\centering
+\begin{algorithm}[H]
+	%\DontPrintSemicolon
+	\KwData{A graph $G$, a constraint $c$ in EANF  and a set of rules $\mathcal{R}$}
+	\KwResult{A graph $H$ with $H \models c$}
+	extract basic rules of $\mathcal{R}$\;
+	\uIf{$\mathcal{R}$ is a repairing set}{
+		repair
+	}
+	\Else{
+		repair with basic rules + application condition\;
+		repair with normal rules + application condition\;
+		generate a basic increasing rule set $\mathcal{R}'$\;
+		repair with rules of $\mathcal{R}'$ \;
+	}
+
+
+\caption{ Floyd-Warshall Algorithmus}\label{Algo_floyd}
+
+\end{algorithm}
+\end{figure}
 
 \input{figures/consistency_relations_basic_rules.tex}
 

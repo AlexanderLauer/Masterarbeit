@@ -37,7 +37,7 @@ The set of \emph{extended overlaps of $C$ with $i$}, $\eol(C,i)$, is the set of 
 
 A direct consistency increasing application condition has to, as mentioned above, (a) ensure that at least one violation will be removed, (b) ensure that no new violations get inserted and (c) secure that the partial consistency is not decreased. 
 In the definition below, $\nex()$ and $\rep()$ ensure that (a) is met, with $\nex()$ ensuring that a violation is present and $\rep()$ ensuring that this violation will be removed. Note, that the construction of these is divided in two cases. 
-Firstly, either $k < \nl(c)-1$ or the constraints ends with a condition of the form $\exists(a: C \inj C', \true)$ and secondly, $k = \nl(c)-1$ and the constraint ends with a condition of the form $\forall(a: C_0 \inj C_1, \false)$.
+Firstly, either $k < \nlvl(c)-1$ or the constraints ends with a condition of the form $\exists(a: C \inj C', \true)$ and secondly, $k = \nlvl(c)-1$ and the constraint ends with a condition of the form $\forall(a: C_0 \inj C_1, \false)$.
 
 For $\nex()$, the first case will be checked as already described above. 
 In the second case, it is sufficient to check whether an occurrence $p$ of $C_k$ with $m(L) \cap p(C_k) \neq \emptyset$ exists.
@@ -193,7 +193,7 @@ In total, if $\models \ap(k,C)$, then $t$ is a direct consistency increasing tra
 \end{proof}
 
 %\begin{lemma}
-%Let $G$ be a graph, $c$ a constraint in EANF, with $\maxc{G} < \nl(c)-1$,  and $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
+%Let $G$ be a graph, $c$ a constraint in EANF, with $\maxc{G} < \nlvl(c)-1$,  and $\rho = L \xhookleftarrow{} K \xhookrightarrow{} R$ a plain rule.
 %Let $d = \forall(a_k : C_{k-1} \inj C_{k}, \exists(b: C_{k} \inj C_{k+1}, e))$ be the subcondition of $c$ at layer $\cmax + 1$ and $\ap(\maxc{G} + 1, C')$ the application condition constructed by definition \ref{def_appl_cond} with $C'\in \mathcal{U}(C, C_{k+1})$.
 %If 
 %$$((R \setminus K) \cap C_{k+1}) \cup ((L \setminus K) \cap C_{k+1}) = \emptyset$$

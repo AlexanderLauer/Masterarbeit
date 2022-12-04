@@ -1,32 +1,31 @@
-\subsection{conditions up to layer}
+\subsection{Conditions up to layer}
 \input{figures/fig_constraints}
 \input{figures/fig_graph}
 \begin{definition}[\textbf{Layer of a subcondition}]
 Let $c$  be a condition and $d$ a subcondition of $c$. 
-The layer of $d$ is defined as $\lay(d) := \nl(c) - \nl(d) +1$. 
+The layer of $d$ is defined as $\lay(d) := \nlvl(c) - \nlvl(d)$. 
 \end{definition}
 
  
 \begin{definition}[\textbf{Subcondition at layer}]
 Let $c$ be a condition. 
-The \emph{subcondition at layer $k$}, denoted by $\scond{c}{k}$ , is the subcondition $d$ of $c$ with $\lay(d) = k$.
+The \emph{subcondition at layer $k$}, denoted by $\scond{k}{c}$ , is the subcondition $d$ of $c$ with $\lay(d) = k$.
 \end{definition}
 
-For the reminder of this paper, given a constraint $c$ in EANF, $\scond{c}{k}$ is always a condition over the graph $C_k$, for all $1 \leq k \leq \nl(c)$.
+For the rest of this paper, given a constraint $c$ in UANF, $\scond{k}{c}$ is always a condition over the graph $C_k$, for all $0 \leq k \leq \nlvl(c)$.
 
 We define a notion of partial consistency, called \emph{satisfaction at layer}, which will be used for the definition of consistency increasing. 
 First, two operators are introduced to modify given constraints on a certain layer. 
 
-\begin{definition}[\textbf{substitution at layer}]
-Let $c = Q(a: C_0 \inj C_1, d)$ be a condition in ANF, such that the subcondition of $c$ with layer $0 \leq k < \nl(c)$ is a condition over $C_k$. 
-Let $e$ be a condition over $C_k$. 
-The \emph{substitution in $c$  at layer $k$ with $e$}, $\sub(k,c,e)$, is recursively defined as:
+\begin{definition}[\textbf{Replacement at layer}]
+Let a condition $c = Q(a: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$ in ANF and a condition $e$ over $C_k$ in ANF be given. 
+The \emph{replacement in $c$  at layer $k$ with $e$}, $\repl{k}{c}{e}$, is recursively defined as:
 \begin{enumerate}
-\item If $k = 1$:
-		$$\sub(1, c, e) := e$$
+\item If $k = 0$:
+		$$\repl{0}{c}{e} := e$$
 
-\item If $k > 1$:
-		$$\sub(k,c,e) := Q\bigl(a: C_0 \inj C_1, \sub(k-1,d,e)\bigr)$$
+\item If $k > 0$:
+		$$\repl{k}{c}{e} := Q\bigl(a: C_0 \inj C_1, \repl{k-1}{d}{e}\bigr)$$
 		
 \end{enumerate}
 \end{definition}
@@ -34,38 +33,39 @@ The \emph{substitution in $c$  at layer $k$ with $e$}, $\sub(k,c,e)$, is recursi
 \begin{example}
 Let the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $d = \exists(a'_1: C_1 \inj C_3, e)$ be given. 
 Then, 
-$$\sub(2, c,d) = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$ 
+$$\repl{1}{c}{d} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$ 
 \end{example}
 
-Through this, we define \emph{condition up to layer}.
+Through this, we define \emph{truncated conditions}.
 Intuitively, a condition is cut off at a certain layer, by replacing the subcondition at this layer by $\true$ or $\false$, depending on the quantifier, the replaced subcondition is bound by.
-\begin{definition}[\textbf{Condition up to layer}]
-Let $c$ be a condition in EANF and $d$ be the subcondition of $c$ at layer $0 \leq k \leq \nl(c)$. 
-The \emph{condition up to layer} $k$ of $c$, $\cond(k,c)$, is defined as
+\begin{definition}[\textbf{Truncated condition}]
+Let $c$ be a condition in UANF and $d = \scond{k}{c}$ with $ 0 \leq k \leq \nlvl(c)$. 
+The \emph{truncated condition up to layer} $k$ of $c$, $\cut{k}{c}$, is defined as
 
-$$ \cond(k,c) := \begin{cases}
-					\sub(k+1,c,\true)&\text{if $d$ is existentially bound} \\
-					\sub(k+1,c,\false)&\text{if $d$ is universally bound.} \\
+$$ \cut{k}{c} := \begin{cases}
+					\repl{k+1}{c}{\true}&\text{if $d$ is existentially bound} \\
+					\repl{k+1}{c}{\false}&\text{if $d$ is universally bound.} \\
 				\end{cases}$$
 
 \end{definition}
 
 \begin{example}
 Consider constraint $c_2$ given in figure \ref{fig:constraints}.
-Then, $\cond(2,c_2) = \forall C_1^1 \exists C_2^2$
+Then, $\cut{1}{c_2} = \forall C_1^1 \exists C_2^2$
 \end{example}
-Now, we are ready to define satisfaction at layer, which is a key ingredient to define consistency increasing. 
+Now, we are ready to define satisfaction at layer, which is a key ingredient for our notion of consistency increasement.
 \begin{definition}[\textbf{Satisfaction at layer}]
-Let $G$ be a graph and $c$ be a condition over $C_0$. 
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $k$}, $p \models_k c$, if $$p\models \cond(k,c).$$
+Let a graph $G$ and a condition $c$ in UANF be given.
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $k$}, $p \models_k c$, if $$p\models \cut{k}{c}.$$
 
-A graph $G$ satisfies a constraint $c$ at layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cond(k,c)$.
-The biggest $k$ with $G \models_k c$ such that no $j >k$ with $G \models_j c$ exists is denoted by $\maxc{G}$.
+A graph $G$ satisfies a constraint $c$ at layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
+The biggest $0 \leq k \leq \nlvl(c)$ such that $G \models_k c$ and no $k < j \leq \nlvl(c)$ with $G \models_j c$ exists is denoted by $\maxk{c}{G}$.
+We use the abbreviation $\kmax$ when $c$ and $G$ are clear from the context.
 \end{definition}
 
 \begin{example}
 Consider the graph $G$ given in figure \ref{fig:graph} and the constraint $c_2$ given in figure \ref{fig:constraints}. 
-This graph does not satisfy $c_2$, since both occurrences of \emph{\texttt{Class}} do not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but is does satisfy $\cond(2,c_2)$ and therefore $$G \models_2 c_2$$
+This graph does not satisfy $c_2$, since both occurrences of \emph{\texttt{Class}} do not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but is does satisfy $\cut{1}{c_2}$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1$$
 \end{example}
 
 
@@ -73,34 +73,35 @@ The following lemmas arise as a direct consequence of the definition of satisfac
 If a graph satisfies a constraint up to a certain layer, let $c$ be this condition up to this layer, that ends with  $\forall(a: C \inj C', \false)$, the graph satisfies all constraints starting with $c$. 
 
 \begin{lemma}\label{lemma_help_lay_sat}
-Let $G$ be a graph $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in EANF with $p \models_k c$.
-If the subcondition $d = Q(a_k:C_{k-1} \inj C_k, e)$ of $c$ at layer $k$ is universally bound, then for any condition $f$ over $C_k$ it holds that
-$$p \models \sub(k + 1,c,f).$$
+Let a graph $G$, a condition $c$ in UANF and a morphism $p : C_0 \inj G$ with $p \models_k c$ be given.
+If the subcondition $d = \scond{k}{c}$ is universally bound, then for any condition $f$ over $C_{k+1}$ it holds that
+$$p \models \repl{k + 1}{c}{f}.$$
 \end{lemma}
 
 
 
 
 \begin{proof}
-Let $k$ be the smallest number with  $\scond{c}{k} = \forall(a_k:C_{k-1} \inj C_k, \false)$ being universally bound and $p \models_k c$.
-Let $q: G_{k-1} \inj G$ be a morphism such that $q \models \forall(a_k:C_{k-1} \inj C_k, \false)$. 
+Let $0 \leq k \leq \nlvl(c)$ be the smallest number with  $\scond{k}{c} = \forall(a_k:C_{k} \inj C_{k+1}, d)$ being universally bound and $p \models_k c$.
+Let $q: C_{k} \inj G$ be a morphism such that $q \models \forall(a_k:C_{k} \inj C_{k+1}, \false)$. 
 This must exist, since $p \models_k c$ and $k$ is the smallest even number such that $p \models_k c$.
+Therefore, there does not exist a morphism $q': C_{k+1} \inj G$ with $q = q' \circ a_k$.
+Hence, for every condition $f$ over $C_{k+1}$ a morphism $q': C_{k+1} \inj G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
+It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$ and with that $p \models \repl{k + 1}{c}{f}$.
 
-Therefore, there does not exist a morphism $q': C_k \inj G$ with $q = q' \circ a_k$.
-Hence, for every condition $f$ over $C_k$ a morphism $q': C_k \inj G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
-It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$ and with that $p \models \sub(k + 1,c,f)$.
-For every $j >k$ even, such that $p \models_j c$, and every condition $d$ over $C_j$, with the first part, it holds that $p \models \sub(k + 1,c,f)$ with $f = \sub(j-k + 1, \scond{c}{k+1},d)$ and since $\sub(k+1,c,f) = \sub(j+1,c,d)$ it follows that $p \models \sub(j + 1,c,d)$.
+It follows that for every even $k < j \leq \nlvl(c)$, such that $p \models_j c$, and every condition $d$ over $C_{j + 1}$ it holds that $p \models \repl{k + 1}{c}{f}$ with $f = \repl{j-k + 1}{\scond{k+1}{c}}{d}$.
+Since $\repl{k+1}{c}{f} = \repl{j+1}{c}{d}$ it follows that $p \models \repl{j + 1}{c}{d}$.
 \end{proof}
 
 As a direct consequence of the previous lemma, a graph satisfying a condition up to layer ending with $\forall(a: C \inj C', \false)$ also satisfies the whole constraint. 
 
 \begin{lemma}\label{lemma_lay_sat}
 
-Let $G$ be a graph, $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in EANF with $p \models_k c$.
-If $\scond{c}{k}$ is universally bound, $$p \models_k c \implies p \models c.$$
+Let $G$ be a graph, $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in UANF with $p \models_k c$.
+If $\scond{k}{c}$ is universally bound, $$p \models_k c \implies p \models c.$$
 \end{lemma}
 \begin{proof}
-Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to $\scond{c}{k+1}$.
+Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to $\scond{k+1}{c}$.
 \end{proof}
 
 
@@ -121,8 +122,8 @@ Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to $
 
 
 \begin{lemma}\label{lem_ex_lower}
-Let a graph $G$, a morphism $p: C_0 \inj G$ and a constraint $c$ in EANF be given.
-Then, $p \models_j c$ for all $j < \maxc{G}$ such that $\scond{c}{j}$ is existentially bound. 
+Let a graph $G$, a morphism $p: C_0 \inj G$ and a constraint $c$ in UANF be given.
+Then, $p \models_j c$ if $j < \kmax$ and $\scond{j}{c}$ is existentially bound. 
 
 \end{lemma}
 \begin{proof}
@@ -152,17 +153,17 @@ If the condition $c'= \forall(a^p_0: C_0 \inj C_1, \false)$ is satisfied this im
 
 \begin{definition}[\textbf{partial condition}]
 Let a constraint $c$ in ANF be given. 
-Let $k \leq \nl(c)+1$ such that either $\scond{c}{k} = \exists(a_k:C_{k-1} \inj C_k, d)$ is existentially bound or $k = \nl(c) +1$.
+Let $k \leq \nlvl(c)+1$ such that either $\scond{c}{k} = \exists(a_k:C_{k-1} \inj C_k, d)$ is existentially bound or $k = \nlvl(c) +1$.
 The \emph{partial condition, $\parcond(k,c,C')$, of $c$ at layer $k$ with} 
 $$C' \in \begin{cases}
-			\mathcal{U}(C_k, C_{k+1}) &\text{if $k \leq \nl(c)$}\\
-			C_{\nl(c)} &\text{otherwise}
+			\mathcal{U}(C_k, C_{k+1}) &\text{if $k \leq \nlvl(c)$}\\
+			C_{\nlvl(c)} &\text{otherwise}
 		\end{cases}
 $$
 
 is defined as:
 $$\parcond(k,c,C') := \begin{cases}
-							c & \text{if $k = \nl(c)+1$}\\
+							c & \text{if $k = \nlvl(c)+1$}\\
 							\sub\big(k,c,\exists(a_k^p:C_{k-1} \inj C', \true) \big) &\text{otherwise}
 					   \end{cases}$$
 
@@ -171,7 +172,7 @@ $$\parcond(k,c,C') := \begin{cases}
 %\begin{definition}[\textbf{partial condition}]
 %Let $c$ be a condition in EANF. 
 %
-%The \emph{partial condition of $c$ at layer $k < \nl(c)$ with} with 
+%The \emph{partial condition of $c$ at layer $k < \nlvl(c)$ with} with 
 %$$ C' \in \begin{cases}
 %			\mathcal{U}(C_k, C_{k+1}) &\text{if $k$ is even} \\
 %			\mathcal{U}(C_{k+1}, C_{k+2}) &\text{if $k$ is odd},
@@ -193,7 +194,7 @@ Whereas $c_2$ checks whether each node of the type \emph{\texttt{Class}} is conn
 \end{example}
 
 
-If a graph $G$ does not satisfy the condition up to layer $k := \maxc{G} + 2$, $k < \nl(c) +1$, of a given constraint $c$, with $\scond{c}{k}$ being existentially bound, there does exists a graph $C' \in \mathcal{U}(C_{k-1}, C_k)$, such that $G$ satisfies $\parcond(k,c,C')$, note that $G$ always satisfies $\parcond(k,c,C_{k-1})$. 
+If a graph $G$ does not satisfy the condition up to layer $k := \maxc{G} + 2$, $k < \nlvl(c) +1$, of a given constraint $c$, with $\scond{c}{k}$ being existentially bound, there does exists a graph $C' \in \mathcal{U}(C_{k-1}, C_k)$, such that $G$ satisfies $\parcond(k,c,C')$, note that $G$ always satisfies $\parcond(k,c,C_{k-1})$. 
 For the biggest of these graphs, we define the notions of \emph{biggest partially satisfying conditions and graphs}.
 
 

@@ -1,25 +1,24 @@
-\subsection{extended alternating quantifier normal form}
-To prevent the need of case discrimination, a new normal form for conditions, called \emph{extended alternating quantifier normal form} (EANF), will be introduced. 
-The sets of conditions in ANF and EANF do intersect and we show that both sets are expressively equivalent. 
+\subsection{Universally quantified ANF}
+To prevent the need of case discrimination, we will only consider a subset of the set of conditions in ANF, namely the set of universally quantified conditions in ANF, called \emph{universally quantified alternating quantifier normal form} (UANF). 
+Additionally we will show that these sets are expressively equivalent by showing that each condition in ANF can be transformed into an equivalent condition in UANF.
 
-\begin{definition}[\textbf{extended alternating quantifier normal form}]
-A conditions $c$ is in \emph{extended alternating quantifier normal form} (EANF) if it is of the form $\forall(a_0:C_0 \inj C_1,d)$ and $d$ is a condition in ANF.
+
+\begin{definition}[\textbf{Universally quantified alternating quantifier normal form}]
+A conditions $c$ in ANF is in \emph{universally quantified ANF} (UANF) if it is universally bound. 
 \end{definition}
 
 
-Note that, given a condition $c$ in EANF, every subcondition of $c$ at layer $1 \leq k \leq \nl(c)$ is universally bound, if $k$ is an odd number and existentially bound, if $k$ is an even number.  
+Note that, given a condition $c$ in UANF, every subcondition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universally bound, if $k$ is an even number and existentially bound, if $k$ is an odd number.  
 
 
 
 \begin{lemma}
-Any condition in ANF can be transformed into an equivalent condition in EANF and vice versa. 
+Any condition in ANF can be transformed into an equivalent condition in UANF. 
 \end{lemma}
 
 \begin{proof}
-
-\enquote{$\Longrightarrow$}:
 Let a graph $G$ and a constraint $c$ in ANF be given.
-If $c$ is universally, $c$ is already in EANF. 
+If $c$ is universally bound, $c$ is already in UANF. 
 
 If $c = \exists(a_0: C_0 \inj C_1,d)$, we show that $c$ is equivalent to $c' := \forall(\id_{C_0}: C_0 \inj C_0, c)$.
 \begin{enumerate}
@@ -31,10 +30,6 @@ Then, $p \models d$, since $p$ is the only morphism from $C_0$ to $G$ with $p = 
 \item 
 Let $p:C_0 \inj G$ be a morphism with $p \models c'$, therefore all morphisms $q:C_0 \inj G$ with $p = q \circ \id_{C_0}$ satisfy $c$. Since $p = p \circ \id_{C_0}$, $p \models c$ follows immediately.
 \end{enumerate}
-\enquote{$\Longleftarrow$}:
-Let a graph $G$ and a constraint $c$ in EANF be given. 
-If $c = \forall(a_0: C_0 \inj C_1,d)$ with $C_0 \neq C_1$, $c$ is already in ANF. 
-
-Otherwise, the equivalence of $c$ with $d$ can be shown analogously to the first case.
-
 \end{proof}
+
+For we rest of this thesis, given a condition $c = \forall(a:C_0 \inj C_1, d)$ in UANF, we assume that no morphism in $c$, except $a$, is an isomorphism since it can be shown that each condition in ANF can be transformed into an equivalent condition in ANF fulfilling this property. 
