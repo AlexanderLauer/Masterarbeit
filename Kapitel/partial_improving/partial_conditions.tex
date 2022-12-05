@@ -38,9 +38,11 @@ $$\repl{1}{c}{d} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$
 
 Through this, we define \emph{truncated conditions}.
 Intuitively, a condition is cut off at a certain layer, by replacing the subcondition at this layer by $\true$ or $\false$, depending on the quantifier, the replaced subcondition is bound by.
+
+
 \begin{definition}[\textbf{Truncated condition}]
 Let $c$ be a condition in UANF and $d = \scond{k}{c}$ with $ 0 \leq k \leq \nlvl(c)$. 
-The \emph{truncated condition up to layer} $k$ of $c$, $\cut{k}{c}$, is defined as
+The \emph{truncated condition at layer} $k$ of $c$, $\cut{k}{c}$, is defined as
 
 $$ \cut{k}{c} := \begin{cases}
 					\repl{k+1}{c}{\true}&\text{if $d$ is existentially bound} \\
@@ -54,6 +56,8 @@ Consider constraint $c_2$ given in figure \ref{fig:constraints}.
 Then, $\cut{1}{c_2} = \forall C_1^1 \exists C_2^2$
 \end{example}
 Now, we are ready to define satisfaction at layer, which is a key ingredient for our notion of consistency increasement.
+
+
 \begin{definition}[\textbf{Satisfaction at layer}]
 Let a graph $G$ and a condition $c$ in UANF be given.
 A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $k$}, $p \models_k c$, if $$p\models \cut{k}{c}.$$
@@ -62,6 +66,8 @@ A graph $G$ satisfies a constraint $c$ at layer $k$, $G \models_k c$, if $q: \em
 The biggest $0 \leq k \leq \nlvl(c)$ such that $G \models_k c$ and no $k < j \leq \nlvl(c)$ with $G \models_j c$ exists is denoted by $\maxk{c}{G}$.
 We use the abbreviation $\kmax$ when $c$ and $G$ are clear from the context.
 \end{definition}
+
+Note that if $p \models_{\nlvl(c) - 1} c$ it follows immediately that $p \models c$. 
 
 \begin{example}
 Consider the graph $G$ given in figure \ref{fig:graph} and the constraint $c_2$ given in figure \ref{fig:constraints}. 
@@ -104,7 +110,7 @@ If $\scond{k}{c}$ is universally bound, $$p \models_k c \implies p \models c.$$
 Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to $\scond{k+1}{c}$.
 \end{proof}
 
-
+Additionally, with lemma \ref{lemma_help_lay_sat} it can be shown that given an graph $G$, a condition in UANF over $C_0$ and  a morphism $p: C_0 \inj G$ such that $p \models_k c$ and $\scond{k}{c}$ is universally bound, $p \models_j c$ for all $k \leq j \leq \nlvl(c)$.
 
 %\begin{lemma}\label{lemma_part_satisfiability}
 %	Let $c$ be a condition in ANF over $C_0$ and $p: C_0 \inj G$ a morphism with $p \models_k c$. 
@@ -127,44 +133,53 @@ Then, $p \models_j c$ if $j < \kmax$ and $\scond{j}{c}$ is existentially bound.
 
 \end{lemma}
 \begin{proof}
-\begin{enumerate}
-	\item The subcondition of $c$ at layer $\maxc{G}$ is existentially bound:	
-	If a $j < \maxc{G}$ with $p \models_j c$ exists such that $\scond{c}{j}$ is universally bound, let $j_1$ be the smallest of these. With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c $ for all $j_1 < j_2$.
-	Let $\ell < j_1$, such that $\scond{c}{\ell}$ is existentially bound and let $d = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of $\scond{c}{\ell}$. 
+
+If a $j < \kmax$ with $p \models_j c$ exists such that $\scond{j}{c}$ is universally bound, let $j_1$ be the smallest of these. 
+With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c$ for all $j_1 \leq j_2 < \nlvl(c)$. 
+
+Let $\ell < j_1$, such that $\scond{\ell}{c}$ is existentially bound and let $ d = \cut{j_1 - \ell}{\scond{\ell}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of $\scond{\ell}{c}$. 
 	Since $\ell < j_1$, a morphism $q:  C_{\ell} \inj G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_k$ must exists. 
 	It follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
-	
-	\item The subcondition of $c$ at layer $\maxc{G}$ is universally bound:
-	With lemma \ref{lemma_help_lay_sat} follows that $p \models_{k+1} c$. 
-	Since $c$ is in EANF,  $1.$ can be applied  to $k+1$. 
-\end{enumerate}
+%\begin{enumerate}
+%	\item The subcondition of $c$ at layer $\kmax$ is existentially bound:	
+%	If a $j < \kmax$ with $p \models_j c$ exists such that $\scond{j}{c}$ is universally bound, let $j_1$ be the smallest of these. With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c $ for all $j_1 < j_2 \leq \nlvl(c)$.
+%	
+%	Let $\ell < j_1$, such that $\scond{\ell}{c}$ is existentially bound and let $ d = \cut{j_1 - \ell}{\scond{\ell}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of $\scond{\ell}{c}$. 
+%	Since $\ell < j_1$, a morphism $q:  C_{\ell} \inj G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_k$ must exists. 
+%	It follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
+%	
+%	\item The subcondition of $c$ at layer $\kmax$ is universally bound:
+%	If $\kmax < \nlvl(c) - 1$, with lemma \ref{lemma_help_lay_sat} follows that $p \models_{\kmax+1} c$. 
+%	Since $c$ is in UANF,  $1.$ can be applied  to $k+1$. 
+%	If $\kmax = \nlvl(c) -1$, 
+%\end{enumerate}
 \end{proof}
 
 Through satisfaction at layer an increase of consistency can be detected in the following way. 
 Let $G \Longrightarrow H$ be a transformation. 
-If $\maxc{G} < \maxc{H}$, the transformation can be considered as consistency increasing, since $H$ satisfies more layers of the constraint than $G$. 
-The notion of consistency increasing should also be able to detect the smallest transformations that lead to a increase of consistency, namely the inserting of a single edge or node of an existentially bound graph.
-To remedy this issue, we introduce \emph{partial conditions}.
-Intuitively, given a constraint $c$ in EANF ending with $\scond{c}{k} =\exists(a_k :C_k \inj C_{k+1}, d)$, the condition $\scond{c}{k}$ is replaced by $\exists(a^p_k: C_k \inj C', \true)$ with $C' \in \mathcal{U}(C_k, C_{k+1})$.
+If $\maxk{c}{G} < \maxk{c}{H}$, the transformation can be considered as consistency increasing, since $H$ satisfies more layers of the constraint than $G$. 
+The notion of consistency increasement should also be able to detect the smallest transformations that lead to an increase of consistency, namely the inserting of a single edge or node of an existentially bound graph.
+To remedy this issue, we introduce \emph{intermediate conditions}.
+Intuitively, given a constraint $c$ in UANF ending with $\scond{\nlvl(c)-1}{c} =\exists(a_k :C_k \inj C_{k+1}, d)$, the condition $\scond{\nlvl(c)-1}{c}$ is replaced by $\exists(a^p_k: C_k \inj C', \true)$ with $C' \in \ig{C_k}{C_{k+1}}$.
 
-The construction of partial conditions is designed to only replace graphs in existentially bound layers, since the replacement in an universally bound layer would lead to a more restrictive constraint than the original condition up to layer. 
-That means, given the condition $c = \forall(a_0: C_0 \inj C_1, \false)$ and let $C' \in \mathcal{U}(C_0, C_1)$. 
+The construction of intermediate conditions is designed to only replace graphs in existentially bound layers, since the replacement in an universally bound layer would lead to a more restrictive constraint than the original condition up to layer. 
+That means, given the condition $c = \forall(a_0: C_0 \inj C_1, \false)$ and let $C' \in \ig{C_0}{C_1}$. 
 If the condition $c'= \forall(a^p_0: C_0 \inj C_1, \false)$ is satisfied this implies that $c$ is also satisfied but the backwards implication does not hold.
 
-\begin{definition}[\textbf{partial condition}]
-Let a constraint $c$ in ANF be given. 
-Let $k \leq \nlvl(c)+1$ such that either $\scond{c}{k} = \exists(a_k:C_{k-1} \inj C_k, d)$ is existentially bound or $k = \nlvl(c) +1$.
-The \emph{partial condition, $\parcond(k,c,C')$, of $c$ at layer $k$ with} 
+\begin{definition}[\textbf{Intermediate condition}]
+Let a constraint $c$ in UANF be given. 
+Let $0 \leq k < \nlvl(c)$ such that either $\scond{k}{c} = \exists(a_k:C_{k} \inj C_{k+1}, d)$ is existentially bound or $k = \nlvl(c) -1$.
+The \emph{intermediate condition, $\ic{k}{c}{C'}$, of $c$ at layer $k$ with} 
 $$C' \in \begin{cases}
-			\mathcal{U}(C_k, C_{k+1}) &\text{if $k \leq \nlvl(c)$}\\
-			C_{\nlvl(c)} &\text{otherwise}
+			\ig{C_k}{C_{k+1}} &\text{if $\scond{k}{c}$ is existentially bound}\\
+			\{C_{\nlvl(c)}\} &\text{otherwise}
 		\end{cases}
 $$
 
 is defined as:
-$$\parcond(k,c,C') := \begin{cases}
-							c & \text{if $k = \nlvl(c)+1$}\\
-							\sub\big(k,c,\exists(a_k^p:C_{k-1} \inj C', \true) \big) &\text{otherwise}
+$$\ic{k}{c}{C'} := \begin{cases}
+							c & \text{if $\scond{k}{c}$ is existentially bound}\\
+							\repl{k}{c}{\exists(a_k^r:C_{k} \inj C', \true)} &\text{otherwise}
 					   \end{cases}$$
 
 \end{definition}
@@ -189,22 +204,22 @@ $$\parcond(k,c,C') := \begin{cases}
 
 \begin{example}
 Consider constraint $c_1$ given in figure \ref{fig:constraints}. 
-Since $C_2^2 \in \mathcal{U}(C_1^1,C_1^2)$, we can construct a partial condition of $c_1$ at layer $2$ with $C_2^2$ as $\parcond(2,c_1,C_2^2) = \forall C_1^1 \exists C_2^2$. 
-Whereas $c_2$ checks whether each node of the type \emph{\texttt{Class}} is connected to at least two nodes of the type \emph{\texttt{Feature}}, the partial condition checks whether each nodes of the type \emph{\texttt{Class}} is connected to at least one nodes of the type \emph{\texttt{Feature}}.
+Since $C_2^2 \in \ig{C_1^1}{C_1^2}$, we can construct a intermediate condition of $c_1$ at layer $1$ with $C_2^2$ as $\ic{1}{c_1}{C_2^2} = \forall C_1^1 \exists C_2^2$. 
+Whereas $c_1$ checks whether each node of the type \emph{\texttt{Class}} is connected to at least two nodes of the type \emph{\texttt{Feature}}, the partial condition checks whether each nodes of the type \emph{\texttt{Class}} is connected to at least one nodes of the type \emph{\texttt{Feature}} which is trivially satisfied if $c_1$ is satisfied.
 \end{example}
 
 
-If a graph $G$ does not satisfy the condition up to layer $k := \maxc{G} + 2$, $k < \nlvl(c) +1$, of a given constraint $c$, with $\scond{c}{k}$ being existentially bound, there does exists a graph $C' \in \mathcal{U}(C_{k-1}, C_k)$, such that $G$ satisfies $\parcond(k,c,C')$, note that $G$ always satisfies $\parcond(k,c,C_{k-1})$. 
-For the biggest of these graphs, we define the notions of \emph{biggest partially satisfying conditions and graphs}.
+If a graph $G$ does not satisfy the condition up to layer $k := \kmax + 2$, $k < \nlvl(c)$, of a given constraint $c$, with $\scond{k}{c}$ being existentially bound, there does exists a graph $C' \in \ig{C_{k}}{ C_{k+1}}$, such that $G$ satisfies $\ic{k}{c}{C'}$ since  $G$ always satisfies $\ic{k}{c}{C_{k}}$. 
+%For the biggest of these graphs, we define the notions of \emph{biggest partially satisfying conditions and graphs}.
 
 
-\begin{definition}[\textbf{biggest partially satisfying condition}]
-Let $G$ be a graph, $c$ a condition in EANF over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$ and $p \not \models c$. 
-
-A partial condition $c = \parcond(k+2,c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition w.r.t $c$ of $p$} if there does not exist a graph  $C''$, such that $C'$ is a subgraph of $C''$, with $p \models \parcond(c_{max},c,C'')$. 
-The graph $C'$ is then called a \emph{biggest partially satisfying graph w.r.t $c$ of $p$}.
-
-Given a constraint $c$, the set of biggest partially satisfying conditions w.r.t $c$ of $p: \emptyset \inf G$ is denoted by $\mathcal{P}_c^G$. 
-
-The set of all biggest partially satisfying graphs w.r.t $c$ of $p$ is denoted by $\mathcal{G}_{c}^G$. 
-\end{definition}
+%\begin{definition}[\textbf{biggest partially satisfying condition}]
+%Let $G$ be a graph, $c$ a condition in EANF over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$ and $p \not \models c$. 
+%
+%A partial condition $c = \parcond(k+2,c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition w.r.t $c$ of $p$} if there does not exist a graph  $C''$, such that $C'$ is a subgraph of $C''$, with $p \models \parcond(c_{max},c,C'')$. 
+%The graph $C'$ is then called a \emph{biggest partially satisfying graph w.r.t $c$ of $p$}.
+%
+%Given a constraint $c$, the set of biggest partially satisfying conditions w.r.t $c$ of $p: \emptyset \inf G$ is denoted by $\mathcal{P}_c^G$. 
+%
+%The set of all biggest partially satisfying graphs w.r.t $c$ of $p$ is denoted by $\mathcal{G}_{c}^G$. 
+%\end{definition}

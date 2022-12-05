@@ -1,36 +1,36 @@
-\subsection{consistency increasing transformations and rules}
+\subsection{Consistency increasing transformations and rules}
 
-With the results above, we are now ready to define the notions of \emph{consistency increasing} and \emph{direct consistency increasing}, with direct increasing being a more restrictive version of increasing, yielding the advantage that second-order logic formulas can be used in order to determine whether a transformation is (direct) consistency increasing or not. 
+With the results above, we are now ready to define the notions of \emph{consistency increasement} and \emph{direct consistency increasement}, with direct increasing being a more restrictive version of increasing, yielding the advantage that second-order logic formulas can be used in order to determine whether a transformation is (direct) consistency increasing or not. 
 
 These notions are designed to only detect transformations that increase the consistency of the first two unsatisfied layer of a constraint $c$. 
-That means, given a graph $G$ and a constraint $c$, let $k = \maxc{G}$ and $\forall(a_{k+1}: C_{k} \inj C_{k+1}, \exists(a_{k+2}: C_{k+1} \inj C_{k+2},d)) =: \scond{c}{k+1}$.  
-A transformation $ t:G \Longrightarrow H$ is considered as (direct) consistency increasing if $\maxc{G} \leq \maxc{H}$, i.e. the satisfaction up to layer is not decreased, and more increasing insertions or deletions have been performed than decreasing ones. 
-An increasing deletion is the deletion of an occurrence of $C_{k+1}$ that does not satisfy $\exists(a_{k+2}: C_{k+1} \inj C_{k+2},\true)$, an increasing insertion is the insertion of elements of $C_{k+2}$, such that for at least one occurrence $p$ of $C_{k+1}$ it holds that $p \not \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$ and $\track_t \circ p \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$ for an $C' \in \mathcal{U}(C_{k+1}, C_{k+2})$. 
-A decreasing insertion is the creation of an occurrence of $C_{k+1}$ not satisfying $\exists(a_{k+2}: C_{k+1} \inj C_{k+2},\true)$ and a decreasing deletion is the deletion of elements of $C_{k+2}$ such that for an occurrence $p$ of $C_{k+1}$ with $p \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$ it holds that $\track_t \circ p \not \models \exists(a^p_{k+2}: C_{k+1} \inj C',\true)$.
+That means, given a graph $G$ and a constraint $c$, let $k = \kmax +1$ and  $\scond{k}{c} := \forall(a_{k}: C_{k} \inj C_{k+1}, \exists(a_{k+1}: C_{k+1} \inj C_{k+2},d))$.  
+A transformation $ t:G \Longrightarrow H$ is considered as (direct) consistency increasing if $\maxk{c}{G} \leq \maxk{c}{H}$, i.e. the satisfaction up to layer is not decreased, and more increasing insertions or deletions have been performed than decreasing ones. 
+An increasing deletion is the deletion of an occurrence of $C_{k+1}$ that does not satisfy $\exists(a_{k+1}: C_{k+1} \inj C_{k+2},\true)$, an increasing insertion is the insertion of elements of $C_{k+2}$, such that for at least one occurrence $p$ of $C_{k+1}$ it holds that $p \not \models \exists(a^r_{k+1}: C_{k+1} \inj C',\true)$ and $\track_t \circ p \models \exists(a^r_{k+1}: C_{k+1} \inj C',\true)$ for a graph $C' \in \ig{C_{k+1}}{ C_{k+2}}$. 
+A decreasing insertion is the creation of an occurrence of $C_{k+1}$ not satisfying $\exists(a_{k+1}: C_{k+1} \inj C_{k+2},\true)$ and a decreasing deletion is the deletion of elements of $C_{k+2}$ such that for an occurrence $p$ of $C_{k+1}$ with $p \models \exists(a^r_{k+1}: C_{k+1} \inj C',\true)$ it holds that $\track_t \circ p \not \models \exists(a^r_{k+1}: C_{k+1} \inj C',\true)$ for a graph $C' \in \ig{C_{k+1}}{ C_{k+2}}$.
 
 To evaluate this, we define the \emph{number of violations}.
-Intuitively, for all occurrences $p$ of $C_{k+1}$ the number of graphs $C' \in \mathcal{U}(C_{k+1}, C_{k+2})$ with $p \not \models \exists C'$ is add up and it can be determined whether more increasing or decreasing actions have been performed by a transformation. 
+Intuitively, for all occurrences $p$ of $C_{k+1}$ the number of graphs $C' \in \ig{C_{k+1}}{C_{k+2}}$ with $p \not \models \exists C'$ is add up and it can be determined whether more increasing or decreasing actions have been performed by a transformation. 
 
 Note, that the number of violations is defined for each layer of the constraint, but only for the first unsatisfied layer the sum is calculated as described above.
-For all layer $k$ with $k \leq \maxc{G}$ it is set to $0$ and for all  layer $k$ with $k > \maxc{G} + 1$ it is set to $\infty$. 
-Through this, a transformation $t G \Longrightarrow H$ that increases the partial consistency can easily detected since the number of violations in $H$ at layer $\maxc{G} + 1$ will be set to $0$. 
+For all layer $k$ with $k \leq \kmax$ it is set to $0$ and for all  layer $k$ with $k > \kmax + 1$ it is set to $\infty$. 
+Through this, a transformation $t G \Longrightarrow H$ that increases the satisfaction up to layer can easily detected since the number of violations in $H$ at layer $\maxc{G} + 1$ will be set to $0$. 
 
 \begin{definition}[\textbf{number of violations}]
-Let $G$ be a graph and $c$ a constraint in EANF. 
-The \emph{number of violations $\nvc(j,G)$ at layer $j$ in $G$} is defined as:
+Let a graph $G$ and a constraint $c$ in UANF be given. 
+The \emph{number of violations $\nv{j}{G}$ at layer $j$ in $G$} is defined as:
 \begin{enumerate}
-\item If $j < \maxc{G}+1$:
-	$$\nvc(j,G) := 0$$
-\item If $j = c_{\max}+1$, let $d = \forall(a_k: C_{j} \inj C_{j+1},e)$ be the subcondition of $c$ at layer $j+1$.
+\item If $j < \kmax+1$:
+	$$\nv{j}{G} := 0$$
+\item If $j = \kmax+1$, let $d = \forall(a_k: C_{j+1} \inj C_{j+2},e)$ be the subcondition of $c$ at layer $j+1$.
 
 
-$$\nvc(j,G) := \begin{cases}
-					\sum_{C' \in \mathcal{U}(C_j,{C_{j+1}})} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \parcond(1,e,C')\}| &  \text{if $e \neq \false$}\\
+$$\nv{j}{G} := \begin{cases}
+					\sum_{C' \in \ig{C_{j+2}}{C_{j+3}}} |\{q \mid q:C_{j+1} \inj G \wedge q \not \models \ic{0}{e}{C'}\}| &  \text{if $e \neq \false$}\\
 					|\{q \mid q:C_{j+1} \inj G\}| & \text{if $e = \false$} 
 				\end{cases}$$
 
-\item If $j > \maxc{G}+1$:
-	$$\nvc(j,G) := \infty$$
+\item If $j > \kmax+1$:
+	$$\nv{j}{G} := \infty$$
 \end{enumerate}
 
 \end{definition}
