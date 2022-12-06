@@ -1,19 +1,19 @@
 \subsection{Comparison with other consistency concepts}
-In this chapter, the notions of (direct) consistency increasing are compared to the already known concepts of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining} in order to reveal relationships between them and secure that (direct) increasing is indeed a new notion of consistency. 
+In this chapter, the notions of (direct) consistency increasing are compared to the already known concepts of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining} in order to reveal relationships between them and secure that (direct) consistency increasing is indeed a new notion of consistency. 
 These relations are displayed in figure \ref{fig:consistency_relations}.
 
 \input{figures/consistency_relations}
 
-First we compare (direct) consistency increasing with the notions of consistency-guaranteeing and -preserving transformations.
-As already mentioned, given a constraint $c$ and a graph $G$ with $G \models c$, there does not exist a (direct) increasing transformation $t: G \Longrightarrow H$ and it follows immediately that (direct) increasing w.r.t $c$ implies $c$-preserving. 
+First, we compare (direct) consistency increasing with the notions of consistency-guaranteeing and -preserving.
+As already mentioned, given a constraint $c$ and a graph $G$ with $G \models c$, there does not exist a (direct) consistency increasing transformation $t: G \Longrightarrow H$ and it follows immediately that (direct) increasing w.r.t $c$ implies $c$-preserving. 
 
-Obviously, guaranteeing implies increasing, this property is embedded in the definition of increasing. 
+Obviously, guaranteeing implies consistency increasing, since this property is embedded in the definition of consistency increasing. 
 The inversion of this implication does not holds, since increasing is a way stricter notion, in the sense, that the number of removed violations has to be greater than the number of introduced violations.
 For guaranteeing transformations this is not the case, an arbitrary number of violations can be inserted, long as the derived graph satisfies the constraint and therefore guaranteeing does not imply direct increasing, since a direct increasing transformations is not allowed to introduce any new violations.
 
 
 \begin{lemma}\label{comp_guaranteeing_minimal}
-Let a constraint $c$ in ANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. Then, 
+Let a constraint $c$ in UANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. Then, 
 \begin{alignat*}{3}
 &t \text{ is $c$-guaranteeing } &&\implies t \text{ is increasing w.r.t $c$ } &\wedge \\
 &t \text{ is $c$-guaranteeing } &&\centernot\implies t \text{ is direct increasing w.r.t $c$ } &\wedge \\
@@ -22,17 +22,16 @@ Let a constraint $c$ in ANF, graphs $G$ and $H$ with $G \not \models c$, and a t
 \end{lemma}
 
 \begin{proof}
-Let $c'$ be the equivalent constraint in EANF. 
 \begin{enumerate}
  \item Let $t$ be a c-guaranteeing transformation, then $H \models c$. 
-Since $G \not \models c$, $G \not \models c'$  follows and $\nvc(\maxc{G} + 1, G) > 0$ and $\nvc(\maxc{G} + 1, H) = 0$. Therefore $t$ is consistency increasing. 
+Since $G \not \models c$,  $\nv{\maxk{c}{G} + 1} {G} > 0$ and $\nv{\maxk{c}{G} + 1} {H} = 0$. Therefore, $t$ is consistency increasing. 
 
-\item Let a constraint $c = \exists(a_0: \emptyset \inj C_0, \forall(a_1: C_0 \inj C_1, \exists(a_2:C_1 \inj C_2, \true)))$ and a graph $G = C' \dot{\cup} C'$ with $C' = C_2 \setminus \{e\}$ for one edge $e \in E_{C_2\setminus C_1}$ and the occurrences $p_1: C_1 \inj G$ and $p_2: C_1 \inj G$  be given. 
-Let $t: G \Longrightarrow H$ be a transformation with $H = C_2 \dot{\cup} C''$ and $C'' = C' \setminus\{e'\}$ for an $e' \in E_{C_2 \setminus C_1}$, such that $\track_t \circ p_1$ and $\track_t \circ p_2$ are total. 
-Then, $t$ is $c$-guaranteeing and not direct increasing, since $p_i \models \exists(a'_2:C_1 \inj C', \true)$  for $i = 1,2$ and either $\track_t \circ p_1 \not \models \exists(a'_2:C_1 \inj C', \true)$ or $\track_t \circ p_2 \not \models \exists(a'_2:C_1 \inj C', \true)$.
+\item Let a constraint $c = \exists(a_0: \emptyset \inj C_1, \forall(a_1: C_1 \inj C_2, \exists(a_2:C_2 \inj C_3, \true)))$ and a graph $G = C' \dot{\cup} C'$ with $C' = C_3 \setminus \{e\}$ for one edge $e \in E_{C_3\setminus C_2}$ and the occurrences $p_1: C_3 \inj G$ and $p_2: C_2 \inj G$  be given. 
+Let $t: G \Longrightarrow H$ be a transformation with $H = C_3 \dot{\cup} C''$ and $C'' = C' \setminus\{e'\}$ for an $e' \in E_{C_3 \setminus C_2}$, such that $\track_t \circ p_1$ and $\track_t \circ p_2$ are total. 
+Then, $t$ is $c$-guaranteeing and not direct increasing, since $p_i \models \exists(a'_2:C_2 \inj C', \true)$  for $i = 1,2$ and either $\track_t \circ p_1 \not \models \exists(a'_2:C_2 \inj C', \true)$ or $\track_t \circ p_2 \not \models \exists(a'_2:C_2 \inj C', \true)$.
 
-\item Let $t$ be a consistency increasing transformation w.r.t $c'$, such that $\nvc(\maxc{G} + 1, G)> \nvc(\maxc{G} + 1, H) > 1$ and $H \not \models_{\maxc{G} + 2} c'$.
-Then,$H \not \models c'$ and $t$ is not a $c$-guaranteeing transformation. 
+\item Let $t$ be a consistency increasing transformation w.r.t $c$, such that $\nv{\maxk{c}{G} + 1}{G}> \nv{\maxk{c}{G} + 1}{H} > 1$ and $H \not \models_{\maxk{c}{G} + 2} c$.
+Then, $H \not \models c$ and $t$ is not a $c$-guaranteeing transformation. 
 \end{enumerate}
 \end{proof}
 
@@ -54,7 +53,7 @@ Note that, with corollary \ref{cor:comp_existentially}, this equivalence does no
 
 
 \begin{lemma}
-	let a universally bound constraint $c$ with $\nlvl(c) = 1$ in ANF, a graph $G$  with $G \not \models c$ and a transformation $t: G \Longrightarrow H$ be given. 
+	let a universally bound constraint $c$ in UANF with $\nlvl(c) = 1$, a graph $G$  with $G \not \models c$ and a transformation $t: G \Longrightarrow H$ be given. 
 	Then,
 	$$t \text{ is consistency improving w.r.t $c$ } \iff t \text{ is consistency increasing w.r.t $c$}$$ 
 	
@@ -62,16 +61,16 @@ Note that, with corollary \ref{cor:comp_existentially}, this equivalence does no
 
 \begin{proof}
 Let $c = \forall(a: \emptyset \inj C, \false)$. 
-Since $\mathcal{U}(C,C) = \{C\}$, $\nvc(1,G)$ is the number of occurrences of $C$ in $G$. 
+Since $\scond{1}{c} = \false$, $\nv{1}{G}$ is the number of occurrences of $C$ in $G$. 
 This is exactly the definition of the number of violations for consistency improving transformations and the statement follows immediately.
 \end{proof}
 
 For universally bound constraints $c$ with $\nlvl(c) \geq 2$, (direct) consistency increasing is not related to (direct) consistency improving and sustaining. 
 As shown in \cite{kosiol2022sustaining}, (direct) consistency improving implies (direct) consistency sustaining. 
-Therefore it is sufficient to show that direct improving does not imply increasing and that direct increasing does not imply consistency sustainment. 
+Therefore, it is sufficient to show that direct improving does not imply increasing and that direct increasing does not imply consistency sustainment. 
 
 \begin{lemma}
-Let a universally bound constraint $c$ with $\nlvl(c) \geq 2$ in ANF, a graph $G$ with $G\not \models c$ and a transformation $t: G \Longrightarrow H$ be given. Then,
+Let a universally bound constraint $c$ in UANF with $\nlvl(c) \geq 2$, a graph $G$ with $G\not \models c$ and a transformation $t: G \Longrightarrow H$ be given. Then,
 \begin{alignat*}{2}
 &t \text{ is direct consistency improving w.r.t $c$ } &&\centernot \implies t \text{ is consistency increasing w.r.t $c$ } \wedge \\
 &t \text{ is direct increasing w.r.t $c$ } &&\centernot \implies t \text{ is consistency sustaining w.r.t $c$ }
@@ -81,15 +80,15 @@ Let a universally bound constraint $c$ with $\nlvl(c) \geq 2$ in ANF, a graph $G
 
 \begin{proof}
 \begin{enumerate}
-\item Let $c = \forall(a_0: \emptyset \inj C_0, \exists(a_1: C_0 \inj C_1, \true))$ be a constraint.
-Let $V_{C_0} = V_{C_1}$ and $|E_{C_1}| - |E_{C_0}| = 2$. Let $G = C' \dot \cup C'$ with $C' = C_1 \setminus \{e\}$ with $e \in E_{C_1}\setminus E_{C_0} $ and the occurrences $p_1: C_0 \inj G$ and $p_2: C_0 \inj G$ be given. It follows that $\nvc(1,G) = 2$.
-Let $t: G \Longrightarrow H$ be a transformation, such that $H = C_0$. 
-Then, $t$ is a direct consistency improving transformation, since $H$ contains only one occurrence of $C_0$ not satisfying $\exists(a_1:C_0 \inj C_1 \true)$. But, $t$ is not consistency increasing, since $\nvc(1,H) = 3$.
+\item Let $c = \forall(a_0: \emptyset \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ be a constraint.
+Let $V_{C_1} = V_{C_2}$ and $|E_{C_2}| - |E_{C_1}| = 2$. Let $G = C' \dot \cup C'$ with $C' = C_2 \setminus \{e\}$ with $e \in E_{C_2}\setminus E_{C_1} $ and the occurrences $p_1: C_1 \inj G$ and $p_2: C_1 \inj G$ be given. It follows that $\nv{0}{G} = 2$.
+Let $t: G \Longrightarrow H$ be a transformation, such that $H = C_1$. 
+Then, $t$ is a direct consistency improving transformation, since $H$ contains only one occurrence of $C_1$ not satisfying $\exists(a_1:C_1 \inj C_2 \true)$. But, $t$ is not consistency increasing, since $\nv{0}{H} = 3$.
 
-\item Let $c := \forall(a_0: \emptyset \inj C_0, \exists(a_1: C_0 \inj C_1, \forall(a_2: C_1 \inj C_2, \exists(a_3: C_2 \inj C_3, \true))))$ be a constraint.
+\item Let $c := \forall(a_0: \emptyset \inj C_1, \exists(a_1: C_1 \inj C_2, \forall(a_2: C_2 \inj C_3, \exists(a_3: C_3 \inj C_4, \true))))$ be a constraint.
 
-Let a graph $G = C_0$ with the morphism $q: C_0 \inj G$ and a transformation $t: G \Longrightarrow H$ with $H := C_2 \dot{\cup} C_2$ be given, such that $\track_t \circ q$ is total. 
-	Then $t$ is a direct consistency increasing transformation but not a consistency sustaining one, since $H$ contains more occurrences of $C_0$ not satisfying $\exists(a_1: C_0 \inj C_1, \forall(a_2: C_1 \inj C_2, \exists(a_3: C_2 \inj C_3, \true)))$ than $G$. 
+Let a graph $G = C_1$ with the morphism $q: C_1 \inj G$ and a transformation $t: G \Longrightarrow H$ with $H := C_3 \dot{\cup} C_3$ be given, such that $\track_t \circ q$ is total. 
+	Then $t$ is a direct consistency increasing transformation but not a consistency sustaining one, since $H$ contains more occurrences of $C_1$ not satisfying $\exists(a_1: C_1 \inj C_2, \forall(a_2: C_2 \inj C_3, \exists(a_3: C_3 \inj C_4, \true)))$ than $G$. 
 \end{enumerate}
 \end{proof}
 
