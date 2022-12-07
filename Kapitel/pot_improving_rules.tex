@@ -1,24 +1,72 @@
-\subsection{potentially minimal improving rules}
+\subsection{Basic increasing rules}
 
+As described above, the application conditions for general rules are very restrictive. 
+This is because the application condition does not allow a transformation to delete occurrences of existentially bound or insert occurrences of  universally bound graphs even if this would not lead to a decrease of satisfaction up to layer. 
+Now, we will consider a special set of rules called \emph{basic increasing rules}. 
+The main idea is that these rules are not able to delete occurrences of existentially or insert occurrences of universally bound graphs and additionally are able to increase consistency. 
+That means, given a basic increasing rule $\rho$, there does exist a transformation $t: G \Longrightarrow_{\rho} H$ such that $t$ is a consistency increasing transformation w.r.t to a constraint $c$ in UANF.
+For \emph{basic increasing rules}, consistency increasing application conditions can be constructed that are less restrictive and smaller in size compared to application conditions for general rules. 
+
+First, we define \emph{non-consistency decreasing rules at layer} and \emph{non-consistency decreasing rules up to layer} where a non-consistency decreasing rule at layer $k$ is not able to delete occurrences of $C_{k+1}$, if $\scond{k}{c}$ is existentially bound and not able to create occurrences of $C_{k+1}$ if $\scond{k}{c}$ is universally bound.
+This can be checked via second order formulas by, in the first case, checking whether all occurrences of $C_{k+1}$ still exist in $H$ and, in the second case, checking whether all occurrences of $C_{k+1}$ in $H$ already existed in $G$. 
+The notion of non-consistency decreasing rules up to layer $k$ is a abbreviation, meaning that a rule $\rho$ is non-consistency decreasing up to layer $k$ if it is non-consistency decreasing at layer $j$ for all $0 \leq j \leq k$. 
+
+ 
 
 \begin{definition}[\textbf{non-consistency decreasing rule}]
-Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a constraint $c$ in EANF be given. 
+Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a constraint $c$ in UANF be given. 
 Then, $\rho$ is called a \emph{non-consistency decreasing rule  w.r.t $c$ at layer $k$} if 
 \begin{enumerate}
-\item If $C_k$ is universally bound and for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
-$$\forall p: C_k \inj H: \exists p':C_k \inj G: \track_t \circ p' = p.$$
+\item If $\scond{k}{c}$ is universally bound and for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
+\begin{equation}\label{non_consistency_universally}
+\forall p: C_{k+1} \inj H( \exists p':C_{k+1} \inj G( \track_t \circ p' = p)).
+\end{equation}
+\item If $\scond{k}{c}$ is existentially bound for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
+\begin{equation}\label{non_consistency_existentially}
+\forall p: C_{k+1} \inj G( \track_t \circ \text{ p is total}).
+\end{equation}
 
-\item If $C_k$ is existentially bound for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
-$$\forall p: C_k \inj G: \track_t \circ \text{ p is total}.$$
 \end{enumerate}
-The rule $\rho$ is called \emph{non-consistency decreasing w.r.t $c$ up to layer $k$} if $\rho$ is non-consistency decreasing w.r.t $c$ at layer $j$ for all $1 \leq j \leq k$.
+The rule $\rho$ is called \emph{non-consistency decreasing w.r.t $c$ up to layer $k$} if $\rho$ is non-consistency decreasing w.r.t $c$ at layer $j$ for all $0 \leq j \leq k$.
 \end{definition}
 
-\begin{corollary}
-Let a graph $G$, a constraint $c$ in EANF and a non-consistency decreasing rule w.r.t $c$ up to layer $\maxc{G}$ be given. 
+
+Given a graph $G$ and a constraint $c$, we will show that non-decreasing rules w.r.t $c$ up to layer $\kmax$ cannot decrease the satisfaction up to layer.  
+
+\begin{lemma}
+Let a graph $G$, a constraint $c$ in UANF and a non-consistency decreasing rule w.r.t $c$ up to layer $\kmax$ be given. 
 Then, for each transformation $t: G \Longrightarrow_{\rho} H$ it holds that 
-$$\maxc{G} \leq \maxc{H}.$$
-\end{corollary}
+$$\maxk{c}{G} \leq \maxk{c}{H}.$$
+\end{lemma}
+
+\begin{proof}
+Assume that $\maxk{c}{G} > \maxk{c}{H}$. 
+Then, either \ref{pr:non-dec1}. or \ref{pr:non-dec2}. applies. 
+
+\begin{enumerate}
+\item \label{pr:non-dec1}
+There does exists an occurrence $p:C_j \inj H$ with $0 \leq j \leq \maxk{c}{G}$ of a universally bound graph $C_j$ such that there does not exist a occurrence $q: C_j \inj G$ of $C_j$ with $p = \track_t  \circ q$.
+Then $\rho$ is not a non-consistency decreasing rule up to layer $\maxk{c}{G}$ since (\ref{non_consistency_universally}) is not satisfied.  
+\item \label{pr:non-dec2}
+There does exists an occurrence $p:C_j \inj G$ with $0 \leq j \leq \maxk{c}{G}$ of an existentially bound graph $C_j$ such that $\track \circ p$ is not total. 
+Then, $\rho$ is not a non-consistency decreasing rule up to layer $\maxk{c}{G}$ since (\ref{non_consistency_existentially}) is not satisfied.
+\end{enumerate}
+\end{proof}
+
+Since it is very time consuming to check whether a rule $\rho$ is non-consistency decreasing based on the definition above, we present a characterisation for non-consistency decreasing rules which only relies on $\rho$ itself. 
+First, let us assume that $\rho$ is able to create occurrences of a universally bound graph $C_j$. 
+This is possible if (a) $\rho$ does insert an edge of $C_j \setminus C_{j-1}$ which connects already existing nodes of $C_j$, since it is unclear whether this would create a new occurrence of $C_j$. 
+Or (b) if $\rho$ does insert a node $v$ of $C_j$ such that all edges $e \in E_{C_j}$ with $\src(e) = v$ or $\tar(e) = v$ are also inserted. 
+If at least one of these edges is not inserted, it is guaranteed that this insertion does not create an occurrence of $C_j$ since $v$ is only connected to edges that have also been inserted by $\rho$.
+
+Second, let us assume that $\rho$ is able to delete occurrences of a existentially bound graph $C_j$.
+This is possible if (a) $\rho$ does delete an edge of $C_j \setminus C_{j-1}$ or (b) $\rho$ does delete a node $v$ of $C_j \setminus C_{j-1}$ such that all edges $e \in E_{C_j}$ with $\src(e) = v$ or $\tar(e) = v$ are also deleted. 
+If $\rho$ deletes a node $c$ of $C_{j} \setminus C_{j-1}$ without all its connected edges in $C_j$ there does not exist a transformation such that $\rho$ deletes an occurrence of $C_j$ by deleting this node since the dangling edge condition is not satisfied. 
+
+Then, we are able to determine whether a rule $\rho$ is non-consistency decreasing by checking whether $\rho$ does not satisfy the just mentioned properties.
+
+
+
 
 \begin{lemma}\label{def:non-decreasing}
 Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a constraint $c$ in EANF be given. 
@@ -53,29 +101,57 @@ Let $I$ be the set of all isolated nodes of $C_k$. Then, $\rho$ is called a \emp
 
 \end{proof}
 
+Now we are ready to define \emph{basic increasing rules at layer $k$} with the set of basic increasing rules being a subset of the set of non-decreasing rules.
+With the property that each basic increasing rule $\rho$ is also a non-decreasing rule up to layer $k$ it is satisfied that the satisfaction up to layer is not decreased. 
+Additionally, if $\scond{k}{c}$ is existentially bound it has to be checked that the consistency for an occurrence of $C_{k}$ is not decreased and that $\rho$ removes an violation. 
+This can be done by either deleting an element of $C_{k+1}\setminus C_k$ if $\scond{k}{c}$ is universally bound or by inserting elements of $C_{k+1}$ such that for one occurrence $p$ of $C_{k}$ the consistency in increased if $\scond{k}{c}$ is existentially bound. 
+Additionally, the left-hand side of each basic increasing rule has to contain $C_{k+1}$ if $\scond{k}{c}$ is universally bound such that either $C_{k+1}$ gets deleted and the left-hand side has to contain $C_k$ if $\scond{k}{c}$ is existentially bound such that the consistency of $C_{k}$ is increased.
+This property yields the advantage that application conditions for basic increasing rules are less complex, smaller in size and during a repair process matches of these rules are easier to handle.
+
+This, on first sight seems like a restriction of the set of basic increasing rules but the context of each rule $\rho$ that does satisfy all properties of a basic increasing rule excluding that $C_k$ or $C_{k+1}$ is a subgraph of the left-hand side can be expanded such that $\rho$ is a basic increasing rule and the semantic of $\rho$ is not increased. 
+Later on, a method to derive this rules will be presented.
+
+Basic increasing rules at layer $k$ are called \emph{deleting basic increasing rules} if $\scond{k}{c}$ is universally bound and \emph{inserting basic increasing rules} if $\scond{k}{c}$ is existentially bound.
+For deleting basic increasing rules we introduce the restriction that these rules are only allowed to delete edges but no nodes of $C_{k+1}$ since otherwise it is not possible, given a rule set and a constraint to decide whether this rules set is able to repair an arbitrary graph based only on deleting basic increasing rules. 
+For example, consider a rule that deletes a node of $C_{k+1}$.
+Then, it is unknown whether this node is connected by edges not belonging to $C_{k+1}$ and it is unclear whether all occurrence of $C_{k+1}$ could be destroyed by $\rho$ since the dangling edge condition could be unsatisfied. 
 
 
 \begin{definition}[\textbf{basic increasing rule}]
-Let a constraint $c$ and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given. 
-Then, $\rho$ is called a \emph{basic increasing w.r.t $c$ at layer $k$} if $\rho$ is a non-consistency decreasing w.r.t $c$ up to layer $k$ and
+Let a constraint $c$ in UANF and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given. 
+Then, $\rho$ is called  \emph{basic increasing w.r.t $c$ at layer $k$} if $\rho$ is a non-consistency decreasing w.r.t $c$ up to layer $k$ and
 
 \begin{enumerate}
-\item If $C_k$ is universally bound: 
-	There does exist a morphism $i: L \inj C_k$ and 
-	$$\exists e \in C_k\setminus C_{k-1}: \neg \exists e' \in K: i(e) = l(e).$$
-	Then, $\rho$ is called a \emph{deleting basic increasing rule}.
-\item If $C_k$ is existentially bound:
-	There does exist a morphism $i: C_{k-1} \inj L$ such that $i \not \models \exists (a_k^p: C_{k-1} \inj C', \true)$ and $\	r \circ l^{-1} \circ i \models \exists(a_k^p:C_{k-1} \inj C', \true)$ for any $C'\in \mathcal{U}(C_{k-1}, C_{k})$, let the sets $E$ and $V$ be constructed as introduced in lemma \ref{def:non-decreasing} it holds that
+\item If $\scond{k}{c}$ is universally bound, there does exist a morphism $i: C_{k+1} \inj L$ such that
+\begin{equation*}
+	\begin{split}
+	&\exists e \in E_{C_{k+1}} \setminus E_{C_k} \big(\neg \exists e' \in E_K(i(e) = l(e')\big)  \wedge \\
+	&\forall v \in V_{C_{k+1}} \setminus V_{C_k}\big(\exists v' \in V_K(i(c) = l(v')\big)
+	\end{split}	
+\end{equation*}
+	holds. Then, $\rho$ is called \emph{deleting basic increasing}.
+\item If $\scond{k}{c}$ is existentially bound, there does exist a morphism $i: C_{k} \inj L$ such that 
+	$$i \not \models \exists (a_k^r: C_{k} \inj C', \true) \wedge 	r \circ l^{-1} \circ i \models \exists(a_k^r:C_{k} \inj C', \true)$$ 
+	for any $C'\in \ig{C_{k}}{ C_{k+1}}$, and for each transformation $t: G \Longrightarrow_{\rho} H$ it holds that
+	$$\forall p: C_k \inj G\big(p \models \exists(a_k^r: C_k \inj C'', \true) \implies \track_t \circ p \models \exists(a_k^r: C_k \inj C'', \true) \big)$$
+	for all $C''\in \ig{C_k}{C_{k+1}}$.
+	Then, $\rho$ is called \emph{inserting basic increasing with $C'$}.
+\end{enumerate}
+\end{definition}
+
+
+
+\begin{lemma}
+	let the sets $E$ and $V$ be constructed as introduced in lemma \ref{def:non-decreasing} it holds that
 	\begin{alignat*}{2}
 		\forall v \in V: \exists v' \in V_K: l(v') = v &\wedge \\
 		\forall e \in E: \exists e' \in E_K: l(e') = e
 	\end{alignat*}
 	Then, $\rho$ is called an \emph{inserting basic increasing rule} and $i$ is called the increasing morphism of $\rho$.
-\end{enumerate}
+\end{lemma}
+\begin{proof}
 
-\end{definition}
-
-
+\end{proof}
 
 
 \begin{definition}[\textbf{application conditions for basic increasing rules}]
