@@ -1,0 +1,66 @@
+\subsection{Conflicts within and between conditions}
+
+\begin{definition}[\textbf{Conflicts within condition}]
+Let a condition $c$ in UANF be given. 
+Then, an existentially bound graph $C_k$ has a \emph{conflict} with an universally bound graph $C_j$ if a transformation $t: G \Longrightarrow_{\rho} H$ with $\rho = C_{k-1} \xhookleftarrow{\id} C_{k-1} \xhookrightarrow{a_{k-1}} C_{k}$ exists such that the following holds 
+$$\exists p: C_j \inj H (\neg \exists p': C_j \inj G(\track_t \circ p' = p)).$$
+An universally bound graph $C_k$ is has a \emph{conflict} with an existentially bound graph $C_j$ if a transformation $t: G \Longrightarrow_{\rho} H$ with $\rho = C_k \xhookleftarrow{i_{C'}} C' \xhookrightarrow{\id} C'$ and  $C' \in \ig{C_{k-1}} {C_k}$ exists such that the following holds. 
+$$\exists p: C_j \inj G (\track_t \circ p \text{ is not total}).$$
+A condition $c$ in UANF is called \emph{conflict free} if no graph $C_k$ in $c$ has a conflict with a graph $C_j$ with $0 \leq j < k \leq \nlvl(c)$. 
+A graph $C_k$ has a \emph{transitive conflict} with $C_{j'}$ a graph $C_j$ exists such that $C_k$ has a conflict with $C_j$ and $C_j$ has a (transitive) conflict with $C_{j'}$.
+A condition $c$ does contain a \emph{circular conflict} if a graph $C_k$ exists such that $C_k$ has a transitive conflict with itself. 
+Otherwise, $c$ is called \emph{circular conflict free}.
+\end{definition}
+
+\begin{lemma}
+Let a constraint $c$ in UANF be given.
+\begin{enumerate}
+\item Let $C_k$ be an existentially bound graph of $c$. 
+Then, $C_k$ has a conflict with $C_j$ if and only if an overlap $P$ of $C_k$ and $C_j$ exists such that 
+$$ i_{C_k}^P(C_k\setminus C_{k-1}) \cap i_{C_j}^P(C_j) \neq \emptyset$$ 
+and the rule $\rho = C_{k} \xhookleftarrow{l} C_{k-1} \xhookrightarrow{r} C_{k-1}$ is applicable at match $i_{C_k}^P$.
+\item Let $C_k$ be an universally bound graph of $c$. 
+	Then $C_k$ has a conflict with $C_j$ if and only if an overlap $P$ of $C_k$ and $C_j$ exists such that
+	$$i_{C_k}^P(C_k \setminus C_{k-1}) \cap i_{C_j}^P(C_j\setminus C_{j-1}) \neq \emptyset$$
+and each rule $\rho = 	C_{k} \xhookleftarrow{i_{C'}} C' \xhookrightarrow{\id} C'$ with $C' \in \ig{C_{k-1}}{C_k}$ is applicable at match $i_{C_k}^P$.
+
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+Let a condition $c$ in UANF be given.
+\begin{enumerate}
+\item 
+\enquote{$\Longrightarrow$}: Let $C_k$ be an existentially bound graph that has a conflict with an universally bound graph $C_j$. 
+Then, there does exists a transformation $t: G \Longrightarrow_{\rho} H$ with $\rho = C_{k-1} \xhookleftarrow{l} C_{k-1} \xhookrightarrow{r} C_{k}$ such that a new occurrence $p$ of $C_j$ has been inserted. 
+Since only elements of $C_k \setminus C_{k-1}$ have been inserted it holds that $p(C_j) \cap n(C_k\setminus C_{k-1})$ with $n$ being the comatch of $t$. 
+The graph $p(C_j) \cup n(C_k)$ is the searched for overlap and the rule  $\rho^{-1} = C_{k} \xhookleftarrow{l} C_{k} \xhookrightarrow{r} C_{k-1}$ has to be applicable at $n$. 
+\\
+\enquote{$\Longleftarrow$}:
+Let $C_k$ be an existentially and $C_j$ an universally bound graph such that an overlap $P$ of $C_k$ and $C_j$ with $i_{C_k}^P(C_k\setminus C_{k-1}) \cap i_{C_j}^P(C_j) \neq \emptyset$ exists such that the rule $\rho = C_{k} \xhookleftarrow{l} C_{k} \xhookrightarrow{r} C_{k-1}$ is applicable at match $i_{C_k}^P$.
+Then, the inverse transformation of $t: P \Longrightarrow_{\rho,i_{C_k}^P} H$ is the searched for transformation and $C_k$ has a conflict with $C_j$. 
+
+\item
+\enquote{$\Longrightarrow$}: Let $C_k$ be an universally bound graph that has a conflict with an existentially bound graph $C_j$. 
+Then, a transformation $t: G \Longrightarrow_{\rho} H$ with $\rho = C_k \xhookleftarrow{l} C' \xhookrightarrow{r} C'$ and $C'$ being a subgraph of $C_k$ exists such that a occurrence $p$ of $C_j$ has been deleted. 
+Then, the graph $p(C_j) \cup m(C_k)$ is the searched for overlap and $i_{C_k}^P(C_k \setminus C_{k-1}) \cap i_{C_j}^P(C_j\setminus C_{j-1}) \neq \emptyset$ has to hold since $\rho$ only deletes elements of $C_k\setminus C_{k-1}$.
+\\
+\enquote{$\Longleftarrow$}:
+Let $C_k$ be universally and $C_j$ existentially bound such that an overlap $P$ of $C_k$ and $C_j$ with $i_{C_k}^P(C_k \setminus C_{k-1}) \cap i_{C_j}^P(C_j\setminus C_{j-1}) \neq \emptyset$ exists such that each rule $\rho = 	C_{k} \xhookleftarrow{i_{C'}} C' \xhookrightarrow{\id} C'$ with $C' \in \ig{C_{k-1}}{C_k}$ is applicable at match $i_{C_k}^P$.
+Then, the inverse transformation of $t: P \Longrightarrow_{\rho, i_{C_k}^P} H$ is the searched for transformations and $C_k$ has a conflict with $C_j$.
+\end{enumerate}
+\end{proof}
+
+\begin{definition}[\textbf{Conflicts between conditions}]
+	Let conditions $c_1$ and $c_2$ be given. Then, $c_1$ has a conflict with $c_2$ if 
+	graphs $C_k$ and $C_j$ of $c_1$ and $c_2$exist such that $C_k$ has
+	a conflict with $C_j$ or vice versa. 
+	A set of conditions is called \emph{conflict free} if no conditions $c_1$ and $c_2$ 
+	exist such that $c_1$ has a conflict with $c_2$ or vice versa.
+	A condition $c_1$ has a \emph{transitive conflict with} $c_2$ if a condition $c'$
+	exists such that $c_1$ has a conflict with $c'$ and $c'$ has a (transitive) conflict
+	with $c_2$.
+	A set of conditions does contain a \emph{circular conflict} if a condition $c$ has 
+	a transitive conflict with itself. 
+	Otherwise, the set is called \emph{circular conflict free}.
+\end{definition}

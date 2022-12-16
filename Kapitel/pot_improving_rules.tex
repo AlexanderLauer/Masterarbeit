@@ -1,3 +1,5 @@
+\input{Kapitel/constraint_dependencies}
+
 \subsection{Basic increasing rules}
 
 As described above, the application conditions for general rules are very restrictive. 
@@ -19,11 +21,11 @@ Then, $\rho$ is called a \emph{non-consistency decreasing rule  w.r.t $c$ at lay
 \begin{enumerate}
 \item If $\scond{k}{c}$ is universally bound and for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
 \begin{equation}\label{non_consistency_universally}
-\forall p: C_{k+1} \inj H( \exists p':C_{k+1} \inj G( \track_t \circ p' = p)).
+	\forall p: C_{k+1} \inj H( \exists p':C_{k+1} \inj G( \track_t \circ p' = p)).
 \end{equation}
 \item If $\scond{k}{c}$ is existentially bound for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
 \begin{equation}\label{non_consistency_existentially}
-\forall p: C_{k+1} \inj G( \track_t \circ \text{ p is total}).
+	\bigwedge_{C' \in \ig{C_k}{C_{k+1}}}\forall p: C' \inj G( \track_t \circ \text{ p is total}).
 \end{equation}
 
 \end{enumerate}
@@ -118,24 +120,24 @@ Then, it is unknown whether this node is connected by edges not belonging to $C_
 
 
 \begin{definition}[\textbf{basic increasing rule}]
-Let a constraint $c$ in UANF and a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ be given. 
-Then, $\rho$ is called  \emph{basic increasing w.r.t $c$ at layer $k$} if $\rho$ is a non-consistency decreasing w.r.t $c$ up to layer $k$ and for each transformation $t: G \Longrightarrow_{\rho} H$ it holds that
-	\begin{equation}\label{def_basicIncreasing}
-	\forall p: C_k \inj G\big(p \models \exists(a_k^r: C_k \inj C'', \true) \implies \track_t \circ p \models \exists(a_k^r: C_k \inj C'', \true) \big)
-	\end{equation}
-	
-	for all $C''\in \ig{C_k}{C_{k+1}}$.
+	Let a constraint $c$ in UANF and a plain rule 
+	$\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ 
+	be given. Then, $\rho$ is called  \emph{basic increasing w.r.t $c$ at layer $k$} if 
 
-\begin{enumerate}
-\item If $\scond{k}{c}$ is universally bound, there does exist a morphism $i: C_{k+1} \inj L$ such that
-\begin{equation*}
-	\begin{split}
-	&\exists e \in E_{C_{k+1}} \setminus E_{C_k} \big(\neg \exists e' \in E_K(i(e) = l(e')\big)  \wedge \\
-	&\forall v \in V_{C_{k+1}} \setminus V_{C_k}\big(\exists v' \in V_K(i(c) = l(v')\big)
-	\end{split}	
-\end{equation*}
-	holds. Then, $\rho$ is called \emph{deleting basic increasing}.
-\item If $\scond{k}{c}$ is existentially bound, there does exist a morphism $i: C_{k} \inj L$ such that 
+	\begin{enumerate}
+		\item If $\scond{k}{c}$ is universally bound: $\rho$ is a non-consistency decreasing rule
+		up to layer $k+1$ and there does exist a morphism 
+		$i: C_{k+1} \inj L$ such that
+		\begin{equation*}
+			\begin{split}
+				&\exists e \in E_{C_{k+1}} \setminus E_{C_k} \big(\neg \exists e' \in 
+				E_K(i(e) = l(e')\big)  \wedge \\
+				&\forall v \in V_{C_{k+1}} \setminus V_{C_k}\big(\exists v' \in V_K(i(c)
+				 = l(v')\big)
+			\end{split}	
+		\end{equation*}
+		holds. Then, $\rho$ is called \emph{deleting basic increasing}.
+\item If $\scond{k}{c}$ is existentially bound: $\rho$ is a non-consistency decreasing rule up to layer $k$ and there does exist a morphism $i: C_{k} \inj L$ such that 
 	$$i \not \models \exists (a_k^r: C_{k} \inj C', \true) \wedge 	r \circ l^{-1} \circ i \models \exists(a_k^r:C_{k} \inj C', \true)$$ 
 	for any $C'\in \ig{C_{k}}{ C_{k+1}}$.
 	Then, $\rho$ is called \emph{inserting basic increasing with $C'$}.
