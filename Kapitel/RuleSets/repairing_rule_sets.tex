@@ -1,0 +1,21 @@
+\subsection{Repairing rule Sets}
+
+\begin{definition}[\textbf{repairing rule set}]
+Let a constraint $c$ in UANF and a set of rules $\mathcal{R}$ be given. 
+Then, $\mathcal{R}$ is called a \emph{repairing rule set for $c$ at layer $k$}  if for all graphs $G$ with $\kmax = k$ a sequence 
+$$G = G_0 \Longrightarrow_{\rho_0} \ldots \Longrightarrow_{\rho_{n-1}} G_n = H$$
+exists, such that $\maxk{c}{H} \geq \maxk{c}{G} +2$ and $\rho_j \in \mathcal{R}$ for all $0 \leq j \leq n-1$. 
+
+\end{definition}
+
+
+\begin{corollary}
+	Let a constraint $c$ in UANF and a rule set $\mathcal{R}$ be given. If either (a)
+	$\mathcal{R}$ is a repairing rule set at layer $k$ for all odd $0 \leq k \leq \nlvl(c)$
+	or (b) $\mathcal{R}$ is a repairing rule set at layer $k$ with $k$ being even and $\mathcal{R}$
+	is also a repairing rule set for all odd $0 \leq j <k$ then for all graphs $G$ a sequence
+	$$G = G_0 \Longrightarrow_{\rho_0} \ldots \Longrightarrow_{\rho_{n-1}} G_n$$ 
+	with $G_n \models c$ and $\rho_j \in \mathcal{R}$ for all $0 \leq j \leq n-1$ exists.
+\end{corollary}
+
+\input{Kapitel/RuleSets/generation_repairing_rule_set}

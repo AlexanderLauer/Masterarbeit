@@ -1,0 +1,60 @@
+\subsubsection{Construction of  repairing sets}
+
+\begin{definition}[\textbf{decomposition of a graph}]\label{def_composition}
+Let graphs $G_0 \inj G_1$ be given. 
+
+A decomposition of $G_1$ with $G_0$ is a minimal set 
+ $$\mathbf{D} \subseteq \{D_v \mid v \in V_{C_1 \setminus C_0} \}$$ of subgraphs of $G_1$, such that every element of $G_1$ is contained in at least one $D \in \mathbf{D}$  and  every $D_v$ is constructed in the following way:
+$G_0 \inj D_v$, $v \in D_v$ and for all nodes $v' \in D \setminus C_0$ $D$ contains all edges $e \in E_{G_1}$ and all nodes $u \in V_{G_1}$ such that  either $\tar(e) = v' \wedge \src(e) = u$ or  $\src(e) = u \wedge \tar(e) = v'$. 
+\end{definition}
+
+\begin{lemma}\label{decomp_sets_lemma}
+Let graphs $G_0 \inj G_1$ and a decomposition $\mathbf{D}$ of $G_1$ with $G_0$ be given. 
+Then, for each pair $D, D' \in \mathbf{D}$ with $D \neq D'$ the following holds:
+$$(D\setminus C_k)\cap (D' \setminus C_k) = \emptyset$$
+\end{lemma}
+
+\begin{proof}
+ Assume that $(D\setminus C_k)\cap (D' \setminus C_k) \neq \emptyset$, therefore a node $v \in G_1 \setminus G_0$ with $v \in D \cap D'$ exists. 
+ By the construction of $D$ and $D'$ it follows that $D = D_v$ and $D' = D_v$ and therefore $D = D'$. 
+This is a contradiction.
+\end{proof}
+
+\begin{lemma}
+Let graphs $G_0 \inj G_1$ and a decomposition $\mathbf{D}$ of $G_1$ with $G_0$ be given. 
+Then, $$ G_1 = \bigcup_{P \in \mathbf{P}} P.$$ 
+
+\end{lemma}
+
+\begin{proof}
+Let $H := \bigcup_{P \in \mathbf{P}} P$.
+Firstly, we show that $H \subseteq G_1$.
+Since every $P \in \mathbf{P}$ is a subgraph of $G_1$ it follows that $V_H \subseteq V_{G_1}$ and $E_H \subseteq E_{G_1}$
+
+Secondly, we show that $G_1 \subseteq H$.
+Let $u \in V_{G_1}$ be a node, if $u \in V_{G_0}$, then $u$ is contained in every $P \in \mathbf{P}$ and therefore $u \in V_H$. 
+Otherwise, if $u \not \in V_{G_0}$, then $u$ has to be, by the definition of $\mathbf{P}$, contained in at least one $P \in \mathbf{P}$ and  $V_{G_1} \subseteq V_H$ follows. 
+Let $e \in E_{G_1}$ be an edge. 
+If $e \in E_{G_0}$, then $e$ is contained in every $P \in \mathbf{P}$ and $e \in E_H$. 
+Otherwise, if $e \not  \in E_{G_0}$, by the definition of $\mathbf{P}$, $e$ has to be contained in at least one $P \in \mathbf{P}$. 
+It follows that $e \in E_H$ and with that $E_{G_1} \subseteq E_H$. 
+\end{proof}
+
+Now we are ready to provide the construction for 
+\begin{construction}
+	Let a constraint $c$ in UANF be given. For each existentially bound subcondition
+	$\scond{k}{c}$  we construct a graph decomposition $\mathbf{D_k}$ as described
+	in definition \ref{def_composition}. Then, for each element $D \in \mathbf{D_k}$
+	a rule $$\rho =  C_k \xhookleftarrow{\id} C_k \xhookrightarrow{i_{C_k}^D} D$$
+	is derived. 
+	
+	Additionally, for each universally bound subcondition $\scond{k}{c}$ and for each
+	edge $e \in E_{C_{k+1} \setminus C_k}$ a rule 
+	$$\rho =  C_{k+1} \xhookleftarrow{i_D^{C_{k+1}}} D \xhookrightarrow{\id} D$$
+	with $D = C_{k+1} \setminus \{e\}$ is derived.
+\end{construction}
+
+\begin{example}
+
+\end{example}
+

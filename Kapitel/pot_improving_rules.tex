@@ -25,11 +25,15 @@ Then, $\rho$ is called a \emph{non-consistency decreasing rule  w.r.t $c$ at lay
 \end{equation}
 \item If $\scond{k}{c}$ is existentially bound for all transformations $t: G \Longrightarrow_{\rho} H$ it holds that 
 \begin{equation}\label{non_consistency_existentially}
-	\bigwedge_{C' \in \ig{C_k}{C_{k+1}}}\forall p: C' \inj G( \track_t \circ \text{ p is total}).
+	\forall p: C_{k+1} \inj G( \track_t \circ \text{ p is total}).
 \end{equation}
 
 \end{enumerate}
-The rule $\rho$ is called \emph{non-consistency decreasing w.r.t $c$ up to layer $k$} if $\rho$ is non-consistency decreasing w.r.t $c$ at layer $j$ for all $0 \leq j \leq k$.
+The rule $\rho$ is called \emph{non-consistency decreasing w.r.t $c$ up to layer $k$} if $\rho$ is non-consistency decreasing w.r.t $c$ at layer $j$ for all $0 \leq j \leq k$ and it holds that
+\begin{equation}\label{non_consistency_extra}
+\bigwedge_{C' \in \ig{C_k}{C_{k+1}}} \forall p: C' \inj G(\track_t \circ p \text{ is total})
+\end{equation}
+if $scond{k}{c}$ is existentially bound.
 \end{definition}
 
 
@@ -119,7 +123,7 @@ For example, consider a rule that deletes a node of $C_{k+1}$.
 Then, it is unknown whether this node is connected by edges not belonging to $C_{k+1}$ and it is unclear whether all occurrence of $C_{k+1}$ could be destroyed by $\rho$ since the dangling edge condition could be unsatisfied. 
 
 
-\begin{definition}[\textbf{basic increasing rule}]
+\begin{definition}[\textbf{basic increasing rule}]\label{def_basicIncreasing}
 	Let a constraint $c$ in UANF and a plain rule 
 	$\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ 
 	be given. Then, $\rho$ is called  \emph{basic increasing w.r.t $c$ at layer $k$} if 
@@ -136,11 +140,11 @@ Then, it is unknown whether this node is connected by edges not belonging to $C_
 				 = l(v')\big)
 			\end{split}	
 		\end{equation*}
-		holds. Then, $\rho$ is called \emph{deleting basic increasing}.
+		holds. Then, $\rho$ is called a \emph{deleting basic increasing rule}.
 \item If $\scond{k}{c}$ is existentially bound: $\rho$ is a non-consistency decreasing rule up to layer $k$ and there does exist a morphism $i: C_{k} \inj L$ such that 
 	$$i \not \models \exists (a_k^r: C_{k} \inj C', \true) \wedge 	r \circ l^{-1} \circ i \models \exists(a_k^r:C_{k} \inj C', \true)$$ 
 	for any $C'\in \ig{C_{k}}{ C_{k+1}}$.
-	Then, $\rho$ is called \emph{inserting basic increasing with $C'$}.
+	Then, $\rho$ is called a \emph{inserting basic increasing rule with $C'$}.
 \end{enumerate}
 \end{definition}
 
@@ -185,164 +189,70 @@ With this results follow that if $t: G\Longrightarrow_{\rho} H$ is a $c$-guarant
 %\input{Kapitel/basic improving rules/comparison_basic_rules}
 
 \begin{definition}[\textbf{application conditions for basic increasing rules}]
-Let a constraint $c$ in EANF and a basic increasing rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$  with $C \in \mathcal{U}(C_k, C_{k+1}$ be given. 
-We define the application condition for $\rho$ as:
+Let a constraint $c$ in UANF and a basic increasing rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$ be given. We define the application condition
+for $\rho$ as:
  
 \begin{enumerate}
 \item If $\rho$ is a deleting increasing rule:
-$$\api(j, P) := \begin{cases}
-				\bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}: P \inj P', \true)) &\text{, if j = k} \\
-				\false &\text{, if } j \neq k.
+$$\apb{j}{\rho} := \begin{cases}
+				\bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}: P \inj P', \true)) &\text{if $j = k$} \\
+				\false &\text{if $j \neq k$} .
 				\end{cases}$$
+					
 \item If $\rho$ is an inserting increasing rule. Let $a^p:C_k \inj C$ be a partial morphism of $a_k$ , $e: C_k \inj L$ be the increasing morphism of $c$ and $Q$ be set of all overlaps $P$ of $L$ and $C$ such that $i_L^P \circ e \models \exists(a^p:C_k \inj C, \true)$:				
-$$\api(j, P) := \begin{cases}
+$$\apb{j}{\rho} := \begin{cases}
 				\bigvee_{P \in Q} \exists(i_L^P: L \inj P, \true) &\text{, if j = k}\\
 				\false	&\text{, if } j \neq k
 				\end{cases}$$
-
-
 \end{enumerate}
-
-
-
 \end{definition}
 
 \begin{theorem}\label{api_direct_proof}
-Let a graph $G$, a constraint $c$ in EANF, with $G \models \parcond(\maxc{G}, c, C)$ and $\parcond(\maxc{G}, c, C) \in \mathcal{P}_c^G$, and a potentially minimal improving rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ at layer $\maxc{G}$ with $C_{\cmax+1}\subseteq P \subseteq C_{\cmax+2}$ be given. 
-Then, $\rho' = (\rho, \api(\maxc{G}+1,P))$ is a direct minimal consistency improving rule. 
+	Let a graph $G$, a constraint $c$ and a basic increasing rule $\rho$ at layer
+	$\kmax < k \leq \kmax +2$ be given. Then, each transformation 
+	$$t: G \Longrightarrow_{\rho',m} H$$ with the rule $\rho' = (\rho, \apb{k}{\rho})$ is
+	a direct consistency increasing transformation.
 \end{theorem}
 \begin{proof}
-Let $t:G \Longrightarrow_{\rho',m} H$ be a transformation, $k = \maxc{G}+1$ and $e$ be the subcondition of $c$ at layer $k$. 
-We show that $t$ is a direct minimal consistency improving transformation.
-First, we show that equation (\ref{direct_improving_1}) is satisfied.
-Let $p: C_{k} \inj G$ be a morphism. 
-If $\rho$ is a deleting potentially minimal improving rule, either \ref{proof_api_1}. or  \ref{proof_api_2}. applies, if $\rho$ is an inserting and not a deleting potentially  minimal improving rule, only \ref{proof_api_2}. applies, because $\rho$ cannot destroy any occurrences of $C_k$ in $G$. 
-\begin{enumerate}
-	\item\label{proof_api_1} If $p(C_k) \cap m(L\setminus K) \neq \emptyset$, $\track_t \circ p$ is not total, since at least one element of $p(C_k)$ has been deleted by $t$ and $p$ does satisfy $\bigwedge_{C' \in \mathcal{U}(C_k, C_{k+1})}(p \models \parcond(1,e,C') \wedge \track_t \circ p \text{ is total}) \implies \track_t \circ p \models \parcond(1,e,C'))$. 
-	\item\label{proof_api_2} If $p(C_k) \cap m(L\setminus K) = \emptyset$, $\track_t \circ p$ is total, since no element of $p(C_k)$ has been deleted by $t$.  
-	Because (\ref{pot_1}) holds, $t$ does not delete any elements of $C_{k+1}\setminus C_k$ and $p \models \parcond(1,e,C') \implies \track_t \circ p \models \parcond(1,e,C')$ for all $C' \in \mathcal(U) (C_k, C_{k+1})$.
-\end{enumerate} 
-With \ref{proof_api_1}. and  \ref{proof_api_2}. follows that (\ref{direct_improving_1}) is satisfied. 
-
-Second, we show that equation (\ref{direct_improving_1_2}) is satisfied.
-Let $p':C_k \inj H$ be a morphism. 
-Because (\ref{pot_2}) is satisfied, $t$ does not create any elements of $C_k$ and there must exist a morphism $p : C_k \inj G$ with $\track_t \circ p = p'$. If follows that (\ref{direct_improving_1_2}) is satisfied. 
-
-Third, we show that (\ref{direct_improving_2}) is satisfied. 
-We consider the cases that firstly, $\rho$ is a deleting minimal potentially improving rule and secondly, that $\rho$ is an inserting and not a deleting minimal potentially improving rule. 
-
-\begin{enumerate}
-\item If $\rho$ is a deleting potentially minimal improving rule, the condition $\api(k,P) = \exists\bigl(b: L \inj C_{k}, \neg \exists(a_{k+2}:C_{k} \inj C_{k+1}, \true)\bigr)$ is satisfied by $m$. 
-Therefore a morphism $p :C_k \inj G$ with $p \not \models \neg \exists(a_{k+1}:C_k \inj C_{k+1}, \true) = \parcond(1,e,C_{k+1})$ and $m = p \circ b$ must exist. 
-Since $\rho$ is a deleting rule, at least one element of $p(C_k)$ has been deleted by $t$ and $\track_t \circ p$ is not total. 
-It follows that (\ref{direct_improving_2}) is satisfied. 
-
-\item 
-If $\rho$ is an inserting and not a deleting potentially minimal improving rule, $\api(k,P) = \neg \exists(b: L \inj P, \true)$ is satisfied by $m$. 
-Because $L = C_k$, $m \models \neg \exists(b: C_k \inj P, \true) = \parcond(1,e,P)$.
-Since (\ref{pot_ins}) is satisfied, $\track \circ p$ is total and $\track_t \circ p \models \parcond(1,e,P)$. Therefore, (\ref{direct_improving_2}) is satisfied. 
-
-\end{enumerate}
-
-Last, since (\ref{pot_2}) and (\ref{pot_1}) are satisfied, $\rho$ cannot create any occurrence of $C_j$ with $j \leq k$ and $j$ being even and $\rho$ cannot delete any occurrences of $C_j$ with $j \leq k$ and $j$ being odd. 
-Therefore, (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. 
-
-
-In total follows that $t$ is a direct minimal consistency improving transformation and $\rho'$ is a direct minimal consistency improving rule. 
+	Since $\rho$ is a basic increasing rule it is also a non-consistency decreasing rule 
+	up to layer $\kmax +2$. Therefore, (\ref{direct_improving_1}) is
+	trivially satisfied since $\rho$ satisfies (\ref{non_consistency_extra}), also 
+	(\ref{direct_improving_1_2}) is satisfied since $\rho$ satisfies
+	(\ref{non_consistency_universally}) also (\ref{direct_improving_3}) and 
+	(\ref{direct_improving_4}) are satisfied because $\rho$ satisfies 
+	(\ref{non_consistency_universally}) and (\ref{non_consistency_existentially}) for all
+	$0 \leq j \leq k+2$.
+	It remains to show that (\ref{direct_improving_2}) is satisfied.
+	\begin{enumerate}
+		\item 
+			Let $\rho$ be a deleting basic increasing rule.
+			Then, $k = \kmax +1$ and $\apb{k}{\rho} = \bigvee_{P \in \overlay(L,C_k)}
+			\bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}:
+			P \inj P', \true))$.
+			If $m \models \apb{j}{\rho}$ there does exist a occurrence $p :C_{k} \inj G$ with 
+			$p \not \models \exists(a_{k+1}: C_k \inj C_{k+1}, \true)$ and $p(C_k \setminus 
+			C_{k-1}) \cap m(L \setminus K) \neq \emptyset$. If follows that $\track_t \circ p$ 
+			is not total and (\ref{direct_improving_2}) is satisfied.
+		\item
+			Let $\rho$ be a inserting basic increasing rule with $C \in \ig{C_k}{C_{k+1}}$. 
+			Then, $k = \kmax +1$ and $\apb{j}{\rho} = \bigvee_{P \in Q} 
+			\exists(i_L^P: L \inj P, \true)$. 
+			If $m \models \apb{j}{\rho}$, $m \circ e \not \models \exists(a_k^r: C_k \inj 
+			C, \true)$ with $e$ being the increasing morphism of $\rho$. 
+			Therefore $\track_t \circ m \circ i \models \exists(a_k^r: C_k \inj 
+			C, \true)$ and (\ref{direct_improving_2}) is satisfied.
+	\end{enumerate}
+	In total follows that $t$ is a direct consistency increasing transformation.
 \end{proof}
 
-\begin{theorem}
-Let a constraint $c$ in EANF, a basic increasing rule $\rho$ with $P$ and a consistency increasing transformation $t: G \Longrightarrow_{\rho,m} H$ w.r.t $c$ be given. 
-Then, $m \models \api(\maxc{G}, P)$.
-\end{theorem}
-\begin{proof}
-Let $k = \maxc{G}$.
-\begin{enumerate}
-\item If $c$ is a inserting rule, then $\api(\maxc{G}, P) = \neg \exists(a^p_k: L \inj P, \true)$. Let $n : R \inj H$ be the comatch of $t$. 
-Since $t$ is a consistency increasing transformation, there does exist a morphism $p : C_k \inj G$ with $p \not \models \exists(a^p_k: C_k \inj P, \true)$, $\track_t \circ p \models\exists(a^p_k: C_k \inj P, \true)$ such that $p'(P) \cap n(R\setminus K)$ for the morphism $p': P \inj H$ with $p = p \circ a^p_k$.
-Assume that $m \models \exists(a^p_k: L \inj P, \true)$.  
-Then, every morphism $p: C_k \inj G$ with $\track_t \circ p \models \exists(a^p_k: C_k \inj P, \true)$ with $p'(P) \cap n(R\setminus K)$ for the morphism $p': P \inj H$ with $p = p' \circ a^p_k$ already satisfies $\exists(a^p_k: C_k \inj P, \true)$. This is a contradiction.
-
-\item If $\rho$ is a deleting rule, $\api(k, P) = \bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L: L \inj P, \neg \exists(i_P: P \inj P', \true))$.
-Since $t$ is a consistency increasing transformation, there does exist a morphism $p :C_k \inj G$, such that $p \not \models \exists(a_k: C_k \inj C_{k+1}, \true)$ and $\track_t \circ p$ is not total. 
-Assume that $m \not \models \api(k,P)$. 
-Then, for each overlap $Q$ of $L$ and $C_k$, the inclusion $i_{C_k}$ does satisfy $\exists(a_k: C_k \inj C_{k+1}, \true)$.
-This is a contradiction, because $p(C_k) \cap m(L\setminus K) \neq \emptyset$ has to hold.
-\end{enumerate}
-
-\end{proof}
-
-\begin{lemma}
-	Let a constraint $c$ in EANF and inserting basic increasing rules $\rho_1$, $\rho_2$ at layer $k$ with $P_1$ and $P_2$, respectively, be given. 
-	Then, the rules $\rho'_1 = (\rho_1, \api(k,P_1))$ and $\rho'_2 = (\rho_2, \api(k,P_2))$
-	are sequentially independent. 
-\end{lemma}
-\begin{proof}
-Let $G_1 \Longrightarrow_{\rho'_1, m_1} G_2\Longrightarrow_{\rho'_2, m_2}G_3$ be a sequence of transformations. 
-First, note that this sequnce can only exist if $P_1 \not \subseteq P_2$ and $P_2 \not \subseteq P_1$
-Since both rules are do not insert elements of $C_k$, a morphism $d_1: L_2 \inj D_1$ with $m_2 = h_1 \circ d_1$ exists. 
-Because both rules do not delete any elements a morphism $d_2: R_1 \inj D_2$ with $m^*_1 = g_2 \circ d_2$ exists. 
-Because $\rho_2$ is not a basic increasing rule with $P_1$, $h_2 \circ d_2 \models R(\api)$ and because $\rho_1$ does not delete any elements of $P_2$ is holds that $g_1 \circ d_1 \models R(\api)$.
-\end{proof}
-
-\begin{definition}[\textbf{repairing rule set}]
-Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$ be given. 
-Then, $\mathcal{R}$ is called a \emph{repairing rule set for $c$ at layer $k$}  if for all graphs $G$ with $k = \cmax$ a sequence 
-$$G = G_0 \Rightarrow_{r_0} \ldots \Rightarrow_{r_{n-1}} G_n = H$$
-exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0,\ldots, n-1\}$ and $H \models_{k+2} c$. 
-
-\end{definition}
-
-
-\begin{corollary}
-	Let a constraint $c$ in EANF and a repairing rule set $\mathcal{R}$ for $c$ at layer $k$, for all $k\in \{1,3,\ldots, \nlvl(c)\}$, be given. 
-	Then, for all graphs $G$, a sequence
-	$$G = G_0 \Rightarrow_{r_0} \ldots \Rightarrow_{r_{n-1}} G_n = H$$
-	exists, such that $r_j \in \mathcal{R}$ for all $j \in \{0, \ldots, n-1\}$ and $H \models c$. 
-\end{corollary}
 
 
 
 
-\begin{definition}[\textbf{decomposition of a graph}]
-Let graphs $G_0 \subset G_1$ be given. 
 
-A decomposition of $G_1$ with $G_0$ is a minimal set 
- $$\mathbf{P} \subseteq \{P_v \mid v \in V_{C_1 \setminus C_0} \}$$ of subgraphs of $G_1$, such that every element of $G_1$ is contained in at least one $P \in \mathbf{P}$  and  every $P_v$ is constructed in the following way:
-$G_0 \subset P_v$, $v \in P$ and for all nodes $v' \in P \setminus C_k$ is holds that $P$ contains all edges $e \in E_{G_1 \setminus G_0}$ and all nodes $u \in V_{G_1}$ such that  either $\tar(e) = v' \wedge \src(e) = u$ or  $\src(e) = u \wedge \tar(e) = v'$ holds. 
-\end{definition}
 
-\begin{lemma}\label{decomp_sets_lemma}
-Let graphs $G_0 \subset G_1$ and a decomposition $\mathbf{P}$ of $G_1$ with $G_0$ be given. 
-Then, for each pair $P, P' \in \mathbf{P}$ with $P \neq P'$ the following holds:
-$$(P\setminus C_k)\cap (P' \setminus C_k) = \emptyset$$
-\end{lemma}
 
-\begin{proof}
- Assume that $(P\setminus C_k)\cap (P' \setminus C_k) \neq \emptyset$, therefore a node $v \in G_1 \setminus G_0$ with $v \in P \cap P'$ exists. 
- By the construction of $P$ and $P'$ it follows that $P = P_v$ and $P' = P_v$ and therefore $P = P'$. 
-This is a contradiction.
-\end{proof}
 
-\begin{lemma}
-Let graphs $G_0 \subset G_1$ and a decomposition $\mathbf{P}$ of $G_1$ with $G_0$ be given. 
-Then, $$ G_1 = \bigcup_{P \in \mathbf{P}} P.$$ 
-
-\end{lemma}
-
-\begin{proof}
-Let $H := \bigcup_{P \in \mathbf{P}} P$.
-Firstly, we show that $H \subseteq G_1$.
-Since every $P \in \mathbf{P}$ is a subgraph of $G_1$ it follows that $V_H \subseteq V_{G_1}$ and $E_H \subseteq E_{G_1}$
-
-Secondly, we show that $G_1 \subseteq H$.
-Let $u \in V_{G_1}$ be a node, if $u \in V_{G_0}$, then $u$ is contained in every $P \in \mathbf{P}$ and therefore $u \in V_H$. 
-Otherwise, if $u \not \in V_{G_0}$, then $u$ has to be, by the definition of $\mathbf{P}$, contained in at least one $P \in \mathbf{P}$ and  $V_{G_1} \subseteq V_H$ follows. 
-Let $e \in E_{G_1}$ be an edge. 
-If $e \in E_{G_0}$, then $e$ is contained in every $P \in \mathbf{P}$ and $e \in E_H$. 
-Otherwise, if $e \not  \in E_{G_0}$, by the definition of $\mathbf{P}$, $e$ has to be contained in at least one $P \in \mathbf{P}$. 
-It follows that $e \in E_H$ and with that $E_{G_1} \subseteq E_H$. 
-\end{proof}
 
 
 
