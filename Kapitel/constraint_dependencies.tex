@@ -64,3 +64,31 @@ Then, the inverse transformation of $t: P \Longrightarrow_{\rho, i_{C_k}^P} H$ i
 	a transitive conflict with itself. 
 	Otherwise, the set is called \emph{circular conflict free}.
 \end{definition}
+
+\begin{definition}[\textbf{conflict free graphs}]
+	Let a graph $G$ and a constraint $c$ in UANF be given.
+	Then, $G$ is called \emph{conflict free} w.r.t $c$ if for
+	each transformation
+	$t: G \Longrightarrow_{\rho,m} H$ with $$\rho =  C_{\kmax}
+	\overset{\id}{\hookleftarrow} C_{\kmax} 
+	\overset{i_{C_{\kmax}}}{\hookrightarrow} C'$$
+	and $C' \in \ig{C_{\kmax+1}}{C_{\kmax+2}}$ or $$\rho = 
+	 C_{\kmax+1}
+	\overset{\i_{C'}}{\hookleftarrow} C' 
+	\overset{\id}{\hookrightarrow} C'$$  and $C' \in 
+	\ig{C_{\kmax}}{C_{\kmax+1 }}$ and (\ref{direct_improving_3})
+	 and (\ref{direct_improving_4}) hold. 
+\end{definition}
+
+\begin{lemma}
+	Let a graph $G$ and a constraint $c$ in UANF be given.
+	Let $P$ be the set of all 
+	Then, $G$ is conflict free w.r.t $c$ if and only if either 
+	$c$ is
+	conflict free or
+	$$G \models \bigwedge_{P \in P} \forall(a: \emptyset \inj P, \false)$$
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+

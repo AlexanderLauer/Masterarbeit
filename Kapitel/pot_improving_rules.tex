@@ -333,28 +333,6 @@ such that $\rho_i = (\rho, \api(\maxc{G_0} + 1, P)$ with $\rho \in \mathcal{R}$ 
 
 \end{lemma}
 
-\begin{figure}
-\centering
-\begin{algorithm}[H]
-	%\DontPrintSemicolon
-	\KwData{A graph $G$, a constraint $c$ in EANF  and a set of rules $\mathcal{R}$}
-	\KwResult{A graph $H$ with $H \models c$}
-	extract basic rules of $\mathcal{R}$\;
-	\uIf{$\mathcal{R}$ is a repairing set}{
-		repair
-	}
-	\Else{
-		repair with basic rules + application condition\;
-		repair with normal rules + application condition\;
-		generate a basic increasing rule set $\mathcal{R}'$\;
-		repair with rules of $\mathcal{R}'$ \;
-	}
-
-
-\caption{ Floyd-Warshall Algorithmus}\label{Algo_floyd}
-
-\end{algorithm}
-\end{figure}
 
 
 

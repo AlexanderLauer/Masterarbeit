@@ -1,0 +1,30 @@
+\begin{figure}
+\centering
+\begin{algorithm}[H]
+	%\DontPrintSemicolon
+	\KwData{A graph $G$, a conflict free constraint in UANF and a repairing set $\mathcal{R}$ for each layer $\kmax  < k \nlvl(c)$}
+	\KwResult{A graph $H$ with $H \models c$}
+	$\mathcal{G} \gets \{G\}$	
+	\For{$i = 0$ \KwTo $m$}{
+		\ForEach{$G\in \mathcal{G}$}{
+			\ForEach{$t: G \Longrightarrow H$}{
+				\If{$H \models c$}{
+					\KwRet{H}
+				}
+				\If{$t$ is non-consistency decreasing 
+					or consistency increasing}{
+					
+					$\mathcal{G} \gets \mathcal{G} \cup \{H\}$\; 			
+				
+				}
+			}
+		}
+					
+		}
+	
+
+
+\caption{Repair for conflict free constraints and repairing set}\label{Algo_randomized}
+
+\end{algorithm}
+\end{figure}

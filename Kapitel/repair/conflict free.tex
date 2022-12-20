@@ -1,1 +1,55 @@
 \subsection{Rule based Graph repair for conflict free constraints}
+
+\begin{theorem}
+	Let a rule set $\mathcal{R}$ and a conflict free constraint $c$ 
+	in UANF be given. Then, $\mathcal{R}$ is a repairing set of $c$ 	at layer $k \leq \nlvl(c)$ if a sequence
+	$$C_k \Longrightarrow_{\rho_0,m_0} 
+				  \ldots
+				  \Longrightarrow_{\rho_n, m_n} H$$
+	of consistency increasing or non-consistency decreasing 
+	transformations $t_0, \ldots ,t_n$ with $\rho_0, \ldots,
+	\rho_n \in \mathcal{R}$ exists such that
+	$$\forall v \in V_{C_k}(
+					  \exists v' \in V_H(
+					  		\track_{t_n} \circ \ldots \circ 										\track_{t_0} \circ \id_{C_k}(v) = v'))
+	$$
+	and 
+	
+	\begin{enumerate}
+		\item
+			If $\scond{k}{c} $ is universally bound:
+			$$ \track_{t_n} \circ \ldots
+			   \circ \track_{t_0}
+			   \text{is not total}
+			$$
+		\item
+			If $\scond{k}{c}$ is existentially bound:
+			$$ \track{t_n} \circ \ldots
+			   \track{t_0} \circ \id_{C_k}
+			   \models \scond{k}{c}{\cut{k+1}{c}}
+			$$
+	\end{enumerate}	   	 
+\end{theorem}
+\begin{proof}
+
+\end{proof}
+
+\begin{lemma}
+	The set rule set constructed as described in construction
+	\ref{construction:rule_set} 
+	is a repairing set.
+\end{lemma}
+\begin{proof}
+
+\end{proof}
+
+
+\input{Algorithms/conflict_free_repair_repairing_set}
+
+
+\begin{theorem}
+Algorithm \ref{Algo_conflict_free} is correct and does terminate.
+\end{theorem}
+\begin{proof}
+
+\end{proof}

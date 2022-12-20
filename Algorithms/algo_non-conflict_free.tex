@@ -1,0 +1,26 @@
+\begin{figure}
+\centering
+\begin{algorithm}[H]
+	%\DontPrintSemicolon
+	\KwData{A graph $G$, a non-conflict free constraint in UANF and a repairing set $\mathcal{R}$ for each layer $\kmax  < k \nlvl(c)$}
+	\KwResult{A graph $H$ with $H \models c$}
+	\For{$i = \kmax+1$ \KwTo $\nlvl(c)$}{
+		\While{$G \not \models_i c$}{
+			Choose one occurrence $p: C_i \inj G$ uniformly 
+			at random \;
+			apply a repairing sequence
+			$G \Longrightarrow \ldots \Longrightarrow H$\;
+			\While{$G \not \models_{\kmax}$}{
+				Choose an occurrence $p: C_j \inj G$ uniformly 
+				at random\;
+				apply the repairing sequence.
+			}
+					
+		}
+	}
+
+
+\caption{Repair for non conflict free constraints and repairing set}\label{Algo_non-conflict_free}
+
+\end{algorithm}
+\end{figure}
