@@ -1,0 +1,193 @@
+\section{Preliminaries}
+Our graph repair process is based on the concept of the double-pushout approach \cite{hartmut2006fundamentals}. 
+In this chapter we will introduce some formal prerequisites like graphs, graph morphisms, nested graph conditions and graph transformations. 
+  
+\subsection{Graphs and Graph morphisms}
+We start by introducing the notions of graphs and graph morphisms.
+
+\begin{definition}[\textbf{graph}]
+	A \emph{graph} $G = (V,E,\src, \tar)$ consists of a set of
+	 vertices 
+	$V$, a set of edges $E$ and two mappings $\src, \tar: E \to 
+	V$ that assign the source and target vertices to an edge.
+	That means, given an edge $e \in E$, then $e$ connects the 
+	vertices $\tar(e)$ and $\src(e)$. 
+	
+	If a tuple as above is not given, $V_G$, $E_G$, $\tar_G$ and
+	$\src_G$ denotes the sets of vertices, edges and the target
+	and source mappings, respectively.
+
+\end{definition}
+	
+\begin{definition}[\textbf{graph morphism}]
+	Let graphs $G$ and $H$ be given. A \emph{graph morphism}
+	$f : G \to H$ consists of two mappings $f_V: V_G \to V_H$
+	and $f_E: E_G \to E_H$ such that the source and target 
+	functions are preserved. That means,
+	\begin{equation*}
+		\begin{split}
+			&f_V \circ \src_G = \src_H \circ f_E \wedge \\
+			&f_V \circ \tar_G = \tar_G \circ f_E
+		\end{split}
+	\end{equation*}
+	holds.
+	A graph morphism $f$ is called injective (surjective) if 
+	$f_E$ and $f_V$ are injective (surjective) mappings.
+	If $f$ is injective, it is denoted by  $f: G \inj H$ and
+	we may also call it \emph{inclusion}.
+	Two morphisms $f_1 :G_1 \to H$ and $f_2: G_2 \to H$ 
+	are called \emph{jointly surjective} if for each element
+	$e$ of $H$ either an element $e' \in G_1$ with $f_1(e') =e$
+	or an element $e' \in G_2$ with $f_2(e') = e$ exists. 
+
+\end{definition}
+
+For our introduced notions of consistency we will also need to 
+consider \emph{subgraphs}, \emph{overlaps} of graphs and 
+so-called \emph{intermediate-graphs} which intuitively denotes graphs $G'$ that lay in between two given graphs $G$ and $H$.
+That means, $G$ is a subgraph of $G'$ and $G'$ is a subgraph 
+of $H$.
+
+
+\begin{definition}[\textbf{subgraph}]
+	Let $G$ and $H$ be graphs. Then, $G$ is called a 
+	\emph{subgraph} of $H$ if an injective morphism $p: G \inj H$
+	exists.
+\end{definition}
+Note that with this definition every graph $G$ is a subgraph
+of itself since the morphism $p$ is also allowed to be surjective.
+
+\begin{definition}[\textbf{intermediate-graph}]
+	Let $G$ and $H$ be graphs such that $G$ is a subgraph of $H$. 
+	A graph $C$ is called an \emph{intermediate-graph} of $G$ 
+	and $H$, if injective morphisms $p_1: G \inj C$ and $p_2: C
+	\inj H$ exist. The set of intermediate-graphs of $G$ and 
+	$H$ is denoted by $\ig{G}{H}$.
+\end{definition}
+
+\begin{definition}[\textbf{overlap}]
+	Let $G_1$ and $G_2$ be graphs. A graph $H$ is called an 
+	\emph{overlap of $G_1$ and $G_2$} if morphisms $i: G_1 \inj H$ 
+	and $i' :G_2 \inj H$ exist such that $i$ and $i'$ are 
+	jointly surjective and $i(G_1) \cap i'(G_2)\neq \emptyset$. 
+	The morphisms $i$ and $i'$ are called \emph{overlap morphisms}.
+
+	The set of all overlaps of $G_1$ and $G_2$ is denoted by 
+	$\overlay(G_1,G_2)$. Given an overlap $H$ of $G_1$ and $G_2$, 
+	the overlap morphisms are denoted by $i_{G_1}^H$ and 
+	$i_{G_2}^H$, respectively.
+\end{definition}
+
+
+
+\begin{definition}[\textbf{restricted morphism}]
+	Let graphs $G$, $H$ and a morphism $f : G \to H$ be given. 
+	Then, a morphism $f' : G' \to H'$ is called a 
+	\emph{restricted morphism} of $p$ if morphisms $i: G' \inj G$
+	and $i': H' \inj H$ exists ($G'$ is a subgraph of $G$ and $H'$ 
+	a subgraph of $H$) and 
+	\begin{equation*}
+		\begin{split}
+			&i'_E \circ f'_E = f_E \circ i_E \wedge \\
+			&i'_V \circ f'_V = f_V \circ i_V		
+		\end{split}
+	\end{equation*}
+	holds. Given an morphism $p$, we use the notation 
+	$p^r$ to denote that $p^r$ is a restricted morphism of $p$.
+\end{definition}
+Note that, given a morphism $p: G \to H$ a restriction 
+$p^r: G' \to H'$ of $p$ is uniquely determined by $G'$ and $H'$
+meaning that, given two restrictions $q: G' \to H'$ and 
+$q': G' \to H$ of $p$ it follows immediately that $q = q'$. 
+
+\subsection{Nested Graph Conditions and Constraints}
+
+\begin{definition}[\textbf{nested graph condition}]
+A \emph{graph condition} over a graph $C_0$ is inductively defined as follows:
+
+\begin{enumerate}
+	\item \textsf{true} is a graph condition over every graph.
+	\item $\exists(a:C_0 \inj C_1,d)$ is a graph condition over $C_0$ if $a$ is a injective graph morphism and $d$ is a graph condition over $C_1$. 
+	\item $\neg d$ is a graph condition over $C_0$ if $d$ is a graph condition over $C_0$.
+	\item $d_1 \wedge d_2$ and $d_1 \vee d_2$ are graph conditions over $C_0$ if $d_1$ and $d_2$ are graph conditions over $C_0$.
+
+\end{enumerate}
+	Conditions over the empty graph $\emptyset$ are called \emph{constraints}.
+	Every injective morphism $p :C_0 \xhookrightarrow{} G$ satisfies \textsf{true}. 
+	An injective morphism $p$ satisfies $\exists(a:C_0 \xhookrightarrow{} C_1,d)$ if there exists an injective morphism  $q : C_1 \xhookrightarrow{} G$ such that $q \circ a = p$ and $q$ satisfies $c$. 
+	An injective morphism satisfies $\neg d$ if it does not satisfy $d$, it satisfies $d_1 \wedge d_2$ if it satisfies $d_1$ and $d_2$ and it satisfies $d_1 \wedge d_2$ if it satisfies $d_1$ or $d_2$. 
+	A graph $G$ satisfies a constraint $c$, $G \models c$, if $p : \emptyset \xhookrightarrow{} G$ satisfies $c$.
+We use the abbreviations $\forall(a:C_0 \xhookrightarrow{} C_1,d) := \neg \exists(a:C_0 \xhookrightarrow{} C_1,\neg d)$ and $\false = \neg \true$.
+
+The \emph{nesting level} $\nlvl$ of a condition is defined as $\nlvl(\true) = 0$ and  $\nlvl(\exists(a: P \to Q, d)) := \nlvl(d) +1$.
+
+Conditions of the form $\exists(a:C_0 \inj C_1, d)$ are called 
+\emph{existentially bound} and the graph $C_1$ is also called
+existentially bound. 
+Conditions of the form $\exists(a:C_0 \inj C_1, d)$ are called 
+\emph{universally bound} and the graph $C_1$ is also called
+universally bound. 
+
+\end{definition}
+
+\begin{definition}[\textbf{alternating quantifier normal form (ANF)}\cite{sandmann2019rule}]
+	Conditions in \emph{alternating quantifier normal form} (ANF) 
+	are inductively defined as 
+	
+	\begin{enumerate}
+		\item $\true$ and $\false$ are conditions in ANF.
+		\item 
+			$\exists(a: C_0 \inj C_1,d)$ is a condition in ANF
+			if either $d$ is universally bound or $d =\true$.
+		\item
+			$\forall(a: C_0 \inj C_1,d)$ is a condition in ANF
+			if either $d$ is existentially bound or $d = \false$.
+	\end{enumerate}
+\end{definition}
+
+\subsection{Rules and Graph Transformations}
+
+\begin{definition}[\textbf{rules and application conditions}]
+	A \emph{plain rule} $\rho' = \rle{L}{l}{K}{r}{R}$ consists of 
+	graphs $L,K,E$ and injective graph morphisms $l$ and $r$. 
+	An \emph{application condition} is a nested condition over 
+	$L$ or $R$ respectively. A \emph{rule} $(\ap_L, \rho', \ap_R)$ 
+	contains of a plain rule $\rho'$ and application conditions 
+	$\ap_L$ over $L$ and $\ap_R$	over $R$ respectively. 
+\end{definition}
+
+\begin{definition}[\textbf{shift over rule}]
+	Let a plain rule $\rho = \rle{L}{l}{K}{r}{R}$ and an 
+	application condition $\ap$ over $R$ be given. Then, the 
+	application of the inverse rule $\rho^{-1} =  
+	\rle{L}{l}{K}{r}{R}$
+
+\end{definition}
+
+\begin{definition}[\textbf{graph transformation}]
+	Let a rule $rho = (\ap_L,\rho', \ap_R)$, a graph $G$ 
+	and a morphism $m: L \inj G$,
+	called \emph{match}, be given. Then, a transformation
+	$t: G \Longrightarrow_{\rho,m} H$ Then, $\rho$ is applicable 
+	at match $m$ if $m \models \ap_L$, the squares $(1)$ and 
+	$(2)$ shown in figure $\ref{fig_dpo}$ are pushouts in the 
+	sense of category theory and the morphism $n$, called the
+	\emph{co-match} satisfies $\ap_R$. 
+	This is ca
+\end{definition}
+
+\input{figures/fig_dpo}
+
+\begin{definition}[\textbf{track morphism}]
+	Consider the transformation $t$ shown in figure \ref{fig_dpo}.
+	The \emph{track morphism}, $\track_t: G \to H$, of $t$ is 
+	defined as
+	$$\track_t = h \circ g^{-1}.$$
+
+\end{definition}
+
+
+
+
+
+

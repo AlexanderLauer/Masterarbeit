@@ -1,0 +1,22 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+		\node (L) at (0,2) {L};
+		\node (K) at (2,2) {K};
+		\node (R) at (4,2) {R};
+		\node (G) at (0,0) {G};
+		\node (D) at (2,0) {D};
+		\node (H) at (4,0) {H};
+		\node (1) at (1,1) {(1)};
+		\node (2) at (3,1) {(2)};
+		
+		\draw[left hook-stealth] (K) edge node [above] {$l$}  (L); 
+		\draw[right hook-stealth] (K) edge node [above] {$r$}  (R); 
+		\draw[->] (D)   edge node[above]{$g$}(G); 
+		\draw[->] (D)  edge node [above]{$h$}(H);
+		\draw[->] (K) edge node[fill = white] {$k$} (D);  
+		\draw[->] (L) -- node[left]{$m$} (G);
+		\draw[->] (R) edge node [right] {$n$} (H);    
+	\end{tikzpicture}
+	\caption{Diagram of a transformation in the double-pushout approach.}\label{fig_dpo}
+\end{figure}
