@@ -1,15 +1,21 @@
 \subsection{Universally quantified ANF}
-To prevent the need of case discrimination, we will only consider a subset of the set of conditions in ANF, namely the set of universally quantified conditions in ANF, called \emph{universally quantified alternating quantifier normal form} (UANF). 
-Additionally we will show that these sets are expressively equivalent by showing that each condition in ANF can be transformed into an equivalent condition in UANF.
+The definition of consistency increase- and maintainment demands that every 
+existentially bound sub-condition of a given condition in ANF is embedded into an 
+universally bound condition. Otherwise, case discrimination is needed. 
+This requirement is not met if and only if the given condition is existentially 
+bound. 
+Therefore, we will only consider a subset of the set of conditions in ANF, namely the set of universally quantified conditions in ANF, called \emph{universally quantified ANF} (UANF). 
+Additionally, we will show that these sets are expressively equivalent by showing that each condition in ANF can be transformed into an equivalent condition in UANF.
 
 
-\begin{definition}[\textbf{Universally quantified alternating quantifier normal form}]
+\begin{definition}[\textbf{universally quantified alternating quantifier normal form}]
 A conditions $c$ in ANF is in \emph{universally quantified ANF} (UANF) if it is universally bound. 
 \end{definition}
 
 
-Note that, given a condition $c$ in UANF, every subcondition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universally bound, if $k$ is an even number and existentially bound, if $k$ is an odd number.  
-
+Note that, given a condition $c$ in UANF, every sub-condition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universally bound if $k$ is an even number and existentially bound if $k$ is an odd number.  
+The extension of conditions that is used to show that a conditions in ANF
+can be transformed into an equivalent condition in UANF is an already known concept \cite{Pennemann09a}.
 
 
 \begin{lemma}
@@ -24,12 +30,14 @@ If $c = \exists(a_0: C_0 \inj C_1,d)$, we show that $c$ is equivalent to $c' := 
 \begin{enumerate}
 \item 
 Let $p :C_0 \inj G$ be a morphism, such that $q \models c$. 
-Therefore a morphism $q : C_0 \to G$ with $q \models e$ and $p = q \circ a_1$ exists.
-Then, $p \models d$, since $p$ is the only morphism from $C_0$ to $G$ with $p = p \circ \id_{C_0}$ and $p \models c$. 
+Then, $p \models c'$, since $p$ is the only morphism from $C_0$ to $G$ with $p = p \circ \id_{C_0}$ and $p \models c$. 
 
 \item 
 Let $p:C_0 \inj G$ be a morphism with $p \models c'$, therefore all morphisms $q:C_0 \inj G$ with $p = q \circ \id_{C_0}$ satisfy $c$. Since $p = p \circ \id_{C_0}$, $p \models c$ follows immediately.
 \end{enumerate}
 \end{proof}
 
-For we rest of this thesis, given a condition $c = \forall(a:C_0 \inj C_1, d)$ in UANF, we assume that no morphism in $c$, except $a$, is an isomorphism since it can be shown that each condition in ANF can be transformed into an equivalent condition in ANF fulfilling this property. 
+For the rest of this thesis, given a condition $c = \forall(a_0:C_0 \inj C_1, d)$ in UANF, we assume that no morphism in $c$, except $a_0$, is bijective since it can be shown that each condition in ANF can be transformed into an equivalent condition in ANF fulfilling this property by showing that
+$\exists(a_0 : C_0 \inj C_0, \forall(a_1: C_0 \inj C_2,d)$ is equivalent to
+$\forall(a_1 \circ a_0 : C_0 \inj C_2,d)$ and that $\forall(a_0 : C_0 \inj C_0, \exists(a_1: C_0 \inj C_2,d)$ is equivalent to
+$\exists(a_1 \circ a_0 : C_0 \inj C_2,d)$ . 

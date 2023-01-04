@@ -1,33 +1,41 @@
-\subsection{Conditions up to layer}
+\subsection{Conditions up to Layer}
+
 \input{figures/fig_constraints}
 \input{figures/fig_graph}
-\begin{definition}[\textbf{Layer of a subcondition}]
-Let $c$  be a condition and $d$ a subcondition of $c$. 
-The layer of $d$ is defined as $\lay(d) := \nlvl(c) - \nlvl(d)$. 
-\end{definition}
 
+As already mentioned, the goal of our approach is to increase the consistency of 
+a constraint layer by layer. 
+For this, we introduce a notion of partial consistency, called \emph{satisfaction 
+at layer} which enables to check whether a constraint is satisfied at a 
+certain layer by checking whether the so-called \emph{truncated condition} at 
+this layer is satisfied.
  
-\begin{definition}[\textbf{Subcondition at layer}]
-Let $c$ be a condition. 
-The \emph{subcondition at layer $k$}, denoted by $\scond{k}{c}$ , is the subcondition $d$ of $c$ with $\lay(d) = k$.
+\begin{definition}[\textbf{sub-condition at layer}]
+Let $c$ be a condition in ANF. 
+The \emph{sub-condition at layer $0 \leq k \leq \nlvl(c)$}, denoted by $\scond{k}{c}$ , is the sub-condition $d$ of $c$ with $\lay(d) = k$.
 \end{definition}
 
-For the rest of this paper, given a constraint $c$ in UANF, $\scond{k}{c}$ is always a condition over the graph $C_k$, for all $0 \leq k \leq \nlvl(c)$.
+\begin{example}
+	Consider the condition $ c =\forall(a_0:C_0 \inj C_1, \exists(a_1: C_1
+	\inj C_2, \forall(a_2:C_2 \inj C_3, \false)))$.
+	Then, $\scond{1}{c} = \exists(a_1:C_1 \inj C_2, \forall(a_2: C_2 \inj C_3,
+	\false))$.
+\end{example}
 
-We define a notion of partial consistency, called \emph{satisfaction at layer}, which will be used for the definition of consistency increasing. 
-First, two operators are introduced to modify given constraints on a certain layer. 
+First, we introduce an operator which allows to replace a sub-condition
+$\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement 
+at layer}.
 
-\begin{definition}[\textbf{Replacement at layer}]
-Let a condition $c = Q(a: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$ in ANF and a condition $e$ over $C_k$ in ANF be given. 
-The \emph{replacement in $c$  at layer $k$ with $e$}, $\repl{k}{c}{e}$, is recursively defined as:
-\begin{enumerate}
-\item If $k = 0$:
-		$$\repl{0}{c}{e} := e$$
-
-\item If $k > 0$:
-		$$\repl{k}{c}{e} := Q\bigl(a: C_0 \inj C_1, \repl{k-1}{d}{e}\bigr)$$
-		
-\end{enumerate}
+\begin{definition}[\textbf{replacement at layer}]
+Let a condition $c = Q(a_0: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$ in ANF and a condition $e$ over $C_k$ in ANF be given. 
+The \emph{replacement in $c$  at layer $k$ with $e$}, denoted by $\repl{k}{c}{e}$, is recursively defined as:
+\begin{equation*}
+	\repl{k}{c}{e} := 
+		\begin{cases}
+			e & \text{if $k = 0$} \\
+			Q(a_0:C_0 \inj C_1, \repl{k-1}{d}{e}) &\text{otherwise}	
+		\end{cases}
+\end{equation*}
 \end{definition}
 
 \begin{example}
@@ -36,42 +44,52 @@ Then,
 $$\repl{1}{c}{d} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$ 
 \end{example}
 
-Through this, we define \emph{truncated conditions}.
-Intuitively, a condition is cut off at a certain layer, by replacing the subcondition at this layer by $\true$ or $\false$, depending on the quantifier, the replaced subcondition is bound by.
+Using replacement at layer we now define \emph{truncated conditions}.
+Intuitively, a condition is-cut off at a certain layer, by replacing the sub-condition at this layer by $\true$ or $\false$, depending on the quantifier, the replaced sub-condition is bound by.
 
 
-\begin{definition}[\textbf{Truncated condition}]
-Let $c$ be a condition in UANF and $d = \scond{k}{c}$ with $ 0 \leq k \leq \nlvl(c)$. 
-The \emph{truncated condition at layer} $k$ of $c$, $\cut{k}{c}$, is defined as
+\begin{definition}[\textbf{truncated condition}]
+	Let $c$ be a condition in UANF and $d = \scond{k}{c}$ with $ 0 \leq k 
+	\leq 	\nlvl(c)-1$. The \emph{truncated condition at layer} $k$ of $c$, 
+	denoted by $\cut{k}{c}$, is defined as
 
 $$ \cut{k}{c} := \begin{cases}
-					\repl{k+1}{c}{\true}&\text{if $d$ is existentially bound} \\
-					\repl{k+1}{c}{\false}&\text{if $d$ is universally bound.} \\
+					\repl{k +1}{c}{\true}&\text{if $d$ is existentially bound,
+					 i.e. $k$ is odd} \\
+					\repl{k+1}{c}{\false}&\text{if $d$ is universally bound, 
+					i.e. $k$ is even.} \\
 				\end{cases}$$
 
 \end{definition}
 
 \begin{example}
-Consider constraint $c_2$ given in figure \ref{fig:constraints}.
-Then, $\cut{1}{c_2} = \forall C_1^1 \exists C_2^2$
+Consider constraint $c_2$ given in Figure \ref{fig:constraints}.
+Then, $\cut{1}{c_2} = \forall C_1^1 \exists C_2^2$.
 \end{example}
-Now, we are ready to define satisfaction at layer, which is a key ingredient for our notion of consistency increasement.
+
+With these prerequisites we are now able to introduce \emph{satisfaction 
+at layer} which enables to check whether a condition is satisfied at a certain
+layer. A morphism or graph satisfies a condition or constraint, respectively, 
+if it satisfies the truncated condition at this layer.
 
 
-\begin{definition}[\textbf{Satisfaction at layer}]
+\begin{definition}[\textbf{satisfaction at layer}]
 Let a graph $G$ and a condition $c$ in UANF be given.
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $k$}, $p \models_k c$, if $$p\models \cut{k}{c}.$$
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $0 \leq k \leq \nlvl(c)-1$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
 
-A graph $G$ satisfies a constraint $c$ at layer $k$, $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
-The biggest $0 \leq k \leq \nlvl(c)$ such that $G \models_k c$ and no $k < j \leq \nlvl(c)$ with $G \models_j c$ exists is denoted by $\maxk{c}{G}$.
+A graph $G$ satisfies a constraint $c$ at layer $0 \leq k \leq \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
+The biggest $0 \leq k \leq \nlvl(c)$ such that $G \models_k c$ and no $k < j \leq \nlvl(c)$ with $G \models_j c$ exists is denoted by $\maxk{c}{G}$. 
+If no such $k$ exists, we set $\maxk{c}{k} = -1$.
 We use the abbreviation $\kmax$ when $c$ and $G$ are clear from the context.
 \end{definition}
 
-Note that if $p \models_{\nlvl(c) - 1} c$ it follows immediately that $p \models c$. 
+Note that, given a graph $G$ and a constraint $c$, by definition and since 
+$\nlvl(c)$ is finite, $\maxk{c}{k}$ always exists.
+Also, if $p \models_{\nlvl(c)-1} c$ it follows immediately that $p \models c$. 
 
 \begin{example}
-Consider the graph $G$ given in figure \ref{fig:graph} and the constraint $c_2$ given in figure \ref{fig:constraints}. 
-This graph does not satisfy $c_2$, since both occurrences of \emph{\texttt{Class}} do not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but is does satisfy $\cut{1}{c_2}$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1$$
+Consider the graph $G$ given in Figure \ref{fig:graph} and the constraint $c_2$ given in Figure \ref{fig:constraints}. 
+This graph does not satisfy $c_2$, since the second occurrence of \emph{\texttt{Class}} does not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but it satisfies $\cut{1}{c_2}$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1$$
 \end{example}
 
 

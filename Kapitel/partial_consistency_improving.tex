@@ -1,6 +1,16 @@
-\section{consistency increasing}
+\section{Consistency Increase- and Maintainment}
+\begin{definition}[\textbf{layer of a sub-condition}]
+	Let $c$ be a condition in ANF and $d$ a sub-condition of $c$.
+	The \emph{layer of d} is defined as $\lay(d) := \nlvl(c) - \nlvl(d)$.
+\end{definition}
 
-In this section, we introduce the notion of \emph{consistency increasing} transformations and rules, which allows to increase the consistency of a constraint layer by layer.
+Our approach is based on the idea that the consistency of a constraint is 
+increased layer by layer and even slight improvements like the insertion
+of single elements of existentially bound graphs should be detectable as increasing.
+To formalise this, we introduce the notions of \emph{consistency increasing}
+and \emph{consistency maintaining} transformations and rules with  
+consistency increasing indication that the consistency has indeed been increased 
+and consistency maintaining indicating that the consistency has not been decreased.
 
 \input{Kapitel/partial_improving/eanf}
 \input{Kapitel/partial_improving/partial_conditions}

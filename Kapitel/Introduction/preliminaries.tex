@@ -18,6 +18,9 @@ We start by introducing the notions of graphs and graph morphisms according to \
 	and source mappings, respectively.
 
 \end{definition}
+
+For the remainder of this paper we assume that all graphs are finite, that means
+given a graph $G$ the sets $V_G$ and $E_G$ are finite.
 	
 \begin{definition}[\textbf{graph morphism}]
 	Let graphs $G$ and $H$ be given. A \emph{graph morphism}
@@ -60,8 +63,8 @@ of itself since the morphism $p$ is also allowed to be surjective.
 \begin{definition}[\textbf{intermediate-graph}]
 	Let $G$ and $H$ be graphs such that $G$ is a sub-graph of $H$. 
 	A graph $C$ is called an \emph{intermediate-graph} of $G$ 
-	and $H$, if injective morphisms $p_1: G \inj C$ and $p_2: C
-	\inj H$ exist. The set of intermediate-graphs of $G$ and 
+	and $H$, if $G$ is a sub-graph of $C$ and $C$ is a sub-graph of $H$. 
+	The set of intermediate-graphs of $G$ and 
 	$H$ is denoted by $\ig{G}{H}$.
 \end{definition}
 
@@ -124,21 +127,21 @@ A \emph{nested graph condition} over a graph $C_0$ is recursively defined as:
 
 \begin{enumerate}
 	\item \textsf{true} is a  graph condition over every graph.
-	\item $\exists(a:C_0 \inj C_1,d)$ is a graph condition over $C_0$ if $a$ is a injective graph morphism and $d$ is a graph condition over $C_1$. 
+	\item $\exists(a_0:C_0 \inj C_1,d)$ is a graph condition over $C_0$ if $a_0$ is a injective graph morphism and $d$ is a graph condition over $C_1$. 
 	\item $\neg d$, $d_1 \wedge d_2$ and $d_1 \vee d_2$ are 
 		  graph conditions over $C_0$ if $d$, $d_1$ and $d_2$
 		  are graph conditions over $C_0$.
 	
 \end{enumerate}
 	Conditions over the empty graph $\emptyset$ are called \emph{constraints}.
-We use the abbreviations $\forall(a:C_0 \xhookrightarrow{} C_1,d) := \neg \exists(a:C_0 \xhookrightarrow{} C_1,\neg d)$ and $\false = \neg \true$.
+We use the abbreviations $\forall(a_0:C_0 \xhookrightarrow{} C_1,d) := \neg \exists(a_0:C_0 \xhookrightarrow{} C_1,\neg d)$ and $\false = \neg \true$.
 
 
 
-Conditions of the form $\exists(a:C_0 \inj C_1, d)$ are called 
+Conditions of the form $\exists(a_0:C_0 \inj C_1, d)$ are called 
 \emph{existentially bound}, the graph $C_1$ is also called
 existentially bound. 
-Conditions of the form $\forall(a:C_0 \inj C_1, d)$ are called 
+Conditions of the form $\forall(a_0:C_0 \inj C_1, d)$ are called 
 \emph{universally bound}, the graph $C_1$ is also called
 universally bound. 
 
@@ -156,7 +159,7 @@ paper we will only refer to it as \emph{conditions} and
 		\item	
 			If $c = \true$, $p \models c$.
 		\item 
-			If $c = \exists(a:C_0 \inj C_1,d)$, then $p \models c$
+			If $c = \exists(a_0:C_0 \inj C_1,d)$, then $p \models c$
 			if an injective morphism $q :C_1 \inj G$ with 
 			$p = q \circ a$ exists, such that $q \models d$. 
 		\item 
@@ -188,24 +191,29 @@ condition in ANF \cite{sandmann2019rule}.
 	\begin{enumerate}
 		\item $\true$ and $\false$ are conditions in ANF.
 		\item 
-			$\exists(a: C_0 \inj C_1,d)$ is a condition in ANF
+			$\exists(a_0: C_0 \inj C_1,d)$ is a condition in ANF
 			if either $d$ is universally bound or $d =\true$.
 		\item
-			$\forall(a: C_0 \inj C_1,d)$ is a condition in ANF
+			$\forall(a_0: C_0 \inj C_1,d)$ is a condition in ANF
 			if either $d$ is existentially bound or $d = \false$.
 	\end{enumerate}
+	In both cases, $d$ is called a \emph{sub-condition} of 
+	$\exists(a: C_0 \inj C_1,d)$ or $\forall(a: C_0 \inj C_1,d)$ respectively. 
 	The \emph{nesting level} $\nlvl(c)$ of a condition $c$ is 
 	recursively defined as $\nlvl(\true) = 0$ and  $\nlvl
 	(\exists(a: P \to Q, d)) := \nlvl(d) +1$.
 \end{definition}
 
 In literature conditions in ANF allow also conditions that end 
-with $\exists(a: C_0 \inj C_1, \false)$ or $\forall(a:C_0 \inj
+with $\exists(a_0: C_0 \inj C_1, \false)$ or $\forall(a_0:C_0 \inj
 C_1, \true)$. We exclude these cases such that conditions in ANF
-are only allowed to end with conditions of the type $\exists(a: 
-C_0 \inj C_1, \true)$ or $\forall(a:C_0 \inj C_1, \false)$ since
+are only allowed to end with conditions of the type $\exists(a_0: 
+C_0 \inj C_1, \true)$ or $\forall(a_0:C_0 \inj C_1, \false)$ since
 it can be easily seen that every morphism $p: C_0 \inj G$ satisfies
-$\forall(a:C_0 \inj C_1, \true)$ and does not satisfy $\exists(a: C_0 \inj C_1, \false)$. Therefore, these conditions can be replaced by $\true$ and $\false$ respectively.
+$\forall(a_0:C_0 \inj C_1, \true)$ and does not satisfy $\exists(a_0: C_0 \inj C_1, \false)$. Therefore, these conditions can be replaced by $\true$ and $\false$ respectively.
+
+In the following, we assume that all conditions are finite. As a direct 
+consequence of this, the nesting level is also finite.
 
 \subsection{Rules and Graph Transformations}
 Via \emph{rules} and \emph{graph transformation} to manipulate
