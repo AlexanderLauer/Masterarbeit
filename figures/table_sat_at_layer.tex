@@ -1,0 +1,21 @@
+
+\begin{figure}
+\centering
+\begin{tabular}{c||c|c||c|c||c}
+
+
+
+$p \models_k c$ & \multicolumn{2}{c||}{$p \models_{j < k} c$} & \multicolumn{2}{c||}{$p \models_{j > k} c$} &$ p \models c $ \\
+%\hline
+ & $j$ even & $j$ odd & $j$ even & $j$ odd & \\
+
+\hline
+$k$ even & ? & \cmark &\cmark & \cmark & \cmark \\
+$k$ odd & ? & \cmark & ? & ? & ? \\
+
+
+\end{tabular}
+\begin{TableCaption}
+\caption{Overview of the conclusions made via satisfaction at layer with \enquote{\cmark} indicating that $p \models_j$ and $p \models c$, respectively, if $p \models_k$, And \enquote{?} indicating that it cannot be concluded from $p \models_k c$ whether $p \models_j c$ or $p \not \models_j c$.}\label{table_satisfaction_at_layer}
+\end{TableCaption}
+\end{figure}

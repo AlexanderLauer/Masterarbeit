@@ -92,114 +92,121 @@ Consider the graph $G$ given in Figure \ref{fig:graph} and the constraint $c_2$ 
 This graph does not satisfy $c_2$, since the second occurrence of \emph{\texttt{Class}} does not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but it satisfies $\cut{1}{c_2}$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1$$
 \end{example}
 
+\input{figures/table_sat_at_layer}
 
-The following lemmas arise as a direct consequence of the definition of satisfaction at layer. 
-If a graph satisfies a constraint up to a certain layer, let $c$ be this condition up to this layer, that ends with  $\forall(a: C \inj C', \false)$, the graph satisfies all constraints starting with $c$. 
+Let a graph $G$, a condition $c$ and a morphism $p : C_0 \inj G$ be given.
+Assume that $p \models_k c$ for any $0 \leq k < \nlvl(c)$. 
+Then, we are able to conclude results for the satisfaction at other layers.
+If $k$ is even, that means $\scond{k}{c}$ is universally bound, we can conclude
+that $p \models_j c$ for all $ k < j < \nlvl(c)$ and in particular $p \models c$.
+For any $0 \leq k < \nlvl(c)$ with $p \models_k c$ we can conclude that 
+$p \models j$ for all odd $0 \leq j < k$. 
+An overview of these conclusion is shown in Table \ref{table_satisfaction_at_layer}. We show these results within the following 
+lemmas. 
+
+We start by investigating the conclusions for satisfaction at layer $j > k$ if 
+$p \models_k c$. Our first result shows that  the replacement of the sub-condition $\scond{k+1}{c}$ by
+any arbitrary condition over $C_{k+1}$ leads to a condition that is satisfied
+by $p$ if $k$ is even.
 
 \begin{lemma}\label{lemma_help_lay_sat}
-Let a graph $G$, a condition $c$ in UANF and a morphism $p : C_0 \inj G$ with $p \models_k c$ be given.
-If the subcondition $d = \scond{k}{c}$ is universally bound, then for any condition $f$ over $C_{k+1}$ it holds that
+Let a graph $G$, a condition $c$ in UANF and a morphism $p : C_0 \inj G$ with $p \models_k c$, such that $0 \leq k < \nlvl(c)$ is even, be given.
+Then, for any condition $f$ over $C_{k+1}$ it holds that
 $$p \models \repl{k + 1}{c}{f}.$$
 \end{lemma}
 
-
-
-
 \begin{proof}
-Let $0 \leq k \leq \nlvl(c)$ be the smallest number with  $\scond{k}{c} = \forall(a_k:C_{k} \inj C_{k+1}, d)$ being universally bound and $p \models_k c$.
-Let $q: C_{k} \inj G$ be a morphism such that $q \models \forall(a_k:C_{k} \inj C_{k+1}, \false)$. 
-This must exist, since $p \models_k c$ and $k$ is the smallest even number such that $p \models_k c$.
-Therefore, there does not exist a morphism $q': C_{k+1} \inj G$ with $q = q' \circ a_k$.
-Hence, for every condition $f$ over $C_{k+1}$ a morphism $q': C_{k+1} \inj G$ with $q \not \models f$ and $q = q' \circ a_k$ cannot exist. 
-It follows immediately that $q \models \forall(a_k:C_{k-1} \inj C_k, f)$ and with that $p \models \repl{k + 1}{c}{f}$.
+Let $0 \leq j \leq \nlvl(c)$ be the smallest number with  $\scond{j}{c} = \forall(a_j:C_{j} \inj C_{j+1}, d)$ being universally bound and $p \models_j c$. 
+This must exist, since at least one of these exists due to the assumption.
+Let $q: C_{j} \inj G$ be a morphism such that $q \models \forall(a_j:C_{j} \inj C_{j+1}, \false)$. 
+This must exist, since $p \models_j c$ and $j$ is the smallest even number such that $p \models_j c$.
+Therefore, there does not exist a morphism $q': C_{j+1} \inj G$ with $q = q' \circ a_j$.
+Hence, for every condition $f$ over $C_{j+1}$ a morphism $q': C_{j+1} \inj G$ with $q \not \models f$ and $q = q' \circ a_j$ cannot exist. 
+It follows immediately that $q \models \forall(a_j:C_{j} \inj C_{j+1}, f)$ and with that $p \models \repl{j + 1}{c}{f}$.
 
-It follows that for every even $k < j \leq \nlvl(c)$, such that $p \models_j c$, and every condition $d$ over $C_{j + 1}$ it holds that $p \models \repl{k + 1}{c}{f}$ with $f = \repl{j-k + 1}{\scond{k+1}{c}}{d}$.
-Since $\repl{k+1}{c}{f} = \repl{j+1}{c}{d}$ it follows that $p \models \repl{j + 1}{c}{d}$.
+We can now conclude that for every even $j < k \leq \nlvl(c)$, such that $p \models_k c$, and every condition $d$ over $C_{k + 1}$ it holds that $p \models \repl{j + 1}{c}{f}$ with $f = \scond{j+1}{\repl{k+1}{c}{d}}$.
+Since $\repl{j+1}{c}{f} = \repl{k+1}{c}{d}$ it follows that $p \models \repl{k + 1}{c}{d}$.
 \end{proof}
 
-As a direct consequence of the previous lemma, a graph satisfying a condition up to layer ending with $\forall(a: C \inj C', \false)$ also satisfies the whole constraint. 
+As a direct consequence of the previous lemma, a morphism satisfying a condition
+at layer $k$ with $k$ being even also satisfies the condition at layer
+$j$ for all $j > k$.
+
 
 \begin{lemma}\label{lemma_lay_sat}
 
-Let $G$ be a graph, $p: C_0 \inj G$ a morphism and $c$ a condition over $C_0$ in UANF with $p \models_k c$.
-If $\scond{k}{c}$ is universally bound, $$p \models_k c \implies p \models c.$$
+Let a graph $G$, a morphism $p:C_0 \inj G$ and a condition $c$ in UANF be given.
+If $0 \leq k < \nlvl(c)$ is even, i.e. $\scond{k}{c}$ is universally bound, then for all $k < j < \nlvl(c)$  it holds that
+	$$p \models_k c \implies p \models_j c.$$
+
 \end{lemma}
 \begin{proof}
-Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ to $\scond{k+1}{c}$.
+Follows immediately by using lemma \ref{lemma_help_lay_sat} and setting $f$ equal to $\scond{k+1}{\cut{j}{c}}$.
 \end{proof}
 
-Additionally, with lemma \ref{lemma_help_lay_sat} it can be shown that given an graph $G$, a condition in UANF over $C_0$ and  a morphism $p: C_0 \inj G$ such that $p \models_k c$ and $\scond{k}{c}$ is universally bound, $p \models_j c$ for all $k \leq j \leq \nlvl(c)$.
+Since a morphism $p$ satisfies a condition $c$ in UANF if and only if $p$ satisfies $c$ at layer $\nlvl(c)-1$, because $\cut{\nlvl(c)-1}{c} = c$,
+we can conclude the following.
 
-%\begin{lemma}\label{lemma_part_satisfiability}
-%	Let $c$ be a condition in ANF over $C_0$ and $p: C_0 \inj G$ a morphism with $p \models_k c$. 
-%	Let $d = Q(a_{k+2}: C_{k+1} \inj C_{k+2},e)$ be the subcondition of $c$ with layer $k+2$. 
-%	There does exist a graph $C_{k+1} \subseteq C' \subseteq C_{k+2}$ such that $$p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$$ with $f$ being a $\overline{Q}$ bound condition over $C'$.
-%\end{lemma}
-%\begin{proof}
-%If $p \models c$, we can choose $C' = C_{k+2}$ and $f = e$.
-%
-%If $p \not \models c$, there does not exists a $j$ with $p \models_j c$ and the subcondition of $c$ with layer $j$ is universally bound and $Q = \exists$ follows immediately.
-%We choose $C' = C_{k+1}$ and $f = \true$. Let $q: C_{k} \to G$ with $p = q \circ a_k \circ \ldots \circ a_1$ and $q \circ \ldots \circ a_{\ell}$ satisfying the condition up to $\ell - k$ of the subcondition of $c$ at layer $\ell$  for all $0 \leq \ell \leq k$.
-%This morphism must exists since $p \models_k c$ and $p \not \models c$. 
-%Let $q': C_{k+1} \to G$ be a morphism with $q = q' \circ a_{k+1}$.  Since $C' = C_{k+1}$, the morphism $a'_{k+2}$ has to be the identity and therefore $q' = q' \circ a'_{k+2}$. It follows that $q' \models \exists(a'_{k+2}: C_{k+1} \inj C', \true)$ and therefore $p \models \sub\bigl(k+1,c,Q(a_{k+2}: C_{k+1} \inj C',f)\bigr)$.
-%\end{proof}
+
+\begin{corollary}\label{corol:satisfaction}
+	Let a graph $G$, a morphism $p:C_0 \inj G$ and a condition $c$ in UANF be
+	given. If $0 \leq k < \nlvl(c)$ is even it holds that 
+	$$p \models_k c \implies p \models c.$$
+\end{corollary}
+
+Furthermore, this allows us to make statements about the satisfaction of other 
+conditions. Let a graph $G$, a morphism $p : C_0 \inj G$ and a condition $c$ be given such that $p \models_k c$ for an even $0 \leq k < \nlvl(c)$.
+Then, $p \models c$ and for every condition $c'$ with $\cut{k}{c} = \cut{k}{c'}$. With Lemma \ref{lemma_help_lay_sat}, it follows that $p \models c'$.
+
+Let us now investigate the satisfaction at layer $j$ with $j < \kmax$.
+If $j$ is odd, i.e. $\scond{j}{c}$ is existentially bound, we can conclude
+that $p \models_j c$ as shown in Lemma \ref{lem_ex_lower}.
+If $j$ is even, i.e. $\scond{j}{c}$ is universally bound, we are only able to make
+statements depending on $\kmax$. If $\kmax < \nlvl(c) -1$, it follows that
+$p \not \models_j c$. Otherwise $p \models c$ and therefore $\kmax = \nlvl(c)-1$ would follow immediately with Corollary \ref{corol:satisfaction}.
+If $\kmax = \nlvl(c)-1$ we can only state that at least one even $j \leq \kmax$
+with $p \models_j c$ exists if $c$ ends with a condition of the form
+$\forall(a_k: C_k \inj C_{k+1}, \false)$.
 
 
 \begin{lemma}\label{lem_ex_lower}
 Let a graph $G$, a morphism $p: C_0 \inj G$ and a constraint $c$ in UANF be given.
-Then, $p \models_j c$ if $j < \kmax$ and $\scond{j}{c}$ is existentially bound. 
+Then,  for all odd $0 \leq j < \kmax$, i.e. $\scond{j}{c}$ is existentially bound, it holds that  
+$$p \models_j c.$$
 
 \end{lemma}
 \begin{proof}
 
-If a $j < \kmax$ with $p \models_j c$ exists such that $\scond{j}{c}$ is universally bound, let $j_1$ be the smallest of these. 
-With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c$ for all $j_1 \leq j_2 < \nlvl(c)$. 
+If an even $0 \leq j < \kmax$ with $p \models_j c$ exists such that $\scond{j}{c}$ is universally bound, let $j'$ be the smallest of these. 
+With lemma \ref{lemma_help_lay_sat} follows that $p \models_{\ell} c$ for all $j' \leq \ell < \nlvl(c)$. 
+Otherwise, if no such $j'$ exists we set $j' = \kmax$.
 
-Let $\ell < j_1$, such that $\scond{\ell}{c}$ is existentially bound and let $ d = \cut{j_1 - \ell}{\scond{\ell}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of $\scond{\ell}{c}$. 
-	Since $\ell < j_1$, a morphism $q:  C_{\ell} \inj G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_k$ must exists. 
+Let $\ell < j'$, such that $\scond{\ell}{c}$ is existentially bound and let $d = \scond{\ell}{\cut{j'}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the sub-condition at layer $\ell $ of the condition up to layer $j'$ of $c$. 
+	Since $\ell < j'$, a morphism $q:  C_{\ell} \inj G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_{\ell}$ must exists. 
 	It follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
-%\begin{enumerate}
-%	\item The subcondition of $c$ at layer $\kmax$ is existentially bound:	
-%	If a $j < \kmax$ with $p \models_j c$ exists such that $\scond{j}{c}$ is universally bound, let $j_1$ be the smallest of these. With lemma \ref{lemma_help_lay_sat} follows that $p \models_{j_2} c $ for all $j_1 < j_2 \leq \nlvl(c)$.
-%	
-%	Let $\ell < j_1$, such that $\scond{\ell}{c}$ is existentially bound and let $ d = \cut{j_1 - \ell}{\scond{\ell}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the condition up to layer $j_1 - \ell$ of $\scond{\ell}{c}$. 
-%	Since $\ell < j_1$, a morphism $q:  C_{\ell} \inj G$ with $q \models d$ must exists and therefore a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_k$ must exists. 
-%	It follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and with that $p \models_{\ell} c$.
-%	
-%	\item The subcondition of $c$ at layer $\kmax$ is universally bound:
-%	If $\kmax < \nlvl(c) - 1$, with lemma \ref{lemma_help_lay_sat} follows that $p \models_{\kmax+1} c$. 
-%	Since $c$ is in UANF,  $1.$ can be applied  to $k+1$. 
-%	If $\kmax = \nlvl(c) -1$, 
-%\end{enumerate}
 \end{proof}
 
-Through satisfaction at layer an increase of consistency can be detected in the following way. 
-Let $G \Longrightarrow H$ be a transformation. 
-If $\maxk{c}{G} < \maxk{c}{H}$, the transformation can be considered as consistency increasing, since $H$ satisfies more layers of the constraint than $G$. 
-The notion of consistency increasement should also be able to detect the smallest transformations that lead to an increase of consistency, namely the inserting of a single edge or node of an existentially bound graph.
-To remedy this issue, we introduce \emph{intermediate conditions}.
-Intuitively, given a constraint $c$ in UANF ending with $\scond{\nlvl(c)-1}{c} =\exists(a_k :C_k \inj C_{k+1}, d)$, the condition $\scond{\nlvl(c)-1}{c}$ is replaced by $\exists(a^p_k: C_k \inj C', \true)$ with $C' \in \ig{C_k}{C_{k+1}}$.
+Through satisfaction at layer, an increase of consistency can be detected in the following way: 
+Let $t: G \Longrightarrow H$ be a transformation. 
+If $\maxk{c}{G} < \maxk{c}{H}$, we consider the transformation as consistency increasing, since $H$ satisfies more layers of the constraint than $G$. 
+But, the notion of consistency increasement should also be able to detect the smallest changes, performed by a transformation, that lead to an increase of consistency, namely the inserting of a single edge or node of an existentially bound graph.
+To remedy this issue, we introduce \emph{intermediate conditions}, which will
+be used to recognize these types of increasements by checking whether an
+intermediate condition not satisfied by $G$ is satisfied by $H$.
+Obviously, an decrease of consistency can be detected in a similar manner, by 
+checking whether an intermediate condition satisfied by $G$ is not satisfied by $H$. 
+Intuitively, given a constraint $c$ in UANF with $\scond{k}{c} =\exists(a_k :C_k \inj C_{k+1}, d)$ and $0 \leq k < \nlvl(c)$, the condition $\scond{k}{c}$ is replaced by $\exists(a^r_k: C_k \inj C', \true)$ with $C' \in \ig{C_k}{C_{k+1}}$.
 
 The construction of intermediate conditions is designed to only replace graphs in existentially bound layers, since the replacement in an universally bound layer would lead to a more restrictive constraint than the original condition up to layer. 
-That means, given the condition $c = \forall(a_0: C_0 \inj C_1, \false)$ and let $C' \in \ig{C_0}{C_1}$. 
-If the condition $c'= \forall(a^p_0: C_0 \inj C_1, \false)$ is satisfied this implies that $c$ is also satisfied but the backwards implication does not hold.
+That means, given the condition $c = \forall(a_0: C_0 \inj C_1, \false)$, let $C' \in \ig{C_0}{C_1}$. 
+If the condition $c'= \forall(a^r_0: C_0 \inj C', \false)$ is satisfied the satisfaction of $c$ is implied but the backwards implication does not hold.
 
-\begin{definition}[\textbf{Intermediate condition}]
-Let a constraint $c$ in UANF be given. 
-Let $0 \leq k < \nlvl(c)$ such that either $\scond{k}{c} = \exists(a_k:C_{k} \inj C_{k+1}, d)$ is existentially bound or $k = \nlvl(c) -1$.
-The \emph{intermediate condition, $\ic{k}{c}{C'}$, of $c$ at layer $k$ with} 
-$$C' \in \begin{cases}
-			\ig{C_k}{C_{k+1}} &\text{if $\scond{k}{c}$ is existentially bound}\\
-			\{C_{\nlvl(c)}\} &\text{otherwise}
-		\end{cases}
-$$
-
-is defined as:
-$$\ic{k}{c}{C'} := \begin{cases}
-							\repl{k}{c}{\exists(a_k^r:C_{k} \inj C', \true)} & \text{if $\scond{k}{c}$ is existentially bound}\\
-							 c &\text{otherwise}
-					   \end{cases}$$
-
+\begin{definition}[\textbf{intermediate condition}]
+	Let a condition $c$ in UANF be given. 
+	Let $0 \leq k < \nlvl(c)$ such that $k$ is odd, i.e. $\scond{k}{c}$ is 
+	existentially bound. The \emph{intermediate condition}, denoted by $\ic{k}{c}
+	{C'}$, of $c$ at layer $k$ with $C' \in \ig{C_k} {C_{k+1}}$ is defined as
+	$$\ic{k}{c}{C'} := \repl{k}{c}{\exists(a_k^r:C_k \inj C', \true)}.$$
 \end{definition}
 
 %\begin{definition}[\textbf{partial condition}]
@@ -222,22 +229,10 @@ $$\ic{k}{c}{C'} := \begin{cases}
 
 \begin{example}
 Consider constraint $c_1$ given in figure \ref{fig:constraints}. 
-Since $C_2^2 \in \ig{C_1^1}{C_1^2}$, we can construct a intermediate condition of $c_1$ at layer $1$ with $C_2^2$ as $\ic{1}{c_1}{C_2^2} = \forall C_1^1 \exists C_2^2$. 
-Whereas $c_1$ checks whether each node of the type \emph{\texttt{Class}} is connected to at least two nodes of the type \emph{\texttt{Feature}}, the partial condition checks whether each nodes of the type \emph{\texttt{Class}} is connected to at least one nodes of the type \emph{\texttt{Feature}} which is trivially satisfied if $c_1$ is satisfied.
+Since $C_2^2 \in \ig{C_1^1}{C_2^1}$, we can construct a intermediate condition of $c_1$ at layer $1$ with $C_2^2$ as $\ic{1}{c_1}{C_2^2} = \forall C_1^1 \exists C_2^2$. 
+Whereas $c_1$ checks whether each node of type \emph{\texttt{Class}} is connected to at least two nodes of  type \emph{\texttt{Feature}}, the intermediate condition checks whether each node of type \emph{\texttt{Class}} is connected to at least one node of type \emph{\texttt{Feature}} which is trivially satisfied if $c_1$ is satisfied.
 \end{example}
 
+Given a graph $G$ and a constraint $c$ in UANF with $\kmax < \nlvl(c)-3$, note that in this case $\scond{\kmax}{c}$ has to be existentially bound, it holds that $G \not \models_{\kmax + 2} c$ and there does exist at least one graph $C' \in \ig{C_{\kmax+2}}{C_{\kmax+3}}$ such that $G \models \ic{\kmax+2}{c}{C'}$ since 
+$G$ always satisfies $\ic{\kmax+2}{c}{C_{\kmax + 2}}$.
 
-If a graph $G$ does not satisfy the condition up to layer $k := \kmax + 2$, $k < \nlvl(c)$, of a given constraint $c$, with $\scond{k}{c}$ being existentially bound, there does exists a graph $C' \in \ig{C_{k}}{ C_{k+1}}$, such that $G$ satisfies $\ic{k}{c}{C'}$ since  $G$ always satisfies $\ic{k}{c}{C_{k}}$. 
-%For the biggest of these graphs, we define the notions of \emph{biggest partially satisfying conditions and graphs}.
-
-
-%\begin{definition}[\textbf{biggest partially satisfying condition}]
-%Let $G$ be a graph, $c$ a condition in EANF over $C_0$ and $p : C_0 \inj G$ a morphism with $p \models_k c$ and $p \not \models c$. 
-%
-%A partial condition $c = \parcond(k+2,c,C')$ with $p \models c$ is a \emph{biggest partially satisfying condition w.r.t $c$ of $p$} if there does not exist a graph  $C''$, such that $C'$ is a subgraph of $C''$, with $p \models \parcond(c_{max},c,C'')$. 
-%The graph $C'$ is then called a \emph{biggest partially satisfying graph w.r.t $c$ of $p$}.
-%
-%Given a constraint $c$, the set of biggest partially satisfying conditions w.r.t $c$ of $p: \emptyset \inf G$ is denoted by $\mathcal{P}_c^G$. 
-%
-%The set of all biggest partially satisfying graphs w.r.t $c$ of $p$ is denoted by $\mathcal{G}_{c}^G$. 
-%\end{definition}
