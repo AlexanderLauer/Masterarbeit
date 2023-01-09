@@ -1,16 +1,88 @@
-\subsection{Comparison with other consistency concepts}\label{comp_general}
-In this chapter, the notions of (direct) consistency increasing are compared to the already known concepts of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining} in order to reveal relationships between them and secure that (direct) consistency increasing is indeed a new notion of consistency. 
-These relations are displayed in figure \ref{fig:consistency_relations}.
+\subsection{Comparison with other concepts of Consistency}\label{comp_general}
+In this chapter, the notions of (direct) consistency increase- and maintainment are compared to the already known concepts of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining} in order to reveal relationships between them and ensure that (direct) consistency increase- and 
+maintainment are indeed a new notions of consistency. 
+These relations are displayed in Figure \ref{fig:consistency_relations}.
 
 \input{figures/consistency_relations}
 
-First, we compare (direct) consistency increasing with the notions of consistency-guaranteeing and -preserving.
-As already mentioned, given a constraint $c$ and a graph $G$ with $G \models c$, there does not exist a (direct) consistency increasing transformation $t: G \Longrightarrow H$ and it follows immediately that (direct) increasing w.r.t $c$ implies $c$-preserving. 
+First, we compare (direct) consistency increase- and maintainment with the notions of consistency-guaranteeing and -preserving.
+We start by showing that consistency maintaining implies preserving but the backwards implication does not hold.
 
-Obviously, guaranteeing implies consistency increasing, since this property is embedded in the definition of consistency increasing. 
-The inversion of this implication does not holds, since increasing is a way stricter notion, in the sense, that the number of removed violations has to be greater than the number of introduced violations.
-For guaranteeing transformations this is not the case, an arbitrary number of violations can be inserted, long as the derived graph satisfies the constraint and therefore guaranteeing does not imply direct increasing, since a direct increasing transformations is not allowed to introduce any new violations.
+\begin{lemma}\label{comparision:maintaining_preserving}
+	Let a constraint $c$ in UANF, graphs $G$ and $H$ and a transformation 
+	$t: G\Longrightarrow H$ be given. Then, 
+	\begin{alignat*}{3}
+			&t \text{ is maintaining w.r.t. $c$} && \implies \text{$t$ is 
+			$c$-preserving} & \text{ and}\\
+			&t \text{ $c$-preserving} && \centernot\implies \text{$t$ is 
+			maintaining 	w.r.t. $c$} & \text{ }\\	
+	\end{alignat*}
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item 
+			Let $t$ be a consistency maintaining transformation w.r.t. $c$. 
+			If $G \not \models c$, $t$ is a $c$-preserving transformation.
+			If $G \models c$, it holds that $\nv{j}{G} = 0$ for all 
+			$0 \leq j < \nlvl(c)$. Since $t$ is consistency maintaining
+			it follows that $\nv{j}{H} = 0$ for all 
+			$0 \leq j < \nlvl(c)$ and therefore $H \models c$. 
+			It follows that $t$ is a $c$-preserving transformation.
+			
+		\item	
+			Consider graphs $C_1^1$, $C_2^2$ and constraint $c_1$ given in 
+			Figure \ref{fig:constraints}. Then, the transformation
+			$t: C_2^2 \Longrightarrow C_1^1$ is $c$-preserving, since 
+			$C_2^2 \not \models c_1$, but not consistency maintaining
+			w.r.t. $c$ since $\nv{0}{C_2^2} = 2$ and $\nv{0}{C_1^1} = 5$.  
+	\end{enumerate}
+\end{proof}
 
+Obviously, guaranteeing implies consistency maintaining, since this property is embedded in the definition of consistency maintainment. 
+The inversion of this implication does not holds, since maintaining is a way stricter notion, in the sense, that the number of removed violations has to be greater or equal than the number of introduced violations.
+For guaranteeing transformations this is not the case, an arbitrary number of violations can be inserted, as long as the derived graph satisfies the constraint and therefore guaranteeing does not imply direct increasing, since a direct increasing transformations is not allowed to introduce any new violations.
+
+\begin{lemma}
+	Let a constraint $c$ in UANF, graphs $G$ and $H$ and a transformation 
+	$t: G \Longrightarrow H$ be given. Then,
+	\begin{alignat*}{3}
+		&t \text{ is $c$-guaranteeing} &&\implies t \text{ is maintaining w.r.t 
+		$c$} &\text{ and} \\
+		&t \text{ is $c$-guaranteeing} &&\centernot \implies t \text{ is 
+		direct maintaining w.r.t $c$} &\text{ and} \\
+		&t \text{ is maintaining w.r.t. $c$} &&\centernot \implies t \text{ is 
+		$c$-guaranteeing} &\text{ } 
+	\end{alignat*}
+\end{lemma}
+\begin{proof}
+	\begin{enumerate}
+		\item 
+			Let $t$ be a c-guaranteeing transformation, then $H \models c$.
+			It holds that $\nv{j}{H} = 0$ for all $0 \leq j < \nlvl(c)$ and 
+			since the number of violations cannot be negative, $t$ is a 
+			maintaining transformation w.r.t. $c$.
+		
+		\item 
+			Let $t$ be a $c$-guaranteeing transformation. Then, $t$ is also
+			a $c$-preserving transformation and since each direct maintaining
+			transformation is also a maintaining one the statement follows 
+			directly with Lemma \ref{comparision:maintaining_preserving}.
+			
+		\item 
+			Consider the transformation $t: G \Longrightarrow H$ shown in Figure 
+			\ref{fig:counterexamples_guaranteeing_maintaining} and constraint
+			$c_1$ shown in Figure \ref{fig:constraints}.
+			Then, $t$ is a maintaining transformation w.r.t $c$, in particular,
+			$c$ is a consistency increasing transformation w.r.t. $c$ since 
+			$\nv{0}{G} = 10$ and $\nv{0}{H} = 7$.
+			But, $t$ is not $c$-guaranteeing since both occurrences 
+			of nodes of type \emph{\texttt{Class}} do not satisfy $\exists 
+			C_2^1$.
+			
+	\end{enumerate}
+\end{proof}
+
+\input{figures/fig_counterexamples_guaranteeing}
 
 \begin{lemma}\label{comp_guaranteeing_minimal}
 Let a constraint $c$ in UANF, graphs $G$ and $H$ with $G \not \models c$, and a transformation $t: G \Longrightarrow H$ be given. Then, 

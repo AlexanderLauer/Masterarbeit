@@ -48,7 +48,7 @@ Via the number of violations, we now define \emph{consistency maintaining} and
 	Let a graph $G$, a rule $\rho$ and a constraint $c$ in UANF be given. 
 	A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{consistency 
 	maintaining w.r.t. $c$}, if  $$\nv{k}{ H} \leq \nv{k}{ G} $$
-	for any $0 \leq k < \nlvl(c)$.
+	for all $0 \leq k < \nlvl(c)$.
 	The transformation $t$ is called \emph{consistency increasing w.r.t. $c$}
 	this inequality is strict.
 	A rule $\rho$ is called \emph{consistency maintaining/increasing  w.r.t $c$}, 
@@ -110,58 +110,84 @@ The presence of these unnecessary actions can be checked via second-order logic 
 Additionally, it is secured that no new violations are introduced since these can always be considered as a unnecessary insertion or deletion.
 With that, the removal of one violation is sufficient to state that the transformation is (direct) consistency increasing, which can also be checked via a second order logic formula.
 We start by introducing \emph{direct consistency maintaining} transformations.
-Intuitively, it is checked by the first two formulas, that no new violations are introduced. 
+Let $t : G \Longrightarrow H$ be a transformation.
+
+Intuitively, formulas  (\ref{direct_improving_1}) and (\ref{direct_improving_1_2})
+check that no new violations of the first two unsatisfied layers are introduced, 
+that means, every  occurrence $p$ of $C_{\maxk{c}{G} +2}$ that is not destroyed by $t$ and satisfies $\exists C'$ still satisfies $\exists C'$ in $H$ with the intermediate graph $C' \in \ig{C_{\maxk{c}{G} +2}}{C_{\maxk{c}{G} +3}}$. To check that $p$ has not been
+destroyed by $t$, we use the notion of total morphisms, since it has been shown
+that $\track_t \circ p$ is total if and only if $p$ has not been destroyed by $t$ \cite{kosiol2022sustaining}.
+Additionally, every newly inserted occurrence of $C_{\maxk{c}{G} +2}$ satisfies $d$ with $d = \false$ if $\scond{\maxk{c}{G} +2}{C} = \false$ and $d = \exists C_{\maxk{c}{G} +3}$ otherwise. This case discrimination arises as a consequence of the fact that conditions in UANF are also allows to end with a condition of the form $\forall(a: C_0 \inj C_1, \false)$. Formulas (\ref{direct_improving_3}) and
+(\ref{direct_improving_4}) ensure that the satisfaction at layer has not been 
+decreased by checking that no occurrences of universally bound graphs $C_j$ with $j < \kmax$ have
+been inserted and that no occurrences of existentially bound graphs $C_j$ with
+$j \leq \kmax$ have been destroyed. Only in these cases, the satisfaction at layer can be decreased.
+Of course,  this does not always lead to a decrease of satisfaction at layer  but it can always be considered as an unnecessary insertion or deletion.  
+
+
+
 The third formula secures that at least one violation has been removed and the last formulas secures that the satisfaction up to layer is not decreased. 
 
 \begin{definition}[\textbf{direct consistency maintaining transformations}]
-	Let $G$ be a graph $\rho$ a rule and $c$ a constraint in UANF.
-	A transformation $t: G\Longleftarrow_{\rho,m}H$ is called \emph{direct
-	consistency maintaining w.r.t. $c$} if the following equations hold.
-\end{definition}
- 
-\begin{definition}[\textbf{direct consistency increasing}]\label{def_direct_improving}
-Let $G$ be a graph, $\rho$ a plain rule, $c$ a constraint in UANF and  $\scond{\kmax + 1}{c} = \forall(a_{k-1}: C_{k-1} \inj C_{k}, e)$. 
-A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{direct consistency increasing w.r.t $c$} if the following equations hold.
-Let $$ \mathbf{G} = \begin{cases}
+	Let $G$ be a graph $\rho$ a rule and $c$ a constraint in UANF. If 
+	$G \models c$, a transformation $t: G\Longrightarrow_{\rho,m}H$ is
+	called \emph{direct consistency maintaining w.r.t. $c$} if $H \models c$.
+	Otherwise, if $G \not \models c$, let $k = \maxk{c}{G} + 2$, $e = 
+	\scond{k}{c}$ and
+	 $$ \mathbf{G} = \begin{cases}
 					\ig{C_{k}}{C_{k+1}} &\text{if $e \neq  \false$} \\
 					\{C_{k}\} &\text{otherwise}
-					\end{cases}$$ 
-
-Every occurrence of $C_k$ in $G$ that satisfies $\ic{0}{e}{C'}$ for any $C' \in \mathbf{G}$ still satisfies $\ic{0}{e}{C'}$ in $H$. 
-\begin{equation}\label{direct_improving_1}
-\begin{split}
-	\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}\big( p \models \ic{0}{e}{C'} \wedge \track_t \circ p \text{ is total}\big) \implies  \track_t \circ p \models \ic{0}{e}{C'} \Big) 
-\end{split}
-\end{equation}
-Let $C' = C_{k+1}$ if $e \neq \false$ and $C' = C_k$ otherwise.
-Every new inserted occurrence of $C_k$ by $t$ satisfies $\ic{0}{e}{C'}$.
-\begin{equation}\label{direct_improving_1_2}
-\begin{split}
-\forall p': C_{k} \inj H \big(\neg \exists p : C_k \inj G(p' = \track_t \circ p) \implies \ p' \models \ic{0}{e}{C'}\big)
-\end{split}
-\end{equation}
-At least one occurrence of $C_k$ in $G$ that does not satisfy $\ic{0}{e}{C'}$, for any $C' \in \mathbf{G}$, either has been removed or satisfies $\ic{0}{e}{C'}$ in $H$.
-\begin{equation}\label{direct_improving_2}
-\begin{split}
-\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathbf{G}}\big( p \not \models \ic{0}{e}{C'} \wedge (\track_t \circ p \text{ is not total } \vee \track_t \circ p  \models \ic{0}{e}{C'})\big) \Big) 
-\end{split}
-\end{equation}
-
-No occurrence of a universally bound graph $C_j$ with $j < \kmax$ gets inserted. 
-\begin{equation}\label{direct_improving_3}
-\bigwedge_{\substack{i < \kmax \\ i \textit{ even}}} \forall p: C_i \inj H ( \exists p': C_i \inj G (p = \track_t \circ p'))
-\end{equation}
-No occurrence of an existentially bound graph $C_j$ with $j \leq \kmax$ gets deleted. 
-\begin{equation}\label{direct_improving_4}
-\bigwedge_{\substack{i \leq \kmax \\ i \textit{ odd}}} \forall p: C_i \inj G( \track_t \circ p \textit{ is total})
-\end{equation}
-
+					\end{cases}.$$ 
+	A transformation $t: G\Longrightarrow_{\rho,m}H$ is called \emph{direct
+	consistency maintaining w.r.t. $c$} if the following equations hold.
+	
+	\begin{enumerate}
+		\item
+			Every occurrence of $C_k$ in $G$ that satisfies $\ic{0}{e}{C'}$ for 
+			any 	$C' \in \mathbf{G}$ still satisfies $\ic{0}{e}{C'}$ in $H$. 
+			\begin{equation}\label{direct_improving_1}
+				\begin{split}
+					\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}
+					\big( p \models \ic{0}{e}{C'} \wedge \track_t \circ p \text{ 	
+					is total}\big)\implies  \track_t \circ p \models \ic{0}{e}
+					{C'} \Big) 
+				\end{split}
+			\end{equation}
+		\item
+			Let $d = \ic{0}{e}{C_{k+1}}$ if $e \neq \false$ and $d = \false$ 
+			otherwise. Every newly inserted occurrence of $C_k$ satisfies 
+			$d$.
+			\begin{equation}\label{direct_improving_1_2}
+				\begin{split}
+					\forall p': C_{k} \inj H \big(\neg \exists p : C_k \inj G(p' 
+					= \track_t \circ p) \implies \ p' \models d\big)
+				\end{split}
+			\end{equation}
+		\item
+			No occurrence of a universally bound graph $C_j$ with $j < \kmax$ 
+			gets inserted. 
+			\begin{equation}\label{direct_improving_3}
+				\bigwedge_{\substack{i < \kmax \\ i \textit{ even}}} \forall p: 
+				C_i \inj H ( \exists p': C_i \inj G (p = \track_t \circ p'))
+			\end{equation}
+		\item
+			No occurrence of an existentially bound graph $C_j$ with $j \leq 
+			\kmax$ gets deleted. 
+			\begin{equation}\label{direct_improving_4}
+				\bigwedge_{\substack{i \leq \kmax \\ i \textit{ odd}}} \forall 
+				p: C_i \inj G( \track_t \circ p \textit{ is total})
+			\end{equation}
+	\end{enumerate}
 \end{definition}
-
-Note that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) not only secure that the satisfaction up to layer does not decrease, as shown in the following lemma, but also prevent further unnecessary insertions and deletions, since the insertion of a universally and the deletion of a existentially bound graph will never lead to an increase of consistency. 
+ 
+Before we continue with the definition of direct consistency increasing, let us
+first show that each direct consistency maintaining transformation is indeed
+consistency maintaining. 
+For this, we start by showing that the satisfaction of formulas (\ref{direct_improving_3}) and (\ref{direct_improving_4}) guarantee that the 
+satisfaction at layer has not been decreased. 
 
 \begin{lemma}\label{lemma_consistent}
-	Let a transformation $t: G \Longrightarrow H$ and a constraint $c$ in UANF be given, such that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) of definition \ref{def_direct_improving} are satisfied. Then,
+	Let a transformation $t: G \Longrightarrow H$ and a constraint $c$ in UANF be given, such that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) are satisfied. Then,
 	$$H \models_{\maxk{c}{G}} c.$$
 \end{lemma}
 \begin{proof}
@@ -169,60 +195,156 @@ Assume that $H \not \models_{\maxk{c}{G}}c$.
 Then, either a new occurrence of an universally bound graph $C_k$ with $k < \maxk{c}{G}$ has been inserted or an occurrence of an existentially bound graph $C_k$ with $k \leq \maxk{c}{G}$ has been destroyed. 
 Therefore, the following holds:
 $$ \exists p: C_i \inj H(\neg \exists p': C_i \inj G(p = \track_t \circ p')) \vee \exists p:C_j \inj G(\track_t \circ p \textit{ is not total})$$
-with $i, j \leq \maxk{c}{G}$, $i$ being even and $j$ being odd. 
+with $i, j \leq \maxk{c}{G}$, $i$ being even and $j$ being odd, i.e. $C_i$ is universally and $C_j$ is existentially bound. 
 It follows immediately that either (\ref{direct_improving_3}) or (\ref{direct_improving_4}) is not satisfied. 
 This is a contradiction. 
 \end{proof}
 
-Now, we will show the already indicated relationship between direct consistency increasing and consistency increasing, namely that a direct consistency increasing transformation is also consistency increasing. 
-Counterexamples, that the inversion of the implication does not hold can easily be constructed, showing that these notions are not identical, but related. 
-
-\begin{lemma}\label{lemma:direct_implies_normal}
-Let a graph $G$, a constraint $c$ in UANF, a rule $\rho$ and a direct consistency increasing transformation $t: G \Longrightarrow_{\rho,m} H$ w.r.t. $c$ be given. 
-Then, $t$ is also a consistency increasing transformation. 
-\end{lemma}
-
+With this, we will now show that direct consistency maintaining transformation is also consistency maintaining.
+\begin{theorem}\label{thm:direct_maintaining_to_maintaining}
+	Let a graph $G$, a constraint $c$ in UANF, a rule $\rho$ and a direct 
+	consistency maintaining transformation $t: G \Longrightarrow_{\rho,m} H$ 
+	w.r.t. $c$ be given. 
+	Then, $t$ is also a consistency maintaining transformation.
+\end{theorem}
 \begin{proof}
+	With Lemma \ref{lemma_consistent} follows that $\maxk{c}{G} \leq \maxk{c}{H}$ 
+	and it also holds that $\nv{\maxk{c}{G}+1}{H} \neq \infty$.
+	It remains to show that $\nv{k}{H} \leq \nv{k}{H}$ for all $0 \leq k < 
+	\nlvl(c)$.
+	In particular, we only need to show that $\nv{\maxk{c}{G}+1}{H} \leq 
+	\nv{\maxk{c}{G}+1}{G}$ since for all $0 \leq j < \maxk{c}{G}+1$ it holds that
+	$\nv{j}{H} = \nv{j}{G} = 0$. Also, since $\nv{j}{G} = \infty$ for all 
+	$\maxk{c}{G} + 1 < j < \nlvl(c)$ it follows that $\nv{j}{H} \leq \nv{j}{G}$.    
+	
+	Let $k = \maxk{c}{G} + 1$ and $d = \scond{k+1}{c}$.
+	We show that (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply 
+	that $\nv{k}{H} \leq \nv{k}{G}$. 
+	Assume that $\nv{k}{H} > \nv{k}{G}$. 
 
-Let $k = \maxk{c}{G} +2$ and $d = \scond{k}{c}$ with $d \neq \false$.
-With lemma \ref{lemma_consistent} follows that $\maxk{c}{G} \leq \maxk{c}{H}$ and with that $\nv{k}{H} \neq \infty$. Let 
+	Therefore, a morphism $p: C_{k+1} \inj H$ 
+	with $p \not \models \ic{0}{d}{C'}$ for any $C' \in \ig{C_{k+1}}{C_{k+2}}$ 
+	exists, such that either \ref{proof_direct_minimal_1} or 
+	\ref{proof_direct_minimal_2} is satisfied. Note that this is only the case
+	if $d \neq \false$. Otherwise, a morphism $p$ satisfying 
+	\ref{proof_direct_minimal_2} must exist.
+	\begin{enumerate}
+		\item \label{proof_direct_minimal_1}
+			There does exist a morphism $q': C_k \inj G$ with $q' \models \ic{0}
+			{d}{C'}$ and $p = \track_t \circ q'$. 
 
-
-\begin{enumerate}
-\item \label{proof_direct_minimal_4} We show that equations (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply that $\nv{k}{H} \leq \nv{k}{G}$. 
-Assume that $\nv{k}{H} > \nv{k}{G}$. Therefore, a morphism $p: C_k \inj H$ with $p \not \models \ic{0}{d}{C'}$ for any $C' \in \ig{C_k}{C_{k+1}}$ exists, such that either \ref{proof_direct_minimal_1} or \ref{proof_direct_minimal_2} is satisfied.
-\begin{enumerate}
-	\item \label{proof_direct_minimal_1}
-		There does exist a morphism $q': C_k \inj G$ with $q' \models \ic{0}{d}{C'}$ and $p = \track_t \circ q'$. 
-
-	\item \label{proof_direct_minimal_2}
-		There does not exist a morphism $q : C_k \inj G$ with $p = \track_t \circ q$. 		
-\end{enumerate}
-This is a contradiction, if \ref{proof_direct_minimal_1} is satisfied, $q'$ does not satisfy equation (\ref{direct_improving_1}) and if \ref{proof_direct_minimal_2} is satisfied $q$ does not satisfy equation (\ref{direct_improving_1_2}).
-It follows that 
-$$|\{q \mid q:C_k \inj G \wedge q \not \models \ic{0}{d}{C'}\}| \leq |\{q \mid q:C_{k} \inj H \wedge q \not \models \ic{0}{d}{C'}\}|$$
-for all $C' \in \ig{C_k}{C_{k+1}}$.
-
-\item \label{proof_direct_minimal_3} Since (\ref{direct_improving_2}) is satisfied,  a morphism $p:C_k \inj G$ with $p \not \models \ic{0}{d}{C'}$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \ic{0}{d}{C'}$ or $\track \circ p$ is not total exists, for a graph $C' \in \ig{C_k}{C_{k+1}}$.
-In both cases the following holds: 
-\begin{equation*}
-\begin{split}
-	p &\in \{q \mid q:C_k \inj G \wedge q \not \models \ic{0}{d}{C'}\} \wedge \\
-	\track \circ p &\notin \{q \mid q:C_{k} \inj H \wedge q \not \models \ic{0}{d}{C'}\}
-\end{split}
-\end{equation*}
-With that and \ref{proof_direct_minimal_4}. it follows that
-$$|\{q \mid q:C_k \inj G \wedge q \not \models \ic{0}{d}{C'}\}| < |\{q \mid q:C_{k} \inj H \wedge q \not \models \ic{0}{d}{C'}\}|.$$
-
-
-\end{enumerate}
-In total, $\nv{k}{G} < \nv{k}{G}$ and  $t$ is a consistency increasing transformation.
- 
-For the special case that $k = \nlvl(c)$ and $c$ ends with $\forall(a_k:C_{k-1} \inj C_k,\false)$ it can be shown in a similar way that  (\ref{direct_improving_1}) and (\ref{direct_improving_1_2}) imply that 
-$$|\{q \mid q:C_k \inj G\}| \leq |\{q \mid q:C_k \inj H\}|$$
-and that (\ref{direct_improving_2}) implies 
-$$|\{q \mid q:C_k \inj G\}| < |\{q \mid q:C_k \inj H\}|.$$
-It follows that $t$ is a consistency increasing transformation. 
+		\item \label{proof_direct_minimal_2}
+			There does not exist a morphism $q : C_k \inj G$ with $p = \track_t 
+			\circ q$. 		
+	\end{enumerate}
+	This is a contradiction, if \ref{proof_direct_minimal_1} is satisfied, $q'$ 
+	does not satisfy equation (\ref{direct_improving_1}) and if 
+	(\ref{proof_direct_minimal_2}) is satisfied $q$ does not satisfy equation 
+	(\ref{direct_improving_1_2}) since $q$ only satisfies  $\ic{0}{d}{C_{k+2}}$ 
+	if $q$ satisfies $\ic{0}{d}{C'}$ for all $C' \in \ig{C_{k+1}}{C_{k+2}}$.
+	It follows that 
+	$$\nv{k}{H} \leq \nv{k}{G}.$$
+	Therefore, $t$ is a consistency maintaining transformation.
+	
 \end{proof}
 
+Let us now introduce the notion of \emph{direct consistency increasing} transformations. Similar to the definition of consistency maintaining and increasing transformation, again this notion is based on the notion of 
+direct consistency maintaining transformations, in the sense that a direct
+consistency increasing transformation is also a direct consistency maintaining one. Since a direct consistency maintaining transformation $t$ does not insert 
+any new violations it is sufficient that $t$ deletes at least one violation to 
+state that $t$ is direct consistency increasing. 
+For this, (\ref{direct_improving_2}) checks that either an occurrence $p$ of $C_{\kmax +2}$ has been deleted or $\track_t \circ p \models \exists C'$ for an
+intermediate graph $C'\in \ig{C_{\kmax +2}}{C_{\kmax +3}}$ such that $p \not \models \exists C'$. 
 
+\begin{definition}[\textbf{direct consistency increasing}]\label{def_direct_improving}
+	Let a graph $G$, a rule $\rho$ and a constraint $c$ in UANF with $G \not 
+	\models c$ be given. Let $e = \scond{\maxk{c}{G} +2}{c}$ and  
+	$$ \mathbf{G} = \begin{cases}
+						\ig{C_{\maxk{c}{G} +2}}{C_{\maxk{c}{G} +3}} &\text{if $e 
+						\neq  \false$} \\
+						\{C_{k}\} &\text{otherwise}
+					\end{cases}
+	$$ 
+
+	A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{direct 
+	consistency increasing w.r.t. $c$} if it is direct consistency maintaining 
+	w.r.t. $c$ and the following holds:
+
+	\begin{equation}\label{direct_improving_2}
+		\begin{split}
+			\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathbf{G}}\big( p \not 
+			\models \ic{0}{e}{C'} \wedge (\track_t \circ p \text{ is not total } 
+			\vee \track_t \circ p  \models \ic{0}{e}{C'})\big) \Big) 
+		\end{split}
+	\end{equation}
+\end{definition}
+
+Note that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) not only secure that the satisfaction up to layer does not decrease, as shown in Lemma \ref{lemma_consistent}, but also prevent further unnecessary insertions and deletions, since the insertion of a universally and the deletion of a existentially bound graph will never lead to an increase of consistency. 
+
+
+Now, we will show the already indicated relationship between direct consistency increasing and consistency increasing, namely that a direct consistency increasing transformation is also consistency increasing. 
+Counterexamples, that the inversion of the implication does not hold can easily be constructed, showing that these notions are not identical but related. 
+
+\begin{theorem}\label{lemma:direct_implies_normal}
+	Let a graph $G$, a constraint $c$ in UANF with $G \not \models c$, a rule 
+	$\rho$ and a direct consistency increasing transformation $t: G 
+	\Longrightarrow_{\rho,m} H$ w.r.t. $c$ be given. 
+	Then, $t$ is also a consistency increasing transformation. 
+\end{theorem}
+
+\begin{proof}
+	With Theorem \ref{thm:direct_maintaining_to_maintaining} follows that 
+	$t$ is a consistency maintaining transformation. Therefore, it is 
+	sufficient to show that $\nv{\maxk{c}{G} + 1}{H} < \nv{\maxk{c}{G} + 1}{G}$.
+	Let $k = \maxk{c}{G} +2$ and $d = \scond{k}{c}$ with $d \neq \false$.
+
+	Since (\ref{direct_improving_2}) is satisfied,  a morphism $p:C_k \inj G$ 
+	with $p \not \models \ic{0}{d}{C'}$, such that either $\track \circ p$ is 
+	total and $\track_t \circ p  \models \ic{0}{d}{C'}$ or $\track \circ p$ is not 
+	total exists, for a graph $C' \in \ig{C_k}{C_{k+1}}$.
+	In both cases the following holds: 
+	\begin{equation*}
+		\begin{split}
+			p &\in \{q \mid q:C_k \inj G \wedge q \not \models \ic{0}{d}{C'}\} 
+			\wedge \\
+			\track \circ p &\notin \{q \mid q:C_{k} \inj H \wedge q \not \models 
+			\ic{0}{d}{C'}\}
+		\end{split}
+	\end{equation*}
+	Since $t$ is direct consistency maintaining it follows that 
+	$$|\{q \mid q:C_k \inj G \wedge q \not \models \ic{0}{d}{C}\}| \leq |\{q 
+	\mid q:C_{k} \inj H \wedge q \not \models \ic{0}{d}{C}\}|.$$
+	for all $C \in \ig{C_k}{C_{k+1}}$. Additionally, this inequality is 
+	strictly satisfied if $C = C'$.
+	Therefore, it follows that $\nv{k}{G} < \nv{k}{G}$ and $t$ is a consistency
+	increasing transformation.
+
+	If $d = \false$  it holds that 
+	$$|\{q \mid q:C_k \inj G\}| \leq |\{q \mid q:C_k \inj H\}|$$
+	since $t$ is a direct consistency maintaining transformation and it can be 
+	in shown a similar manner as above that (\ref{direct_improving_2}) implies  
+	$$|\{q \mid q:C_k \inj G\}| < |\{q \mid q:C_k \inj H\}|.$$
+	In total it follows that $t$ is a consistency increasing transformation. 
+\end{proof}
+
+\input{figures/fig_example_direct}
+
+\begin{example}
+	Consider the transformations $t_1$ and $t_2$ given in Figure 
+	\ref{fig:example_direct} and constraint $c_1$ given in Figure 
+	\ref{fig:constraints}. Then, $t_1$ is a consistency maintaining transformation 
+	since the number of violations in both graphs is equal to $2$. But, $t_1$ is 
+	not a direct consistency maintaining transformation since one occurrence of 
+	a node of 
+	type \emph{\texttt{Class}} satisfying $\exists C_2^2$ in the first but not in 
+	the 
+	second graph of the transformation exists. Therefore
+	(\ref{direct_improving_1}) is 
+	not satisfied. 
+	
+	The transformation $t_2$ is consistency increasing w.r.t. $c_1$ since the 
+	number of violations is equal to $4$ in the first and equal to $2$ in the 
+	second graph. 
+	But, $t_2$ is not a direct consistency increasing transformation since
+	(\ref{direct_improving_1}) is not satisfied.
+\end{example}
