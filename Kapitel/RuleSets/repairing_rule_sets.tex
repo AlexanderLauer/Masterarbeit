@@ -18,4 +18,83 @@ exists, such that $\maxk{c}{H} \geq \maxk{c}{G} +2$ and $\rho_j \in \mathcal{R}$
 	with $G_n \models c$ and $\rho_j \in \mathcal{R}$ for all $0 \leq j \leq n-1$ exists.
 \end{corollary}
 
+\begin{theorem}\label{caracter_rep_rule_set_at_layer}
+Let a constraint $c$ in EANF and a set of rules $\mathcal{R}$   be given. 
+Then, $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nlvl(c)$ if either \ref{cat_rep_set_1} or \ref{cat_rep_set_2} applies. 
+
+\begin{enumerate}
+	\item \label{cat_rep_set_1}
+	 For any universally bound graph $C_j$ at layer $j \leq k$ of $c$, $(\rho, \api(j, C_{j+1})) \in \mathcal{R}$ and $\rho$ is a deleting potentially minimal improving rule at layer $j$ with $C_{j+1}$, such that $\rho$ only deletes edges of $C_j$.
+	\item \label{cat_rep_set_2}
+	A decomposition $\mathbf{P}$ of $C_k$ with $C_{k-1}$ exists, such that for each $P \in \mathbf{P}$ a rule $(\rho, \api(k,P)) \in \mathcal{R}$ exists, such that $\rho$ is an inserting basic improving rule at layer $k$ with $P$.
+	
+	\item \label{cat_rep_set_3}
+		There does exist a sequence of graphs 
+			$$C_k = C'_0 \inj C'_1 \inj \ldots \inj C'_n = C_{k+1}$$
+		such that a inserting basic increasing rule $\rho_i  = L_i \xhookleftarrow{l_i} K_i \xhookrightarrow{r_i} R_i$ at layer $k$ with $C_i$ exists such that $L_i \inj R_{i-1}$ and $e_i = i_{C{i-1}}^{C_i} \circ e_{i-1}$ with $e_i$ being the increasing morphism of $\rho_i$ for all $i \in \{1, \ldots n\}$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Let a constraint $c$ in EANF, a rule set $\mathcal{R}$ and a graph $G$ with $k = \cmax$ and $\cmax < \nlvl(c)$ be given. 
+We show that a sequence $G = C_0' \Rightarrow \ldots \Rightarrow C_n' = H$ with rules of $\mathcal{R}$ exists, such that $H \models_{k+2} c$ if \ref{cat_rep_set_1}. or \ref{cat_rep_set_2}.  of theorem \ref{caracter_rep_rule_set_at_layer} is satisfied.
+\begin{enumerate}
+\item
+ Assume that \ref{cat_rep_set_1}. of theorem \ref{caracter_rep_rule_set_at_layer} holds. Let $(\rho, \api(j, C_{j+1})) \in \mathcal{R}$, such that $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ is a deleting potentially minimal improving rule at layer $j \leq k$ with $C_{j+1}$ and $C_j$ is a universally bound graph of $c$.
+Then, $\api(j, C_{j+1}) = \exists\bigl(b: L \inj C_{j}, \neg \exists(a_j:C_{j} \inj C_{j+1}, \true)\bigr)$.
+Let $q: C_j \inj G$ be a morphism such that  $q \not \models \exists(a_j: C_j \inj C_{j+1}, \true)$.
+Since $L \subseteq C_j$, we can construct a morphism $m_1: L \inj G$ with $m_1 = q \circ b$ and therefore $m_1 \models \api(j,C_{j+1})$.
+Since $r$ only deletes edges, a transformation $t: G = G_0 \Rightarrow_{r,m_1} G_1$ exists and $\track_t \circ p$ is not total. 
+Because $r$ does not insert any elements of $C_j$: 
+$$|\{q: C_k \inj G_0 \mid  q \not \models  d\}| < |\{q: C_k \inj G_1 \mid  q \not \models  d\}|$$
+with $d = \exists(a_j: C_j \inj C_{j+1}, \true)$.
+By iteratively applying this construction, we can generate a finite sequence of transformations
+$$G = G_0 \Rightarrow_{r, m_1} G_1 \Rightarrow_{r, m_2} \ldots \Rightarrow_{r,m_n} G_n = H$$
+such that $|\{q: C_k \inj G_n \mid  q \not \models  d\}| = 0$ and therefore $H \models_j c$. 
+With lemma \ref{lemma_lay_sat}, $H \models_{k+2} c$ and $H \models c$ follows. 
+
+\item 
+Assume that \ref{cat_rep_set_2}. of theorem \ref{caracter_rep_rule_set_at_layer} holds. 
+Let $\rho_0 = (\rho, \api(k,P)) \in \mathcal{R}$, such that $\rho$ is an inserting basic improving rule of $c$ at layer $k$ with $P \in \mathbf{P}$. 
+Then, $\api(k, P) = \neg \exists(b: L \inj P, \true)$.
+Let $q_0 : C_k \inj G$ be a morphism, such that $q_0 \not \models \exists(a'_k: C_k \inj P, \true)$ with $a'_k$ being a partial morphism of $a_k$.
+Since $L = C_k$, we set $m_0: C_k \inj G$ with $m_0 = q_0$. 
+It follows that $m_0 \models \neg \exists(a'_k: C_k \inj P, \true) = \api(k,P)$.
+Because $r$ does not delete any elements, a transformation $t_0: G \Longrightarrow_{r_0,m_0} G_1$ exists and $\track_t \circ q \models \exists(a'_k: C_k \inj P, \true)$.  
+We set $q_1 = \track_{t_0} \circ q_0$ and apply the same method to $q_1$. 
+
+By iteratively applying this, we can construct a finite sequence of transformations 
+$$G \Longrightarrow_{r_0, m_0} G_0 \Longrightarrow_{r_1,m_1} \ldots \Longrightarrow_{r_n,m_n} G_n$$ 
+such that $m_i = \track_{t_{i-1}} \circ \ldots \circ \track_{t_0} \circ m_0$ and $q\models \exists(b_i: C_k \inj P_i, \true)$ for all $P_i \in \mathbf{P}$ with $q = \track_{t_n} \circ q_n$.
+Let $p_i: P_i \inj G_n$ be the morphism, such that  $q = p_i \circ b_i$. 
+
+Now, we can construct a morphism $p: C_{k+1} \inj G$ with 
+$$ p(e) := \begin{cases}
+			p_1(e) &\text{,if } e \in P_1\\
+			&\vdots\\
+			p_j(e) &\text{,if } e \in P_j.
+		\end{cases}$$
+		
+Let $e \in C_k$, because $q(e) = p_i \circ b_i(e)$ and $q(e) = p_{\ell} \circ b_{\ell}(e)$ and $b_i$ and $b_{\ell}$ are both partial morphisms of $a_k$, it follows that $b_i(e) = b_{\ell} (e)$ and therfore $p_i (e) = p_{\ell} (e)$. 
+Because $(P_i \cap P_{\ell})\setminus C_k = \emptyset$ for all $i \neq \ell$, $p$ is a morphism and by the definition of $p$ it follows that 
+$q = p \circ a_k$ and therefore $q \models \exists(a_k: C_k \inj C_{k+1}, \true)$.
+
+By iteratively applying this whole construction to all occurrences of $C_k$ that do not satisfy $\exists(a_k:C_k \inj C_{k+1},\true)$ the derived graph graph $H$ does not contain any occurrences of $C_k$ not satisfying $\exists(a_k: C_k \inj C_{k+1},\true)$ and therefore  $H \models_{k+2} c$. 
+
+\end{enumerate}
+\end{proof}
+\begin{corollary}
+If a set of rule $\mathcal{R}$ is a repairing set of $c$ at layer $k \leq \nlvl(c)$ and \ref{cat_rep_set_1}. of theorem \ref{caracter_rep_rule_set_at_layer} applies, then $\mathcal{R}$ is a repairing set of $c$ at layer $j$ for all $k \leq j \leq \nlvl(c)$. 
+\end{corollary}
+
+\begin{lemma}
+Let a graph $G_0$, a constraint $c$ in EANF and a repairing set $\mathcal{R}$ at layer $\maxc{G_0}  +1$ be given, such that each rule in $ \mathcal{R}$ is a basic increasing.
+Then, for every sequence
+$$G_0 \Longrightarrow_{\rho_0, m_0} G_1 \Longrightarrow_{\rho, m_0} \ldots \Longrightarrow_{\rho_n, m_n} G_n$$
+such that $\rho_i = (\rho, \api(\maxc{G_0} + 1, P)$ with $\rho \in \mathcal{R}$ being a consistency increasing rule at layer $\maxc{G_0} + 1$ with $P$, it holds that 
+
+\end{lemma}
+
+
+
 \input{Kapitel/RuleSets/generation_repairing_rule_set}

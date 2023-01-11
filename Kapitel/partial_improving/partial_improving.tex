@@ -133,26 +133,27 @@ The third formula secures that at least one violation has been removed and the l
 	$G \models c$, a transformation $t: G\Longrightarrow_{\rho,m}H$ is
 	called \emph{direct consistency maintaining w.r.t. $c$} if $H \models c$.
 	Otherwise, if $G \not \models c$, let $k = \maxk{c}{G} + 2$, $e = 
-	\scond{k}{c}$ and
-	 $$ \mathbf{G} = \begin{cases}
-					\ig{C_{k}}{C_{k+1}} &\text{if $e \neq  \false$} \\
-					\{C_{k}\} &\text{otherwise}
-					\end{cases}.$$ 
+	\scond{k}{c}$.
 	A transformation $t: G\Longrightarrow_{\rho,m}H$ is called \emph{direct
 	consistency maintaining w.r.t. $c$} if the following equations hold.
 	
 	\begin{enumerate}
 		\item
-			Every occurrence of $C_k$ in $G$ that satisfies $\ic{0}{e}{C'}$ for 
-			any 	$C' \in \mathbf{G}$ still satisfies $\ic{0}{e}{C'}$ in $H$. 
+			If $e \neq \false$, every occurrence of $C_k$ in $G$ that satisfies $		
+			\ic{0}{e}{C'}$ for 
+			any 	$C' \in \ig{C_k}{C_{k+1}}$ still satisfies $\ic{0}{e}{C'}$ in
+			 $H$. 
 			\begin{equation}\label{direct_improving_1}
 				\begin{split}
-					\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \mathbf{G}}
+					\forall p: C_{k} \inj G\Big( \bigwedge_{C' \in \ig{C_k}
+					{C_{k+1}}}
 					\big( p \models \ic{0}{e}{C'} \wedge \track_t \circ p \text{ 	
 					is total}\big)\implies  \track_t \circ p \models \ic{0}{e}
 					{C'} \Big) 
 				\end{split}
 			\end{equation}
+			Otherwise, if $e = \false$, (\ref{direct_improving_1}) is set equal
+			to $\true$.
 		\item
 			Let $d = \ic{0}{e}{C_{k+1}}$ if $e \neq \false$ and $d = \false$ 
 			otherwise. Every newly inserted occurrence of $C_k$ satisfies 
@@ -258,25 +259,24 @@ intermediate graph $C'\in \ig{C_{\kmax +2}}{C_{\kmax +3}}$ such that $p \not \mo
 
 \begin{definition}[\textbf{direct consistency increasing}]\label{def_direct_improving}
 	Let a graph $G$, a rule $\rho$ and a constraint $c$ in UANF with $G \not 
-	\models c$ be given. Let $e = \scond{\maxk{c}{G} +2}{c}$ and  
-	$$ \mathbf{G} = \begin{cases}
-						\ig{C_{\maxk{c}{G} +2}}{C_{\maxk{c}{G} +3}} &\text{if $e 
-						\neq  \false$} \\
-						\{C_{k}\} &\text{otherwise.}
-					\end{cases}
-	$$ 
-
+	\models c$ be given. Let $e = \scond{\\kmax +2}{c}$ and  
+	
 	A transformation $t: G \Longrightarrow_{\rho,m} H$ is called \emph{direct 
 	consistency increasing w.r.t. $c$} if it is direct consistency maintaining 
 	w.r.t. $c$ and the following holds:
-
+	
 	\begin{equation}\label{direct_improving_2}
-		\begin{split}
-			\exists p: C_k \inj G \Big(\bigvee_{C' \in \mathbf{G}}\big( p \not 
-			\models \ic{0}{e}{C'} \wedge (\track_t \circ p \text{ is not total } 
-			\vee \track_t \circ p  \models \ic{0}{e}{C'})\big) \Big) 
-		\end{split}
+		\exists p: C_{\kmax+2} \inj G(d)
 	\end{equation}
+	with 
+	$$ d:=
+	\begin{cases}
+		\track_t \circ p \text{ is not total} &\text{if $e = \false$} \\
+		\bigvee_{C' \in \ig{\kmax+2}{\kmax+3}}\big( p \not \models \ic{0}{e}{C'} \wedge 
+		(\track_t \circ p \text{ is not total } \vee \track_t \circ p  \models 
+		\ic{0}{e}{C'})\big) &\text{otherwise.}
+	\end{cases}
+	$$
 \end{definition}
 
 Note that (\ref{direct_improving_3}) and (\ref{direct_improving_4}) not only secure that the satisfaction up to layer does not decrease, as shown in Lemma \ref{lemma_consistent}, but also prevent further unnecessary insertions and deletions, since the insertion of a universally and the deletion of a existentially bound graph will never lead to an increase of consistency. 

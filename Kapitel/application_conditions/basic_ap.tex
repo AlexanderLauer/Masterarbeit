@@ -1,1 +1,58 @@
 \subsection{Application Conditions for Basic Rules}
+
+\begin{definition}[\textbf{application conditions for basic increasing rules}]
+Let a constraint $c$ in UANF and a basic increasing rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$ be given. We define the application condition
+for $\rho$ as:
+ 
+\begin{enumerate}
+\item If $\rho$ is a deleting increasing rule:
+$$\apb{j}{\rho} := \begin{cases}
+				\bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}: P \inj P', \true)) &\text{if $j = k$} \\
+				\false &\text{if $j \neq k$} .
+				\end{cases}$$
+					
+\item If $\rho$ is an inserting increasing rule. Let $a^p:C_k \inj C$ be a partial morphism of $a_k$ , $e: C_k \inj L$ be the increasing morphism of $c$ and $Q$ be set of all overlaps $P$ of $L$ and $C$ such that $i_L^P \circ e \models \exists(a^p:C_k \inj C, \true)$:				
+$$\apb{j}{\rho} := \begin{cases}
+				\bigvee_{P \in Q} \exists(i_L^P: L \inj P, \true) &\text{, if j = k}\\
+				\false	&\text{, if } j \neq k
+				\end{cases}$$
+\end{enumerate}
+\end{definition}
+
+\begin{theorem}\label{api_direct_proof}
+	Let a graph $G$, a constraint $c$ and a basic increasing rule $\rho$ at layer
+	$\kmax < k \leq \kmax +2$ be given. Then, each transformation 
+	$$t: G \Longrightarrow_{\rho',m} H$$ with the rule $\rho' = (\rho, \apb{k}{\rho})$ is
+	a direct consistency increasing transformation.
+\end{theorem}
+\begin{proof}
+	Since $\rho$ is a basic increasing rule it is also a non-consistency decreasing rule 
+	up to layer $\kmax +2$. Therefore, (\ref{direct_improving_1}) is
+	trivially satisfied since $\rho$ satisfies (\ref{non_consistency_extra}), also 
+	(\ref{direct_improving_1_2}) is satisfied since $\rho$ satisfies
+	(\ref{non_consistency_universally}) also (\ref{direct_improving_3}) and 
+	(\ref{direct_improving_4}) are satisfied because $\rho$ satisfies 
+	(\ref{non_consistency_universally}) and (\ref{non_consistency_existentially}) for all
+	$0 \leq j \leq k+2$.
+	It remains to show that (\ref{direct_improving_2}) is satisfied.
+	\begin{enumerate}
+		\item 
+			Let $\rho$ be a deleting basic increasing rule.
+			Then, $k = \kmax +1$ and $\apb{k}{\rho} = \bigvee_{P \in \overlay(L,C_k)}
+			\bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}:
+			P \inj P', \true))$.
+			If $m \models \apb{j}{\rho}$ there does exist a occurrence $p :C_{k} \inj G$ with 
+			$p \not \models \exists(a_{k+1}: C_k \inj C_{k+1}, \true)$ and $p(C_k \setminus 
+			C_{k-1}) \cap m(L \setminus K) \neq \emptyset$. If follows that $\track_t \circ p$ 
+			is not total and (\ref{direct_improving_2}) is satisfied.
+		\item
+			Let $\rho$ be a inserting basic increasing rule with $C \in \ig{C_k}{C_{k+1}}$. 
+			Then, $k = \kmax +1$ and $\apb{j}{\rho} = \bigvee_{P \in Q} 
+			\exists(i_L^P: L \inj P, \true)$. 
+			If $m \models \apb{j}{\rho}$, $m \circ e \not \models \exists(a_k^r: C_k \inj 
+			C, \true)$ with $e$ being the increasing morphism of $\rho$. 
+			Therefore $\track_t \circ m \circ i \models \exists(a_k^r: C_k \inj 
+			C, \true)$ and (\ref{direct_improving_2}) is satisfied.
+	\end{enumerate}
+	In total follows that $t$ is a direct consistency increasing transformation.
+\end{proof}
