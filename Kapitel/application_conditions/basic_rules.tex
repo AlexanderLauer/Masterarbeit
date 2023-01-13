@@ -1,23 +1,23 @@
-\subsection{Plain Increasing and Maintaining Rules}
+\subsection{Basic Increasing and Maintaining Rules}
  
 The construction of the application conditions introduced in the previous section, aswell as the constructed application conditions itself, are very complex.
-For a certain set of rules, which we will call \emph{plain consistency increasing rules},
+For a certain set of rules, which we will call \emph{basic consistency increasing rules},
 for which, we are able to construct application conditions with the same property,
 namely that a rule equipped with this application condition is consistency increasing at layer, in a less complex manner.  
 The main idea is, that these rules are (a) not able to delete occurrences of existentially or insert occurrences of universally bound graphs and (b) are able to increase consistency at a certain layer. 
 That means, given a basic increasing rule $\rho$, there does exist a transformation $t: G \Longrightarrow_{\rho} H$ such that $t$ is a consistency increasing transformation w.r.t to a constraint $c$.
 
-To ensure that (a) is met, we firstly introduce \emph{plain consistency maintaining rules up to layer}, which means that, given a constraint, a plain rule is not able 
+To ensure that (a) is met, we firstly introduce \emph{basic consistency maintaining rules up to layer}, which means that, given a constraint, a plain rule is not able 
 to delete existentially bound and insert universally bound graphs up to a certain layer. 
 For the definition, we use the notion of consistency maintaining rules up to layer. 
-The set of plain consistency maintaining rules up to layer is indeed a subset of the 
+The set of basic consistency maintaining rules up to layer is indeed a subset of the 
 set of consistency maintaining rules up to layer since these rules have to be plain rules, whereas consistency maintaining rules up to layer are allowed to be 
 equipped with application conditions, i.e. $\maintaining(\cdot,\cdot)$.
 
 
-\begin{definition}[\textbf{plain consistency maintaining rule up to layer}]
+\begin{definition}[\textbf{basic consistency maintaining rule up to layer}]
 	Let a plain rule $\rho$ and a constraint $c$ in UANF be given.
-	Then, $\rho$ is called \emph{plain consistency maintaining up to layer
+	Then, $\rho$ is called \emph{basic consistency maintaining up to layer
 	$-1 \leq k < \nlvl(c)$ w.r.t. $c$} if $\rho$ is a consistency maintaining 
 	rule at layer $k$.
 \end{definition}
@@ -26,12 +26,12 @@ equipped with application conditions, i.e. $\maintaining(\cdot,\cdot)$.
 	Consider the rules \emph{\texttt{moveFeature}} and 
 	\emph{\texttt{assignFeature}} given in Figure \ref{fig:rules} and constraint
 	$c_1$ given in Figure \ref{fig:constraints}.
-	The rule \emph{\texttt{assignFeature}} is a plain consistency maintaining 
+	The rule \emph{\texttt{assignFeature}} is a basic consistency maintaining 
 	rule up to layer $1$ w.r.t. $c$, whereas \emph{\texttt{moveFeature}} is 
-	not a plain consistency maintaining rule.
+	not a basic consistency maintaining rule.
 \end{example}
 
-Since infinite many transformations via a plain rule $\rho$ exist, it is impossible to check whether $\rho$ is a plain consistency maintaining rule up to layer based on the definition above. Therefore, we present a characterisation of plain consistency maintaining rules, which only relies on $\rho$ itself. 
+Since infinite many transformations via a plain rule $\rho$ exist, it is impossible to check whether $\rho$ is a basic consistency maintaining rule up to layer based on the definition above. Therefore, we present a characterisation of basic consistency maintaining rules, which only relies on $\rho$ itself. 
 First, let us assume that $\rho$ is able to create occurrences of a universally bound graph $C_j$. 
 This is possible if (a) $\rho$ does insert an edge of $C_j \setminus C_{j-1}$ which connects already existing nodes of $C_j$, since it is unclear whether this would create a new occurrence of $C_j$, or (b) if $\rho$ does insert a node $v$ of $C_j$ such that all edges $e \in E_{C_j}$ with $\src(e) = v$ or $\tar(e) = v$ are also inserted. 
 If at least one of these edges is not inserted, it is guaranteed that this insertion does not create an occurrence of $C_j$ since $v$ is only connected to edges that have also been inserted by $\rho$.
@@ -54,7 +54,7 @@ rule is not applicable at certain overlaps of $R$ and an universally bound graph
 
 \begin{lemma}\label{def:non-decreasing}
 	Let a plain rule $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ and a 
-	constraint $c$ in EANF be given. Then, $\rho$ is a plain consistency 
+	constraint $c$ in EANF be given. Then, $\rho$ is a basic consistency 
 	maintaining rule up to layer $-1 \leq k < \nlvl(c)$ w.r.t $c$ if 
 	\ref{category:non-decreasing_1} and \ref{category:non-decreasing_2} apply 
 	for all $k$  and \ref{category:non-decreasing_3} applies if $k \leq \nlvl(c) 
@@ -134,66 +134,118 @@ rule is not applicable at certain overlaps of $R$ and an universally bound graph
 			
 			Again, in both cases, this is a contradiction. 
 	\end{enumerate}	    
-	In total follows that $\rho$ is a plain consistency maintaining rule up to 
+	In total follows that $\rho$ is a basic consistency maintaining rule up to 
 	layer $k$.
 \end{proof}
 
-Now we are ready to define \emph{basic increasing rules at layer $k$} with the set of basic increasing rules being a subset of the set of non-decreasing rules.
-With the property that each basic increasing rule $\rho$ is also a non-decreasing rule up to layer $k$ it is satisfied that the satisfaction up to layer is not decreased. 
-Additionally, if $\scond{k}{c}$ is existentially bound it has to be checked that the consistency for an occurrence of $C_{k}$ is not decreased and that $\rho$ removes an violation. 
-This can be done by either deleting an element of $C_{k+1}\setminus C_k$ if $\scond{k}{c}$ is universally bound or by inserting elements of $C_{k+1}$ such that for one occurrence $p$ of $C_{k}$ the consistency in increased if $\scond{k}{c}$ is existentially bound. 
-Additionally, the left-hand side of each basic increasing rule has to contain $C_{k+1}$ if $\scond{k}{c}$ is universally bound such that either $C_{k+1}$ gets deleted and the left-hand side has to contain $C_k$ if $\scond{k}{c}$ is existentially bound such that the consistency of $C_{k}$ is increased.
-This property yields the advantage that application conditions for basic increasing rules are less complex, smaller in size and during a repair process matches of these rules are easier to handle.
+Now, we are ready to introduce \emph{basic increasing rules at layer $k$} with $k$ being odd. The set of basic increasing rules is a subset of the set of maintaining rules at layer $k$ which ensures that the satisfaction at layer as well as the number of violation will not be decreased.
+Additionally, the left-hand side of these rule do contain an occurrence $p$ of the  universally bound graph $C_{k+2}$, such that this occurrence either will be 
+removed,  i.e. elements of $C_{k+2}\setminus C_{k+1}$ will be deleted, or an intermediate graph $C \in \ig{C_{k+2}}{C_{k+3}}$ will be inserted.
+Of course, this second case only occurs if $k < \nlvl(c) -3$ with $c$ being the respective constraint. 
+This property yields the advantage that application conditions for basic increasing rules are less complex and smaller, since it can be exactly determined how this rule removes a violation  and therefore, no overlaps have to be considered.
 
-This, on first sight seems like a restriction of the set of basic increasing rules but the context of each rule $\rho$ that does satisfy all properties of a basic increasing rule excluding that $C_k$ or $C_{k+1}$ is a subgraph of the left-hand side can be expanded such that $\rho$ is a basic increasing rule and the semantic of $\rho$ is not increased. 
+This, on first sight seems like a restriction of the set of basic increasing rules but the context of each rule $\rho$ that does satisfy all properties of a basic increasing rule excluding that $C_{k+2}$ is a sub-graph of the left-hand side can be expanded such that $\rho$ is a basic increasing rule and the semantic of $\rho$ is not increased. 
 Later on, a method to derive this rules will be presented.
 
-Basic increasing rules at layer $k$ are called \emph{deleting basic increasing rules} if $\scond{k}{c}$ is universally bound and \emph{inserting basic increasing rules} if $\scond{k}{c}$ is existentially bound.
-For deleting basic increasing rules we introduce the restriction that these rules are only allowed to delete edges but no nodes of $C_{k+1}$ since otherwise it is not possible, given a rule set and a constraint to decide whether this rules set is able to repair an arbitrary graph based only on deleting basic increasing rules. 
-For example, consider a rule that deletes a node of $C_{k+1}$.
-Then, it is unknown whether this node is connected by edges not belonging to $C_{k+1}$ and it is unclear whether all occurrence of $C_{k+1}$ could be destroyed by $\rho$ since the dangling edge condition could be unsatisfied. 
+Basic increasing rules at layer $k$ are called \emph{deleting basic increasing rules} if $p$ will be removed  and \emph{inserting basic increasing rules} if $\scond{k}{c}$ an intermediate graph will be inserted.
+For our repairing process, we will introduce the restriction that deleting basic increasing rules are only allowed to delete edges but no nodes of $C_{k+2}$ since otherwise it is not possible, given a rule set and a constraint to decide whether this rules set is able to repair an arbitrary graph based only on deleting basic increasing rules. 
+For example, consider a rule that deletes a node of $C_{k+2}$.
+Then, it is unknown whether this node is connected to nodes not belonging to $C_{k+2}$ and it is unclear whether all occurrence of $C_{k+2}$ could be destroyed by $\rho$ since the dangling edge condition might be unsatisfied. 
 
 
 \begin{definition}[\textbf{basic increasing rule}]\label{def_basicIncreasing}
-	Let a constraint $c$ in UANF and a plain rule 
-	$\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ 
-	be given. Then, $\rho$ is called  \emph{basic increasing w.r.t $c$ at layer $k$} if 
-
+	Let a constraint $c$ in UANF and a consistency maintaining rule 
+	$\rho = (\ac,  L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ up to layer 
+	$-1 \leq k < \nlvl(v) -1$, with $k$ odd, be given. Then, $\rho$ is called  
+	\emph{basic increasing w.r.t $c$ at layer 
+	$k$} if a morphism $p: C_{k+2} 
+	\inj L$, called the \emph{increasing morphism}, exists such that either 
+	\ref{incr_1} or \ref{incr_2} applies.
+	
 	\begin{enumerate}
-		\item If $\scond{k}{c}$ is universally bound: $\rho$ is a non-consistency decreasing rule
-		up to layer $k+1$ and there does exist a morphism 
-		$i: C_{k+1} \inj L$ such that
-		\begin{equation*}
-			\begin{split}
-				&\exists e \in E_{C_{k+1}} \setminus E_{C_k} \big(\neg \exists e' \in 
-				E_K(i(e) = l(e')\big)  \wedge \\
-				&\forall v \in V_{C_{k+1}} \setminus V_{C_k}\big(\exists v' \in V_K(i(c)
-				 = l(v')\big)
-			\end{split}	
-		\end{equation*}
-		holds. Then, $\rho$ is called a \emph{deleting basic increasing rule}.
-\item If $\scond{k}{c}$ is existentially bound: $\rho$ is a non-consistency decreasing rule up to layer $k$ and there does exist a morphism $i: C_{k} \inj L$ such that 
-	$$i \not \models \exists (a_k^r: C_{k} \inj C', \true) \wedge 	r \circ l^{-1} \circ i \models \exists(a_k^r:C_{k} \inj C', \true)$$ 
-	for any $C'\in \ig{C_{k}}{ C_{k+1}}$.
-	Then, $\rho$ is called a \emph{inserting basic increasing rule with $C'$}.
-\end{enumerate}
+		\item \label{incr_1}
+			$r \circ l^{-1} \circ p$ is not total. Then, $\rho$ is called
+			a \emph{deleting basic increasing rule}.
+		\item \label{incr_2}	
+			If $k < \nlvl(c)-2$, there does exist an intermediate graph
+			$C \in \ig{C_{k+2}}{C_{k+3}}$ such that $p \not \models \exists(
+			a_{k+2}^r:C_{k+2} \inj C, \true)$, $r \circ l^{-1} \circ p$ is 
+			total and 
+			$r \circ l^{-1} \circ p \models \exists(a_{k+2}^r:C_{k+2} \inj C,
+			\true)$. Then, $\rho$ is called a \emph{inserting basic increasing 
+			rule with $C$}. 
+	\end{enumerate} 
 \end{definition}
 
+\begin{example}
+	Consider the rule \emph{\texttt{assignFeature}} given in Figure 
+	\ref{fig:rules} and constraint $c_1$ given in Figure \ref{fig:constraints}.
+	Then, assign Feature is a inserting basic rule with $C_2^2 \in \ig{C_1^1}
+	{C_2^1}$ w.r.t. $c_1$ but not a inserting basic rule with respect to the 
+	constraint $\forall(C_2^2, \exists C_2^1)$ since the left-hand side 
+	of  \emph{\texttt{assignFeature}} does not contain an occurrence 
+	of $C_2^2$.
+\end{example}
 Again, \ref{def_basicIncreasing} relies on every transformation of a rule $\rho$. 
 Therefore, we present an alternative method to determine whether $\rho$ satisfies \ref{def_basicIncreasing} or not by checking that $\rho$ does not delete any edges or nodes of $C_{k+1} \setminus C_k$. 
 
+As mentioned above, given a consistency maintaining rule $\rho$ we can derive 
+basic increasing rules that are only applicable if at a match and graph if 
+$\rho$ is applicable.
+
+\begin{definition}[\textbf{derived basic increasing rules}]
+	Let a constraint $c$ in UANF and a consistency maintaining rule $\rho = (\ac,  
+	L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ up to layer
+	$-1 \leq k < \nlvl(c)-1$,with $k$ odd, such that $\rho$ satisfies 
+	\ref{incr_1} or \ref{incr_2} of Definition \ref{def_basicIncreasing}, 
+	be given. 
+	The set of \emph{derived basic increasing rules of $\rho$} can be 
+	constructed in the following way:
+	Let 
+		$$\mathbf{G} :=
+				\begin{cases}
+					\ig{C_{k+2}}{C_{k+3}} &\text{if $k < \nlvl(c)-2$} \\
+					\{C_{k+2}\} &\text{otherwise.}
+				\end{cases}
+		$$	
+	For each $P \in \mathbf{G}$ and $L' \in \overlay(L,P)$: If the diagram shown 
+	in Figure 
+	\ref{fig_dpo_construction} is a transformation, i.e. (1) and (2) are 
+	pushouts and $$\rho' = (\shiftm(\ac, i_L^{L'}), \rle{L'}{l'}{K'}{r'}{R'})$$
+	is a basic increasing rule at layer $k$, then, $\rho'$ is a derived basic increasing rule.  
+	
+\end{definition}
+\input{figures/fig_dpo_construction_basic}
+
+Via this construction, we can now show that a each consistency increasing transformation via a consistency maintaining rule up to layer can be replaced 
+by a transformation via a rule of the derived basic increasing rules of this rule. 
+
 \begin{lemma}
-	let the sets $E$ and $V$ be constructed as introduced in lemma \ref{def:non-decreasing} it holds that
-	\begin{alignat*}{2}
-		\forall v \in V: \exists v' \in V_K: l(v') = v &\wedge \\
-		\forall e \in E: \exists e' \in E_K: l(e') = e
-	\end{alignat*}
-	Then, $\rho$ is called an \emph{inserting basic increasing rule} and $i$ is called the increasing morphism of $\rho$.
+	Let a constraint $c$ and a consistency maintaining rule $\rho = (\ac, \rho')$ 
+	up to layer $-1 \leq k < \nlvl(c)$ be given. 
+	Then, for each consistency increasing transformation 
+	$$t: G \Longrightarrow_{\rho,m} H$$ there does exist a transformation 
+	$$t': G \Longrightarrow_{\rho'',m''} H$$ such that $\rho''$ is a derived
+	basic increasing rule of $\rho$.
 \end{lemma}
+
 \begin{proof}
-
+	If $t$ is a consistency increasing transformation w.r.t. $c$, there
+	does exist an occurrence $p:C_k \inj G$ of a universally bound graph $C_k$ 
+	such that either $\track \circ p$ is not total or there does exist a 
+	graph $C \in \ig{C_k}{C_{k+1}}$ such that $q \not \models \exists(a_k^r:C_k 
+	\inj C, \true)$ and  $\track_t \circ q \models \exists(a_k^r:C-k \inj C, 
+	\true)$.
+	Also, there does exist an overlap $P \in \overlay(C_k,L)$ such that an 
+	occurrence $m': P \inj G$ such that $m = m' \circ i_L^P$ exists. It follows 
+	that there does exist a
+	transformation $t: P \Longrightarrow_{\rho'} Q$ and therefore, a derived
+	basic increasing rule $\rho'' =(\ac', \rho''')$ of $\rho$ with $P$ as 
+	left-hand side and $Q$ as right-hand side must exists.
+	For the morphism $m'$ follows that $m' \models \ac'$ and since 
+	$\rho''$ deletes and inserts exactly the same elements as $\rho$, the 
+	statement follows immediately. 
 \end{proof}
-
 \begin{lemma}\label{lemma:equiv_direct_normal}
 Let a constraint $c$ in UANF, a basic increasing rule $\rho$ at layer $\kmax +1$ and a transformation $t: G \Longrightarrow_{\rho} H$ be given. 
 Then, 

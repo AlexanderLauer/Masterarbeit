@@ -168,14 +168,16 @@ The third formula secures that at least one violation has been removed and the l
 			No occurrence of a universally bound graph $C_j$ with $j < \kmax$ 
 			gets inserted. 
 			\begin{equation}\label{direct_improving_3}
-				\bigwedge_{\substack{i < \kmax \\ i \textit{ even}}} \forall p: 
+				\bigwedge_{\substack{i < \kmax \\ C_i \textit{ universally}}} 
+				\forall p: 
 				C_i \inj H ( \exists p': C_i \inj G (p = \track_t \circ p'))
 			\end{equation}
 		\item
 			No occurrence of an existentially bound graph $C_j$ with $j \leq 
 			\kmax$ gets deleted. 
 			\begin{equation}\label{direct_improving_4}
-				\bigwedge_{\substack{i \leq \kmax \\ i \textit{ odd}}} \forall 
+				\bigwedge_{\substack{i \leq \kmax \\ C_i \textit{ 
+				existentially}}} \forall 
 				p: C_i \inj G( \track_t \circ p \textit{ is total})
 			\end{equation}
 	\end{enumerate}

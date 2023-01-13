@@ -1,0 +1,22 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+		\node (L) at (0,2) {$L$};
+		\node (K) at (2,2) {$K$};
+		\node (R) at (4,2) {$R$};
+		\node (G) at (0,0) {$L'$};
+		\node (D) at (2,0) {$K'$};
+		\node (H) at (4,0) {$R'$};
+		\node (1) at (1,1) {(1)};
+		\node (2) at (3,1) {(2)};
+		
+		\draw[left hook-stealth] (K) edge node [above] {$l$}  (L); 
+		\draw[right hook-stealth] (K) edge node [above] {$r$}  (R); 
+		\draw[left hook-stealth] (D)   edge node[above]{$l'$}(G); 
+		\draw[right hook-stealth] (D)  edge node [above]{$r'$}(H);
+		\draw[->] (K) edge node[fill = white] {$k$} (D);  
+		\draw[->] (L) -- node[left]{$i_L^{L'}$} (G);
+		\draw[->] (R) edge node [right] {$n$} (H);    
+	\end{tikzpicture}
+	\caption{Pushout diagram for the construction of basic increasing rules.}\label{fig_dpo_construction}
+\end{figure}
