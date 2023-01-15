@@ -11,15 +11,18 @@ Therefore, let us introduce a weaker notion of consistency increasing and mainta
 As the name suggests, given a constraint $c$, a rule is consistency increasing or maintaining at layer $0 \leq k <\nlvl(c)$ if all of its applications at graphs $G$, with $\kmax = k$, are consistency increasing or maintaining w.r.t. $c$, respectively.
  
 
-\begin{definition}[\textbf{consistency increasing and maintaining rule at layer}]
-	Let a constraint $c$ be given. A rule $\rho$ is called \emph{consistency 
+\begin{definition}[\textbf{(direct) consistency increasing and maintaining rule at layer}]
+	Let a constraint $c$ be given. A rule $\rho$ is called \emph{(direct) 
+	consistency 
 	maintaining at layer $-1 \leq k < \nlvl(c)$ w.r.t. $c$} if all 
 	transformations
-	$t : G \Longrightarrow_{\rho} H$, with $\maxk{G}{c} =k$, are consistency 
+	$t : G \Longrightarrow_{\rho} H$, with $\maxk{G}{c} =k$, are (direct) 
+	consistency 
 	maintaining w.r.t. $c$.
-	Additionally, $\rho$ is called \emph{consistency increasing at layer $0 \leq k
+	Additionally, $\rho$ is called \emph{(direct) consistency increasing at layer 
+	$0 \leq k
 	< \nlvl(c)$ w.r.t. $c$} if all transformations $t : G \Longrightarrow_{\rho}
-	H$, with $\maxk{G}{c}=k$, are consistency increasing w.r.t. $c$.
+	H$, with $\maxk{G}{c}=k$, are (direct) consistency increasing w.r.t. $c$.
 	   
 \end{definition}
 

@@ -1,58 +1,79 @@
 \subsection{Application Conditions for Basic Rules}
 
-\begin{definition}[\textbf{application conditions for basic increasing rules}]
-Let a constraint $c$ in UANF and a basic increasing rule  $\rho = L \xhookleftarrow{l} K \xhookrightarrow{r} R$ w.r.t $c$ at layer $k$ be given. We define the application condition
-for $\rho$ as:
- 
-\begin{enumerate}
-\item If $\rho$ is a deleting increasing rule:
+Let us now introduce the application conditions for basic increasing rules.
+Since these rules are maintaining rules up to a certain layer $k$, given a basic increasing rule $\rho$, it is 
+sufficient to check whether $m \circ i \not \models \exists C_{k+1}$ with is $\rho$ is a deleting rule and do check whether $m \circ i \not \models \exists C$ if $\rho$ is a inserting rule with $C$ with $i$ being the increasing morphism of $\rho$.    
+\begin{definition}[\textbf{application conditions for basic increasing rules}]\label{def_basic_ap}
+Let a constraint $c$ in UANF and a basic increasing rule  $\rho = (\ac,L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ w.r.t $c$ at layer $-1 \leq k< \nlvl(c)-1$, with $k$ odd, be given. The basic application condition of $\rho$ w.r.t. $c$ at layer $-1 \leq j < \nlvl(c)$ is given by 
+$$\ac' = \ac \wedge \apb{j}{\rho}$$
+with 
 $$\apb{j}{\rho} := \begin{cases}
-				\bigvee_{P \in \overlay(L,C_k)} \bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}: P \inj P', \true)) &\text{if $j = k$} \\
-				\false &\text{if $j \neq k$} .
-				\end{cases}$$
-					
-\item If $\rho$ is an inserting increasing rule. Let $a^p:C_k \inj C$ be a partial morphism of $a_k$ , $e: C_k \inj L$ be the increasing morphism of $c$ and $Q$ be set of all overlaps $P$ of $L$ and $C$ such that $i_L^P \circ e \models \exists(a^p:C_k \inj C, \true)$:				
-$$\apb{j}{\rho} := \begin{cases}
-				\bigvee_{P \in Q} \exists(i_L^P: L \inj P, \true) &\text{, if j = k}\\
-				\false	&\text{, if } j \neq k
-				\end{cases}$$
-\end{enumerate}
+						\bigwedge_{P \in \eol(L,a_{k+2}^r,i)} \neg \exists(i_L^P: L 								\inj P,\true) &\text{if j = k and $k < \nlvl(c) -2$} \\
+						\true &\text{if $k = \nlvl(c)-2$} \\
+						\false &\text{otherwise}
+				   \end{cases}
+$$
+and $a_{k+2}^r = a_{k+2}$, if $\rho$ is a deleting rule, $a_{k+2}^r: C_{k+2} \inj C$ if $\rho$ is an inserting rule with $C$ and $i$ being the increasing morphism of $\rho$.
 \end{definition}
 
-\begin{theorem}\label{api_direct_proof}
-	Let a graph $G$, a constraint $c$ and a basic increasing rule $\rho$ at layer
-	$\kmax < k \leq \kmax +2$ be given. Then, each transformation 
-	$$t: G \Longrightarrow_{\rho',m} H$$ with the rule $\rho' = (\rho, \apb{k}{\rho})$ is
-	a direct consistency increasing transformation.
+This application conditions are way easier to construct and smaller than the 
+ones constructed by Definition \ref{def_appl_cond}. 
+Note, that in case of a inserting basic rule $\rho$ that inserts an intermediate 
+graph $C$, the application condition only checks whether the increasing morphism does not satisfy $\exists C$. But, an application of this rule could also 
+lead to a consistency increasing transformation w.r.t. $c$ if the increasing morphism satisfied $\exists C$, if another intermediate graph $C'$ will be inserted. To check this, conditions similar to the ones 
+constructed via Definition \ref{def_appl_cond} need to be constructed.
+On first sight, this seams like a restriction, but via the notion of derived rules
+we are able to dissolve this restriction, since the set of derived rules of $\rho$ will contain a inserting basic increasing rule with $C'$, such that this rule, equipped with the according basic application condition can be used to perform this consistency increasing transformation. For example, consider the rule 
+\texttt{assignFeature}, there does exist a consistency increasing transformation
+$t: C_2^2 \Longrightarrow_{\texttt{assignFeature},m} C_2^1$ such that $m \not \models \apb{1}{\texttt{assignFeature}}$, but there does also exist a transformation $t: C_2^2 \Longrightarrow_{\texttt{assignFeature3},m'} C_2^1$ with 
+$m'  \models \apb{1}{\texttt{assignFeature3}}$.
+
+Let us now show that basic increasing rules equipped with the application condition constructed by Definition \ref{def_basic_ap} are direct consistency increasing rules at layer.
+\begin{theorem}
+	Let a constraint $c$ in UANF and a basic increasing rule $\rho = (\ac, 
+	\rle{L}{l}{K}{r}{R})$ w.r.t $c$ at layer $k$ be given. 
+	Then, $\rho' = (\ac \wedge \apb{k}{\rho}, \rle{L}{l}{K}{r}{R})$ is a direct 
+	consistency increasing rule at layer $k$.
 \end{theorem}
+
 \begin{proof}
-	Since $\rho$ is a basic increasing rule it is also a non-consistency decreasing rule 
-	up to layer $\kmax +2$. Therefore, (\ref{direct_improving_1}) is
-	trivially satisfied since $\rho$ satisfies (\ref{non_consistency_extra}), also 
-	(\ref{direct_improving_1_2}) is satisfied since $\rho$ satisfies
-	(\ref{non_consistency_universally}) also (\ref{direct_improving_3}) and 
-	(\ref{direct_improving_4}) are satisfied because $\rho$ satisfies 
-	(\ref{non_consistency_universally}) and (\ref{non_consistency_existentially}) for all
-	$0 \leq j \leq k+2$.
-	It remains to show that (\ref{direct_improving_2}) is satisfied.
+	Let $G$ be a graph with $\kmax = k$. We show that each transformation 
+	$t: G \Longrightarrow_{\rho', m}H$ is a direct consistency increasing 
+	transformation.
+	Since, $\rho$ is a direct basic increasing rule at layer $k$, $\rho'$ is 
+	also a consistency maintaining transformation at layer $k$ and 
+	$t$ satisfied (\ref{direct_improving_1}), (\ref{direct_improving_1_2}),
+	(\ref{direct_improving_3}) and (\ref{direct_improving_4}).
+	Therefore, we only need to show that $t$ satisfies 
+	(\ref{direct_improving_2}).
 	\begin{enumerate}
 		\item 
-			Let $\rho$ be a deleting basic increasing rule.
-			Then, $k = \kmax +1$ and $\apb{k}{\rho} = \bigvee_{P \in \overlay(L,C_k)}
-			\bigwedge_{P' \in \eol(P, a_k)} \exists(i_L^P: L \inj P, \neg \exists(i_P^{P'}:
-			P \inj P', \true))$.
-			If $m \models \apb{j}{\rho}$ there does exist a occurrence $p :C_{k} \inj G$ with 
-			$p \not \models \exists(a_{k+1}: C_k \inj C_{k+1}, \true)$ and $p(C_k \setminus 
-			C_{k-1}) \cap m(L \setminus K) \neq \emptyset$. If follows that $\track_t \circ p$ 
-			is not total and (\ref{direct_improving_2}) is satisfied.
+			If $\rho$ is a deleting rule, $r \circ l^{-1} \circ i$ is not 
+			total, with $i$ being the increasing morphism of $\rho$. 
+			If $k = \nlvl(c)-2$, this transformation is satisfied 
+			(\ref{direct_improving_2}) since one occurrence of $C_{k+2}$ has 
+			been destroyed.
+			If $k < \nlvl(c)-2$, since $m \models \apb{k}{\rho}$ the 
+			morphism $m \circ i$ does not satisfy $\exists C_{k+3}$. Since 
+			this occurrence will be destroyed, $t$ satisfies 
+			(\ref{direct_improving_2}).
 		\item
-			Let $\rho$ be a inserting basic increasing rule with $C \in \ig{C_k}{C_{k+1}}$. 
-			Then, $k = \kmax +1$ and $\apb{j}{\rho} = \bigvee_{P \in Q} 
-			\exists(i_L^P: L \inj P, \true)$. 
-			If $m \models \apb{j}{\rho}$, $m \circ e \not \models \exists(a_k^r: C_k \inj 
-			C, \true)$ with $e$ being the increasing morphism of $\rho$. 
-			Therefore $\track_t \circ m \circ i \models \exists(a_k^r: C_k \inj 
-			C, \true)$ and (\ref{direct_improving_2}) is satisfied.
+			If $\rho$ is a inserting rule with $C \in \ig{C_{k+2}}{C_{k+3}}$,
+			the morphism $m \circ i$ does not satisfy $\exists C$ since 
+			$m \models \apb{k}{\rho}$. But it hods that $\track_t \circ m 
+			\circ i \models \exists C$ and therefore $t$ satisfies 
+			(\ref{direct_improving_2}).  
 	\end{enumerate}
-	In total follows that $t$ is a direct consistency increasing transformation.
+	In total follows that $\rho'$ is a direct consistency increasing rule 
+	at layer $k$.
 \end{proof}
+
+
+
+\begin{example}
+	Again, consider the rule \emph{\texttt{assignFeature}}, its derived rule 
+	\emph{\texttt{assignFeatur3}} and $c_1$.
+	The application condition for these rules at layer $k$ 
+	is given in Figure  \ref{fig:example_basic_ap}.
+\end{example}
+\input{figures/fig_basic_example}

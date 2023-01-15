@@ -160,12 +160,23 @@ For this, we introduce \emph{extended overlaps}.
 Intuitively, given an overlap $C$ of $L$ and $C_{\kmax +2}$ with $p: C_{\kmax + 2} \inj C$, the overlap is extended with elements of $C_{\kmax +3}$ such that 
 $p \models C_{\kmax +3}$.
 
-
 \begin{definition}[\textbf{extended overlaps}]
-Let $G$, $C_0$ and $C_1$ with $i_{C_0}^{C_1}:C_0 \inj C_1$ be graphs. 
-Let $P$ be an overlap of $C_0$ and $G$ with the inclusion $i_{C_0}^P : C_0 \inj P$. 
-The set of \emph{extended overlaps of $P$ with $i_{C_0}^{C_1}$}, denoted by $\eol(C,i_{C_0}^{C_1})$, is the set of all overlaps $Q$ of $G$ and $C_1$, such that an injective morphism $i_P^{Q}: P \inj Q$ with $i_P^{Q} \circ i_{C_0}^P \models \exists(i_{C_0}^{C_1}: C_0 \inj C_1, \true)$ exists. 
+	Let graphs $C_0$, $C_1$, $G$ and morphisms $i_{C_0}^G: C_0 \inj G$ and 
+	$i_{C_0}^{C_1}:C_0 \inj C_1$ be given.
+	The set of \emph{extended overlaps of $G$ with $i_{C_0}^G$ and 
+	$i_{C_0}^{C_1}$}, denoted by $\eol(G,i_{C_0}^G, i_{C_0}^{C_1})$ is 
+	defined as:
+	
+	$$\eol(G,i_{C_0}^G, i_{C_0}^{C_1}) := \{P \in \overlay(G,C_1) \mid
+		i_G^P \circ i_{C_0}^G \models \exists(i_{C_0}^{C_1}:C_0 \inj C_1, \true)
+		\}$$
+
 \end{definition}
+%\begin{definition}[\textbf{extended overlaps}]
+%Let $G$, $C_0$ and $C_1$ with $i_{C_0}^{C_1}:C_0 \inj C_1$ be graphs. 
+%Let $P$ be an overlap of $C_0$ and $G$ with the inclusion $i_{C_0}^P : C_0 \inj P$. 
+%The set of \emph{extended overlaps of $P$ with $i_{C_0}^{C_1}$}, denoted by $\eol(C,i_{C_0}^{C_1})$, is the set of all overlaps $Q$ of $G$ and $C_1$, such that an injective morphism $i_P^{Q}: P \inj Q$ with $i_P^{Q} \circ i_{C_0}^P \models \exists(i_{C_0}^{C_1}: C_0 \inj C_1, \true)$ exists. 
+%\end{definition}
 
 Via the notion of extended overlaps we are now able to check that a violation exists, to decide whether a transformation is able to remove a violation at all. 
 It remains to check whether such a violation will be removed.
@@ -199,7 +210,7 @@ This will only occur if $m(L \setminus K) \cap p(C_1) \neq \emptyset$.
 			\begin{cases}
 			\exists (i_L^P: L \inj P, \true) &\textit{if } \scond{k+1}{c} = 
 			\false \\
-			 \exists(i_L^P: L \inj P, \bigwedge_{Q \in \eol(P,a^r)} \neg 
+			 \exists(i_L^P: L \inj P, \bigwedge_{Q \in \eol(P,i_{C_{k+1}}^P,a^r)} \neg 
 			 \exists(i_P^Q: P \inj Q, \true)) &\textit{otherwise}
 			\end{cases}			
 			$$
@@ -214,7 +225,7 @@ Let $a^r:C_{k+1} \inj C$ be the restricted morphism of $a_{k+1}$, then
 
 $$\rep(P,C') :=  \begin{cases}
 				\false &\text{if $\scond{k+2}{c} = \false$} \\
-				\bigvee_{Q \in \eol(P', a^r)} \shift(\forall (i_R^{Q}: R \inj P', 
+				\bigvee_{Q \in \eol(P',i_{C_{k+1}}^{P'}, a^r)} \shift(\forall (i_R^{Q}: R \inj P', 
 				\exists(i_{P'}^Q:P' \inj Q,\true)), \rho) & \text{otherwise.}
 				\end{cases}$$
  
