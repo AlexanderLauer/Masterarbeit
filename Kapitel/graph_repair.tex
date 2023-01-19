@@ -1,5 +1,12 @@
-\section{Rule-based Graph Repairs}
+\section{Rule-based Graph Repair}
 
+In the following we present our rule-based graph repair approach.
+First, we propose an graph repair process for one constraint in UANF and second,
+we propose a repair process for a set of constraints in UANF, both based on a given 
+set of rules $\mathcal{R}$.
+Additionally, we need to make further assumptions for these constraints, namely, that they are \emph{circular conflict free} to guarantee that our approach terminates. 
+
+\input{Kapitel/repair/constraint_dependencies}
 \input{Kapitel/RuleSets/repairing_rule_sets}
-\input{Kapitel/constraint_dependencies}
+
 \input{Kapitel/repair/repair processes}
