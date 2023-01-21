@@ -1,58 +1,61 @@
-\subsubsection{Construction of  repairing sets}
+\subsection{Construction of Repairing Sets}
 
-\begin{definition}[\textbf{decomposition of a graph}]\label{def_composition}
-Let graphs $G_0 \inj G_1$ be given. 
+In the following we want to introduce a construction of these 
+repairing sets for a given circular conflict free constraint in UANF. 
 
-A decomposition of $G_1$ with $G_0$ is a minimal set 
- $$\mathbf{D} \subseteq \{D_v \mid v \in V_{C_1 \setminus C_0} \}$$ of subgraphs of $G_1$, such that every element of $G_1$ is contained in at least one $D \in \mathbf{D}$  and  every $D_v$ is constructed in the following way:
-$G_0 \inj D_v$, $v \in D_v$ and for all nodes $v' \in D \setminus C_0$ $D$ contains all edges $e \in E_{G_1}$ and all nodes $u \in V_{G_1}$ such that  either $\tar(e) = v' \wedge \src(e) = u$ or  $\src(e) = u \wedge \tar(e) = v'$. 
+\begin{definition}[\textbf{constructed repairing set}]\label{def_constr_rep}
+	Let a circular conflict free constraint $c$ in UANF with $\nlvl(c) > 1$ or 
+	$c = \forall(C_1, \false$ and $E_{C_1} \neq \emptyset$ be given. 
+	The \emph{constructed repairing set}, $\mathcal{R}$, for $c$ is constructed 
+	in the following way.
+	For each universally bound graph $C_k$ of $c$  and every pair of graphs 
+	$C, C' \ig{C_{k-1}}{C_k}$ with $C$ being a sub-graph of $C'$ there does 
+	exist a rule 
+	$$ \rle{C'}{a_{k-1}^r}{C}{\id}{C}$$
+	in $\mathcal{R}$. 
+	For each existentially bound graph $C_k$ of $c$ and every pair of graphs
+	$C, C' \in \ig{C_{k-1}}{C_k}$ with $C$ being a sub-graph of $C'$ there does 
+	exist a rule  
+	$$\rle{C}{\id}{C}{a_{k-1}^r}{C'}$$ 
+	in $\mathcal{R}$.
 \end{definition}
+Note that for each element of existentially bound graphs, $\mathcal{R}$ contains a rule that only inserts this element, and for each element of universally bound graphs $\mathcal{R}$ contains a rule that only removes this element. 
 
-\begin{lemma}\label{decomp_sets_lemma}
-Let graphs $G_0 \inj G_1$ and a decomposition $\mathbf{D}$ of $G_1$ with $G_0$ be given. 
-Then, for each pair $D, D' \in \mathbf{D}$ with $D \neq D'$ the following holds:
-$$(D\setminus C_k)\cap (D' \setminus C_k) = \emptyset$$
-\end{lemma}
-
+\begin{theorem}
+	Let a circular conflict free constraint $c$ in UANF with $\nlvl(c) > 1$ 
+	or $c = \forall(C_1, \false)$ and $E_{C_0} \neq \emptyset$ be given. 
+	The set of rules constructed by Definition \ref{def_constr_rep} is a 
+	repairing set w.r.t. $c$.
+\end{theorem}
 \begin{proof}
- Assume that $(D\setminus C_k)\cap (D' \setminus C_k) \neq \emptyset$, therefore a node $v \in G_1 \setminus G_0$ with $v \in D \cap D'$ exists. 
- By the construction of $D$ and $D'$ it follows that $D = D_v$ and $D' = D_v$ and therefore $D = D'$. 
-This is a contradiction.
-\end{proof}
-
-\begin{lemma}
-Let graphs $G_0 \inj G_1$ and a decomposition $\mathbf{D}$ of $G_1$ with $G_0$ be given. 
-Then, $$ G_1 = \bigcup_{P \in \mathbf{P}} P.$$ 
-
-\end{lemma}
-
-\begin{proof}
-Let $H := \bigcup_{P \in \mathbf{P}} P$.
-Firstly, we show that $H \subseteq G_1$.
-Since every $P \in \mathbf{P}$ is a subgraph of $G_1$ it follows that $V_H \subseteq V_{G_1}$ and $E_H \subseteq E_{G_1}$
-
-Secondly, we show that $G_1 \subseteq H$.
-Let $u \in V_{G_1}$ be a node, if $u \in V_{G_0}$, then $u$ is contained in every $P \in \mathbf{P}$ and therefore $u \in V_H$. 
-Otherwise, if $u \not \in V_{G_0}$, then $u$ has to be, by the definition of $\mathbf{P}$, contained in at least one $P \in \mathbf{P}$ and  $V_{G_1} \subseteq V_H$ follows. 
-Let $e \in E_{G_1}$ be an edge. 
-If $e \in E_{G_0}$, then $e$ is contained in every $P \in \mathbf{P}$ and $e \in E_H$. 
-Otherwise, if $e \not  \in E_{G_0}$, by the definition of $\mathbf{P}$, $e$ has to be contained in at least one $P \in \mathbf{P}$. 
-It follows that $e \in E_H$ and with that $E_{G_1} \subseteq E_H$. 
-\end{proof}
-
-Now we are ready to provide the construction for 
-\begin{construction}\label{construction:rule_set}
-	Let a constraint $c$ in UANF be given. For each existentially bound subcondition
-	$\scond{k}{c}$  we construct a graph decomposition $\mathbf{D_k}$ as described
-	in definition \ref{def_composition}. Then, for each element $D \in \mathbf{D_k}$
-	a rule $$\rho =  C_k \xhookleftarrow{\id} C_k \xhookrightarrow{i_{C_k}^D} D$$
-	is derived. 
+	Let $\mathcal{R}$ be the constructed rule set.
+	If $\nlvl(c)= 1$ and $E_{C_1}\neq \emptyset$, there does exist a rule
+	$\rho = \rle{C_1}{a_0^r}{C'}{\id}{C}$ with $C \in \ig{\emptyset}{C_1}$ 
+	such that $V_C = V_{C_0}$. Then,
+	$$C_1 \Longrightarrow_{\rho,\id} C$$ 
+	is a repairing sequence for $C_1$ and $\mathcal{R}$ is a repairing rule set 
+	for $c$. 
 	
-	Additionally, for each universally bound subcondition $\scond{k}{c}$ and for each
-	edge $e \in E_{C_{k+1} \setminus C_k}$ a rule 
-	$$\rho =  C_{k+1} \xhookleftarrow{i_D^{C_{k+1}}} D \xhookrightarrow{\id} D$$
-	with $D = C_{k+1} \setminus \{e\}$ is derived.
-\end{construction}
+	If $	\nlvl(c) \geq 2$, consider an existentially bound graph $C_k$ 
+	and the transformation sequence 
+	$$C_{k-1} \Longrightarrow_{\rho_1, m} C_{k}$$
+	with $\rho_1 = \rle{C_{k-1}}{\id}{C_{k-1}}{a_{k-1}}{C_k}$. 
+	If $C_k$ has no conflict with an universally bound graph $C_j$ with 
+	$j < k$, $C_k \models_k c$ and this is a repairing sequence. 
+	If, $C_k \not \models_k c$, an occurrence $p$ of an universally bound graph 
+	$C_j$ with $j < k$ has been inserted.
+	Then, the repairing sequence can be extended by 
+	$$C_k \Longrightarrow_{\rho_2,m} G_1$$ 
+	with $\rho_2 = \rle{C}{\id}{C}{a_j^r}{C_{j+1}}$ such that $C \in \ig{C_j}
+	{C_{j+1}}$ and $V_C = V_{C_{k+1}}$. with $p = m \circ a_{j-1}^r$.
+	Since $j< k$, such a match and transformation must exist.
+	If this inserts new occurrences of universally bound graphs $C_{j'}$ with 
+	$j' < k$, we repeat this process.
+	 
+	
+	 
+\end{proof}
+
 
 \begin{example}
 
