@@ -2,25 +2,20 @@
 \centering
 \begin{algorithm}[H]
 	%\DontPrintSemicolon
-	\KwData{A graph $G$, a non-conflict free constraint in UANF and a repairing set $\mathcal{R}$ for each layer $\kmax  < k \nlvl(c)$}
-	\KwResult{A graph $H$ with $H \models c$}
-	\For{$i = \kmax+1$ \KwTo $\nlvl(c)$}{
-		\While{$G \not \models_i c$}{
-			Choose one occurrence $p: C_i \inj G$ uniformly 
-			at random \;
-			apply a repairing sequence
-			$G \Longrightarrow \ldots \Longrightarrow H$\;
-			\While{$G \not \models_{\kmax}$}{
-				Choose an occurrence $p: C_j \inj G$ uniformly 
-				at random\;
-				apply the repairing sequence.
-			}
-					
-		}
+	\KwData{A graph $G$, circular constraint-conflict free set of constraints $
+	\mathcal{C}$ and a repairing set $\mathcal{R}$ for $\mathcal{C}$.}
+	\KwResult{A graph $H$ with $H \models \bigwedge_{c \in \mathcal{C}}c$.}
+	$(c_1, \ldots ,c_n) \gets $ topological ordering of $\mathcal{C}$ \;
+	\For{$i \gets 1$ \KwTo $n$}{
+		
+		Repair $c_i$ in $G$ with Algorithm \ref{Algo_conflict_free}, let $H$ be the 		retuned graph \;
+		$G \gets H$ \;
+	
 	}
+	\KwRet{G}\;
+	
 
-
-\caption{Repair for non conflict free constraints and repairing set}\label{Algo_non-conflict_free}
+\caption{Repair for a circular constraint-conflict free set of constraints }\label{Algo_non-conflict_free}
 
 \end{algorithm}
 \end{figure}

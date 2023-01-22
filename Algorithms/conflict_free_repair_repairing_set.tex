@@ -2,20 +2,56 @@
 \centering
 \begin{algorithm}[H]
 	%\DontPrintSemicolon
-	\KwData{A graph $G$, a conflict free constraint in UANF and a repairing set $\mathcal{R}$ for each layer $\kmax  < k \nlvl(c)$}
-	\KwResult{A graph $H$ with $H \models c$}
-	\For{$i = \kmax+1$ \KwTo $\nlvl(c)$}{
-		\While{$G \not \models_i c$}{
-			Choose one occurrence $p: C_i \inj G$ uniformly 
-			at random \;
-			apply a repairing sequence
-			$G \Longrightarrow \ldots \Longrightarrow H$\;
-					
+	\KwData{A graph $G$, a circular conflict free constraint $c$ in UANF and 
+	a repairing set $\mathcal{R}$ for $c$.}
+	\KwResult{A graph $H$ with $H \models c$.}
+	\While{$G \not \models c$}{
+		$P \gets \{q: C_{\kmax + 2} \inj H \mid q \not \models \cut{0}{\scond{\kmax 
+		+2}{c}}\}$\;
+		Choose $p \in P$ uniformly at random \;
+		Choose $r \in \{0,1\}$ uniformly at random\;
+		
+		\uIf{$r = 0$ and $\mathcal{R}$ contains a repairing sequence for 
+		$C_{\kmax +2}$}{
+			Apply the repairing sequence for $C_{\kmax+2}$ at match $p$ and let 
+			$H$ be the derived graph \;
+			$M \gets \{q :C_j \inj H \mid j \text{ odd and } \neg \exists q' C_j: 
+			\inj G(\track\circ q' = q) \}$\;
+		}\Else{
+			Apply the repairing sequence for $C_{\kmax+3}$ at match $p$ and let 
+			$H$ be the derived graph \;
+			$M \gets \{q: C_j \inj H \mid j \text{ odd and } \exists q':C_{j+1} 
+			\inj G(q = q' \circ a_j \wedge \track \circ q' \text{ is not total})
+			\}$\;
 		}
+		\While{$H \not \models_{\maxk{c}{G}}c$}{
+			Choose $p:C_j \inj H \in M$ uniformly at random \;
+			Choose $r \in \{0,1\}$ uniformly at random \;
+			
+			\uIf{$r = 0$ and $\mathcal{R}$ contains a repairing sequence for 
+			$C_j$}{
+				Apply the repairing sequence for $C_{j}$ at match $p$ and 
+				let $H'$ be the derived graph \;
+				$M' \gets \{q: C_i \inj H' \mid i \text{ odd and } \neg \exists 
+				q':C_i \inj H(\track \circ q' = q)\} $ \;
+				 
+			}\Else{
+				Apply the repairing sequence for $C_{j+1}$ at match $p$ and 
+				let $H'$ be the derived graph \;
+				$M ' \gets \{q: C_i \inj H' \mid i \text{ odd and } \exists q': 		
+				C_{i+1} \inj G(q = q' \circ a_j \wedge \track \circ q' 
+				\text{ is not total})\}$\;
+			}
+			$M \gets (M \setminus \{p\}) \cup M'$ \;
+			$H \gets H'$\;
+		}	
+		$G \gets H$\;	
 	}
+	\KwRet{G}\;		
+	
 
 
-\caption{Repair for conflict free constraints and repairing set}\label{Algo_conflict_free}
+\caption{Repair for one circular conflict free constraint}\label{Algo_conflict_free}
 
 \end{algorithm}
 \end{figure}
