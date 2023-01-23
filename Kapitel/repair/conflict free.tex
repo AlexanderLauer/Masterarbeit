@@ -1,6 +1,76 @@
 \subsection{Rule-based Graph Repair for one Constraint}
 
-In the following, we present our graph repair process for a circular conflict free constraint in UANF. 
+In the following, we present our graph repair process for one circular conflict 
+free constraint in UANF. 
+The process is shown in Algorithm \ref{Algo_conflict_free} and proceeds in 
+the following way. 
+The algorithm starts by finding all occurrences of $C_{\kmax +2}$ that do 
+not satisfy $\cut{0}{\scond{\kmax+2}{c}}$ (line 2). This condition is equal to $\false$ if 
+$\kmax +2 = \nlvl(c)-2$ and equal to $\exists(C_{\kmax +2}, \true)$ otherwise. 
+If $P$ is empty, it must follow that $G \models_{\kmax+2} c$ and therefore, 
+we will apply repairing sequences at these occurrences. 
+It might be enough to only repair some of these occurrences. 
+Since it is unknown which of these are able to increase the 
+satisfaction at layer, we choose one uniformly at random (line 3). 
+For example, for existentially bound constraints $d$, that means, its equivalent 
+constraint in UANF is equal to $\forall(\emptyset,d)$, there might exist 
+occurrences of  $C_{\kmax +2}$, whose repair will not  lead to an increase
+of the satisfaction at layer. 
+
+There are two possible ways to repair the chosen occurrence, either 
+by destroying it, or by inserting elements such that the occurrence 
+satisfies   $\cut{0}{\scond{\kmax+2}{c}}$. The Algorithm chooses one of these options (line 4) and applies the corresponding repairing sequence 
+(line 5--11). Note that a repairing sequence for $C_{\kmax+2}$ might not exist, since this graph is universally bound. If this is the case we use the repairing sequence for $C_{\kmax+3}$. This must exist since $C_{\kmax+3}$ is existentially bound. 
+
+If the repairing sequence for  $C_{\kmax+2}$ has been applied, occurrences 
+of existentially bound graphs might have been destroyed. 
+Note that this can only be occurrences of graphs $C_i$ such that $C_{\kmax+2}$
+has a conflict with $C_i$.
+This might lead to a decrease of satisfaction of layer. Therefore, the algorithm finds all of these
+destroyed occurrences, in particular it finds all occurrences $p$ of universally bound 
+graphs $C_i$ such that an occurrence $q$ of $C_{i+1}$ with $p = q \circ a_j$ has been removed (line 7). 
+
+If the repairing sequence for $C_{\kmax+3}$ has been applied, occurrences 
+of universally bound graphs might have been inserted. 
+Again, this can only be occurrences of graphs $C_i$ such that 
+$C_{\kmax+2}$ has a conflict with $C_i$ and this might lead to a decrease of 
+satisfaction at layer. Again, the algorithm finds all inserted occurrences of 
+universally bound graphs (line 10).
+If the satisfaction at layer has not been decreased, the algorithm chooses 
+the next occurrence in $P$.
+
+Otherwise, the satisfaction at layer needs to be restored. For this, the occurrences contained in $M$ need to be repaired. 
+The repair of these occurrences might again lead to an insertion of existentially bound graphs or the removal of universally bound ones. 
+These  occurrences are added to $H$ and this process repeats until 
+the satisfaction at layer is restored, i.e. $H \models_{\kmax}c$ (line 12 -- 25).
+This whole process will repeat until a graph satisfying $c$ is derived. 
+
+Form this, it becomes clear, why $c$ has to be circular conflict free. 
+For a constraint with circular conflicts, during the restore phase, new occurrence 
+of $C_{\kmax +2}$ can be inserted an occurrence of $C_{\kmax +3}$ can be removed.
+In particular cases, this could lead to an infinite loop and therefore, there is no guarantee that this algorithm will terminate. 
+For example, consider constraint $c_3$ given in Figure \ref{fig:conflict_example}.
+The set of rules that are used for the transformations $t_1$ and $t_2$ in Figure 
+\ref{fig:conflict_example} forms a repairing set. 
+During a repair process using Algorithm \ref{Algo_conflict_free} with the starting 
+graph being the first graph of $t_1$ it might be possible that Algorithm \ref{Algo_conflict_free} runs into an infinite loop, by alternately applying $t_1$ and $t_2$.   
+
+A optimization of the repair algorithm in terms of the number of inserted or deleted elements can be performed by using partial repairing sequences if possible.
+For example, consider the repairing sequence 
+$$ C_k \Longrightarrow C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$
+with $C_1 \in \ig{C_k}{C_{k+1}}$. 
+For an occurrence $p$ of $C_k$ that already satisfies $\exists(C_1, \true)$
+it might be sufficient to only apply the sequence 
+$$C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$ at $p$. 
+But, after this, it needs to be checked that no occurrences of existentially 
+bound graphs have been destroyed and that no occurrence of universally bound graphs 
+$C_i$ such that $C_k$ has no conflict with $C_i$ have been inserted. 
+If this is the case, the transformations need to be undone and another (partial) 
+repairing sequence needs to be used. 
+Even if this would lead to an optimization in terms of the number of inserted and 
+deleted elements, due to the reversion of transformations, this will lead to an increase of runtime.
+
+For each circular conflict free constraint, Algorithm \ref{Algo_conflict_free} will always terminate as shown by the following Theorem.
 
 
 \input{Algorithms/conflict_free_repair_repairing_set}
@@ -68,3 +138,20 @@ In the following, we present our graph repair process for a circular conflict fr
 	It follows that after a finite number of iterations $G \models c$. 
 	Then, Algorithm \ref{Algo_conflict_free} terminates and returns $G$.
 \end{proof}
+
+
+\begin{example}
+	Consider constraint $c =\forall(C_2^2, \exists(C_2^1, \true))$ composed of
+	the graphs shown in Figure \ref{fig:constraints}.
+	This constraint is circular conflict free and a repairing set for $c$ is 
+	given in Figure \ref{fig:rep}.
+	There does exist a repairing sequence for $C_2^2$ via the rule 		
+	\emph{\texttt{remove}} and a repairing sequence for $C_2^1$ via the rule 
+	\emph{\texttt{insert}}.
+	Using the rule set $\{\emph{\texttt{remove}},\emph{\texttt{insert}}\}$,
+	Algorithm \ref{Algo_conflict_free} could return one of the graphs 
+	$G_1, G_2$ or $G_3$ given in Figure \ref{fig:rep}, depending on the 
+	repairing sequences that have been used. 
+	
+\end{example}
+\input{figures/fig_example_repair}

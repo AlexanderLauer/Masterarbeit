@@ -98,13 +98,11 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n \neq C$ with $C \in \ig{C_{
 \begin{definition}[\textbf{repairing rule set}]
 	Let a set of rules $\mathcal{R}$ and a circular conflict free constraint $c$ 
 	in UANF be given. 
-	If $\nlvl(c) \geq 2$, $\mathcal{R}$ is called a \emph{repairing rule set of 
+	Then, $\mathcal{R}$ is called a \emph{repairing rule set of 
 	$c$} if there does exist a repairing sequence for each existentially bound 
-	graph of $c$.
-	
-	If $\nlvl(c) = 1$, $\mathcal{R}$ is called a \emph{repairing rule set of $c$}
-	if a repairing sequence for the universally bound graph of $c$ exists.	
-
+	graph of $c$ and, if $\nlvl(c)$ is odd, i.e. $c$ ends with a condition 
+	of the form $\forall(C_{\nlvl(c)}, \false)$, $\mathcal{R}$ contains 
+	a repairing sequence for $C_{\nlvl(c)}$.
 \end{definition}
 
 Note that there cannot exist a repairing sequence for universally bound graphs 

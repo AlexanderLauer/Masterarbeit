@@ -2,7 +2,7 @@
 During a repair process, the insertion of elements of $C_j \setminus C_{j-1}$, with $C_j$ being a existentially bound graph of a given constraint $c$ in UANF,
 could also insert new occurrence of universally bound graphs $C_i$ of $c$.
 This insertion is not problematic if $i > \kmax$, but if $i  \leq \kmax$ this could either lead to the insertion of new violations or a decrease of satisfaction at layer. 
-Additionally, the removal of elements of $C_j \setminus C_{j-1}$, with $C_j$ being a universally bound graph, could destroy occurrences of a existentially graph $C_i$.
+Additionally, the removal of elements of $C_j \setminus C_{j-1}$, with $C_j$ being a universally bound graph, could destroy occurrences of a existentially bound graph $C_i$.
 Again, this case can lead to an insertion of new violations or a decrease of the satisfaction at layer. 
 
 We will now introduce the notion of \emph{conflicts within conditions}, which states that $C_j$ has a conflict with $C_i$ if and only if one of the cases 
@@ -15,8 +15,7 @@ Note, that conflicts can only occur between existentially and universally bound 
 	An existentially bound graph $C_k$ has a conflict with an universally bound 
 	graph $C_j$ if a transformation $t: G \Longrightarrow_{\rho} H$ with 
 	$\rho = \rle{C_{k-1}}{\id}{C_{k-1}}{a_{k-1}}{C_k}$ exists such that
-	$$\exists p:C_j \inj H(\neg \exists 	q:C_j \inj G(\track_t \circ q = p))$$
-	holds.
+	$$\exists p:C_j \inj H(\neg \exists 	q:C_j \inj G(\track_t \circ q = p)).$$
 	An universally bound graph $C_k$ has a conflict with an existentially bound 
 	graph $C_j$ if a transformation $t: G \Longrightarrow_{\rho} H$ with 
 	$\rho = \rle{C_k}{a_{k-1}^r}{C}{\id}{C}$ for any $C \in \ig{C_{k-1}}{C_k}$ 
@@ -27,8 +26,8 @@ Note, that conflicts can only occur between existentially and universally bound 
 
 
 Additionally, we introduce \emph{conflicts graphs}, which represent the conflicts within a condition via a graph.
-With this, we are able to define \emph{transitive conflicts}, \emph{circular conflicts} and the absence of these, which will be an necessary property for the termination of our repairing process.
-A condition $c$ contains a circular conflict if a graph has a conflict with itself or there does exist a sequence $C_{j_1}, C_{j_2}, \ldots$ of graphs in $c$ such that $C_{j_i}$ has a conflict with $C_{j_{i+1}}$ and there do exist graphs with $C_{j_i} = C_{j_k}$ and $j_i \neq j_k$. We can check this property by checking whether the 
+With these, we are able to define \emph{transitive conflicts}, \emph{circular conflicts} and the absence of these, which will be an necessary property for the termination of our repairing process.
+Intuitively, as the name suggests, a condition $c$ contains a circular conflict if a graph $C_k$ has a conflict with itself or there does exist a sequence $ C_k= C_{j_1}, \ldots, C_{j_n}= C_k$ of graphs  such that $C_{j_i}$ has a conflict with $C_{j_{i+1}}$. We can check this property by checking whether the 
 conflict graph does contain specific cycles.
 
 \begin{definition}[\textbf{conflict graph, circular conflicts}]\label{conflicts_within}
@@ -37,8 +36,8 @@ conflict graph does contain specific cycles.
 	For each graph $C_k$, $0 \leq k \leq \nlvl(c)$, in $c$, there does exist
 	a node labelled with $k$. 
 	For each odd $0 \leq k < \nlvl(c)$, i.e. $C_k$ is universally bound, there 
-	does exist an edge $e$ of type \emph{\texttt{constraint}} with 
-	$\src(e) = k$ and $\tar(e) = k+1$.
+	doe exist edge $e,e'$ of type \emph{\texttt{constraint}} with 
+	$\src(e) = k$, $\tar(e) = k+1$, $\src(e') = k+1$ and $\tar(e) = k$.
 	If a conflict between $C_k$ and $C_j$ exists, there does exist an edge $e$ 			of type \emph{\texttt{conflict}} with $\tar(e) = k$ and $\src(e) = j$.
 	
 	A graph $C_k$ has a \emph{transitive conflict} with $C_j$ if a path 
@@ -46,7 +45,7 @@ conflict graph does contain specific cycles.
 	A graph $C_k$ has a \emph{circular conflict} if $C_k$ has a transitive 
 	conflict with itself and there does exist a cycle that contains one or more 
 	than two edges or every edge in the cycle is of type 
-	\emph{\texttt{constraint}}.
+	\emph{\texttt{conflict}}.
 	A condition $c$ is called \emph{circular conflict free} if $c$ does not 
 	contain a circular conflict.
 \end{definition}

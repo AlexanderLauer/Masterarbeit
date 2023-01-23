@@ -1,8 +1,20 @@
 \subsection{Rule-based Graph Repair for multiple Constraints}
 
-Now, we will introduce our rule-based repair approach for a set of constraints.
-Again, our approach 
+Now, we will introduce our rule-based repair approach for a set of constraints in UANF. 
 
+
+\begin{definition}[\textbf{satisfaction of constraint sets}]
+	Let a set of constraints $\mathcal{C}$ be given. 
+	A graph $G$ satisfies $\mathcal{C}$, denoted by $G \models \mathcal{C}$,
+	if $G \models \bigwedge_{c \in \mathcal{C}} c$.
+	The set $\mathcal{C}$ is called \emph{satisfiable } if a graph $G$ with 
+	$G \models \mathcal{C}$ exists.
+\end{definition}
+
+To guarantee that a set of constraints can be repaired by a set of rules, we 
+need to extend the notion of repairing sets such that a a set of rules 
+is called a \emph{repairing set} for a set of constraints if it is a repairing 
+set for each constraint in the constraint set. 
 \begin{definition}[\textbf{repairing set for a set of constraints}]
 	Let a set of constraints $\mathcal{C}$ and a set of rules $\mathcal{R}$ be 
 	given. 
@@ -10,6 +22,10 @@ Again, our approach
 	$\mathcal{R}$ is a repairing set for all constraints $c \in \mathcal{C}$.
 
 \end{definition}
+
+We also extend the notion of conflicts to \emph{conflicts between 
+constraints}. 
+Intuitively, a constraint $c$ has a conflict with another constraint $c'$ if one of its graphs has a conflict with a graph of $c'$.
 
 \begin{definition}[\textbf{conflict between constraints}]
 	Let constraints $c$, $c'$ in UANF and a set of rules $\mathcal{R}$ be given. 
@@ -22,6 +38,11 @@ Again, our approach
 	bound graph $C_j$ of $c'$.  
 
 \end{definition}
+
+The following Lemma is a useful statement for the correctness proof of our 
+repair approach. 
+It states that the application of a repairing sequence of a constraint $c$ cannot 
+destroy the satisfaction of $c'$ if $c$ has no conflict with $c'$.
 
 \begin{lemma}\label{lemma_preserving}
 	Let two constraints $c$ and $c'$ in UANF, such that $c$ has no conflict with 
@@ -43,7 +64,13 @@ Again, our approach
 
 \input{Algorithms/algo_non-conflict_free}
 
-\begin{definition}[\textbf{constraint conflict graphs, circular conflicts}]
+The \emph{conflicts graph} for a set of constraints and \emph{circular conflicts}
+for it are defined in a similar manner as conflict graphs and circular conflicts for one constraint. 
+A set of constraints is called \emph{circular conflict free} if each of its constraints is circular conflict free and there does not exist a sequence 
+$c = c_0, \ldots c_n = c$ such that $c_i$ has a conflict with $c_{i+1}$ for all 
+$0\leq i < n$. In other words, the conflict graph of this set is acyclic.
+
+\begin{definition}[\textbf{conflict graphs, circular conflicts}]
 	Let a set of constraints $\mathcal{C}$ in UANF be given. The \emph{conflict 
 	graph of $\mathcal{C}$} is constructed in the following way.
 	For each constraint $c \in \mathcal{C}$ there does exist a node.
@@ -59,8 +86,7 @@ Again, our approach
 	does not contain any circular conflicts.
 
 \end{definition}
-In other words, $\mathcal{C}$ is circular conflict free if each constraint
-in $\mathcal{C}$ is circular conflict free and the conflict graph acyclic.
+
 \begin{example}
 
 \end{example}
@@ -82,12 +108,19 @@ It is a well known fact that each directed acyclic graph has a topological
 ordering and therefore each conflict graph of a circular conflict free set
 of constraints also has a topological ordering.
 
-
+The repair process is given in Algorithm \ref{Algo_non-conflict_free} and 
+proceeds in the following way. 
+First, the topological ordering of the constraint set is determined (line 1) 
+Then, Algorithm \ref{Algo_conflict_free} is used to repair each constraint of 
+$\mathcal{C}$ in order of the topological ordering (line 2 --4). 
+Through this, it is ensured that the satisfaction of a constraint that has 
+already been repaired will not be destroyed by the repair of another constraint. 
 \begin{theorem}
-	Let a graph $G$, a circular conflict free set of constraints in UANF, 
+	Let a graph $G$, a satisfiable, circular conflict free set of constraints in 
+	UANF, 
 	$\mathcal{C}$, and a set of rules $\mathcal{R}$ be given.
 	Then, Algorithm  \ref{Algo_non-conflict_free} terminates and returns a 
-	graph $H$ with $H \models \bigwedge_{c \in \mathcal{C}} c$.
+	graph $H$ with $H \models \mathcal{C}$.
 \end{theorem}
 \begin{proof}
 	Since $\mathcal{C}$ is finite and each $c \in \mathcal{C}$ is 
