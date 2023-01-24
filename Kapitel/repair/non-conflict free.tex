@@ -88,8 +88,29 @@ $0\leq i < n$. In other words, the conflict graph of this set is acyclic.
 \end{definition}
 
 \begin{example}
-
+	Consider the rules \emph{\texttt{resolve, resolve2, createFeatures}} and 
+	constraints $c_1$ and $c_5$ given in Figures \ref{fig:constraint_conflict}
+	and \ref{fig:constraints}.
+	The constraint set $\mathcal{C} = \{c_1, c_5\}$ is a multiplicity 
+	stating that \enquote{Each node of type \emph{\texttt{Class}} is connected 
+	to exactly two nodes of type \emph{\texttt{Feature}}}.
+	With the rule set $\mathcal{R}_1 = \{\emph{\texttt{resolve}}, 
+	\emph{\texttt{createFeatures}}\}$, there is only one conflict in 
+	$\mathcal{C}$;  $c_1$ has a conflict with $c_5$ since 
+	an application of \emph{\texttt{createFeatures}} could lead 
+	to an insertion of the universally bound graph of $c_5$.
+	With the rule set $\mathcal{R}_2 =
+	\{\emph{\texttt{resolve2}}, \emph{\texttt{createFeatures}}\}$ there are two 
+	conflicts. Again, there is a conflict of $c_1$ with $c_5$, but also a 
+	conflict of $c_5$ with $c_1$ since an application of \emph{\texttt{resolve}}
+	can destroy an occurrence of the existentially bound graph of $c_1$.
+	
+	Therefore, our approach can repair with the rule set $\mathcal{R}_1$ 
+	but not with  $\mathcal{R}_2$ because in this case, $\mathcal{C}$ is 
+	not circular conflict free.
+	
 \end{example}
+\input{figures/fig_example_constraint_conflict}
 
 Our repair process makes use of the fact that the conflict graph of a 
 circular conflict free set of constraints in UANF is acyclic. 
@@ -128,8 +149,7 @@ already been repaired will not be destroyed by the repair of another constraint.
 	terminates for each $c \in \mathcal{C}$. Therefore, Algorithm 
 	\ref{Algo_non-conflict_free} will also terminate. 
 	
-	It remains to show that the returned graph satisfies $\bigwedge_{c \in 
-	\mathcal{C}} c$.
+	It remains to show that the returned graph satisfies $\mathcal{C}$.
 	Let $(c_1, \ldots, c_n)$ be a topological ordering of $\mathcal{C}$.
 	Then no constraint $c_j$ with $j \neq 1$ has a conflict with 
 	$c_1$ and with Lemma \ref{lemma_preserving} follows that the 
@@ -151,5 +171,5 @@ already been repaired will not be destroyed by the repair of another constraint.
 	for all $1 \leq i \leq m+1$.  
 	Therefore, after $n$ iterations, $H \models c_i$ for all $1 \leq i \leq n$. 
 	It follows immediately that the returned graph $G$ satisfies 
-	$\bigwedge_{c\in \mathcal{C}}c$.
+	$\mathcal{C}$.
 \end{proof}

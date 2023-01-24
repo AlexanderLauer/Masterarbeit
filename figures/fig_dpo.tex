@@ -12,11 +12,11 @@
 		
 		\draw[left hook-stealth] (K) edge node [above] {$l$}  (L); 
 		\draw[right hook-stealth] (K) edge node [above] {$r$}  (R); 
-		\draw[->] (D)   edge node[above]{$g$}(G); 
-		\draw[->] (D)  edge node [above]{$h$}(H);
-		\draw[->] (K) edge node[fill = white] {$k$} (D);  
-		\draw[->] (L) -- node[left]{$m$} (G);
-		\draw[->] (R) edge node [right] {$n$} (H);    
+		\draw[left hook-stealth] (D)   edge node[above]{$g$}(G); 
+		\draw[right hook-stealth] (D)  edge node [above]{$h$}(H);
+		\draw[left hook-stealth] (K) edge node[fill = white] {$k$} (D);  
+		\draw[left hook-stealth] (L) -- node[left]{$m$} (G);
+		\draw[right hook-stealth] (R) edge node [right] {$n$} (H);    
 	\end{tikzpicture}
 	\caption{Diagram of a transformation in the double-pushout approach.}\label{fig_dpo}
 \end{figure}

@@ -1,32 +1,31 @@
 \section{Preliminaries}
 Our graph repair process is based on the concept of the double-pushout approach \cite{hartmut2006fundamentals}. 
-In this chapter we will introduce some formal prerequisites like graphs, graph morphisms, nested graph conditions and constraints and graph transformations. 
+In this chapter we introduce some formal prerequisites such as graphs, graph morphisms, nested graph conditions and constraints, and graph transformations. 
   
 \subsection{Graphs and Graph morphisms}
-We start by introducing the notions of graphs and graph morphisms according to \cite{hartmut2006fundamentals}.
+We start by introducing graphs and graph morphisms according to \cite{hartmut2006fundamentals}.
 
 \begin{definition}[\textbf{graph}]
 	A \emph{graph} $G = (V,E,\src, \tar)$ consists of a set of
 	 vertices (or nodes)
 	$V$, a set of edges $E$ and two mappings $\src, \tar: E \to 
 	V$ that assign the source and target vertices to an edge.
-	That means, given an edge $e \in E$, then $e$ connects the 
-	vertices $\tar(e)$ and $\src(e)$. 
+	The edge $e \in E$ connects the vertices $\tar(e)$ and $\src(e)$. 
 	
-	If a tuple as above is not given, $V_G$, $E_G$, $\tar_G$ and
-	$\src_G$ denotes the sets of vertices, edges and the target
-	and source mappings, respectively.
+	If no tuple as above is given, $V_G$, $E_G$, $\tar_G$ and
+	$\src_G$ denote the sets of vertices, edges and target and source mappings, 
+	respectively.
 
 \end{definition}
 
-For the remainder of this paper we assume that all graphs are finite, that means
-given a graph $G$ the sets $V_G$ and $E_G$ are finite.
+For the rest of this paper we will assume that all graphs are finite, i.e.
+given a graph $G$, the sets $V_G$ and $E_G$ are finite.
 	
 \begin{definition}[\textbf{graph morphism}]
-	Let graphs $G$ and $H$ be given. A \emph{graph morphism}
+	Let the graphs $G$ and $H$ be given. A \emph{graph morphism}
 	$f : G \to H$ consists of two mappings $f_V: V_G \to V_H$
 	and $f_E: E_G \to E_H$ such that the source and target 
-	functions are preserved. That means,
+	functions are preserved. This means
 	\begin{equation*}
 		\begin{split}
 			&f_V \circ \src_G = \src_H \circ f_E \wedge \\
@@ -36,8 +35,7 @@ given a graph $G$ the sets $V_G$ and $E_G$ are finite.
 	holds.
 	A graph morphism $f$ is called injective (surjective) if 
 	$f_E$ and $f_V$ are injective (surjective) mappings.
-	If $f$ is injective, it is denoted by  $f: G \inj H$ and
-	we may also call it \emph{inclusion}.
+	If $f$ is injective, it is denoted with  $f: G \inj H$.
 	Two morphisms $f_1 :G_1 \to H$ and $f_2: G_2 \to H$ 
 	are called \emph{jointly surjective} if for each element
 	$e$ of $H$ either an element $e' \in G_1$ with $f_1(e') =e$
@@ -45,89 +43,71 @@ given a graph $G$ the sets $V_G$ and $E_G$ are finite.
 
 \end{definition}
 
-For our newly introduced notions of consistency increase- and 
-maintainment we also need to consider \emph{sub-graphs}, \emph{overlaps} of graphs and 
-so-called \emph{intermediate-graphs} which intuitively denotes graphs $G'$ that lay in between two given graphs $G$ and $H$.
-That means, $G$ is a sub-graph of $G'$ and $G'$ is a sub-graph 
-of $H$.
+For our newly introduced notions of consistency increase and 
+maintainment, we also need to consider \emph{subgraphs}, \emph{overlaps} of graphs, and so-called \emph{intermediate graphs}. Intuitively, intermediate graphs are graphs $G'$ which lie between two given graphs $G$ and $H$. That is, $G$ is a subgraph of $G'$ and $G'$ is a subgraph of $H$.
 
 
-\begin{definition}[\textbf{sub-graph}]
-	Let $G$ and $H$ be graphs. Then, $G$ is called a 
-	\emph{sub-graph} of $H$ if an injective morphism $p: G \inj H$
+\begin{definition}[\textbf{subgraph}]
+	Let the graphs $G$ and $H$ be given. Then $G$ is called a 
+	\emph{subgraph} of $H$ if an injective morphism $p: G \inj H$
 	exists.
 \end{definition}
-Note that with this definition every graph $G$ is a sub-graph
-of itself since the morphism $p$ is also allowed to be surjective.
+Note that since the injective morphism can also be surjective, by this definition every graph $G$ is a subgraph of itself.
 
 \begin{definition}[\textbf{intermediate-graph}]
-	Let $G$ and $H$ be graphs such that $G$ is a sub-graph of $H$. 
+	Let $G$ and $H$ be graphs such that $G$ is a subgraph of $H$. 
 	A graph $C$ is called an \emph{intermediate-graph} of $G$ 
-	and $H$, if $G$ is a sub-graph of $C$ and $C$ is a sub-graph of $H$. 
+	and $H$, if $G$ is a subgraph of $C$ and $C$ is a subgraph of $H$. 
 	The set of intermediate-graphs of $G$ and 
 	$H$ is denoted by $\ig{G}{H}$.
 \end{definition}
 
 \begin{definition}[\textbf{overlap}]
-	Let $G_1$ and $G_2$ be graphs. A graph $H$ is called an 
-	\emph{overlap of $G_1$ and $G_2$} if morphisms $i: G_1 \inj H$ 
-	and $i' :G_2 \inj H$ exist such that $i$ and $i'$ are 
-	jointly surjective and $i(G_1) \cap i'(G_2)\neq \emptyset$. 
-	The morphisms $i$ and $i'$ are called \emph{overlap morphisms}.
-
+	Let the graphs $G_1$ and be $G_2$ be given. An \emph{overlap} $P = (H, 
+	i_{G_1}, i_{G_2})$ consists of a graph $H$ and a jointly surjective pair of  
+	injective morphisms $i_{G_1}: G_1 \inj H$ and $i_{G_2}: G_2 \inj H$ with 
+	$i_{G_1}(G_1) \cap i_{G_2}(G_2) \neq \emptyset$. 
 	The set of all overlaps of $G_1$ and $G_2$ is denoted by 
-	$\overlay(G_1,G_2)$. Given an overlap $H$ of $G_1$ and $G_2$, 
-	the overlap morphisms are denoted by $i_{G_1}^H$ and 
-	$i_{G_2}^H$, respectively.
+	$\overlay(G_1,G_2)$.
+	If a tuple as above is not given, then $G_P$, $i_{G_1}^P$ and  $i_{G_2}^P$ 
+	denote the graph and morphisms of a given overlap $P \in \overlay(G_1,G_2)$. 
 \end{definition}
 
-Note that, graphs $H$ such that jointly surjective morphisms $i : G_1 \inj H$ and $i':G_2 \inj H$ such that $i(G_1) \cap i'(G_2)= \emptyset$ can also be considered as overlap of $G_1$ and $G_2$.
-Since, for this paper we will only consider overlaps that satisfy 
-$i(G_1) \cap i'(G_2)\neq \emptyset$, we directly embedded this 
-property into the definition.
+Note that $(H, i_{G_1}, i_{G_2})$ with $i_{G_1}$ and $i_{G_2}$ being jointly surjective and  $i(G_1) \cap i'(G_2)= \emptyset$ could also be considered as an overlap of $G_1$ and $G_2$.
+In this paper we only need to consider overlaps with $i_{G_1}(G_1) \cap i_{G_2}(G_2)\neq \emptyset$.
+So we have embedded this property directly into the definition.
  
-As mentioned above, our approach also considers 
-intermediate-graphs. Therefore a notion to restrict given
-graph morphisms $p: G \to H$ is needed. For this, we introduce the notion
-of \emph{restricted morphisms} which intuitively is the 
-restriction of the domain and co-domain of $p$ with sub-graphs of 
-$G$ and $H$, respectively.
+As mentioned above, our approach also considers intermediate graphs. Therefore a notion of restricted graph morphisms is needed. For this, we introduce the notion of \emph{restricted morphisms}, which intuitively is the restriction of the domain and co-domain of a morphism $p: G \inj H$ with subgraphs of $G$ and $H$ respectively.
 
 \begin{definition}[\textbf{restricted morphism}]
-	Let graphs $G$, $H$ and a morphism $f : G \to H$ be given. 
+	Let the graphs $G$, $H$ and a morphism $f : G \to H$ be given. 
 	Then, a morphism $f' : G' \to H'$ is called a 
 	\emph{restricted morphism} of $p$ if morphisms $i: G' \inj G$
-	and $i': H' \inj H$ exists ($G'$ is a subgraph of $G$ and $H'$ 
-	a sub-graph of $H$) and 
+	and $i': H' \inj H$ exist ($G'$ is a subgraph of $G$ and $H'$ 
+	is a subgraph of $H$) such that 
 	\begin{equation*}
 		\begin{split}
 			&i'_E \circ f'_E = f_E \circ i_E \wedge \\
-			&i'_V \circ f'_V = f_V \circ i_V		
+			&i'_V \circ f'_V = f_V \circ i_V.		
 		\end{split}
 	\end{equation*}
-	holds. Given an morphism $p$, we use the notation 
-	$p^r$ to denote that $p^r$ is a restricted morphism of $p$.
+	A restricted morphism of $p$ is denoted by $p^r$.
 \end{definition}
-Note that, given a morphism $p: G \to H$ a restriction 
-$p^r: G' \to H'$ of $p$ is uniquely determined by $G'$ and $H'$
-meaning that, given two restrictions $q: G' \to H'$ and 
-$q': G' \to H$ of $p$ it follows immediately that $q = q'$. 
+Note that given a morphism $p: G \to H$ a restriction 
+$p^r: G' \to H'$ of $p$ is uniquely determined by $G'$ and $H'$.
 
 \subsection{Nested Graph Conditions and Constraints}
-\emph{Nested graph constraints} are useful to specify graph 
-properties. The more general notion of \emph{nested graph conditions} allows the specification of properties for graph 
-morphisms and the definition of graph constraints in a recursive
-manner. These conditions allow the use of quantifiers and boolean 
-operators.
+\emph{Nested graph constraints} are useful for specifying graph 
+properties. The more general notion of \emph{nested graph conditions} allows the specification of properties for graph morphisms and the definition of graph conditions and constraints in a recursive manner.  Within these conditions, only quantifiers and Boolean operators are used \cite{habel2009correctness}.
  
 
 
-\begin{definition}[\textbf{nested graph condition}\cite{habel2009correctness}]
-A \emph{nested graph condition} over a graph $C_0$ is recursively defined as:
+\begin{definition}[\textbf{nested graph condition}]
+A \emph{nested graph condition} over a graph $C_0$ is defined recursively as
 
 \begin{enumerate}
 	\item \textsf{true} is a  graph condition over every graph.
-	\item $\exists(a_0:C_0 \inj C_1,d)$ is a graph condition over $C_0$ if $a_0$ is a injective graph morphism and $d$ is a graph condition over $C_1$. 
+	\item $\exists(a_0:C_0 \inj C_1,d)$ is a graph condition over $C_0$ if $a_0$ is an injective graph morphism and $d$ is a graph condition over $C_1$. 
 	\item $\neg d$, $d_1 \wedge d_2$ and $d_1 \vee d_2$ are 
 		  graph conditions over $C_0$ if $d$, $d_1$ and $d_2$
 		  are graph conditions over $C_0$.
@@ -147,106 +127,87 @@ universally bound.
 
 \end{definition}
 
-Since these are the only types of conditions used in this 
-paper we will only refer to it as \emph{conditions} and 
-\emph{constraints}.
+Since these are the only types of conditions that will be used in this paper, we will refer to them only as \emph{conditions} and \emph{constraints}. We will use the more compact notations $\exists(C_1,d)$ for $\exists(a_0: C_0 \inj C_1, d)$ and $\forall(C_1,d)$ for $\forall(a_0: C_0 \inj C_1, d)$ if $C_0$ and $a_0$ are clear from the context.
 
 \begin{definition}[\textbf{semantic of graph conditions}]
-	Let a graph $G$, a condition $c$ over $C_0$ and a graph 
-	morphism $p: C_0 \inj G$ be given. Then, $p$ satisfies $c$,
-	denoted by $p \models c$ if 
+	Given a graph $G$, a condition $c$ over $C_0$ and a graph 
+	morphism $p: C_0 \inj G$. Then $p$ satisfies $c$,
+	denoted by $p \models c$, if
 	\begin{enumerate}
 		\item	
-			If $c = \true$, $p \models c$.
+			If $c = \true$.
 		\item 
-			If $c = \exists(a_0:C_0 \inj C_1,d)$, then $p \models c$
-			if an injective morphism $q :C_1 \inj G$ with 
-			$p = q \circ a$ exists, such that $q \models d$. 
+			If $c = \exists(a_0:C_0 \inj C_1,d)$: There does exists an injective 
+			morphism $q: C_1 \inj G$ with $p = q \circ a_0$ and $q \models d$.
 		\item 
-			If $c = \neg d$, then $p \models c$ if $p \not \models 
-			d$. 
+			If $c = \neg d$:  $p \not \models d$. 
 		\item 
-			If $c = d_1 \wedge d_2$, then $p \models c$ if 
+			If $c = d_1 \wedge d_2$:  
 			$p \models d_1$ and $p \models d_2$.
 		\item 
-			If $c = d_1 \vee d_2$, then $p \models c$ if 
-			$p \models d_1$ or $p \models d_2$.			
+			If $c = d_1 \vee d_2$: $p \models d_1$ or $p \models d_2$.			
 	\end{enumerate}
 	A graph $G$ satisfies a constraint $c$, denoted by $G \models 
 	c$, if the morphism $p: \emptyset \inj G$ satisfies $c$.
 \end{definition}
 
-Our approach is designed to repair a specific type of nested 
-constraint, namely \emph{linear conditions} which are conditions
-without any boolean operators. In particular, our approach is able
-to repair constraints in \emph{alternating quantifier normal form (ANF)} 
-which are linear conditions with alternating quantifiers, since 
-every linear condition can be transformed into an equivalent 
-condition in ANF \cite{sandmann2019rule}.
+Our approach is designed to repair a specific type of constraint, constraints  without any boolean operators. Each of these conditions can be transformed into an equivalent condition in so-called \emph{alternating quantifier normal form} \cite{sandmann2019rule}. As the name suggests, these are conditions with alternating quantifiers and without any boolean operators.
 
-\begin{definition}[\textbf{alternating quantifier normal form (ANF)}\cite{sandmann2019rule}]
+\begin{definition}[\textbf{alternating quantifier normal form (ANF)}]
 	Conditions in \emph{alternating quantifier normal form} (ANF) 
-	are inductively defined as 
+	are defined recursively as 
 	
 	\begin{enumerate}
 		\item $\true$ and $\false$ are conditions in ANF.
 		\item 
 			$\exists(a_0: C_0 \inj C_1,d)$ is a condition in ANF
-			if either $d$ is universally bound or $d =\true$.
+			if either $d$ is an universally bound condition over $C_1$ in ANF 
+			or $d =\true$.
 		\item
 			$\forall(a_0: C_0 \inj C_1,d)$ is a condition in ANF
-			if either $d$ is existentially bound or $d = \false$.
+			if either $d$ is an existentially bound condition over $C_1$ in ANF  
+			or $d = \false$.
 	\end{enumerate}
-	In both cases, $d$ is called a \emph{sub-condition} of 
-	$\exists(a: C_0 \inj C_1,d)$ or $\forall(a: C_0 \inj C_1,d)$ respectively. 
+	In both cases, $d$ is called a \emph{subcondition} of $\exists(a: C_0 \inj 
+	C_1,d)$ or $\forall(a: C_0 \inj C_1,d)$ 
+	respectively. All subcondition of $d$ are also subconditions of $\exists(a: 
+	C_0 \inj C_1,d)$ or $\forall(a: C_0 \inj C_1,d)$ respectively. 
 	The \emph{nesting level} $\nlvl(c)$ of a condition $c$ is 
-	recursively defined as $\nlvl(\true) = 0$ and  $\nlvl
-	(\exists(a: P \to Q, d)) := \nlvl(d) +1$.
+	recursively defined as $\nlvl(\true)= \nlvl(\false) = 0$ and  $\nlvl
+	(\exists(a: P \inj Q, d)) = \nlvl(\forall(a:P \inj Q,d)) := \nlvl(d) +1$.
 \end{definition}
 
-In literature conditions in ANF allow also conditions that end 
-with $\exists(a_0: C_0 \inj C_1, \false)$ or $\forall(a_0:C_0 \inj
-C_1, \true)$. We exclude these cases such that conditions in ANF
-are only allowed to end with conditions of the type $\exists(a_0: 
-C_0 \inj C_1, \true)$ or $\forall(a_0:C_0 \inj C_1, \false)$ since
-it can be easily seen that every morphism $p: C_0 \inj G$ satisfies
-$\forall(a_0:C_0 \inj C_1, \true)$ and does not satisfy $\exists(a_0: C_0 \inj C_1, \false)$. Therefore, these conditions can be replaced by $\true$ and $\false$ respectively.
+
+In the literature, conditions in ANF also allow conditions that end with conditions of the form $\exists( C_1, \false)$ or $\forall(C_1, \true)$. We exclude these cases so that conditions in ANF can only end with conditions of the form $\exists(C_1, \true)$ or $\forall( C_1, \false)$, since it is easily seen that every morphism $p: C_0 \inj G$ satisfies $\forall( C_1, \true)$ and does not satisfy $\exists(C_1, \false)$. Therefore, these conditions can be replaced by $\true$ and $\false$ respectively.
 
 In the following, we assume that all conditions are finite. As a direct 
-consequence of this, the nesting level is also finite.
+consequence, the nesting level is also finite.
 
 \subsection{Rules and Graph Transformations}
-Via \emph{rules} and \emph{graph transformation} to manipulate
-given graphs by the deletion and insertion of edges and vertices. 
-For our approach, we use the concept of the double-pushout 
-approach for rules and transformations 
-\cite{hartmut2006fundamentals}. A rule consists of the three graphs $L$, called the \emph{left-hand side},$K$, called \emph{context}  and $R$ called \emph{right-hand side} with $K$ being a sub-graph of $L$ and $R$. During a transformation, denoted by $G 
+Via \emph{rules} and \emph{graph transformation} graphs can be modified by inserting or deleting nodes and edges.
+We will use the concept of the double-pushout approach for rules and transformations, which is based on category theory \cite{hartmut2006fundamentals}. A rule consists of the three graphs $L$, called the \emph{left-hand side}, $K$, called \emph{context},  and $R$, called \emph{right-hand side}, where $K$ is a subgraph of $L$ and $R$. During a transformation, denoted by $G 
 \Longrightarrow H$, elements of $L \setminus K$
-will be removed and elements of $R \setminus K$ will be inserted 
-such that a new morphism $p: R \inj H$ has been created.
-Additionally, the so-called \emph{dangling edge condition} has to be satisfied, meaning that for each edge $e \in E_H$ there do
-exists vertices $u,v \in V_H$ such that $\tar(e) = u$ and 
+are removed and elements of $R \setminus K$ are inserted 
+so that a new morphism $p: R \inj H$ is created.
+In addition, the so-called \emph{dangling edge condition} must be satisfied, which means that for every edge $e \in E_H$ there are vertices $u,v \in V_H$ such that $\tar(e) = u$ and 
 $\src(e) = v$ or vice versa.
-Also, we define application conditions which are nested conditions
-over $L$ and $R$ which are are able prevent transformation if 
-these are not satisfied. 
-We will use the concept of application conditions to guarantee
-that transformations are not able to decrease consistency. 
+We also define application conditions. These are nested conditions over $L$ and $R$ that  prevent the transformation if they are not satisfied. 
+Later, we will use application conditions to ensure that transformations cannot reduce consistency. 
 For example, application conditions that prevent a transformation 
-if $G \models c$ and $H\not \models c$, given a constraint $c$.
+if $G \models c$ and $H\not \models c$.
 
 \begin{definition}[\textbf{rules and application conditions}]
-	A \emph{plain rule} $\rho' = \rle{L}{l}{K}{r}{R}$ consists of 
+	A \emph{plain rule} $\rho = \rle{L}{l}{K}{r}{R}$ consists of 
 	graphs $L,K,R$ and injective graph morphisms $l: K \inj L$ 
-	and $r:  K \inj R$. The rule $\rho'^{-1} = \rle{R}{r}{K}{l}{L}$
+	and $r:  K \inj R$. The rule $\rho^{-1} = \rle{R}{r}{K}{l}{L}$
 	is called the \emph{inverse rule of $\rho'$}. 
 	
 	An \emph{application condition} is a nested condition over 
-	$L$ or $R$, respectively. A \emph{rule} $(\ap_L, \rho', \ap_R)$ 
-	contains of a plain rule $\rho'$ and application conditions 
+	$L$ or $R$ respectively. A \emph{rule} $(\ap_L, \rho, \ap_R)$ 
+	consists of a plain rule $\rho$ and application conditions 
 	$\ap_L$ over $L$, called \emph{left application condition}, 
 	and $\ap_R$	over $R$, called \emph{right application 
-	condition}, respectively. 
+	condition} respectively. 
 \end{definition}
 
 
@@ -254,24 +215,20 @@ if $G \models c$ and $H\not \models c$, given a constraint $c$.
 \begin{definition}[\textbf{graph transformation}]
 	Let a rule $\rho = (\ap_L,\rho', \ap_R)$, a graph $G$ 
 	and a morphism $m: L \inj G$,
-	called \emph{match}, be given. Then, a \emph{graph 
+	called the \emph{match}, be given. Then, a \emph{graph 
 	transformation} $t: G \Longrightarrow_{\rho,m} H$ is given
-	in figure \ref{fig_dpo} if the squares $(1)$ and $(2)$ are
+	in Figure \ref{fig_dpo} if the squares $(1)$ and $(2)$ are
 	pushouts in the sense of category theory, $m\models \ap_L$
-	and the morphism $n:L \to H$, called the co-match of $t$, 
+	and the morphism $n:L \inj H$, called the co-match of $t$, 
 	satisfies $\ap_R$.
 \end{definition}
 
 \input{figures/fig_dpo}
 
-The presence of right applications conditions leads to unpleasant side-effects.
+The presence of right applications conditions leads to unpleasant side effects.
 The satisfaction of a right application condition can only be checked after 
-the transformation. Therefore, in case that this application condition is 
-not satisfied, the transformation must be reversed. To avoid this, we introduce the \emph{shift over rule} construction which is able to transform a right into a
-left application condition \cite{habel2009correctness}. This notion is based
-on the notion of \emph{shift over morphism} which allows to shift a condition
-over $C_0$ over a morphism $p: C \inj C_0$.
-
+the transformation. The transformation must therefore be reversed if the co-match does not satisfy this condition. To avoid this, we introduce the \emph{shift over rule} operation, which is capable of transforming a right into an equivalent
+left application condition \cite{habel2009correctness}. 
 \begin{definition}[\textbf{shift over rule}]\label{def:shift}
 	Let a plain rule $\rho = \rle{L}{l}{K}{r}{R}$ and a right 
 	application condition $\ap$ of the form 
