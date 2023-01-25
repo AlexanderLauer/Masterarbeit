@@ -3,16 +3,10 @@
 \input{figures/fig_constraints}
 \input{figures/fig_graph}
 
-As already mentioned, the goal of our approach is to increase the consistency of 
-a constraint layer by layer. 
-For this, we introduce a notion of partial consistency, called \emph{satisfaction 
-at layer} which enables to check whether a constraint is satisfied at a 
-certain layer by checking whether the so-called \emph{truncated condition} at 
-this layer is satisfied.
+The goal of our approach is to increase the consistency of a constraint layer by layer, as we have already mentioned. To do this, we introduce a notion of partial consistency, called \emph{satisfaction at layer}, which allows us to check whether a constraint is satisfied at a particular layer by checking whether the so-called \emph{truncated condition} is satisfied at that layer.
  
-\begin{definition}[\textbf{sub-condition at layer}]
-Let $c$ be a condition in ANF. 
-The \emph{sub-condition at layer $0 \leq k \leq \nlvl(c)$}, denoted by $\scond{k}{c}$ , is the sub-condition $d$ of $c$ with $\lay(d) = k$.
+\begin{definition}[\textbf{subcondition at layer}]
+Let a condition $c$ in ANF be given. The \emph{subcondition at layer $0 \leq k \leq \nlvl(c)$}, denoted by $\scond{k}{c}$, is the subcondition $d$ of $c$ with $\lay(d) = k$. 
 \end{definition}
 
 \begin{example}
@@ -22,38 +16,37 @@ The \emph{sub-condition at layer $0 \leq k \leq \nlvl(c)$}, denoted by $\scond{k
 	\false))$.
 \end{example}
 
-First, we introduce an operator which allows to replace a sub-condition
-$\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement 
-at layer}.
+Let us first introduce an operator which allows to replace a subcondition $\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement at layer}.
 
 \begin{definition}[\textbf{replacement at layer}]
-Let a condition $c = Q(a_0: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$ in ANF and a condition $e$ over $C_k$ in ANF be given. 
-The \emph{replacement in $c$  at layer $k$ with $e$}, denoted by $\repl{k}{c}{e}$, is recursively defined as:
+Given a condition $c = Q(a_0: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
+The \emph{replacement of layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, is defined recursively as
 \begin{equation*}
 	\repl{k}{c}{e} := 
 		\begin{cases}
 			e & \text{if $k = 0$} \\
-			Q(a_0:C_0 \inj C_1, \repl{k-1}{d}{e}) &\text{otherwise}	
+			Q(a_0:C_0 \inj C_1, \repl{k-1}{d}{e}) &\text{otherwise.}	
 		\end{cases}
 \end{equation*}
 \end{definition}
 
 \begin{example}
-Let the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $d = \exists(a'_1: C_1 \inj C_3, e)$ be given. 
-Then, 
+Consider the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $d = \exists(a'_1: C_1 \inj C_3, e)$. 
+The replacement of layer $1$ in $c$ by $d$ is given by
 $$\repl{1}{c}{d} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$ 
 \end{example}
 
-Using replacement at layer we now define \emph{truncated conditions}.
-Intuitively, a condition is-cut off at a certain layer, by replacing the sub-condition at this layer by $\true$ or $\false$, depending on the quantifier, the replaced sub-condition is bound by.
+We now define \emph{truncated conditions} using the concept of replacement at layer.
+Intuitively, a condition is truncated at a particular layer by replacing the subcondition at that layer with $\true$ or $\false$, depending on which quantifier the replaced subcondition is bound by.
 
 
 \begin{definition}[\textbf{truncated condition}]
-	Let $c$ be a condition in UANF and $d = \scond{k}{c}$ with $ 0 \leq k 
-	\leq 	\nlvl(c)-1$. The \emph{truncated condition at layer} $k$ of $c$, 
+	Let a condition $c$ in UANF be given. 
+	The \emph{truncated condition of $c$ at layer $-1 \leq k < \nlvl(c)$ }, 
 	denoted by $\cut{k}{c}$, is defined as
 
 $$ \cut{k}{c} := \begin{cases}
+					\true &\text{if $k = -1$} \\
 					\repl{k +1}{c}{\true}&\text{if $d$ is existentially bound,
 					 i.e. $k$ is odd} \\
 					\repl{k+1}{c}{\false}&\text{if $d$ is universally bound, 
@@ -64,32 +57,28 @@ $$ \cut{k}{c} := \begin{cases}
 
 \begin{example}
 Consider constraint $c_2$ given in Figure \ref{fig:constraints}.
-Then, $\cut{1}{c_2} = \forall C_1^1 \exists C_2^2$.
+The truncated condition of $c$ at layer $1$  is given by $\cut{1}{c_2} = \forall (C_1^1, \exists (C_2^2,\true))$ and the truncated condition of $c$ at layer $0$  is given by $\cut{0}{c_2} = \forall(C_1^1, \false)$.
 \end{example}
 
-With these prerequisites we are now able to introduce \emph{satisfaction 
-at layer} which enables to check whether a condition is satisfied at a certain
-layer. A morphism or graph satisfies a condition or constraint, respectively, 
-if it satisfies the truncated condition at this layer.
+
+Note that the truncated condition of a condition $c$ at layer $\nlvl(c) -1$ is $c$ itself.
+With these prerequisites we can now introduce \emph{satisfaction at layer}, which allows us to check whether a condition is satisfied at a given layer. A morphism or graph satisfies a condition or constraint at that layer if it satisfies the truncated condition at that layer.
 
 
 \begin{definition}[\textbf{satisfaction at layer}]
 Let a graph $G$ and a condition $c$ in UANF be given.
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $0 \leq k \leq \nlvl(c)-1$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $-1 \leq k < \nlvl(c)$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
 
-A graph $G$ satisfies a constraint $c$ at layer $0 \leq k \leq \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
-The biggest $0 \leq k \leq \nlvl(c)$ such that $G \models_k c$ and no $k < j \leq \nlvl(c)$ with $G \models_j c$ exists is denoted by $\maxk{c}{G}$. 
-If no such $k$ exists, we set $\maxk{c}{k} = -1$.
-We use the abbreviation $\kmax$ when $c$ and $G$ are clear from the context.
+A graph $G$ satisfies a constraint $c$ at layer $-1 \leq k < \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
+The largest $-1 \leq k < \nlvl(c)$ such that $G \models_k c$ and there is no $k < j < \nlvl(c)$ with $G \models_j c$, called the \emph{biggest satisfied layer}, is denoted by $\maxk{c}{G}$. 
+When $c$ and $G$ are clear from the context, we use the abbreviation $\kmax$.
 \end{definition}
 
-Note that, given a graph $G$ and a constraint $c$, by definition and since 
-$\nlvl(c)$ is finite, $\maxk{c}{k}$ always exists.
-Also, if $p \models_{\nlvl(c)-1} c$ it follows immediately that $p \models c$. 
-
+Note that given a graph $G$ and a constraint $c$, $\maxk{c}{G}$ always exists, since $\cut{-1}{c} = \true$ and every graph satisfies $\true$.
+Moreover, if $p \models_{\nlvl(c)-1} c$, it immediately follows that $p \models c$. 
 \begin{example}
 Consider the graph $G$ given in Figure \ref{fig:graph} and the constraint $c_2$ given in Figure \ref{fig:constraints}. 
-This graph does not satisfy $c_2$, since the second occurrence of \emph{\texttt{Class}} does not satisfy $\exists C_2^2 \forall C_3^2 \exists C_4^2$, but it satisfies $\cut{1}{c_2}$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1$$
+This graph does not satisfy $c_2$ because the second occurrence of \emph{\texttt{Class}} does not satisfy $\scond{1}{c_2} = \exists(C_2^2,(\forall C_3^2,(\exists C_4^2,\true)))$, but it does satisfy $\cut{1}{c_2} = \forall(C_1^1, \exists(C_2^2, \true))$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1.$$
 \end{example}
 
 \input{figures/table_sat_at_layer}

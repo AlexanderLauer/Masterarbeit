@@ -1,0 +1,22 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+		\node (L) at (0,2) {R};
+		\node (K) at (2,2) {K};
+		\node (R) at (4,2) {L};
+		\node (G) at (0,0) {$C_0$};
+		\node (D) at (2,0) {D};
+		\node (H) at (4,0) {$C_0'$};
+		\node (1) at (1,1) {(1)};
+		\node (2) at (3,1) {(2)};
+		
+		\draw[left hook-stealth] (K) edge node [above] {$r$}  (L); 
+		\draw[right hook-stealth] (K) edge node [above] {$l$}  (R); 
+		\draw[left hook-stealth] (D)   edge node[above]{$g$}(G); 
+		\draw[right hook-stealth] (D)  edge node [above]{$h$}(H);
+		\draw[left hook-stealth] (K) edge node[fill = white] {$k$} (D);  
+		\draw[left hook-stealth] (L) -- node[left]{$a_0$} (G);
+		\draw[right hook-stealth] (R) edge node [right] {$a_0'$} (H);    
+	\end{tikzpicture}
+	\caption{Transformation for the shift over rule operator.}\label{fig_left}
+\end{figure}

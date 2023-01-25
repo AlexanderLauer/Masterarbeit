@@ -1,0 +1,18 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+		\node (L) at (0,2) {$C_0$};
+		\node (K) at (2,2) {$C_0'$};
+		
+		\node (G) at (0,0) {$C_1$};
+		
+		\node (H) at (2,0) {$C_1'$};
+		
+		\draw[right hook-stealth] (L) edge node [above] {$i$}  (K);
+		\draw[left hook-stealth] (L) edge node [left] {$a_0$}  (G);
+		\draw[right hook-stealth] (G) edge node [above] {$i'$}  (H);
+		\draw[right hook-stealth] (K) edge node [right] {$a_0'$}  (H);
+		
+	\end{tikzpicture}
+	\caption{Diagram for the $\shiftm$ operator.}\label{fig_shift}
+\end{figure}

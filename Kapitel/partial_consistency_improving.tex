@@ -1,17 +1,11 @@
-\section{Consistency Increase- and Maintainment}
-\begin{definition}[\textbf{layer of a sub-condition}]
-	Let $c$ be a condition in ANF and $d$ a sub-condition of $c$.
+\section{Consistency Increase and Maintainment}
+\begin{definition}[\textbf{layer of a subcondition}]
+	Let a condition $c$ in ANF and a subcondition $d$ of $c$ be given.
 	The \emph{layer of d} is defined as $\lay(d) := \nlvl(c) - \nlvl(d)$.
 \end{definition}
 
-Our approach is based on the idea that the consistency of a constraint is 
-increased layer by layer and even slight improvements like the insertion
-of single elements of existentially bound graphs should be detectable as increasing.
-To formalise this, we introduce the notions of \emph{consistency increasing}
-and \emph{consistency maintaining} transformations and rules with  
-consistency increasing indication that the consistency has indeed been increased 
-and consistency maintaining indicating that the consistency has not been decreased.
-
+Our approach is based on the idea that the consistency of a constraint increases layer by layer, and that even small improvements, such as inserting single elements of existentially bound graphs, should be detectable as increasing.
+To formalise this, we introduce the notions of \emph{consistency increasing} and \emph{consistency maintaining} transformations and rules, where consistency increasing indicates that the consistency has actually increased and consistency maintaining indicates that the consistency has not decreased.
 \input{Kapitel/partial_improving/eanf}
 \input{Kapitel/partial_improving/partial_conditions}
 \input{Kapitel/partial_improving/partial_improving}

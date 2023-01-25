@@ -1,11 +1,5 @@
 \subsection{Universally quantified ANF}
-The definition of consistency increase- and maintainment demands that every 
-existentially bound sub-condition of a given condition in ANF is embedded into an 
-universally bound condition. Otherwise, case discrimination is needed. 
-This requirement is not met if and only if the given condition is existentially 
-bound. 
-Therefore, we will only consider a subset of the set of conditions in ANF, namely the set of universally quantified conditions in ANF, called \emph{universally quantified ANF} (UANF). 
-Additionally, we will show that these sets are expressively equivalent by showing that each condition in ANF can be transformed into an equivalent condition in UANF.
+The definition of consistency increase and maintainment requires that each condition begins with a universal quantifier. Otherwise, case discrimination is required.  Therefore, we will only consider a subset of the set of conditions in ANF, namely the set of universally quantified conditions in ANF, called \emph{universally quantified ANF} (UANF). Furthermore, we will show that these sets are expressively equivalent by showing that every condition in ANF can be transformed into an equivalent condition in UANF.
 
 
 \begin{definition}[\textbf{universally quantified alternating quantifier normal form}]
@@ -13,9 +7,12 @@ A conditions $c$ in ANF is in \emph{universally quantified ANF} (UANF) if it is 
 \end{definition}
 
 
-Note that, given a condition $c$ in UANF, every sub-condition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universally bound if $k$ is an even number and existentially bound if $k$ is an odd number.  
-The extension of conditions that is used to show that a conditions in ANF
-can be transformed into an equivalent condition in UANF is an already known concept \cite{Pennemann09a}.
+Note that, given a condition $c$ in UANF, any subcondition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universally bound if $k$ is an even number and existentially bound if $k$ is an odd number. Furthermore, a graph $C_k$ of $c$ is  universally bound if $k$ is an odd number and existentially bound if 
+$k$ is an even number.  
+It is already known that an existentially bound condition $c$ 
+can be extended to the equivalent condition $\exists(a_0: \emptyset \inj C_0, d)$ \cite{habel2005nested}.
+We will use this to show that every condition in ANF has an 
+equivalent condition in UANF.
 
 
 \begin{lemma}
@@ -24,20 +21,19 @@ Any condition in ANF can be transformed into an equivalent condition in UANF.
 
 \begin{proof}
 Let a graph $G$ and a constraint $c$ in ANF be given.
-If $c$ is universally bound, $c$ is already in UANF. 
-
+If $c$ is universally bound, then $c$ is already in UANF. 
 If $c = \exists(a_0: C_0 \inj C_1,d)$, we show that $c$ is equivalent to $c' := \forall(\id_{C_0}: C_0 \inj C_0, c)$.
 \begin{enumerate}
 \item 
-Let $p :C_0 \inj G$ be a morphism, such that $q \models c$. 
-Then, $p \models c'$, since $p$ is the only morphism from $C_0$ to $G$ with $p = p \circ \id_{C_0}$ and $p \models c$. 
+Let $p :C_0 \inj G$ be a morphism such that $q \models c$. 
+Then $p \models c'$, because $p$ is the only morphism from $C_0$ to $G$ with $p = p \circ \id_{C_0}$ and $p \models c$.
 
 \item 
-Let $p:C_0 \inj G$ be a morphism with $p \models c'$, therefore all morphisms $q:C_0 \inj G$ with $p = q \circ \id_{C_0}$ satisfy $c$. Since $p = p \circ \id_{C_0}$, $p \models c$ follows immediately.
+Let $p:C_0 \inj G$ be a morphism with $p \models c'$, then all morphisms $q:C_0 \inj G$ with $p = q \circ \id_{C_0}$ satisfy $c$. Since $p = p \circ \id_{C_0}$, it immediately follows that $p \models c$.
 \end{enumerate}
 \end{proof}
 
-For the rest of this thesis, given a condition $c = \forall(a_0:C_0 \inj C_1, d)$ in UANF, we assume that no morphism in $c$, except $a_0$, is bijective since it can be shown that each condition in ANF can be transformed into an equivalent condition in ANF fulfilling this property by showing that
+For the rest of this thesis, given a condition $c = \forall(a_0 : C_0 \inj C_1, d)$ in UANF, we assume that no morphism in $c$, except $a_0$, is bijective, since it can be shown that every condition in ANF can be transformed into an equivalent condition in ANF that satisfies this property, by showing that
 $\exists(a_0 : C_0 \inj C_0, \forall(a_1: C_0 \inj C_2,d)$ is equivalent to
 $\forall(a_1 \circ a_0 : C_0 \inj C_2,d)$ and that $\forall(a_0 : C_0 \inj C_0, \exists(a_1: C_0 \inj C_2,d)$ is equivalent to
-$\exists(a_1 \circ a_0 : C_0 \inj C_2,d)$ . 
+$\exists(a_1 \circ a_0 : C_0 \inj C_2,d)$ .
