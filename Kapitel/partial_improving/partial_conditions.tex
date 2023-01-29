@@ -9,6 +9,7 @@ The goal of our approach is to increase the consistency of a constraint layer by
 Let a condition $c$ in ANF be given. The \emph{subcondition at layer $-1 \leq k \leq \nlvl(c)$}, denoted by $\scond{k}{c}$, is the subcondition $d$ of $c$ with $\lay(d) = k$ if $0 \leq k \leq \nlvl(c)$ and $\true$ if $k = -1$. 
 \end{definition}
 
+Note that by definition the subcondition at layer $k$ is always a condition over the graph $C_k$ and the morphism is denoted by $a_k$.
 \begin{example}
 	Consider the condition $ c =\forall(a_0:C_0 \inj C_1, \exists(a_1: C_1
 	\inj C_2, \forall(a_2:C_2 \inj C_3, \false)))$.
@@ -19,7 +20,7 @@ Let a condition $c$ in ANF be given. The \emph{subcondition at layer $-1 \leq k 
 Let us first introduce an operator which allows to replace a subcondition $\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement at layer}.
 
 \begin{definition}[\textbf{replacement at layer}]
-Given a condition $c = Q(a_0: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
+Given a condition $c = Q(a_1: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
 The \emph{replacement of layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, is defined recursively as
 \begin{equation*}
 	\repl{k}{c}{e} := 
