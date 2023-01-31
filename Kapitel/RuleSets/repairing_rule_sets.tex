@@ -1,14 +1,13 @@
 \subsection{Repairing rule Sets}
 
-If a set of rules and a constraint is given, it is unclear whether it is possible to repair a graph using rules of this set or not. 
-Therefore, we introduce the notion of \emph{repairing rule sets} which is a characterisation rule sets that are capable of repairing a graph w.r.t. to a circular conflict free constraint. 
+Given a set of rules and a constraint, it is unclear whether or not it is possible to repair a graph using the rules of that set. 
+Therefore, we introduce the notion of \emph{repairing rule sets}, which is a characterisation of rule sets that are able to repair a graph w.r.t. a circular conflict free constraint.
 First, we introduce the notion of \emph{repairing sequences}. 
-A repairing sequence is a sequence of rule application that either destroys  an occurrence of a universally or inserts an occurrence of an existentially bound graph and is applicable at each occurrence of these graphs. 
-To ensure that these sequences are applicable at each occurrence it needs to be ensured that no nodes of these occurrences will be removed and that the left hand 
-side of the rule of the repairing sequence is contained in this occurrence. 
-In other words, each repairing sequence of $C_k$ starts with a transformation
+A repairing sequence is a sequence of rule applications that either destroys an occurrence of a universal or inserts an occurrence of an existentially bound graph, and is applicable to each occurrence of these graphs. 
+To ensure that these sequences are applicable to every occurrence, it is necessary to ensure that no nodes of these occurrences are removed and that the left-hand side of the first rule of the repairing sequence is contained in that occurrence. 
+In other words, every repairing sequence of $C_k$ starts with a transformation
 originating in $C_k$ if $C_k$ is universally bound and $C_{k-1}$ if 
-$C_k$ is existentially bound.  
+$C_k$ is existentially bound.
 
 \begin{definition}[\textbf{repairing sequence}]
 	Let a constraint $c$ in UANF and a set of rules $\mathcal{R}$ be given. 
@@ -22,55 +21,50 @@ $C_k$ is existentially bound.
 			with $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
 			of $C_k$} if $G_n \models_{k}c$, $\track_{t_n} \circ \ldots \circ 
 			\track_{t_1} \circ \id_{C_{k-1}}$ is total and the concurrent rule 
-			$\rho = \rle{G_0}{\id}{G_0}{\track_{t_n} \circ \ldots \circ 
-			\track_{t_1}}{G_n}$ is a basic consistency maintaining rule w.r.t.
-			$\forall(C_j, \false)$ for all graph universally bound graphs $C_j$ 
+			of this sequence is a basic consistency maintaining rule w.r.t.
+			$\forall(C_j, \false)$ for all universally bound graphs $C_j$ 
 			such that $C_k$ has no conflict with $C_j$. 
 		\item	
-			If $C_k$ is existentially bound, a sequence of transformations  
+			If $C_k$ is universally bound, a sequence of transformations  
 			$$C_k = G_0 \overset{t_1}{\Longrightarrow}_{\rho_1,m_1} G_1 
 			\overset{t_2}{\Longrightarrow}_{\rho_2,m_2} \ldots 
 			\overset{t_n}{\Longrightarrow}_{\rho_n, m_n} 
 			G_n$$
 			with $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
-			of $C_k$} if $G \models_{k} c$, for each node $v \in V_{G_0}$ there 
+			of $C_k$} if $G_n \models_k c$, for each node $v \in V_{G_0}$ there 
 			does exist a node $v' \in V_{G_n}$ with $v' = \track_{t_n}(\ldots 
 			\track_{t_1}(v))$ and the concurrent rule 
-			$\rho = \rle{G_0}{}{\track_{t_n}( \ldots \track_{t_1}(G_0))}{}{G_n}$ 
+			of this sequence  
 			is a basic consistency maintaining 
-			rule w.r.t. $forall(C_j, \true)$ for universally bound graphs 
+			rule w.r.t. $\forall(C_j, \true)$ for universally bound graphs 
 			$C_j$.
 	\end{enumerate}
 \end{definition}
 
-In both cases, the insertion of additional elements, i.e. $G_n \neq C_{k+1}$ if 
-$C_k$ is existentially and $G_n \neq C$ for all $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, could lead to the insertion of universally bound graphs. 
-For existentially bound graph this can occur if an overlap with an universally 
-bound graph in a similar manner as shown in Figure \ref{fig:example_univ}
-exists. 
-To ensure that this case does not occur, we need the additional condition that 
-the concurrent rule is a basic consistency maintaining rule w.r.t. certain constraints.
-If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n \neq C$ with $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, this condition is not needed.
+In both cases the insertion of additional elements, i.e. $G_n \neq C_{k+1}$ if $C_k$ is existentially bound and $G_n \neq C$ for all $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, could lead to the insertion of universally bound graphs. 
+For an existentially bound graph, this can happen if there is an overlap with a universally bound graph in a similar way as shown in figure \ref{fig:example_univ}. 
+To ensure that this does not happen, we need the additional condition that the concurrent rule is a basic consistency maintaining rule with respect to certain constraints.
+If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n = C$ with $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, this condition is not needed as  the following Theorem shows.
 \input{figures/fig_example_univ}
 
 \begin{theorem}\label{special_rep_sequence}
 	Let a constraint $c$ in UANF and a set of rules $\mathcal{R}$ be given. 
 	\begin{enumerate}
 		\item 
-			If $C_k$ is existentially bound and there does exist sequence 
+			If $C_k$ is existentially bound and there is sequence 
 			$$C_{k-1} \Longrightarrow_{\rho_1,m_1} \ldots 
 			\Longrightarrow_{\rho_n,
 				m_n} C_k$$ 
 			with $\rho_i \in \mathcal{R}$ such that $\track_{t_n} \circ 
 			\ldots \track_{t_1} \circ 
 			 \id_{C_{k-1}}$ is 
-			total and $C_k \models_{k+1}c$. Then, this is a repairing sequence 
+			total and $C_k \models_{k}c$. Then, this is a repairing sequence 
 			for $C_k$. 
 		\item
-			If $C_k$ is universally bound and there does exist a sequence 
+			If $C_k$ is universally bound and there is  a sequence 
 			$$C_k \Longrightarrow_{\rho_1,m_1} \ldots \Longrightarrow_{\rho_n, 	
 			m_n} C$$ 
-			with $\rho_i \in \mathcal{R}$, $C \in \ig{C_{k-1}}{C_k}$ and for each 
+			with $\rho_i \in \mathcal{R}$, $C \in \ig{C_{k-1}}{C_k}$, $C\models_k c$ and for each 
 			node $v \in V_{G_0}$ there does exist a node $v' \in V_{G_n}$ with 
 			$v' = \track_{t_n}(\ldots \track_{t_1}(v))$.
 			Then, this is a repairing sequence for $C_k$.
@@ -105,40 +99,30 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n \neq C$ with $C \in \ig{C_{
 	a repairing sequence for $C_{\nlvl(c)}$.
 \end{definition}
 
-Note that there cannot exist a repairing sequence for universally bound graphs 
-$C_k$ such that $C_k \setminus C_{k-1}$ does not contain any edges. 
-Therefore, there does not exist a repairing set for all constraints of the 
-form $\forall(C_1, \false)$ such that $E_{C_1} = \emptyset$.
+Note that there cannot exist a repairing sequence for a universally bound graphs $C_k$ such that $C_k \setminus C_{k-1}$ does not contain any edges. 
+Therefore, there is no repairing set for all constraints of the form $\forall(C_1, \false)$ such that $E_{C_1} = \emptyset$.
 
 \begin{theorem}
 	Let a circular conflict free constraint $c$ in UANF and a repairing set 
 	$\mathcal{R}$ of $c$ be given.
-	Then, for each graph $G$ with $G \not \models c$, there does exist a 
+	Then, for each graph $G$ with $G \not \models c$, there is a 
 	sequence of transformations 
 	$$G = G_0 \Longrightarrow_{\rho_1, m_1} \ldots \Longrightarrow_{\rho_n, m_n} 
 	G_n$$  
 	with $\rho_i \in \mathcal{R}$ such that $G_n \models c$.
 \end{theorem}
-We postpone the proof of this Theorem, since it will follow immediately from the termination of our repairing process.
+We will postpone the proof of this Theorem, as it follows immediately from the termination of our repair process.
 
 \begin{example}
-	Consider constraints $c_1$, $c_4$ and the sequences shown in Figure 
-	\ref{fig:rep_set}. The first sequence is not a repairing sequence for the 
-	existentially bound graph of  $c_4$ 
-	since $G_1 \not \models_1 c_4$ and therefore, a rule set containing only this 
-	rule is not a repairing set w.r.t. $c_4$.
+	Consider the constraints $c_1$, $c_4$ and the sequences shown in Figure \ref{fig:rep_set}. The first sequence is not a repairing sequence for the existentially bound graph of $c_4$, since $G_1 \not \models_1 c_4$ and therefore a rule set containing only this rule is not a repairing set w.r.t $c_4$.
 	The second sequence is a repairing sequence for the existentially bound 
-	graph of $c_4$, since the last graph satisfies $c_4$ and there does not exist 
-	an the existentially bound graph has a conflict with the universally bound 
-	graph. Therefore, the condition for the concurrent rule is also satisfied and 
+	graph of $c_4$, since the last graph satisfies $c_4$ and the existentially bound graph has a conflict with the universally bound graph. Therefore, the condition for the concurrent rule is also satisfied, and 
 	a rule set containing this rule is a repairing set w.r.t. $c_4$.
 	
 	
 	The third sequence is a repairing sequence for $c_1$ since the last graph 
 	satisfies $c_1$ and the sequence satisfies the criteria given in Theorem 
-	\ref{special_rep_sequence}. Note, that this sequence contains of two 
-	applications of the same rule. A rule set containing this rule is a 
-	repairing set w.r.t. $c_1$.
+	\ref{special_rep_sequence}. Note that this sequence consists of two applications of the same rule. A set of rules containing this rule is a repairing set w.r.t. $c_1$.
 \end{example}
 \input{figures/fig_example_rep_set}     
 %\begin{corollary}
@@ -229,4 +213,4 @@ We postpone the proof of this Theorem, since it will follow immediately from the
 %
 
 
-\input{Kapitel/RuleSets/generation_repairing_rule_set}
+%\input{Kapitel/RuleSets/generation_repairing_rule_set}

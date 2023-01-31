@@ -3,32 +3,33 @@
 \input{figures/fig_rules}
 \input{figures/fig_appl_cond}
 
-To guarantee that each transformation $t$ is (direct) consistency increasing or maintaining w.r.t to a constraint $c$, we present applications conditions ensuring this property. 
-Given a constraint $c$, this application conditions are designed to only consider graph of $c$ up to a certain layer.
-In particular, this is useful to reduce the restrictiveness of these application conditions, since all graphs $C_j$ of $c$ with $j > \kmax+2$ do not affect whether an transformation is considered as consistency maintaining or increasing. 
-Additionally, in the case of consistency increasing application conditions, this design is necessary since it has to be ensured that violations at layer $\kmax +1$ will be removed.
-Therefore, let us introduce a weaker notion of consistency increasing and maintaining rules, namely \emph{consistency increasing and maintaining rules at layer}.
-As the name suggests, given a constraint $c$, a rule is consistency increasing or maintaining at layer $0 \leq k <\nlvl(c)$ if all of its applications at graphs $G$, with $\kmax = k$, are consistency increasing or maintaining w.r.t. $c$, respectively.
- 
+In the following, we present application conditions which ensure that any rule equipped with this application condition is ( direct ) consistency-increasing or ( direct ) consistency-maintaining.
+In particular, we present applications in the general case and later for specific rules, called \emph{basic maintaining/increasing} rules.
+For basic rules, less complex application conditions can be constructed.
+Similar to the notions of consistency-maintaining and consistency-increasing, these application conditions will only consider graphs of the constraint up to a certain layer.
+This is useful to reduce the restrictiveness of these application conditions, since all graphs $C_j$ with $j < \kmax +2 $ do not affect whether a transformation is is consistency-maintaining or consistency-increasing. 
+So it is clear that a rule with these application conditions is not a consistency-maintaining or consistency-increasing rule. 
+Therefore, let us introduce a weaker notion of consistency-maintaining and consistency-increasing rules, called \emph{(direct) consistency-increasing rule at layer} and \emph{(direct) consistency-maintaining rules at layer} respectively.
+
+As the name suggests, a rule is called (direct) consistency-increasing at layer $k$ (or (direct) consistency-maintaining at layer $k$) if all its transformations starting with graphs with $\kmax =k$ are (direct) consistency-increasing or (direct) consistency-maintaining, respectively.
+
 
 \begin{definition}[\textbf{(direct) consistency increasing and maintaining rule at layer}]
-	Let a constraint $c$ be given. A rule $\rho$ is called \emph{(direct) 
+	Let a constraint $c$ in UANF be given. A rule $\rho$ is called \emph{(direct) 
 	consistency 
 	maintaining at layer $-1 \leq k < \nlvl(c)$ w.r.t. $c$} if all 
 	transformations
 	$t : G \Longrightarrow_{\rho} H$, with $\maxk{G}{c} =k$, are (direct) 
 	consistency 
 	maintaining w.r.t. $c$.
-	Additionally, $\rho$ is called \emph{(direct) consistency increasing at layer 
+	The rule $\rho$ is called \emph{(direct) consistency increasing at layer 
 	$0 \leq k
 	< \nlvl(c)$ w.r.t. $c$} if all transformations $t : G \Longrightarrow_{\rho}
 	H$, with $\maxk{G}{c}=k$, are (direct) consistency increasing w.r.t. $c$.
 	   
 \end{definition}
 
-Note, that a consistency maintaining rule at layer $\nlvl(c)-1$ w.r.t. $c$ 
-is also a consistency maintaining or increasing rule w.r.t. $c$.
-But, a consistency increasing rule at layer $\nlvl(c)-1$ must not necessarily be a consistency increasing rule w.r.t. $c$.
+Note that a consistency-maintaining rule at layer $\nlvl(c)-1$ w.r.t. $c$ is also a consistency-maintaining rule w.r.t. $c$, since all graphs to which this rule is applied satisfy $c$. For the same reason, there is no consistency-increasing transformation at layer $\nlvl(c)-1$ w.r.t. $c$.
 
 \input{Kapitel/application_conditions/general_ap}
 \input{Kapitel/application_conditions/basic_rules}
