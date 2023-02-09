@@ -1,1 +1,21 @@
 \section{Introduction}
+
+Graphs and graph transformations are a suitable framework for model-driven software engineering. 
+The models (graphs) need to be consistent with respect to a set of constraints. The concept of \emph{nested graph conditions} is suitable to describe these constraints on the basis of second order logic \cite{habel2005nested}.
+During development, inconsistencies may occur and a method to resolve these, called \emph{model repair}, is necessary. 
+Due to the versatility of graphs and graph transformations, the concept of model repair can be used to resolve inconsistencies for all kinds of graph-like structure. For example in traffic light control or street networks. 
+
+For model repair, a notion to assess the level of  inconsistency of a graph with respect to a constraint is needed.
+For this, there are already concepts, for example consistency preserving and guaranteeing transformations and rules \cite{habel2009correctness}, which asses the change of consistency through a graph transformation. 
+These notions only look at the first graph of a constraint or whether the derived graph is consistent. 
+They are not able to detect small increases or decreases of consistency that arise by the insertion or deletion of single elements. 
+In this paper, we will introduce the finer grained notions of \emph{consistency-maintaining} and \emph{consistency-increasing} transformations and rules, that are able to detect these small  increase or decreasements of consistency. 
+In addition, we introduce the more restricted notions of \emph{direct consistency-maintaining} and \emph{direct consistency-increasing} transformations and rules, which prohibit the insertion of new inconsistencies completely and yield the advantage that second-order formulas can be used to decide whether a transformation is (direct) consistency-maintaining or increasing. 
+We will also introduce direct consistency maintaining and direct consistency increasing application conditions for general rules and direct consistency increasing application conditions for a specific type or rules, called \emph{basic rules}. 
+It is known that application conditions for these notions are either very restrictive or large in size. For basic conditions, we are able to construct smaller and less restrictive application conditions. 
+In addition, we present a rule-based graph repair approach, which is capable of repairing specific constraints, namely \emph{circular conflict free constraints} and we extend this repair approach to repair specific sets of constraints, namely  \emph{circular conflict free sets of constraints}.
+
+This paper is structured in the following way:
+Formal prerequisites are introduced in section \ref{preliminaries}. The notions of (direct) consistency-maintaining and (direct) consistency-increasing transformations are given in section \ref{increase_maintainment} and the construction of application conditions and characterisation of basic rules is given in section \ref{appl_conds}. 
+The repair process is presented in section \ref{repair} and we summarize related graph repair approaches in section \ref{rel_work} before section \ref{conclusion} concludes the paper.
+ 
