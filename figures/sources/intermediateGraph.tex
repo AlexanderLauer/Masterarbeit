@@ -1,0 +1,152 @@
+\documentclass[class=elsarticle,tikz=true]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage[]{multirow}
+%\usepackage{texstyles/tikz-cellular}
+%\usepackage{texstyles/tikz-vcond}
+%\usepackage{texstyles/tikz-extension}
+\usetikzlibrary{%
+	positioning,
+	fit,
+	calc,
+	arrows,
+	arrows.meta,
+	shapes.misc
+}
+%\usetikzlibrary{arrows,arrows.meta}
+%\usetikzlibrary{positioning,arrows,matrix,shapes.geometric,fit,calc}
+%\usepackage{amssymb}
+\begin{document}
+
+	\begin{tikzpicture}[
+		SClass/.style={draw,shape=rectangle,font=\sffamily,text width={width("rc=cc:Class")},align=center,inner xsep=-1pt},
+	%	SClass-phantom/.style={text width={width(": Feature")},align=center,draw},
+		title/.style={text width={width("$L_1R_2$")},inner sep=.5pt,outer sep=.5pt},
+		outside/.style={draw=black!60}
+	]
+	
+		\node(ig) [inner sep=.5pt,outer sep=.5pt, anchor=west] {IG$(C_1^1,C_2^1) := \{I_1,I_2,I_3,I_4,I_5,I_6\}$};
+		
+		\node(I1) [title, below=20pt of ig.west, anchor = west] {$I_1$};
+		\node(class1) [SClass, below=15 pt  of I1.west, anchor=west]{\scriptsize c:Class};
+		\node (f1-C1) [SClass,below=50pt of I1.west,anchor=west] {\scriptsize f1:Feature }  ;
+		\node(C_22-out) [outside, fit={(I1) (f1-C1) (class1)}]{};
+		
+		
+		\node(C22) [title, right=54.5pt of I1] {$I_2$};
+		\node(class22) [SClass, below=15 pt  of C22.west, anchor=west]{\scriptsize c:Class};
+		\node (f1-C22) [SClass,below=50pt of C22.west,anchor=west] {\scriptsize f1:Feature }  ;
+		\node(C_22-out) [outside, fit={(C22) (f1-C22) (class22)}]{};
+		\draw [-{Stealth}] (class22)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f1-C22);
+	
+		\node(I3) [title, right=35pt of C22] {$I_3$};
+		\node(class3) [SClass, below right=15 pt and 40pt of I3.west, anchor=west]{\scriptsize c:Class};
+		\node (f1-I3) [SClass,below =50pt of I3.west,anchor=west] {\scriptsize f1:Feature }  ;
+		\node (f2-I3) [SClass,below right=50pt and 80pt of I3.west,anchor=west] {\scriptsize f2:Feature }  ;
+		\node(I3-out) [outside, fit={(I3) (f1-I3) (class3)(f2-I3) }]{};
+			
+		\node(I4) [title, below=70pt of I1.west, anchor = west] {$I_4$};
+		\node(class4) [SClass, below right=15 pt and 40pt of I4.west, anchor=west]{\scriptsize c:Class};
+		\node (f1-I4) [SClass,below =50pt of I4.west,anchor=west] {\scriptsize f1:Feature }  ;
+		\node (f2-I4) [SClass,below right=50pt and 80pt of I4.west,anchor=west] {\scriptsize f2:Feature }  ;
+		\node(I4-out) [outside, fit={(I4) (f1-I4) (class4)(f2-I4) }]{};
+		\draw [-{Stealth}] (class4)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f1-I4);
+		
+		
+		\node(I5) [title, below=70pt of I3.west, anchor= west] {$I_5$};
+		\node(class5) [SClass, below right=15 pt and 40pt of I5.west, anchor=west]{\scriptsize c:Class};
+		\node (f1-I5) [SClass,below =50pt of I5.west,anchor=west] {\scriptsize f1:Feature }  ;
+		\node (f2-I5) [SClass,below right=50pt and 80pt of I5.west,anchor=west] {\scriptsize f2:Feature }  ;
+		\node(I5-out) [outside, fit={(I5) (f1-I5) (class5)(f2-I5) }]{};
+		
+		\draw [-{Stealth}] (class5)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f2-I5);
+		
+		\node(C21) [title, below=70pt of I4.west, anchor = west] {$I_6$};
+		\node(class21) [SClass, below right=15 pt and 40pt of C21.west, anchor=west]{\scriptsize c:Class};
+		\node (f1-C21) [SClass,below =50pt of C21.west,anchor=west] {\scriptsize f1:Feature }  ;
+		\node (f2-C21) [SClass,below right=50pt and 80pt of C21.west,anchor=west] {\scriptsize f2:Feature }  ;
+		\node(C_21-out) [outside, fit={(C21) (f1-C21) (class21)(f2-C21) }]{};
+		\draw [-{Stealth}] (class21)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f1-C21);
+		\draw [-{Stealth}] (class21)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f2-C21);
+				
+			
+		
+		%G
+		
+	
+		
+		
+	\end{tikzpicture}
+	
+	
+%$\begin{array}{l} 
+%\nexists \left( \tikz {% 
+	%\node (cc1) [SClass] {\scriptsize rc2=cc1:Class }  ; 
+	%\node (cc2) [SClass, strictly right of= cc1,node distance=4em] {\scriptsize rc1=cc2:Class }  ;
+	%\node (cf1) [SClass, strictly below of= cc1,node distance=2em] {\scriptsize rf=cf1:Feature }  ;
+	%\node (cf2) [SClass, strictly below of= cc2,node distance=2em] {\scriptsize cf2:Feature }  ;
+	%\draw [-{Stealth}] (cc2)  to node [above,sloped] { \tiny contains }  (cf1)  ; 
+	%\draw [-{Stealth}] (cc2)  to node [right] { \tiny contains }  (cf2)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf2)  ;
+%}  \right) 
+%\land \, \nexists \left( \tikz {%
+	%\node (cc1) [SClass] {\scriptsize rc2=cc1:Class }  ; 
+	%\node (rc1) [SClass, strictly left of= cc1,node distance=2em] {\scriptsize rc1:Class }  ;
+	%\node (cc2) [SClass, strictly right of= cc1,node distance=4em] {\scriptsize cc2:Class }  ;
+	%\node (cf1) [SClass, strictly below of= cc1,node distance=2em] {\scriptsize rf=cf1:Feature }  ;
+	%\node (cf2) [SClass, strictly below of= cc2,node distance=2em] {\scriptsize cf2:Feature }  ;
+	%\draw [-{Stealth}] (rc1)  to node [above,sloped] { \tiny contains }  (cf1)  ; 
+	%\draw [-{Stealth}] (cc2)  to node [right] { \tiny contains }  (cf2)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf2)  ;
+%}  \right) \land
+%\vspace{4pt}
+%\cr 
+%\nexists \left( \tikz {%
+	%\node (cc1) [SClass] {\scriptsize rc1=cc1:Class }  ; 
+	%\node (cc2) [SClass, strictly right of= cc1,node distance=4em] {\scriptsize rc2=cc2:Class }  ;
+	%\node (cf1) [SClass, strictly below of= cc1,node distance=2em] {\scriptsize cf1:Feature }  ;
+	%\node (cf2) [SClass, strictly below of= cc2,node distance=2em] {\scriptsize rf=cf2:Feature }  ;
+	%\draw [-{Stealth}] (cc1)  to node [left] { \tiny contains }  (cf1)  ; 
+	%\draw [-{Stealth}] (cc1)  to node [above,sloped] { \tiny contains }  (cf2)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf2)  ;
+%}  \right) 
+%\land \, \nexists \left( \tikz {%
+	%\node (cc1) [SClass] {\scriptsize cc1:Class }  ; 
+	%\node (rc1) [SClass, strictly right of= cc1,node distance=2em] {\scriptsize rc1:Class }  ;
+	%\node (cc2) [SClass, strictly right of= cc1,node distance=6em] {\scriptsize rc2=cc2:Class }  ;
+	%\node (cf1) [SClass, strictly below of= cc1,node distance=2em] {\scriptsize cf1:Feature }  ;
+	%\node (cf2) [SClass, strictly below of= cc2,node distance=2em] {\scriptsize rf=cf2:Feature }  ;
+	%\draw [-{Stealth}] (rc1)  to node [above,sloped] { \tiny contains }  (cf2)  ; 
+	%\draw [-{Stealth}] (cc1)  to node [right] { \tiny contains }  (cf1)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf2)  ;
+%}  \right) \land
+%\vspace{4pt}
+%\cr 
+%\nexists \left( \tikz {%
+	%\node (cc1) [SClass] {\scriptsize rc1=cc1:Class }  ; 
+	%\node (cc2) [SClass, strictly right of= cc1,node distance=4em] {\scriptsize rc2=cc2:Class }  ;
+	%\node (cf1) [SClass, strictly below of= cc1,node distance=2em] {\scriptsize cf1:Feature }  ;
+	%\node (cf2) [SClass, strictly below of= cc2,node distance=2em] {\scriptsize cf2:Feature }  ;
+	%\node (cf3) [SClass, strictly left of= cf1,node distance=4em] {\scriptsize rf=cf3:Feature }  ;
+	%\draw [-{Stealth}] (cc2)  to node [left] { \tiny contains }  (cf2)  ; 
+	%\draw [-{Stealth}] (cc1)  to node [above,sloped] { \tiny contains }  (cf3)  ;
+	%\draw [-{Stealth}] (cc1)  to node [right] { \tiny contains }  (cf1)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf2)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf3)  ;
+ %}  \right) 
+%\land \, \nexists \left( \tikz {%
+	%\node (cc1) [SClass] {\scriptsize rc1=cc1:Class }  ; 
+	%\node (cc2) [SClass, strictly right of= cc1,node distance=4em] {\scriptsize cc2:Class }  ;
+	%\node (rc2) [SClass, strictly left of= cc1,node distance=4em] {\scriptsize rc2:Class }  ;
+	%\node (cf1) [SClass, strictly below of= cc1,node distance=2em] {\scriptsize cf1:Feature }  ;
+	%\node (cf2) [SClass, strictly below of= cc2,node distance=2em] {\scriptsize cf2:Feature }  ;
+	%\node (cf3) [SClass, strictly left of= cf1,node distance=4em] {\scriptsize rf=cf3:Feature }  ;
+	%\draw [-{Stealth}] (cc2)  to node [left] { \tiny contains }  (cf2)  ; 
+	%\draw [-{Stealth}] (cc1)  to node [above,sloped] { \tiny contains }  (cf3)  ;
+	%\draw [-{Stealth}] (cc1)  to node [right] { \tiny contains }  (cf1)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf2)  ;
+	%\draw [-{Stealth}] (cf1)  to node [above] { \tiny hasDepTo }  (cf3)  ;
+%}  \right)
+%\end{array}$
+\end{document}

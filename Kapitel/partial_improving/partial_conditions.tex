@@ -4,6 +4,9 @@
 \input{figures/fig_graph}
 
 The goal of our approach is to increase the consistency of a constraint layer by layer, as we have already mentioned. To do this, we introduce a notion of partial consistency, called \emph{satisfaction at layer}, which allows us to check whether a constraint is satisfied at a particular layer by checking whether the so-called \emph{truncated condition} is satisfied at that layer.
+
+We first define the \emph{subcondition at layer} $-1 \leq k \leq \nlvl(c)$ of a condition $c$. As the name suggests, the subcondition at layer $0 \leq k \leq \nlvl(c)$ denotes the subcondition of $c$ with layer $k$. 
+We also define the subcondition at layer $-1$, which is $\true$. This will be useful for defining the satisfaction at layer when a graph does not satisfy any layer of a constraint.
  
 \begin{definition}[\textbf{subcondition at layer}]
 Let a condition $c$ in ANF be given. The \emph{subcondition at layer $-1 \leq k \leq \nlvl(c)$}, denoted by $\scond{k}{c}$, is the subcondition $d$ of $c$ with $\lay(d) = k$ if $0 \leq k \leq \nlvl(c)$ and $\true$ if $k = -1$. 
@@ -17,11 +20,11 @@ Note that by definition the subcondition at layer $k$ is always a condition over
 	\false))$.
 \end{example}
 
-Let us first introduce an operator which allows to replace a subcondition $\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement at layer}.
+Let us first introduce an operator which allows to replace a subcondition $\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement starting from layer}.
 
-\begin{definition}[\textbf{replacement at layer}]
+\begin{definition}[\textbf{replacement starting from layer}]
 Given a condition $c = Q(a_1: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
-The \emph{replacement of layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, is defined recursively as
+The \emph{replacement starting from layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, is defined recursively as
 \begin{equation*}
 	\repl{k}{c}{e} := 
 		\begin{cases}
@@ -32,25 +35,25 @@ The \emph{replacement of layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, 
 \end{definition}
 
 \begin{example}
-Consider the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $d = \exists(a'_1: C_1 \inj C_3, e)$. 
-The replacement of layer $1$ in $c$ by $d$ is given by
-$$\repl{1}{c}{d} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, e)).$$ 
+Consider the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $e = \exists(a'_1: C_1 \inj C_3, d)$. 
+The replacement of layer $1$ in $c$ by $e$ is given by
+$$\repl{1}{c}{e} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, d)).$$ 
 \end{example}
 
-We now define \emph{truncated conditions} using the concept of replacement at layer.
-Intuitively, a condition is truncated at a particular layer by replacing the subcondition at that layer with $\true$ or $\false$, depending on which quantifier the replaced subcondition is bound by.
+We now define \emph{truncated conditions after layer} using the concept of replacement at layer.
+Intuitively, a condition is truncated after a particular layer by replacing the subcondition at the next layer with $\true$ or $\false$, depending on which quantifier the replaced subcondition is bound by.
 
 
-\begin{definition}[\textbf{truncated condition}]
+\begin{definition}[\textbf{truncated condition after layer}]
 	Let a condition $c$ in UANF be given. 
-	The \emph{truncated condition of $c$ at layer $-1 \leq k < \nlvl(c)$ }, 
+	The \emph{truncated condition of $c$ after layer $-1 \leq k < \nlvl(c)$}, 
 	denoted by $\cut{k}{c}$, is defined as
 
 $$ \cut{k}{c} := \begin{cases}
 					\true &\text{if $k = -1$} \\
-					\repl{k +1}{c}{\true}&\text{if $d$ is existentially bound,
+					\repl{k +1}{c}{\true}&\text{if $\scond{k}{c}$ is a existential condition,
 					 i.e. $k$ is odd} \\
-					\repl{k+1}{c}{\false}&\text{if $d$ is universally bound, 
+					\repl{k+1}{c}{\false}&\text{if $\scond{k}{c}$ is a universal condition, 
 					i.e. $k$ is even.} \\
 				\end{cases}$$
 

@@ -7,11 +7,11 @@ A conditions $c$ in ANF is in \emph{universally quantified ANF} (UANF) if it is 
 \end{definition}
 
 
-Note that, given a condition $c$ in UANF, any subcondition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universally bound if $k$ is an even number and existentially bound if $k$ is an odd number. Furthermore, a graph $C_k$ of $c$ is  universally bound if $k$ is an odd number and existentially bound if 
+Note that in our notation, given a condition $c$ in UANF, any subcondition of $c$ at layer $0 \leq k \leq \nlvl(c)$ is universal if $k$ is an even number and existential if $k$ is an odd number. Furthermore, a graph $C_k$ of $c$ is  universally bound if $k$ is an odd number and existentially bound if 
 $k$ is an even number.  
 It is already known that an existentially bound condition $c$ 
-can be extended to the equivalent condition $\exists(a_0: \emptyset \inj C_0, d)$ \cite{habel2005nested}.
-We will use this to show that every condition in ANF has an 
+can be extended to the equivalent condition $\exists(\id_{C_0}: C_0 \inj C_0, d)$ \cite{habel2005nested}.
+Analogously, we show that every condition in ANF has an 
 equivalent condition in UANF.
 
 
@@ -25,7 +25,7 @@ If $c$ is universally bound, then $c$ is already in UANF.
 If $c = \exists(a_0: C_0 \inj C_1,d)$, we show that $c$ is equivalent to $c' := \forall(\id_{C_0}: C_0 \inj C_0, c)$.
 \begin{enumerate}
 \item 
-Let $p :C_0 \inj G$ be a morphism such that $q \models c$. 
+Let $p :C_0 \inj G$ be a morphism such that $p \models c$. 
 Then $p \models c'$, because $p$ is the only morphism from $C_0$ to $G$ with $p = p \circ \id_{C_0}$ and $p \models c$.
 
 \item 
@@ -34,6 +34,8 @@ Let $p:C_0 \inj G$ be a morphism with $p \models c'$, then all morphisms $q:C_0 
 \end{proof}
 
 For the rest of this thesis, given a condition $c = \forall(a_0 : C_0 \inj C_1, d)$ in UANF, we assume that no morphism in $c$, except $a_0$, is bijective, since it can be shown that every condition in ANF can be transformed into an equivalent condition in ANF that satisfies this property, by showing that
-$\exists(a_0 : C_0 \inj C_0, \forall(a_1: C_0 \inj C_2,d)$ is equivalent to
-$\forall(a_1 \circ a_0 : C_0 \inj C_2,d)$ and that $\forall(a_0 : C_0 \inj C_0, \exists(a_1: C_0 \inj C_2,d)$ is equivalent to
-$\exists(a_1 \circ a_0 : C_0 \inj C_2,d)$ .
+$\exists(\id_{C_0} : C_0 \inj C_0, \forall(a_1: C_0 \inj C_2,d))$ is equivalent to
+$\forall(a_1: C_0 \inj C_2,d)$ and that $\forall(\id_{C_0} : C_0 \inj C_0, \exists(a_1: C_0 \inj C_2,d))$ is equivalent to
+$\exists(a_1 \circ a_0 : C_0 \inj C_2,d)$ \cite{habel2005nested}.
+In addition, given a condition $c$ in UANF, we will denote the first graph of $c$ with $C_0$, the first morphism with $a_0$, the second graph with $C_1$, the second morphism with $a_1$, and so on. This means we always write constraints as $\forall(a_0:C_0 \inj C_1, \exists(a_1:C_1 \inj C_2, \ldots))$.
+

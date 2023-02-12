@@ -1,0 +1,41 @@
+\documentclass[class=elsarticle]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{extensions/tikz-vcond2}
+\usepackage{extensions/tikz-extension}
+\usetikzlibrary{arrows,arrows.meta}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\DeclareMathOperator{\rem}{incr}
+\DeclareMathOperator{\exv}{exv}
+\begin{document}
+
+$\begin{array}{l}
+
+c_5 = \forall\left(\tikz{
+			\node(c1) [SClass]{\scriptsize cc1:Class};
+			\node(f1) [SClass, strictly below left of = c1, node distance = 4em]{\scriptsize cf1:Feature};
+			\node(f2) [SClass, right  of = f1, node distance = 8.5em]{\scriptsize cf2:Feature};
+			\node(f3) [SClass, strictly below right of = c1, node distance = 4em]{\scriptsize cf3:Feature};	
+			\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f1);
+			\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);
+			\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f3);						
+			
+}, \textsf{false} \right)
+
+
+
+
+	
+
+
+
+	
+
+\end{array}
+$
+
+
+\end{document}
+%[SClass/.append style={font=\sffamily}]

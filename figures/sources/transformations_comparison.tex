@@ -1,0 +1,56 @@
+\documentclass[class=elsarticle]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{extensions/tikz-vcond2}
+\usepackage{extensions/tikz-extension}
+\usetikzlibrary{arrows,arrows.meta}
+\usepackage{amssymb}
+\begin{document}
+
+$\begin{array}{l}
+
+t_1: \left( \tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};
+	\node(c2) [SClass,strictly right of = c1, node distance = 2em]{\scriptsize c2:Class};
+	\node (f1) [SClass, strictly below of = c1, node distance = 2em]{\scriptsize f1:Feature};
+	\node (f2) [SClass, strictly below of = c2, node distance = 2em]{\scriptsize f2:Feature};
+	\draw[-{Stealth}] (c1) to node [left, font = \sffamily] {\tiny contains} (f1);	
+	\draw[-{Stealth}] (c2) to node [left, font = \sffamily] {\tiny contains} (f2);	
+}\right)\Longrightarrow  \left(
+	\tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};
+	\node(c2) [SClass,strictly right of = c1, node distance = 2em]{\scriptsize c2:Class};
+	\node (f1) [SClass, strictly below of = c1, node distance = 2em]{\scriptsize f1:Feature};
+	\node (f2) [SClass, strictly below of = c2, node distance = 2em]{\scriptsize f2:Feature};
+	\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);	
+	\draw[-{Stealth}] (c1) to node [left, font = \sffamily] {\tiny contains} (f1);
+	} \right)
+\vspace{8pt}
+\cr
+t_2: \left( 
+\tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};	
+}\right)\Longrightarrow \left(
+
+\tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};
+	\node(c2) [SClass,strictly right of= c1, node distance = 9em]{\scriptsize c2:Class};
+	\node (f1) [SClass,  below left of = c1, node distance = 6em]{\scriptsize f1:Feature};
+	\node (f2) [SClass,  below right of = c1, node distance = 6em]{\scriptsize f2:Feature};
+	\node (f3) [SClass,  below left of = c2, node distance = 6em]{\scriptsize f3:Feature};
+	\node (f4) [SClass,  below right of = c2, node distance = 6em]{\scriptsize f4:Feature};
+	\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);	
+	\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f1);
+	\draw[-{Stealth}] (c2) to node [above, sloped, font = \sffamily] {\tiny contains} (f3);	
+	\draw[-{Stealth}] (c2) to node [above, sloped, font = \sffamily] {\tiny contains} (f4);
+	\draw[-{Stealth}] (f1) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f2);
+		\draw[-{Stealth}] (f3) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f4);
+	}\right)
+
+\end{array}
+$
+
+
+\end{document}
+%[SClass/.append style={font=\sffamily}]

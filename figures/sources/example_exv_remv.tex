@@ -1,0 +1,87 @@
+\documentclass[class=elsarticle]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{extensions/tikz-vcond2}
+\usepackage{extensions/tikz-extension}
+\usetikzlibrary{arrows,arrows.meta}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\DeclareMathOperator{\rem}{remv}
+\DeclareMathOperator{\exv}{exv}
+\begin{document}
+
+$\begin{array}{l}
+
+
+\exv(P,C_2^2) = \forall \left(\tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f1) [SClass, below of = c1, node distance = 3em] {\scriptsize rf1 = cf1:Feature};
+		}, \neg \exists \left(\tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f1) [SClass, below of = c1, node distance = 3em] {\scriptsize rf1 = cf1:Feature};
+		\draw[-{Stealth}] (c1) to node [left, font = \sffamily] {\tiny contains} (f1);	
+		
+		}, \textsf{true} \right) \right)
+		\vspace{10pt} \cr
+		
+\rem(P, C_2^2) = \forall \left(\tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f1) [SClass, below of = c1, node distance = 3em] {\scriptsize rf1 = cf1:Feature};
+		}, \neg \exists \left(\tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f1) [SClass, below of = c1, node distance = 3em] {\scriptsize rf1 = cf1:Feature};
+		
+		}, \textsf{true} \right) \right)
+		\vspace{10pt} \cr 
+
+\exv(P, C_2^1) = \exists \left(\tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f1) [SClass, below of = c1, node distance = 3em] {\scriptsize rf1 = cf1:Feature};
+		}, \neg \exists \left( \tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f2) [SClass, below right of = c1, node distance = 4.5em] {\scriptsize cf2:Feature};
+		\node(f1) [SClass, below left of = c1, node distance = 4.5em] {\scriptsize rf1 = cf1:Feature};
+		\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f1);
+		\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);
+		}, \textsf{true} \right)\wedge \neg \exists \left( \tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f2) [SClass, below right of = c1, node distance = 4.5em] {\scriptsize cf2:Feature};
+		\node(f1) [SClass, below left of = c1, node distance = 4.5em] {\scriptsize  cf1:Feature};
+		\node(f3) [SClass, right of = c1, node distance = 7em] {\scriptsize rf1 = cf3:Feature};
+		\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f1);
+		\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);
+		
+		},\textsf{true} \right) \right)
+		
+		\vspace{10pt}
+		\cr 
+
+\rem(P, C_2^1) = \forall \left( \tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f1) [SClass, below of = c1, node distance = 3em] {\scriptsize rf1 = cf1:Feature};
+		}, \neg \exists \left( 
+		\tikz{
+		\node(c1) [SClass] {\scriptsize rc1 = cc1:Class};
+		\node(f2) [SClass, below right of = c1, node distance = 4.5em] {\scriptsize cf2:Feature};
+		\node(f1) [SClass, below left of = c1, node distance = 4.5em] {\scriptsize rf1 = cf1:Feature};
+		
+		\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);}
+		\textsf{true} \right) \right)
+		
+				
+		
+
+
+	
+
+
+
+	
+
+\end{array}
+$
+
+
+\end{document}
+%[SClass/.append style={font=\sffamily}]

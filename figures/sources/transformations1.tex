@@ -1,0 +1,53 @@
+\documentclass[class=elsarticle]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{extensions/tikz-vcond2}
+\usepackage{extensions/tikz-extension}
+\usetikzlibrary{arrows,arrows.meta}
+\usepackage{amssymb}
+\begin{document}
+
+$\begin{array}{l}
+
+t_1: \left( \tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};
+	\node(c2) [SClass,strictly right of = c1, node distance = 2em]{\scriptsize c2:Class};
+	\node (f1) [SClass, strictly below of = c1, node distance = 2em]{\scriptsize f1:Feature};
+	\draw[-{Stealth}] (c1) to node [left, font = \sffamily] {\tiny contains} (f1);	
+}\right)\Longrightarrow  \left(
+	\tikz{%
+	\node(c3)[SClass]{\scriptsize c1:Class};
+	\node(c4)[SClass, strictly right of =c3, node distance = 2em]{\scriptsize c2:Class};
+	\node(f2) [SClass, strictly below of = c4, node distance =2em] {\scriptsize f2:Feature};
+	\draw[-{Stealth}] (c4) to node [right, font = \sffamily] {\tiny contains} (f2);
+	} \right)
+\vspace{8pt}
+\cr
+t_2: \left( 
+\tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};
+	\node(c2) [SClass,strictly right of = c1, node distance = 2em]{\scriptsize c2:Class};
+	\node(c3) [SClass,strictly right of = c2, node distance = 2em]{\scriptsize c3:Class};
+		
+	\node (f1) [SClass, strictly below of = c1, node distance = 2em]{\scriptsize f1:Feature};
+	\draw[-{Stealth}] (c1) to node [left, font = \sffamily] {\tiny contains} (f1);	
+}\right)\Longrightarrow \left(
+
+\tikz{%
+	\node(c1)[SClass]{\scriptsize c1:Class};
+	\node(c2) [SClass,strictly right of = c1, node distance = 2em]{\scriptsize c2:Class};
+	\node(c3) [SClass,strictly right of = c2, node distance = 2em]{\scriptsize c3:Class};
+		
+	\node (f1) [SClass, strictly below of = c2, node distance = 2em]{\scriptsize f2:Feature};
+	\node (f2) [SClass, strictly below of = c3, node distance = 2em]{\scriptsize f3:Feature};
+	\draw[-{Stealth}] (c2) to node [left, font = \sffamily] {\tiny contains} (f1);
+	\draw[-{Stealth}] (c3) to node [left, font = \sffamily] {\tiny contains} (f2);
+	}\right)
+
+\end{array}
+$
+
+
+\end{document}
+%[SClass/.append style={font=\sffamily}]

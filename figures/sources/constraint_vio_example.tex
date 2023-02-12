@@ -1,0 +1,66 @@
+\documentclass[class=elsarticle]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{extensions/tikz-vcond2}
+\usepackage{extensions/tikz-extension}
+\usetikzlibrary{arrows,arrows.meta}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\DeclareMathOperator{\nui}{nui}
+\DeclareMathOperator{\vio}{vio}
+\begin{document}
+
+$\begin{array}{l}
+
+c = \forall \left( \tikz{
+					\node(c1) [SClass]{\scriptsize cc1:Class};
+					}, \exists \left(
+					\tikz{
+					\node(c1) [SClass]{\scriptsize cc1:Class};
+					\node(f1) [SClass, strictly right of =c1, node distance = 3em]{\scriptsize cf1:Feature};
+					\node(f2) [SClass, strictly right of =f1, node distance = 3em]{\scriptsize cf2:Feature};
+					\node(f3) [SClass, strictly right of =f2, node distance = 3em]{\scriptsize cf3:Feature};
+					
+					\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny cotains} (f1);
+					\draw[-{Stealth}] (f1) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f2);	
+					\draw[-{Stealth}] (f2) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f3);
+					}, \textsf{true}\right)\right)
+					
+\vspace{10pt}
+\cr
+
+\vio_{-1} = \neg \exists \left( 
+
+\tikz{
+					\node(c1) [SClass]{\scriptsize cc1:Class};
+					\node(f1) [SClass, strictly right of =c1, node distance = 4em]{\scriptsize rf1=cf1:Feature};
+					\node(f2) [SClass, strictly right of =f1, node distance = 4em]{\scriptsize rf2 =cf2:Feature};
+					
+					
+					\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny cotains} (f1);
+					\draw[-{Stealth}] (f1) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f2);	
+					
+					}, \textsf{true}\right) \vspace{10pt} \cr \wedge \neg \exists \left(
+					\tikz{
+					\node(c1) [SClass]{\scriptsize cc1:Class};
+					\node(f1) [SClass, strictly right of =c1, node distance = 4em]{\scriptsize cf1:Feature};
+					\node(f2) [SClass, strictly right of =f1, node distance = 4em]{\scriptsize rf1 = cf2:Feature};
+					\node(f3) [SClass, strictly right of =f2, node distance = 4em]{\scriptsize rf2 = cf3:Feature};
+					
+					\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny cotains} (f1);
+					\draw[-{Stealth}] (f1) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f2);	
+					\draw[-{Stealth}] (f2) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f3);
+					}, \textsf{true} \right)
+
+
+	
+
+	
+
+\end{array}
+$
+
+
+\end{document}
+%[SClass/.append style={font=\sffamily}]

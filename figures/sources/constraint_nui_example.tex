@@ -1,0 +1,49 @@
+\documentclass[class=elsarticle]{standalone}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{extensions/tikz-vcond2}
+\usepackage{extensions/tikz-extension}
+\usetikzlibrary{arrows,arrows.meta}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\DeclareMathOperator{\nui}{nui}
+\begin{document}
+
+$\begin{array}{l}
+
+\nui_1 = \neg \exists \left(
+
+	\tikz{
+	\node(c1)[SClass]{\scriptsize rc1 = cc1:Class};
+	\node (f1) [SClass,  below left of = c1, node distance = 5em]{\scriptsize rf1 = cf1:Feature};
+	\node (f2) [SClass,  below right of = c1, node distance = 5em]{\scriptsize cf2:Feature};
+	\node (f3) [SClass,  strictly right of = f2, node distance = 3em]{\scriptsize cf3:Feature};
+	\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f2);	
+	
+	\draw[-{Stealth}] (f2) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f3);
+	
+
+	}, \textsf{true} \right) \wedge \neg \exists \left(
+	
+	\tikz{
+	\node(c1)[SClass]{\scriptsize rc1 = cc1:Class};
+	\node (f1) [SClass,  below left of = c1, node distance = 5em]{\scriptsize  cf1:Feature};
+	\node (f2) [SClass,  below right of = c1, node distance = 5em]{\scriptsize rf1 = cf2:Feature};
+	\node (f3) [SClass,  strictly right of = f2, node distance = 3em]{\scriptsize cf3:Feature};
+	
+	\draw[-{Stealth}] (c1) to node [above, sloped, font = \sffamily] {\tiny contains} (f1);
+	\draw[-{Stealth}] (f2) to node [above, sloped, font = \sffamily] {\tiny hasDepTo} (f3);
+	
+
+	}, \textsf{true} \right)
+	
+
+	
+
+\end{array}
+$
+
+
+\end{document}
+%[SClass/.append style={font=\sffamily}]
