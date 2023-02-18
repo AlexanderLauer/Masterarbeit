@@ -51,14 +51,14 @@ maintainment, we also need to consider \emph{subgraphs}, \emph{overlaps} of grap
 \begin{definition}[\textbf{subgraph}]
 	Let the graphs $G$ and $H$ be given. Then $G$ is called a 
 	\emph{subgraph} of $H$ if an inclusion $p: G \inj H$
-	exists.
+	exists. $G$ is called a \emph{proper subgraph of $H$} if the $p$ is not bijective. 
 \end{definition}
 Note that since the inclusion can also be surjective, by this definition every graph $G$ is a subgraph of itself.
 
 \begin{definition}[\textbf{intermediategraph}]
 	Let $G$ and $H$ be graphs such that $G$ is a subgraph of $H$. 
 	A graph $C$ is called an \emph{intermediategraph} of $G$ 
-	and $H$, if $G$ is a subgraph of $C$ and $C$ is a subgraph of $H$. 
+	and $H$, if $G$ is a proper subgraph of $C$ and $C$ is a subgraph of $H$. 
 	The set of intermediate-graphs of $G$ and 
 	$H$ is denoted by $\ig{G}{H}$.
 \end{definition}
@@ -241,7 +241,7 @@ if $G \models c$ and $H\not \models c$.
 
 \begin{definition}[\textbf{rules and application conditions}]
 	A \emph{plain rule} $\rho = \rle{L}{l}{K}{r}{R}$ consists of 
-	graphs $L,K,R$ and injective graph morphisms $l: K \inj L$ 
+	graphs $L,K,R$ and inclusions $l: K \inj L$ 
 	and $r:  K \inj R$. The rule $\rho^{-1} = \rle{R}{r}{K}{l}{L}$
 	is called the \emph{inverse rule of $\rho'$}. 
 	
@@ -264,6 +264,7 @@ if $G \models c$ and $H\not \models c$.
 	pushouts in the sense of category theory, $m\models \ap_L$
 	and the morphism $n:L \inj H$, called the co-match of $t$, 
 	satisfies $\ap_R$.
+	The morphisms $g: D \inj G $ and $h: D \inj H$ are called the \emph{transformations morphisms} of $t$. 
 \end{definition}
 
 \input{figures/fig_dpo}
@@ -318,7 +319,7 @@ Via the \emph{track morphism} it is possible to track elements across a transfor
 \begin{definition}[\textbf{track morphism}]
 	Consider the transformation $t$ shown in figure \ref{fig_dpo}.
 	The \emph{track morphism}, $\track_t: G \dashrightarrow H$, of $t$ is 
-	defined as
+	a partial morphism, defined as
 	$$\track_t = \begin{cases}
 					h (g^{-1}(e)) & \text{if $ e \in g(D)$} \\
 					\text{undefined} & \text{otherwise.}
@@ -326,7 +327,30 @@ Via the \emph{track morphism} it is possible to track elements across a transfor
 
 \end{definition}
 
-For example, given a transformation $t: G \Longrightarrow H$, the track morphism can be used to check whether a morphism $p:C \inj G$ extends to the derived graph $H$ by checking whether $\track_t \circ p$ is total, or whether a new morphism $q:C \inj H$ has been inserted by checking that no morphism $p : C \inj H$ with $q = \track_t \circ p$ exists.
+For example, given a transformation $t: G \Longrightarrow H$, the track morphism can be used to check whether a morphism $p:C \inj G$ extends to the derived graph $H$ by checking whether $\track_t \circ p$ is total, or whether a new morphism $q:C \inj H$ has been inserted by checking that no morphism $p : C \inj H$ with $q = \track_t \circ p$ exists \cite{kosiol2022sustaining}. We will use these results later on.
+
+\begin{lemma}[\cite{kosiol2022sustaining}]
+	Let a transformation $t: G \Longrightarrow G$ with transformation morphisms $g: D \inj G$, $h: D \inj H$ and an occurrence $p: C \inj G$ of a graph $C$ be given. Then,
+	\begin{enumerate}
+		\item The track morphism $\track_t$ of $t$ is total when restricted to $p(C)$, i.e. $\track_t \circ p$ is total, if and only if there is an injective morphism $p': C \inj D$ such that $p = g \circ p'$. 
+		\item 
+			Given an injective morphism $p: C \inj H$, $p(C)$ is contained in $\track_t(G)$ if and only if there is an injective morphism $p': C \inj D$ such that $p = h \circ p'$.
+	\end{enumerate}
+\end{lemma}
+
+\begin{lemma}[\cite{kosiol2022sustaining}]
+	Given a transformation $t:G \Longrightarrow H$ with the transformation morphisms $g: D \inj G$, $h:D \inj H$ and a constraint $c$ in ANF that contains the morphism $a_i: C_{i-1} \inj C_i$. Given injective morphisms $p_{i-1}: C_{i-1} \inj G$ and $p_i:C_i \inj G$ such that $p_{i-1} ? p_i \circ a_i$ and the track morphism $\track_t : G \dashrightarrow H$ is total when restricted to $p_i(C_i)$. 
+	Then, $p'_{i-1} = p'_i \circ a_i$ where $p'_{i-1} = \track_t \circ p_{i-1}$ $and p'_{i} = \track_t \circ p_{i}$.
+	Also, given injective morphisms $p'_{i-1}:C_{i-1} \inj H$ and $p'_{i}:C_{i} \inj H$ such that $p'_{i-1} = p'_i \circ a_i$ and 
+	$p_i(C_i)$ is contained in $\track_t(G)$, then $p_{i-1} = p_i \circ a_i$ where $p_{i-1} = \track_t^{-1} \circ p'_{i-1}$ and $p_i = \track_t^{-1} \circ p'_{i}$- 
+\end{lemma}
+
+\begin{definition}[\textbf{new and removed occurrences}]
+	Given a transformation $t:G \Longrightarrow H$ and a graph $C$.
+	An occurrence $p: C \inj G$ is called a \emph{removed occurrence of $C$ by $t$} if $\track_t \circ p$ is not total. 
+	An occurrence $p' : C \inj H$ is called a \emph{inserted occurrence of $C$ by $t$} if there is no morphism $p: C \inj G$ such that $p' = \track_t \circ p$. 
+\end{definition}
+
 
 Given a sequence of transformations, the notion of \emph{concurrent rules}
 can be used to describe this sequence by a rule. In other words, any sequence of transformations can be replaced by a transformation via its concurrent rule \cite{ehrig2010parallelism}.

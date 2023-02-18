@@ -31,14 +31,14 @@
 		
 		%G
 		\node(C32) [title] {$G$};
-		\node(class32) [SClass, below right=15pt and 40pt of C32.west, anchor=west]{\scriptsize c:Class};
+		\node(class32) [SClass, below right=15pt and 40pt of C32.west, anchor=west]{\scriptsize gc1:Class};
 		\node (f1-C32) [SClass,below =50pt  of C32.west,anchor=west] {\scriptsize f1:Feature }  ;
 		\node (f2-C32) [SClass,below right=50pt and 80pt of C32.west,anchor=west] {\scriptsize f2:Feature }  ;
 		
 		\draw [-{Stealth}] (class32)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f1-C32);
 		\draw [-{Stealth}] (f1-C32)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny hasDepTo}  (f2-C32);
 		
-		\node(class2) [SClass,  right=100pt  of class32.west, anchor=west]{\scriptsize c:Class};	
+		\node(class2) [SClass,  right=100pt  of class32.west, anchor=west]{\scriptsize gc2:Class};	
 		\node (f3) [SClass,below=35pt of class2.west,anchor=west] {\scriptsize f2:Feature }  ;
 		\draw [-{Stealth}] (class2)  to node [fill=white,inner sep=1pt,pos=.4,font=\sffamily] { \tiny contains }  (f3);
 		\node(C_32-out) [outside, fit={(C32) (f1-C32) (class32)(f2-C32) (class2) (f3)}]{};

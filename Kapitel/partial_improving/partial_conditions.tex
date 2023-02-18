@@ -1,9 +1,9 @@
-\subsection{Conditions up to Layer}
+\subsection{Satisfaction until after Layer}
 
 \input{figures/fig_constraints}
 \input{figures/fig_graph}
 
-The goal of our approach is to increase the consistency of a constraint layer by layer, as we have already mentioned. To do this, we introduce a notion of partial consistency, called \emph{satisfaction at layer}, which allows us to check whether a constraint is satisfied at a particular layer by checking whether the so-called \emph{truncated condition} is satisfied at that layer.
+The goal of our approach is to increase the consistency of a constraint layer by layer, as we have already mentioned. To do this, we introduce a notion of partial consistency, called \emph{Satisfaction until after layer}, which allows us to check whether a constraint is satisfied at a particular layer by checking whether the so-called \emph{truncated condition after layer} is satisfied at that layer.
 
 We first define the \emph{subcondition at layer} $-1 \leq k \leq \nlvl(c)$ of a condition $c$. As the name suggests, the subcondition at layer $0 \leq k \leq \nlvl(c)$ denotes the subcondition of $c$ with layer $k$. 
 We also define the subcondition at layer $-1$, which is $\true$. This will be useful for defining the satisfaction at layer when a graph does not satisfy any layer of a constraint.
@@ -18,12 +18,21 @@ Note that by definition the subcondition at layer $k$ is always a condition over
 	\inj C_2, \forall(a_2:C_2 \inj C_3, \false)))$.
 	Then, $\scond{1}{c} = \exists(a_1:C_1 \inj C_2, \forall(a_2: C_2 \inj C_3,
 	\false))$.
+	\begin{enumerate}
+		\item $\scond{-1}{c} = \true$.
+		\item $\scond{0}{c} =  \forall(a_0:C_0 \inj C_1, \exists(a_1: C_1
+	\inj C_2, \forall(a_2:C_2 \inj C_3, \false))) = c$.
+		\item $\scond{1}{c} =  \exists(a_1: C_1
+	\inj C_2, \forall(a_2:C_2 \inj C_3, \false))$.
+	\item $\scond{2}{c} =  \forall(a_2:C_2 \inj C_3, \false)$.
+	\item $\scond{3}{c} =   \false$.
+	\end{enumerate}
 \end{example}
 
 Let us first introduce an operator which allows to replace a subcondition $\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement starting from layer}.
 
 \begin{definition}[\textbf{replacement starting from layer}]
-Given a condition $c = Q(a_1: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
+Given a condition $c = Q(a_0: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
 The \emph{replacement starting from layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, is defined recursively as
 \begin{equation*}
 	\repl{k}{c}{e} := 
@@ -40,7 +49,7 @@ The replacement of layer $1$ in $c$ by $e$ is given by
 $$\repl{1}{c}{e} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, d)).$$ 
 \end{example}
 
-We now define \emph{truncated conditions after layer} using the concept of replacement at layer.
+We now define \emph{truncated conditions after layer} using the concept of replacement starting from layer.
 Intuitively, a condition is truncated after a particular layer by replacing the subcondition at the next layer with $\true$ or $\false$, depending on which quantifier the replaced subcondition is bound by.
 
 
@@ -61,28 +70,35 @@ $$ \cut{k}{c} := \begin{cases}
 
 \begin{example}
 Consider constraint $c_2$ given in Figure \ref{fig:constraints}.
-The truncated condition of $c$ at layer $1$  is given by $\cut{1}{c_2} = \forall (C_1^1, \exists (C_2^2,\true))$ and the truncated condition of $c$ at layer $0$  is given by $\cut{0}{c_2} = \forall(C_1^1, \false)$.
+The truncated conditions of $c_2$ after layer $-1 \leq k < 3$ are given by 
+\begin{enumerate}
+	\item $\cut{-1}{c_2} = \true$.
+	\item $\cut{0}{c_2} = \forall(C_1^1, \false)$.
+	\item $\cut{1}{c_2} = \forall (C_1^1, \exists (C_2^2,\true))$.
+	\item $\cut{2}{c_2} = \forall (C_1^1, \exists (C_2^2,(\forall C_3^2, \false)))$.
+	\item $\cut{3}{c_2} = \forall (C_1^1, \exists (C_2^2,(\forall C_3^2, \exists(C_4^2, \true)))) = c_2$.
+\end{enumerate}
 \end{example}
 
 
 Note that the truncated condition of a condition $c$ at layer $\nlvl(c) -1$ is $c$ itself.
-With these prerequisites we can now introduce \emph{satisfaction at layer}, which allows us to check whether a condition is satisfied at a given layer. A morphism or graph satisfies a condition or constraint at that layer if it satisfies the truncated condition at that layer.
+With these prerequisites we can now introduce \emph{satisfaction until after layer}, which allows us to check whether a condition is satisfied up to a given layer. A morphism or graph satisfies a condition or constraint until after a layer if it satisfies the truncated condition after that layer.
 
 
-\begin{definition}[\textbf{satisfaction at layer}]
+\begin{definition}[\textbf{satisfaction until after layer}]
 Let a graph $G$ and a condition $c$ in UANF be given.
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ at layer $-1 \leq k < \nlvl(c)$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ until after layer $-1 \leq k < \nlvl(c)$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
 
-A graph $G$ satisfies a constraint $c$ at layer $-1 \leq k < \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
+A graph $G$ satisfies a constraint $c$ until after layer $-1 \leq k < \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
 The largest $-1 \leq k < \nlvl(c)$ such that $G \models_k c$ and there is no $k < j < \nlvl(c)$ with $G \models_j c$, called the \emph{largest satisfied layer}, is denoted by $\maxk{c}{G}$. 
 When $c$ and $G$ are clear from the context, we use the abbreviation $\kmax$.
 \end{definition}
 
 Note that given a graph $G$ and a constraint $c$, $\maxk{c}{G}$ always exists, since $\cut{-1}{c} = \true$ and every graph satisfies $\true$.
-Moreover, if $p \models_{\nlvl(c)-1} c$, it immediately follows that $p \models c$. 
+Moreover, if $p \models_{\nlvl(c)-1} c$, i.e. $\kmax = \nlvl(c)-1$, it immediately follows that $p \models c$. 
 \begin{example}
 Consider the graph $G$ given in Figure \ref{fig:graph} and the constraint $c_2$ given in Figure \ref{fig:constraints}. 
-This graph does not satisfy $c_2$ because the second occurrence of \emph{\texttt{Class}} does not satisfy $\scond{1}{c_2} = \exists(C_2^2,(\forall C_3^2,(\exists C_4^2,\true)))$, but it does satisfy $\cut{1}{c_2} = \forall(C_1^1, \exists(C_2^2, \true))$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1.$$
+This graph does not satisfy $c_2$ because the occurrence of \emph{\texttt{Class}} denoted with \emph{\texttt{gc2}}  does not satisfy $\scond{1}{c_2} = \exists(C_2^2,(\forall C_3^2,(\exists C_4^2,\true)))$, but it satisfies $\cut{1}{c_2} = \forall(C_1^1, \exists(C_2^2, \true))$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1.$$
 \end{example}
 
 \input{figures/table_sat_at_layer}
@@ -91,12 +107,12 @@ This graph does not satisfy $c_2$ because the second occurrence of \emph{\texttt
 
 Given a graph $G$, a condition $c$ and a morphism $p : C_0 \inj G$.
 Suppose that $p \models_k c$ with $0 \leq k < \nlvl(c)$. 
-Then we can infer results for the satisfaction at other levels.
-If $k$ is even, i.e. $\scond{j}{c}$ is universally bound,  we can conclude that $p \models_j c$ for all $k < j < \nlvl(c)$ and especially $p \models c$.
-It also follows that $p \models_j c$ for all odd $0 \leq j < k$, i.e. $\scond{j}{c}$ is existentially bound. 
+Then we can infer results for the satisfaction until after other layers.
+If $k$ is even, i.e. $\scond{k}{c}$ is a universal condition,  we can conclude that $p \models_j c$ for all $k < j < \nlvl(c)$ and especially $p \models c$.
+It also follows that $p \models_j c$ for all odd $0 \leq j < k$, i.e. $\scond{j}{c}$ is an existential condition. 
 We present these results in the following lemmas, and an overview is given in Table \ref{table_satisfaction_at_layer}.
 
-We start by examining the consequences for the satisfaction at layer $\nlvl(c) > j > k$ if $p \models_k c$. Our first lemma shows that replacing the subcondition $\scond{k+1}{c}$ by any condition over $C_{k+1}$ leads to a condition that is satisfied by $p$ if $k$ is even.
+We start by examining the consequences for the satisfaction until after layer $\nlvl(c) > j > k$ if $p \models_k c$. Our first lemma shows that replacing the subcondition $\scond{k+1}{c}$ by any condition over $C_{k+1}$ leads to a condition that is satisfied by $p$ if $k$ is even.
 
 \begin{lemma}\label{lemma_help_lay_sat}
 Given a graph $G$, a condition $c$ in UANF and a morphism $p : C_0 \inj G$ with $p \models_k c$ and $-1 \leq k < \nlvl(c)$  even.
@@ -124,7 +140,7 @@ $j$ for all $j > k$.
 \begin{lemma}\label{lemma_lay_sat}
 
 Given a graph $G$, a morphism $p:C_0 \inj G$ and a condition $c$ in UANF.
-If $0 \leq k < \nlvl(c)$ is even, i.e. $\scond{k}{c}$ is universally bound, then for all $k < j < \nlvl(c)$ it holds that
+If $0 \leq k < \nlvl(c)$ is even, i.e. $\scond{k}{c}$ is a universal condition, then for all $k < j < \nlvl(c)$ it holds that
 	$$p \models_k c \implies p \models_j c.$$
 
 \end{lemma}
@@ -140,11 +156,11 @@ Since a morphism $p$ satisfies a condition $c$ in UANF if and only if $p$ satisf
 	$0 \leq k < \nlvl(c)$ is even, it holds that 
 	$$p \models_k c \implies p \models c.$$
 \end{corollary}
-
+In the following, we will mostly assume that $\kmax$ is odd. This is because an even $\kmax$ implies that the condition is already satisfied.
 Furthermore, this allows us to make statements about the satisfaction of other conditions. Given a graph $G$, a morphism $p : C_0 \inj G$ and a condition $c$ such that $p \models_k c$ for an even $-1 \leq k < \nlvl(c)$. It follows that $p \models c$ and in particular $p \models c'$ for each condition $c'$ with  $\cut{k}{c} = \cut{k}{c'}$.
 
-Let us now examine the satisfaction at layer $j$ with $-1 < j < k$. If $j$ is odd, i.e. $\scond{j}{c}$ is existentially bound, we can conclude that $p \models_j c$ as shown in the next lemma.
-If $j$ is even, i.e. $\scond{j}{c}$ is universally bound, we can only make statements that depend on $\kmax$. If $\kmax < \nlvl(c) -1$, then $p \not \models_j c$. Otherwise $p \models c$ and therefore $\kmax = \nlvl(c)-1$ would immediately follow Corollary \ref{corol:satisfaction}.
+Let us now examine the satisfaction until after layer $j$ with $-1 < j < k$. If $j$ is odd, i.e. $\scond{j}{c}$ is an existential condition, we can conclude that $p \models_j c$ as shown in the next lemma.
+If $j$ is even, i.e. $\scond{j}{c}$ is universally bound, we can only make statements that depend on $\kmax$. If $\kmax < \nlvl(c) -1$, then $p \not \models_j c$. Otherwise $p \models c$ and therefore $\kmax = \nlvl(c)-1$ would immediately follow Corollary from \ref{corol:satisfaction}.
 If $\kmax = \nlvl(c)-1$, we can say that there is at least one even $j \leq \kmax$ with $p \models_j c$ if $c$ ends with $\forall(C_{\nlvl(c)}, \false)$.
 An overview of these relations is given in Table \ref{table_abh_kmax}.
 
@@ -152,15 +168,15 @@ An overview of these relations is given in Table \ref{table_abh_kmax}.
 
 \begin{lemma}\label{lem_ex_lower}
 Given a graph $G$, a morphism $p: C_0 \inj G$ and a constraint $c$ in UANF.
-Then for all odd $-1 \leq k \leq \kmax$, i.e. $\scond{k}{c}$ is existentially bound, we have
+Then for all odd $-1 \leq k \leq \kmax$, i.e. $\scond{k}{c}$ is an existential condition, we have
 $$p \models_k c.$$
 
 \end{lemma}
 \begin{proof}
-If there is an even $0 \leq j < \kmax$, i.e. $\scond{j}{c}$ is universally bound, with $p \models_j c$, let $j'$ be the smallest of these.
-With Lemma \ref{lemma_help_lay_sat} follows that $p \models_{\ell} c$ for all $j' \leq \ell < \nlvl(c)$. Otherwise we set $j' = \kmax$.
+If there is an even $0 \leq j < \kmax$, i.e. $\scond{j}{c}$ is universal, with $p \models_j c$, let $j'$ be the smallest of these.
+Lemma \ref{lemma_help_lay_sat} implies that $p \models_{\ell} c$ for all $j' \leq \ell < \nlvl(c)$. Otherwise we set $j' = \kmax$.
 
-Let $\ell < j'$, such that $\scond{\ell}{c}$ is existentially bound and let $d = \scond{\ell}{\cut{j'}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the subcondition at layer $\ell $ of the condition up to layer $j'$ of $c$. 
+Let $\ell < j'$, such that $\scond{\ell}{c}$ is a existential condition and let $d = \scond{\ell}{\cut{j'}{c}} = \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, e)$ be the subcondition at layer $\ell $ of the truncated condition after layer $j'$ of $c$. 
 	Since $\ell < j'$, there must be a morphism $q: C_{\ell} \inj G$ with $q \models d$ and therefore there must be a morphism $q': C_{\ell +1}\inj G$ with $q = q' \circ a_{\ell}$ and $q' \models e$.
 	It follows that $q \models \exists(a_{\ell}: C_{\ell} \inj C_{\ell+1}, \true)$ and thus $p \models_{\ell} c$.
 \end{proof}
@@ -172,57 +188,19 @@ Let $\ell < j'$, such that $\scond{\ell}{c}$ is existentially bound and let $d =
 	\exists(C_4^2, \true))))$ given in Figure \ref{fig:constraints}.
 	We begin with Table \ref{table_satisfaction_at_layer}.
 	\begin{enumerate}
-		\item If $k =2$, then $C_3^2 \models_2 c_2$, $C_3^2 \not \models_0 c_2$
+		\item $j < k$, $j$ and $k$ are even. We set $k = 2$ and $j = 0$. 
+			 It follows that $\cut{k}{c} = \forall(C_1^1, \exists(C_2^2, \forall (C_3^2, \false)))$ and $\cut{j}{c} = \forall(C_1^1,\false)$.  Then, $C_2^2 \models_2 c_2$, $C_2^2 \not \models_0 c_2$
 			  and $\emptyset \models_2 c_2$ and $\emptyset \models_0 c_2$.
-		\item If $k = 3$, then $C_4^2 \models_3 c_2$, $C_2^2 \not \models_0 c_2$ 
-			  and  $\emptyset \models_3 c_2$ and $emptyset \models_0 c_2$.
-		\item 
-			 If $k = 1$, then $C_2^2 \models_2 c_2$, $C_2^2 \models_3 c_2$ and
-			 $C_3^2 \not \models_2 c_2$ and $C_3^2 \not \models_3 c_2$.
+		\item $j <k$, $k$ is odd and $j$ is even. We set $k = 3$ and $j = 0$. 
+		It follows that $\cut{k}{c_2} = c_2$ and $\cut{j}{c} = \forall(C_1^1,\false)$.
+		Then, $C_4^2 \models_3 c_2$, $C_4^2 \not \models_0 c_2$ and $\emptyset \models_3 c_2$ and $\emptyset \models_0 c_2$.
+		
+		\item $j > k$, $k$ is odd and $j$ is even. We set $k = 1$ and $j = 2$. It follows that 
+		$\cut{k}{c} = \forall(C_1^1, \exists(C_2^2,\true))$ and $\cut{j}{c} = \forall(C_1^1, \exists(C_2^2, \forall (C_3^2, \false)))$. Then, $C_2^2 \models_1 c_2$, $C_2^2 \models_2 c_2$ and  $C_3^2 \models_1 c_2$ and $C_3^2 \not \models_2 c_2$. 
+		\item $j >k$, $k$ and $j$ are odd. We set $k = 1$ and $j = 3$. It follows that $\cut{k}{c} = \forall(C_1^1, \exists(C_2^2,\true))$ and $\cut{j}{c} = c_2$. Then, $C_2^2 \models_1 c_2$, $C_2^2 \models_3 c_2$ and $C_3^2 \models_1 c_2$ and $C_3^2 \not \models_3 c_2$. Since  $\cut{j}{c} = c_2$ this is also a counterexample for the \enquote{?} in the column \enquote{$p \models c$}.
+		
 	\end{enumerate}
-	For the \enquote{?} in Table \ref{table_abh_kmax}, consider the graph
-	$C_2^2$. It follows that $\kmax = 3 = \nlvl(c_2)-1$, $C_2^2 \models_2 c_2$ 
-	and $C_2^2 \not \models_0 c_2$. 
+	For the \enquote{?} in Table \ref{table_abh_kmax} the graph $C_2^2$ satisfies $c_2$ and therefore $\kmax = 3 = \nlvl(c_2)-1$. 
+	But, $C_2^2 \models_2 c_2$ and $C_2^2 \not \models_0 c_2$.
 \end{example}
 
-By satisfaction at layer, an increase of consistency can be detected in the following way: Let $t: G \Longrightarrow H$ be a transformation. 
-If the largest satisfied layer in $H$ is greater than the largest satisfied layer in $G$, i.e. $\maxk{c}{G} < \maxk{c}{H}$, we consider the transformation as consistency increasing. 
-However, the notion of consistency increasing should also be able to detect the smallest changes made by a transformation that lead to an increase of consistency, namely the insertion of a single edges or nodes of an existentially bound graph.
-To remedy this problem, we introduce \emph{intermediate conditions}, which are used to detect this type of increase by checking whether an intermediate condition not satisfied by $G$ is satisfied by $H$.
-Obviously, a decrease of consistency can be detected in a similar way, by checking whether an intermediate condition satisfied by $G$ is not satisfied by $H$.  
-Intuitively, the last graph of a truncated condition $c$ will be replaced by an intermediate graph of the penultimate graph and the last graph.
-
-If $c$ ends with an existentially bound condition, the constructed intermediate condition is weaker than $c$, in the sense that the satisfaction of $c$ implies the satisfaction of the intermediate condition. 
-Conversely, if $c$ ends with a universally bound condition, the opposite holds: satisfying an intermediate condition implies satisfying $c$. 
-This is why we have designed intermediate conditions so that they only replace graphs on existentially bounded layers.
-
-\begin{definition}[\textbf{intermediate condition}]
-	Let a condition $c$ in UANF be given and let $0 \leq k < \nlvl(c)$ be odd, i.e. $\scond{k}{c}$ is existentially bound. The \emph{intermediate condition}, denoted by $\ic{k}{c} {C'}$, of $c$ at layer $k$ with $C' \in \ig{C_k} {C_{k+1}}$ is defined as
-	$$\ic{k}{c}{C'} := \repl{k}{c}{\exists(a_k^r:C_k \inj C', \true)}.$$
-\end{definition}
-
-%\begin{definition}[\textbf{partial condition}]
-%Let $c$ be a condition in EANF. 
-%
-%The \emph{partial condition of $c$ at layer $k < \nlvl(c)$ with} with 
-%$$ C' \in \begin{cases}
-%			\mathcal{U}(C_k, C_{k+1}) &\text{if $k$ is even} \\
-%			\mathcal{U}(C_{k+1}, C_{k+2}) &\text{if $k$ is odd},
-%		   \end{cases}
-%$$
-%$\parcond(k,c,C')$, is defined as:
-%\begin{enumerate}
-%\item If $k$ is odd, let $\scond{c}{k+1} = \exists(a: C_{k+1} \inj C_{k+2},f)$:
-%$$\parcond(k,c,C') := \sub\bigl(k+1,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
-%\item If $k$ is even, let $\scond{c}{k+1} = \exists(a:C_k\inj C_{k+1},f)$:
-%$$\parcond(k,c,C') := \sub\bigl(k,c,\exists(a^p:C_{k+1} \inj C', \true)\bigr)$$
-%\end{enumerate}
-%\end{definition}
-
-\begin{example}
-Consider the constraint $c_1$ given in Figure \ref{fig:constraints}. 
-Since $C_2^2 \in \ig{C_1^1}{C_2^1}$, we can construct an intermediate condition of $c_1$ at layer $1$ with $C_2^2$ as $\ic{1}{c_1}{C_2^2} = \forall C_1^1 \exists C_2^2$. 
-While $c_1$ checks whether each node of type \emph{\texttt{Class}} is connected to at least two nodes of  type \emph{\texttt{Feature}}, the intermediate condition checks whether each node of type \emph{\texttt{Class}} is connected to at least one node of type \emph{\texttt{Feature}} which is trivially satisfied if $c_1$ is satisfied.
-\end{example}
-
-Notice that $\ic{k}{c}{C_k}$ is equivalent to $\cut{k-1}{c}$, because the condition $\forall(a_{k-1}:C_{k-1} \inj C_k, \exists(a_k^r:C_k \inj C_k,\true))$ is satisfied by every morphism $p: C_{k-1} \inj G$.
