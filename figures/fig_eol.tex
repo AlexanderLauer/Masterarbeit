@@ -1,0 +1,18 @@
+\begin{figure}
+\center
+	\begin{tikzpicture}
+		\node (L) at (0,2) {$C_0$};
+		\node (K) at (2,2) {$H$};
+		
+		\node (G) at (0,0) {$G$};
+		
+		\node (H) at (2,0) {$P$};
+		
+		\draw[right hook-stealth] (L) edge node [above] {$e$}  (K);
+		\draw[left hook-stealth] (L) edge node [left] {$i_{C_0}^G$}  (G);
+		\draw[right hook-stealth] (G) edge node [above] {$i_G^P$}  (H);
+		\draw[right hook-stealth] (K) edge node [right] {$i_H^P$}  (H);
+		
+	\end{tikzpicture}
+	\caption{Diagram for the alternative definition of extended overlaps.}\label{fig_eol}
+\end{figure}

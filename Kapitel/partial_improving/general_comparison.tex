@@ -1,15 +1,15 @@
 \subsection{Comparison with other concepts of Consistency}\label{comp_general}
-In this chapter, the notions of (direct) consistency increase- and maintainment are compared to the already known notions of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining}, in order to reveal relations between them to and ensure that (direct) consistency increase- and 
-maintainment are indeed a new notions of consistency. 
-These relationships are shown in Figure \ref{fig:consistency_relations}.
+In this chapter, the notions of (direct) consistency increase and maintainment are compared to the already known notions of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining}, in order to reveal relations between them and to ensure that (direct) consistency increase and 
+maintainment are indeed new notions of consistency. 
+These relationships are summarized in Figure \ref{fig:consistency_relations}.
 
 \input{figures/consistency_relations}
 
-First, we compare (direct) consistency increase- and maintainment with the notions of consistency-guaranteeing, preserving, sustaining and improving in the general case and later on, for some  special cases.
-We begin by examining the conclusions that can be drawn about a consistency-maintaining or consistency-increasing transformation.
+First, we compare (direct) consistency increase and maintainment with the notions of consistency-guaranteeing, preserving, sustaining and improving in the general case and later on, for some  special cases.
+We begin by examining the implications that can be drawn about a consistency-maintaining or consistency-increasing transformation.
 
 
-\begin{theorem}
+\begin{theorem}[\textbf{Implications of a consistency-maintaining or consistency-increasing transformation}]
 	Given a condition $c$ in UANF and a transformation $t: G \Longrightarrow H$.
 	Then,
 	\begin{alignat*}{3}
@@ -17,7 +17,7 @@ We begin by examining the conclusions that can be drawn about a consistency-main
 			$c$-preserving} & \text{ and}\\
 			&t \text{ is consistency-maintaining w.r.t. $c$} &&\centernot \implies t \text{ 
 			is $c$-guaranteeing} &\text{ and} \\
-		&t \text{ is direct consistency-increasing w.r.t $c$ } &&\centernot \implies t \text{ is consistency sustaining w.r.t $c$ }
+		&t \text{ is direct consistency-increasing w.r.t. $c$ } &&\centernot \implies t \text{ is consistency sustaining w.r.t. $c$ }
 	\end{alignat*}
 \end{theorem}
 
@@ -37,34 +37,33 @@ We begin by examining the conclusions that can be drawn about a consistency-main
 		Consider the transformation $t_2: G \Longrightarrow H$ shown in Figure 
 			\ref{fig:example_direct} and constraint
 			$c_1$ shown in Figure \ref{fig:constraints}.
-			As discussed in Example \ref{ex_direct}, $t_2$ is consistency-
-			increasing and this consistency-maintaining w.r.t. $c$. 
-			But, $t$ is not a $c$-guaranteeing transformation, since all 
+			As discussed in Example \ref{ex_direct}, $t_2$ is consistency-increasing and thus consistency-maintaining w.r.t. $c_1$. 
+			But $t$ is not a $c$-guaranteeing transformation, since all 
 			occurrences of nodes of type \texttt{Class} do not satisfy 
 			$\exists(C_2^1, \true)$.
 		\item 
-		$t$ is consistency maintaining w.r.t. $c$ $\centernot \implies$ $t$ is consistency sustaining w.r.t. $c$:
-		Consider the constraint $c = \forall (C_1^1, \exists (C_2^1, \forall (C_4^2,d)))$, where $d$ is an existentially bound constraint in ANF with $d \neq  \false$ 	composed of the graphs given in Figure \ref{fig:constraints}. And consider  transformation $t_2$ given in Figure \ref{fig:counterexamples_increase_improving}. Then, $t$ is direct consistency increasing; the deletion, increasing, universally and existentially  conditions are satisfied and the  general increasing condition is  satisfied because an occurrence of $C_1^1$ that did not satisfy $\exists (C_2^1,\true)$ in $G$ satisfies $\exists (C_2^1, \true)$ in $H$.  This transformation is not consistency-sustaining since the number of occurrences of $C_1^1$ not satisfying $\exists (C_2^1, \forall (C_4^2,d))$ in $H$ is greater than the number of occurrences of $C_1^1$ in $G$ not satisfying $\exists (C_2^1, \forall (C_4^2,d))$.
-	\end{enumerate}
+		$t$ is direct consistency maintaining w.r.t. $c$ $\centernot \implies$ $t$ is consistency sustaining w.r.t. $c$:
+		Consider the constraint $c = \forall (C_1^1, \exists (C_2^1, \forall (C_4^2,d)))$, where $d$ is an existentially bound constraint in ANF with $d \neq  \false$ 	composed of the graphs given in Figure \ref{fig:constraints}. And consider  transformation $t_2$ given in Figure \ref{fig:counterexamples_increase_improving}. Then, $t$ is direct consistency increasing; the \emph{no new violation by deletion}, \emph{no new violation by insertion}, \emph{no satisfied layer reduction by insertion} and \emph{no satisfied layer reduction by deletion}  formulas are satisfied and the  \emph{general increasing} formula is  satisfied because an occurrence of $C_1^1$ that did not satisfy $\exists (C_2^1,\true)$ in $G$ satisfies $\exists (C_2^1, \true)$ in $H$.  But this transformation is not consistency-sustaining since the number of occurrences of $C_1^1$ not satisfying $\exists (C_2^1, \forall (C_4^2,d))$ in $H$ is greater than the number of occurrences of $C_1^1$ in $G$ not satisfying $\exists (C_2^1, \forall (C_4^2,d))$.
+	\end{enumerate} \qedhere
 \end{proof}
 
-These results are not surprising, since consistency-maintaining and consistency-increasing are much stricter notions than guaranteeing and sustaining, in the sense that the notion of violation is finer-grained.
+These results are not surprising, since consistency-maintaining and con\-sis\-ten\-cy-in\-crea\-sing are much stricter notions than guaranteeing and sustaining, in the sense that the notion of violation is more fine-grained.
 For example, for guaranteeing transformations, an arbitrary number of violations can be introduced as long as the derived graph satisfies the constraint, and thus guaranteeing does not imply direct increasing, since a direct increasing transformation is not allowed to introduce new violations.
 Let us now examine whether a concept of consistency implies the notions of 
 consistency-maintaining and increasing.
 
 
-\begin{theorem}
- 	Given a condition $c$ in UANF and a transformamtion $t:G \Longrightarrow H$.
+\begin{theorem}[\textbf{Implications of preserving, guaranteeing, sustaining and improving transformations}]
+ 	Given a condition $c$ in UANF and a transformation $t:G \Longrightarrow H$.
  	Then,
  	\begin{alignat*}{3}
-		&t \text{ is $c$-guaranteeing} &&\implies t \text{ is consistency-maintaining w.r.t 
+		&t \text{ is $c$-guaranteeing} &&\implies t \text{ is consistency-maintaining w.r.t. 
 		$c$} &\text{ and} \\
-		&t \text{ is $c$-guaranteeing} &&\centernot \implies t \text{ is consistency-increasing w.r.t 
+		&t \text{ is $c$-guaranteeing} &&\centernot \implies t \text{ is consistency-increasing w.r.t. 
 		$c$} &\text{ and} \\
 		&t \text{ is $c$-preserving} &&\centernot \implies t \text{ is 
-		consistency-maintaining w.r.t $c$} &\text{ and} \\
-		&t \text{ is direct consistency improving w.r.t $c$ } &&\centernot \implies t \text{ is consistency-maintaining w.r.t $c$ } 
+		consistency-maintaining w.r.t. $c$} &\text{ and} \\
+		&t \text{ is direct consistency improving w.r.t $c$ } &&\centernot \implies t \text{ is consistency-maintaining w.r.t. $c$ } 
 	\end{alignat*}
 \end{theorem}
 \begin{proof}
@@ -81,15 +80,15 @@ consistency-maintaining and increasing.
 		$t$ is $c$-preserving $\centernot \implies$ $t$ is consistency-maintaining w.r.t. $c$:
 		Consider graphs $C_1^1$, $C_2^2$ and constraint $c_1$ given in 
 			Figure \ref{fig:constraints}. The transformation
-			$t: C_2^2 \Longrightarrow C_1^1$ is $c$-preserving, since 
+			$t: C_2^2 \Longrightarrow C_1^1$ is $c_1$-preserving, since 
 			$C_2^2 \not \models c_1$, but not consistency maintaining
-			w.r.t. $c$ since $\nv{0}{C_2^2} = 2$ and $\nv{0}{C_1^1} = 5$.
+			w.r.t. $c_1$ since $\nvio{0}{c_1}{C_2^2} = 4$ and $\nvio{0}{c_1}{C_1^1} = 6$.
 		\item
 		$t$ is direct consistency-improving w.r.t. $c$ $\centernot \implies$ $t$ is consistency-maintaining w.r.t. $c$:
 		Consider transformation $t_1$ given in Figure 
 			\ref{fig:counterexamples_increase_improving} and constraint
 			$c_1$ given in Figure \ref{fig:constraints}. The transformation
-			$t_1$ is direct consistency improving since no occurrence of $C_1^1$ is inserted, no occurrence of $C_1^1$ satisfying $\exists(C_2^1, \true)$ is deleted, and one occurrence $C_1$ satisfies $\exists(C_2^1, \true)$. But, this 
+			$t_1$ is direct consistency-improving since no occurrence of $C_1^1$ is inserted, no occurrence of $C_1^1$ satisfying $\exists(C_2^1, \true)$ is deleted, and one occurrence of $C_1$ satisfies $\exists(C_2^1, \true)$. But, this 
 			transformation is not consistency-maintaining w.r.t. $c$ since the 
 			number of violations in the first graph is $2$ and the number of 
 			violations in the second graph is $3$.
@@ -102,7 +101,7 @@ An overview of these is given in Table \ref{table_cons_relations}.
 
 For some special cases, we can infer other types of relationships.
 
-\begin{theorem}
+\begin{theorem}[\textbf{Relations of consistency concepts in special cases}]
 	Given a constraint $c$ in UANF and a transformation $t: G \Longrightarrow H$.
 	\begin{enumerate}
 	\item 

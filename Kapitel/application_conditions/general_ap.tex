@@ -1,57 +1,46 @@
-\subsection{General Application Conditions}
-Let us start by introducing consistency-maintaining application conditions, i.e., a rule equipped with this application condition is direct consistency-maintaining at a given layer. 
-We will also introduce an application condition such that any rule equipped with it is a consistency-maintaining rule.
+\subsection{Application Condition for general Rules}
+We will now present consistency-maintaining and consistency-increasing application conditions at layer for general rules. 
+That means, a rule equipped with these application conditions is consistency-maintaining or consistency-increasing at layer respectively. We will also introduce an application condition such that any rule equipped with it is indeed a consistency-maintaining rule.
 
-The maintaining application condition has a odd parameter $k$ which specifies which graphs of a constraint are to be considered. 
+Let us start with the consistency-maintaining application condition. 
+The maintaining application condition has a odd parameter $-1 \leq k < \nlvl(c)$ which specifies which graphs of a constraint are to be considered. 
 In particular, only the graphs $C_j$ with $0 \leq j \leq k+3$ are considered.
 Note that there is no graph with $\kmax$ odd and $\kmax \neq \nlvl(c)-1$. 
 So it is not a restriction that $k$ must be odd. 
 The maintaining application condition consists of the following three parts, which also use the $k$ parameter:
 \begin{enumerate}
 
-	\item \emph{No existentially destroyed ($\remain{k}{}$):}
-		 This application condition checks that no occurrences of existentially bound graphs $C_j$ with $2 \leq j \leq k+1$ are removed. It corresponds to the existentially condition, since a rule  that satisfies this application condition also satisfies the existentially condition when applied to a graph with $\kmax = k$.
-	\item \emph{No universally inserted ($\ins{k}{}$):}
-		This application condition checks that no occurrences of universally bound graphs $C_j$ with $1 \leq j \leq k+2$ are inserted. It corresponds to the universally and the inserting conditions, in the sense that, a rule that satisfies this application condition also satisfies the universally and inserting conditions when applied to a graph with $\kmax = k$.
 	\item \emph{No violation inserted ($\wors{k}{} $):} 
 		This application condition checks that no new violations are introduced by removing occurrences of intermediate graphs from the set $\ig{C_{k+2}}{C_{k+3}}$.  
-		It corresponds to the the deleting condition in the sense that a rule that satisfies this application condition also satisfies the deleting condition when applied to a graph with $\kmax = k$.
+		It corresponds to the \emph{no new violation by deletion} formula in the sense that a rule that satisfies this application condition also satisfies the \emph{no new violation by deletion} formula when applied to a graph with $\kmax = k$.
 		There are several cases for this application condition. If $k = \nlvl(c)-2$, the constraint ends with $\forall(C_{\nlvl(c)}, \false)$. Therefore no violations can be introduced by removing occurrences of intermediate graphs. In particular, there is no graph $C_{k+3}$.
-If $k = \nlvl(c) -1$, a rule equipped with this application condition always satisfies the deleting condition when applied to graphs with $\kmax = k$.  Therefore, if $k \geq \nlvl(c)-2$, we set the application condition to $\true$.
+If $k = \nlvl(c) -1$, every transformation $t: G \Longrightarrow H$ with $G \models c$ is direct consistency maintaining w.r.t. $c$ if $H \models c$. This is ensured by $\remain{k}{}$ and $\ins{k}{}$.
+  Therefore, if $k \geq \nlvl(c)-2$, we set the application condition to $\true$.
+  
+  \item \emph{No universally inserted ($\ins{k}{}$):}
+		This application condition checks that no occurrences of universally bound graphs $C_j$ with $1 \leq j \leq k+2$ are inserted. It corresponds to the \emph{no satisfied layer reduction by insertion} and \emph{no new violations by insertion} formulas, in the sense that a rule that satisfies this application condition also satisfies the \emph{no satisfied layer reduction by insertion} and \emph{no new violations by insertion} formulas when applied to a graph with $\kmax = k$.
+
+	\item \emph{No existentially destroyed ($\remain{k}{}$):}
+		 This application condition checks that no occurrences of existentially bound graphs $C_j$ with $2 \leq j \leq k+1$ are removed. It corresponds to the \emph{no satisfied layer reduction by deletion} formula, since a rule  that satisfies this application condition also satisfies the \emph{no satisfied layer reduction by deletion} formula when applied to a graph with $\kmax = k$.
+	
+	
 		\end{enumerate}
 
 Recall that given a constraint $c$ in UANF, each subcondition $\scond{k}{c}$
-is a condition over the graph $C_k$ and the morphism is denoted by $a_k$.
+is a condition over the graph $C_k$ and the morphism with domain $C_k$  is denoted by $a_k$.
 
-\begin{definition}[\textbf{consistency maintaining application condition}]
+\begin{definition}[\textbf{consistency maintaining application condition}]\label{def_main}
 	Given a  rule $\rho = (\ac, \rho')$ with $\rho' = \rle{L}{}{K}{}{R}$, 
 	a constraint $c$ in UANF and an odd $-1 \leq k < \nlvl(c)$.
 	The \emph{maintaining application condition} of $c$ for $\rho$ at layer 
 	$k$  is defined  as $\ac \wedge \main{k}{\rho'}$ with
 	$$\main{k}{\rho'} :=  \remain{k}{\rho'} \wedge \ins{k}{\rho'} \wedge \wors{k}
 	{\rho'} $$ 
-	and
+	where $\remain{k}{\rho'}$, $ \ins{k}{\rho'}$ and $\wors{k}$ are defined as
 		 
 	
 	\begin{enumerate}
-		\item No existentially destroyed:
-			Let $E$ be the set of all existentially bound graphs graphs $C_j$ 
-			with $2 \leq j \leq k+1$ and  $\mathbf{P}_{C_j}$ be the set all overlaps 
-			$P'$ 
-			of $L$ and $C_j$ with $i_L^{P'}(L \setminus K) \cap i_{C_j}^{P'}(C_j\setminus C_{j-1})
-			\neq \emptyset$: 
-			$$\remain{k}{\rho'} := \bigwedge_{C \in E} \bigwedge_{P' \in 
-			\mathbf{P}_{C_j}} \neg \exists(i_L^{P'}: L \inj P', \true)$$	
-	
-		\item No universally inserted:
-			Let $U$ be the set of all universally bound graphs $C_j$ with $1 \leq j \leq
-			k+2$, and $\mathbf{P}_{C_j} $ be the set of all overlaps $P'$ of $R$ 
-			and $C_j$ with $i_R^{P'}(R \setminus K) \cap i_{C_j}^{P'}(C_j\setminus C_{j-1}) \neq 
-			\emptyset$:
-			$$\ins{k}{\rho'} := \bigwedge_{C \in U} \bigwedge_{P' \in \mathbf{P}
-			_{C_j}} \shift(\neg \exists(i_R^{P'}: R \inj P', \true), \rho')$$
-
-		\item No violation inserted:
+	\item No violation inserted:
 			 Let $\mathbf{P}_{C'}$ be the set of all overlaps $P$ of $L$ and $C'$ 
 			 with 
 			 $i_L^{P}(L \setminus K) \cap i_{C'}^{P}(C'\setminus C_{k+2})\neq \emptyset$ for 
@@ -64,24 +53,47 @@ is a condition over the graph $C_k$ and the morphism is denoted by $a_k$.
 			\inj P', \true) &\text{otherwise}
 			 	\end{cases}
 			 \end{equation*}
+			 
+		\item No universally inserted:
+		
+			Let $\mathbf{U}$ be the set of all universally bound graphs $C_j$ with $1 \leq j \leq
+			k+2$, and $\mathbf{P}_{C_j} $ be the set of all overlaps $P'$ of $R$ 
+			and $C_j$ with $i_R^{P'}(R \setminus K) \cap i_{C_j}^{P'}(C_j\setminus C_{j-1}) \neq 
+			\emptyset$:
+			$$\ins{k}{\rho'} := \bigwedge_{C \in \mathbf{U}} \bigwedge_{P' \in \mathbf{P}
+			_{C}} \shift(\neg \exists(i_R^{P'}: R \inj P', \true), \rho')$$
+
+		
+		\item No existentially destroyed:
+			If $k = -1$, we set $\remain{k}{\rho'} := \true$.
+			Otherwise, let $\mathbf{E}$ be the set of all existentially bound graphs $C_j$ 
+			with $2 \leq j \leq k+1$ and  $\mathbf{P}_{C_j}$ be the set all overlaps 
+			$P'$ 
+			of $L$ and $C_j$ with $i_L^{P'}(L \setminus K) \cap i_{C_j}^{P'}(C_j\setminus C_{j-1})
+			\neq \emptyset$: 
+			$$\remain{k}{\rho'} := \bigwedge_{C \in \mathbf{E}} \bigwedge_{P' \in 
+			\mathbf{P}_{C}} \neg \exists(i_L^{P'}: L \inj P', \true)$$	
+	
+		
 			
 	\end{enumerate}
 \end{definition}
 
+We are aware that there are optimisations for $\ins{k}{} $ and $\remain{k}{\rho'}$ since not all overlaps need to be considered which  \cite{behr2020efficient}. But for the simplicity of our definition we did not implement these optimisations. 
 \begin{example}
 	\begin{enumerate}
 		\item
-			Consider the constraint $c$ given in Figure \ref{fig:appl_cond} and the rule \emph{\texttt{removeFeature}}. The conditions $\remain{-1}{\emph{\texttt{removeFeature}}}$, $\remain{1}{\emph{\texttt{removeFeature}}}$ and $\remain{3}{\emph{\texttt{removeFeature}}}$ are also given in Figure  \ref{fig:appl_cond}; $\remain{-1}{\emph{\texttt{removeFeature}}}$ is equal to true because there is no existentially bound graph $C_0$. $\remain{1}{\emph{\texttt{removeFeature}}}$ checks that no occurrences of $C_2$ are inserted, while $\remain{3}{\emph{\texttt{removeFeature}}}$ checks that no occurrences of $C_2$ and $C_4$ are inserted. Obviously, $\remain{1}{\emph{\texttt{removeFeature}}}$ is contained in $\remain{3}{\emph{\texttt{removeFeature}}}$. Note that there are are conditions in $\remain{3}{\emph{\texttt{removeFeature}}}$ that imply each other. For example, the first condition implies the second and third. 
-So they can be removed.
+			Consider the constraint $c$ given in Figure \ref{fig:appl_cond} and the rule \emph{\texttt{re\-move\-Feature}}. The conditions $\remain{-1}{\emph{\texttt{removeFeature}}}$, $\remain{1}{\emph{\texttt{removeFeature}}}$ and $\remain{3}{\emph{\texttt{removeFeature}}}$ are also given in Figure  \ref{fig:appl_cond}; $\remain{-1}{\emph{\texttt{removeFeature}}}$ is equal to $\true$. $\remain{1}{\emph{\texttt{removeFeature}}}$ checks that no occurrences of $C_2$ are inserted, while $\remain{3}{\emph{\texttt{removeFeature}}}$ checks that no occurrences of $C_2$ and $C_4$ are inserted. Obviously, $\remain{1}{\emph{\texttt{removeFeature}}}$ is contained in $\remain{3}{\emph{\texttt{removeFeature}}}$. Note that there are conditions in $\remain{3}{\emph{\texttt{removeFeature}}}$ that imply each other. For example, the first condition implies the second and third. 
+		Using the optimisations according to \cite{behr2020efficient}, these can be removed.
 		\item
 		Again consider constraint $c$ given in Figure \ref{fig:appl_cond} and 
-		the rule \emph{\texttt{assignFeature}}. The condition $\ins{-1}{\emph{\texttt{assignFeature}}}$ is equal to $\true$ since \emph{\texttt{assignFeature}} cannot create a node of type \emph{\texttt{Class}}. The condition $\ins{1}{\emph{\texttt{assignFeature}}}$ is given in Figure \ref{fig:nui}.
-		The condition  $\ins{3}{\emph{\texttt{assignFeature}}}$ is equal to $\ins{1}{\emph{\texttt{assignFeature}}}$ since there is no universally bound graph $C_j$ with 
-		$j > 3$.
+		the rule \emph{\texttt{assignFeature}}. The condition $\ins{-1}{\emph{\texttt{assignFeature}}}$ is equal to $\true$ since \emph{\texttt{assignFeature}} cannot create any occurrences of the first universally bound graph of the constraint. The condition $\ins{1}{\emph{\texttt{assignFeature}}}$ is given in Figure \ref{fig:nui}.
+		
+		The condition  $\ins{3}{\emph{\texttt{as\-sign\-Fea\-ture}}}$ is equal to $\ins{1}{\emph{\texttt{assignFeature}}}$ since there are only two universally bound graphs and $\ins{1}{\emph{\texttt{assignFeature}}}$ already considers both.
 		\item
 		Consider the constraint $c$ given in Figure \ref{fig_vio} and the rule \emph{\texttt{addDependency}}.
 		Then, $\wors{-1}{\emph{\texttt{addDependency}}}$ is given in Figure \ref{fig_vio}. The condition $\wors{1}{\emph{\texttt{addDependency}}}$ is 
-		equal to $\true$ since $1 > \nlvl(c)-2 = 0$.
+		equal to $\true$ since $1 > \nlvl(c)-2 = 2-2$.
 		
 	\end{enumerate}
 \end{example}
@@ -91,33 +103,33 @@ Let us now show that every rule equipped with $\main{k}{}$ is a consistency-main
 
 \begin{theorem}\label{thm_maintaining_ac}
 	Given a constraint $c$ in UANF.
-	Every rule $\rho = (\ac \wedge \main{k}{\rho'}, \rho')$ with 
-	$-1 \leq k < \nlvl(c)$ odd is a consistency maintaining rule at layer $k$ 
-	w.r.t. $c$.   
+	Every rule $\rho = (\ac \wedge \main{k}{\rho'}, \rho')$ where $\rho' = \rle{L}{l}{K}{r}{R}$ and 
+	$-1 \leq k < \nlvl(c)$ is odd is a direct consistency maintaining rule w.r.t. $c$ at layer $k$.
+	  
 \end{theorem} 
 \begin{proof}
 	Given a graph $G$ with $\kmax = k$ and a transformation $t: G \Longrightarrow_{\rho,m} H$.
 	We show that $t$ is a direct consistency maintaining transformation w.r.t. $c$.
 	
-	 We show that $t$ satisfies the deleting, inserting, universally and existentially conditions.
+	 We show that $t$ satisfies the \emph{no new violation by deletion}, \emph{no new violation by insertion}, \emph{no satisfied layer reduction by insertion} and \emph{no satisfied layer reduction by deletion} formulas.
 	
 	\begin{enumerate}
 		\item 
-			 Assume that $t$ does not satisfy the deleting condition.
+			 Assume that $t$ does not satisfy the \emph{no new violation by deletion} formula.
 			 Then $\kmax < \nlvl(c) -1$,
 			 $e = \scond{k+2}{c} \neq \false$ and there is a morphism $p: C_{k+2} \inj G$ 
 			 such that $p \models \ic{0}{e}{C'}$, $\track_t \circ p$ 
 			 is total and $\track_t \circ p \not \models \ic{0}{e}{C'}$ for a 
 			 graph $C' \in \ig{C_{k+2}}{C_{k+3}}$. 
-			 Therefore, there is an overlap $P$ of $L$ and $C'$ such that $i_{C'}^P \circ a^r_{k+2} 
-			 \models \exists(a^r_{k+2}: C_{k+2} \inj C', \true)$ with $i_L^P(L 
-			 \setminus K) \cap i_{C'}^P(C' \setminus C_{k+2}) \neq \emptyset$ 
+			 Therefore, there is an overlap $P$ of $L$ and $C'$ with $i_L^P(L 
+			 \setminus K) \cap i_{C'}^P(C' \setminus C_{k+2}) \neq \emptyset$  such that $i_{C'}^P \circ a^r_{k+2} 
+			 \models \exists(a^r_{k+2}: C_{k+2} \inj C', \true)$ 
 			 and $m \models \exists(i_L^P: L \inj P, \true)$. 
 			 Thus, $\wors{k}{\rho'} $ and consequently also $ \main{k}{\rho'}$ 
 			 cannot be satisfied. 
 
 		\item 
-			Assume that $t$ does not satisfy the inserting condition. Let
+			Assume that $t$ does not satisfy the \emph{no new violation by insertion} formula. Let
 
 			$$ d := \begin{cases} 
 				\ic{0}{\scond{k+2}{c}}{C_{k+3}} & \text{if $\scond{k+2}{c}
@@ -135,7 +147,7 @@ Let us now show that every rule equipped with $\main{k}{}$ is a consistency-main
   			\rho')$. Hence, $m$ does not satisfy $\ins{k}{\rho'}$. 
 
 		\item 
-			Assume that $t$ does not satisfy the universally condition. Then, there is a 
+			Assume that $t$ does not satisfy the \emph{no satisfied layer reduction by insertion} formula. Then, there is a 
 			morphism $p: C_j \inj H$ with $0 \leq j <k$ and $C_j$ universally bound such that no morphism $p': C_j \inj G$ with $\track_t 
 			\circ p' = p$ exists. Then, there is an overlap $P$ of $C_j$ and $R$ with 
 			$i_R^P(R \setminus K) \cap i_{C_j}^P(C_j\setminus C_{j-1}) \neq \emptyset$ 
@@ -143,21 +155,23 @@ Let us now show that every rule equipped with $\main{k}{}$ is a consistency-main
 			Hence, $m \not \models  \ins{k}{\rho'}$. 
 
 		\item 
-			Assume that $t$ does not satisfy the existentially condition.  There is a 
+			Assume that $t$ does not satisfy the \emph{no satisfied layer reduction by deletion} formula.  There is a 
 			morphism $p :C_j \inj G$ with $j \leq k+1$ and $C_j$  existentially bound and   such that $\track_t \circ p$ is not total. Then, there is an 
 			overlap $P$ of $C_j$ and $L$ with $i_L^P(L \setminus K) \cap i_{C_j}
 			^P(C_j\setminus C_{j-1}) \neq \emptyset$, such that $m \models \exists(i_L^P:L 
 			\inj P, \true)$. Hence, $m \not \models \remain{k}{\rho'}$.
 	\end{enumerate}
-	It follows that $\rho$ is a consistency-maintaining rule at layer $k$
+	It follows that $\rho$ is a direct consistency-maintaining rule at layer $k$
 	w.r.t. $c$.
 \end{proof}
+
+With the constructions described in Definition \ref{def_main} we are also able to construct direct consistency-maintaining application conditions. 
 
 \begin{theorem}
 	Given a constraint $c$ in UANF. Every rule $\rho$ equipped with 
 	the application condition 
 	$$ \Big(\bigwedge_{\substack{-1 \leq i < \nlvl(c) \\ i \textit{ odd}}} \wors{i}{\rho}\Big) \wedge \ \ins{\nlvl(c)-1}{\rho}$$
-	is a consistency-maintaining rule w.r.t. $c$.
+	is a direct consistency-maintaining rule w.r.t. $c$.
 \end{theorem}
 
 \begin{proof}
@@ -166,16 +180,16 @@ Let us now show that every rule equipped with $\main{k}{}$ is a consistency-main
 	for all $-1 \leq k \leq \nlvl(c) -1$.
 	Obviously, $\ins{\nlvl(c)-1}{\rho}$ contains $\ins{j}{\rho}$ for all 
 	$-1 < j \leq \nlvl(c)-1$.
-	The set of intermediate graphs always contains both graphs on which this set was built, so $\wors{i}{\rho}$ contains the condition 
+	The set of intermediate graphs always contains second graphs on which this set was built, so $\wors{i}{\rho}$ contains the condition 
 	$$ \bigwedge_{P' \in 
 			\mathbf{P}_{C_{i+3}}} \neg \exists(i_L^{P'}: L \inj P', \true)$$
-	which checks that no occurrence of $C_{i+3 }$ is deleted. Therefore 
+	which also checks that no occurrence of $C_{i+3 }$ is deleted. Therefore 
 	$$\Big(\bigwedge_{\substack{-1 \leq i < \nlvl(c) \\ i \textit{ odd}}} \wors{i}{\rho}\Big)$$ 
 	must contain $\remain{\nlvl(c)-1}{\rho}$ and therefore it contains $\remain{j}{\rho}$ for all $-1 \leq j \leq \nlvl(c)-1$.
 	So we can rewrite this application condition into the equivalent condition
-	$$\Big(\bigwedge_{\substack{-1 \leq i < \nlvl(c) \\ i \textit{ odd}}} \wors{i}{\rho} \wedge \ins{i}{\rho} \wedge \remain{i}{\rho} \Big) =  \Big(\bigwedge_{\substack{-1 \leq i < \nlvl(c) \\ i \textit{ odd}}} \main{i}{\rho} \Big)$$
-It follows that $\rho$ is a consistency-maintaining rule at layer $k$ for all 
-$-1 \leq k < \nlvl(c)$. Hence, $\rho$ is a consistency-maintaining rule w.r.t. $c$.
+	$$\Big(\bigwedge_{\substack{-1 \leq i < \nlvl(c) \\ i \textit{ odd}}} \wors{i}{\rho} \wedge \ins{i}{\rho} \wedge \remain{i}{\rho} \Big) =  \Big(\bigwedge_{\substack{-1 \leq i < \nlvl(c) \\ i \textit{ odd}}} \main{i}{\rho} \Big).$$
+It follows that $\rho$ is a direct consistency-maintaining rule at layer $k$ for all 
+$-1 \leq k < \nlvl(c)$. Since $-1 \leq \kmax < \nlvl(c)$ for each graph $G$, all transformations of $\rho$ are direct consistency-maintaining w.r.t. $c$. Hence, $\rho$ is a consistency-maintaining rule w.r.t. $c$.
 \end{proof}
 The \emph{extended overlap} will be a useful tool for our consistency-increasing application conditions.
 Intuitively, given an overlap and a morphism $a$, the overlap is extended such that one overlap morphism satisfies $\exists(a, \true)$.
@@ -184,14 +198,15 @@ Intuitively, given an overlap and a morphism $a$, the overlap is extended such t
 	Given an overlap $(G, i_{C_0}^G, i_{C_1}^G)$ of $C_0$ and $C_1$ and a 
 	morphism $e: C_0 \inj H$. 
 	The set of \emph{extended overlaps} of $G$ at $i_{C_0}^G$ with $e$, 
-	denoted by $\eol(G, i_{C_0}^G,e)$ is defined as:	
+	denoted by $\eol(G, i_{C_0}^G,e)$ is defined as	
 	$$\eol(G,i_{C_0}^G, e) := \{P \in \overlay(G,H) \mid
 		i_G^P \circ i_{C_0}^G \models \exists(e:C_0 \inj H, \true)
-		\}$$
+		\}.$$
 
 \end{definition}
-
-Using extended overlaps, we will be able to check whether an violation has been 
+In other words, $\eol(G, i_{C_0}^G,e)$ is the set of all overlaps of $G$ and $H$ such that the square in Figure \ref{fig_eol} is commutative, i.e. $i_H^P \circ e = i_G^P \circ i_{C_0}^G$.  
+\input{figures/fig_eol}
+Using extended overlaps, we will be able to check whether a violation has been 
 removed.
 Let us now consider consistency-increasing application conditions. 
 For these we will use the maintaining application conditions described above.
@@ -201,7 +216,7 @@ Finally, we need to check that this violation is removed.
 
 
 Again, the increasing application condition has the odd parameter $-1 \leq k < \nlvl(c)-1$, which specifies which constraint graphs are to be considered. Note that $k$ must not be $\nlvl(c)-1$, since all graphs with $\kmax = \nlvl(c)$ satisfy the constraint. Therefore for these graphs there can be no consistency increasing transformations.
-It also has a second parameter $C'$ which is an intermediate graph of $C_{k+2}$ and $C_{k+3}$ if $C_{k+3}$ exists and is set to $C_{k+2}$ otherwise. 
+It also has a second parameter $C'$ which is an intermediate graph of $C_{k+2}$ and $C_{k+3}$ if $c$ contains a graph $C_{k+3}$, i.e. $k < \nlvl(c)-2$ and $C'$ is set to $C_{k+2}$ otherwise. 
 Again, a rule equipped with this application condition is a consistency-increasing rule at layer $k$.
 It consists of the following parts:
 \begin{enumerate}
@@ -209,7 +224,7 @@ It consists of the following parts:
 			As already discussed, this application condition ensures that 
 			a rule equipped with this application condition is a consistency-maintaining rule at layer $k$.
 	\item \emph{Violation exists} ($\nex()$): 
-		This condition checks that there is a violation at the match, i.e. there is an occurrence $p$ of $C_{k+2}$ with $m(L) \cap p(C_{k+2}) \neq \emptyset$ not satisfying $\exists(C', \true)$. There is a special case when $k = \nlvl(c)-2$ and $c$ ends with $\forall(C_{\nlvl(c)}, \false)$, it is sufficient to check only that $m(L) \cap p(C_{k+2}) \neq \emptyset$.  If there are no such occurrences, the transformation cannot be consistency-increasing.
+		This condition checks that there is a violation at the match, i.e. there is an occurrence $p$ of $C_{k+2}$ with $m(L) \cap p(C_{k+2}) \neq \emptyset$ not satisfying $\exists(C', \true)$. If $k = \nlvl(c) -2$, then $c$ ends with $\forall(C_{\nlvl(c)}, \false)$ and thus there is no graph $C_{k+3}$ in $c$. In this case it is sufficient to check only that $m(L) \cap p(C_{k+2}) \neq \emptyset$.
 	\item \emph{Violation removed} ($\rep()$):
 		This condition checks that the violation is removed.  This can be done in several ways, either by deleting the occurrence $p$ or by inserting elements such that $ p \models \exists(C', \true)$. This leads to case discrimination.  The first case is easy to check, if $m(L \setminus K) \cap p(C_{k+2}\setminus C_{k+1}) \neq \emptyset$, $p$ is removed and this condition can be set to $\true$. Otherwise, we need to check that the violation has been removed by an additional condition that checks whether $p$ satisfies $\exists(C', \true)$ after the transformation. The last case is the special case where the constraint ends with $\forall(C_{\nlvl(c)}, \true)$ and $k = \nlvl(c) -2$. Then there is only one way to remove a violation, by removing the occurrence $p$. So the condition is set to $\true$ if $m(L \setminus K) \cap p(C_{k+2}\setminus C_{k+1}) \neq \emptyset$ and to $\false$ otherwise. 
 \end{enumerate}
@@ -230,7 +245,7 @@ It consists of the following parts:
 	\end{equation}
 	with
 \begin{enumerate}
-\item Violation exists: Let $a_{k+2}^r: C_{k+2} \inj C$ be the restricted morphism of $a_{k+2}$ and $i_L^P$ and $i_P^Q$ be overlap morphisms of $P$ and $Q$, respectively:
+\item Violation exists: Let $a_{k+2}^r: C_{k+2} \inj C'$ be the restricted morphism of $a_{k+2}$ and $i_L^P$ and $i_P^Q$ be overlap morphisms of $P$ and $Q$, respectively:
 	$$\nex(P,C') := 
 			\begin{cases}
 			\exists (i_L^P: L \inj P, \true) &\textit{if } \scond{k+2}{c} = 
@@ -251,51 +266,32 @@ It consists of the following parts:
 			\true &\text{if $i_L^P(L \setminus K) \cap i_{C_{k+2}}^P(C_{k+2}\setminus C_{k+1}) \neq \emptyset$}\\
 			\false &\text{otherwise}.
 		\end{cases}$$
-	\item Otherwise, let $P'$ be the graph derived by the transformation $P \Longrightarrow_{\rho,m} P'$. Then, $P'$ is an overlap of $R$ and $C_{k+2}$.
-If this transformation does not exist, we set $\rep(P,C') := \false$ and otherwise 
-$$\rep(P,C') := \bigvee_{Q \in \eol(P',i_{C_{k+2}}^{P'}, a^r)} \shift(\forall (i_R^{Q}: R \inj P', 
-				\exists(i_{P'}^Q:P' \inj Q,\true)), \rho).$$
+	\item Otherwise, let $P'$ be the overlap of $R$ and $C_{k+2}$ such that there is a transformation $P' \Longrightarrow_{\rho^{-1}, i_R^{P'}} P$. 
+If this overlap or transformation does not exist, we set $\rep(P,C') := \false$ and otherwise 
+$$\rep(P,C') := \shift(\forall (i_R^{Q}: R \inj P', 
+				\bigvee_{Q \in \eol(P',i_{C_{k+2}}^{P'}, a^r_{k+2})}  \exists(i_{P'}^Q:P' \inj Q,\true)), \rho).$$
 \end{enumerate}
 \end{enumerate}
 
 \end{definition}
-
-Note that $\incr{k}{C'}{\rho}$ is only evaluated to $\true$ if 
-an occurrence of $p: C_{k+2} \inj G$ that does not satisfy $\exists(C', \true)$ is either removed or satisfies $\exists(C', \true)$ in the derived graph.
-For all smaller improvements, i.e. a similar improvement for a subgraph $C'' \in \ig{C_{k+1}}{C'}$ of $C'$, $\incr{k}{C'}{\rho}$ would be evaluated as $\false$.
-For any larger improvements, i.e. the same improvement for a supergraph $C'' \in \ig{C'}{C_{k+2}}$ of $C'$, $\incr{k}{C'}{\rho}$ will also be evaluated as $\false$ if the repaired occurrence of $C_{k+2}$ satisfies $\exists(C', \true)$.
-In both cases, the application condition would prohibit the transformation, even though it would be consistency-increasing.
-To solve this problem, several application conditions could be combined by
-$$\bigvee_{C' \in \ig{C_{k+1}}{C_{k+2}}} \incr{k}{C'}{\rho}.$$ 
-This application condition will be evaluated as $\true$ if the cases described above occur, with the drawback that this results in a huge condition, even if duplicate conditions are removed.
-At least all duplicates of $\main{}{}$ can be removed, since they are identical for each $\incr{k}{C'}{\rho}$ and only need to be constructed once.
-
-In general, these application conditions are a compromise between condition size and restrictiveness. 
-They are very restrictive because they do not allow deletions of occurrences of existentially bound graphs and insertions of universally bound graphs.
-For example, any of these application conditions with the rule \texttt{moveFeature} and the constraint $c_1$ will be equivalent to $\false$; the maintaining part of the condition will always be evaluated as $\false$, since \texttt{moveFeature} always removes occurrences of the existentially bound graph $C_2^1$.
-Changing the conditions constructed by $\maintaining()$ to check whether two nodes of type \texttt{Feature} are connected to a node of type \texttt{Class} will give application conditions that can be satisfied with \texttt{moveFeature}. However, for a similar rule moving two nodes of type \texttt{Feature}, this newly constructed $\maintaining()$ would still be evaluated as $\false$.
-So this would only lead to a slight decrease in restrictiveness. 
-
-The conditions constructed by $\rem()$ and $\nin()$ could be modified in a similar way.
-For $\rem()$ and an occurrence $p$ of the universally bound graph $C_{j}$, by checking whether there exist two occurrences $p_1,p_2$ of $C_{j}$ with $p = p_1 \circ a_j = p_2 \circ a_j$, and for $\nin()$, by checking whether an introduced occurrence $p$ of $C_j$ satisfies $\exists(C_{j+1}, \true)$.
-The construction of these is similar to the construction of consistency guaranteeing application conditions as introduced by Habel and Pennemann \cite{habel2009correctness}, which is known to construct huge application conditions. 
-Also, the application conditions constructed above become more and more restrictive as $k$ increases, since the number of conditions also increases.
 
 
 \begin{example}
 \begin{enumerate}
 	\item 
 	Consider constraint $c_1$ given in Figure \ref{fig:constraints} and the rule 
-\emph{\texttt{assignFeature}}.
-There is only one overlap $P$ of $L$ and $C_1^1$ which is shown in Figure Consider Figure \ref{fig_increasing_1}. 
+\emph{\texttt{as\-sign\-Fea\-ture}}.
+There is only one overlap $P$ of $L$ and $C_1^1$ which is shown in Figure \ref{fig_increasing_1}. 
 The $\nex(P,C')$ and $\nex(P, C')$ parts of $\incr{-1}{C'}{\emph{\texttt{assignFeature}}}$ with $C' = C_2^2$ and $C' = C_2^1$, respectively, are also given in Figure \ref{fig_increasing_1}.
 
 	\item
 	Consider the constraint and rule given in Figure \ref{fig_increasing_2}.
-	The application increasing application condition of this rule and at layer $-1$ with $C_1$ of the constraint is also given in this Figure.
+	The consistency-increasing application condition of this rule and at layer $-1$ with $C_1$ of the constraint is also given in this Figure.
 \end{enumerate}
-Note that we have already used the $\shift$ operator in all of these conditions.
 \end{example}
+
+
+
 \input{figures/fig_increasing_1}
 \input{figures/fig_increasing_2}
 
@@ -305,43 +301,64 @@ Let us now show that a rule equipped with the consistency-increasing transformat
 \begin{theorem}
 	Given a constraint $c$ in UANF. 
 	Every rule $\rho = (\ac \wedge \incr{k}{C'}{\rho'},\rho')$ with $-1 \leq k < \nlvl(c)-1$ odd and $C' \in \ig{C_{k+2}}{C_{k+3}}$ if $k < \nlvl(c)-2$ and 
-	$C' = C_{k+2}$ otherwise is a consistency-increasing rule at layer $k$ 
-	w.r.t. $c$.
+	$C' = C_{k+2}$ otherwise is a direct consistency-increasing rule w.r.t. $c$ at layer $k$.
 	
 \end{theorem}
 \begin{proof}
 	Let a transformation $t: G \Longrightarrow_{\rho} H$ with $\maxk{c}{G} = k$
 	be given. 
-	Since  $\incr{k}{C}{\rho}$ contains $\main{k}{\rho}$, $t$ is a consistency maintaining transformation at layer $k$ according to Theorem \ref{thm_maintaining_ac}. It remains to show that $t$ satisfies 
-	the general and special increasing conditions respectively.
+	Since  $\incr{k}{C'}{\rho}$ contains $\main{k}{\rho}$, $t$ is a direct consistency maintaining transformation at layer $k$ according to Theorem \ref{thm_maintaining_ac}. It remains to show that $t$ satisfies 
+	the general or special increasing formula respectively.
 	
 	
 	\begin{enumerate}
 		\item	
-			If $k = \nlvl(c) -2$, i.e. $c$ ends with a condition of the form $\forall(C_{\nlvl(c)},\false)$, assume that $t$ does not satisfy the special increasing condition. Then there is no morphism $p: C_{k+2} \inj G$ such that $\track_t \circ p$ is not total.
-			So there is no overlap $P$ of $L$ and $C_{k+2}$ with $i_L^P(L\setminus K) \cap i_{C_{k+2}}^P(C_{k+2}\setminus C_{k+1} ) \neq \emptyset$.
-			Since, $k = \nlvl(c) -2$ it follows that  $\rep(P,C') = \false$ and $m \not \models \incr{k}	{C}{\rho}$. This is a contradiction.
+			If $k = \nlvl(c) -2$, i.e. $c$ ends with a condition of the form $\forall(C_{\nlvl(c)},\false)$, assume that $t$ does not satisfy the special increasing formula. Then there is no morphism $p: C_{k+2} \inj G$ such that $\track_t \circ p$ is not total.
+			So there is no overlap $P$ of $L$ and $C_{k+2}$ with $i_L^P(L\setminus K) \cap i_{C_{k+2}}^P(C_{k+2}\setminus C_{k+1} ) \neq \emptyset$ such that $m \models \exists(i_L^P: L \inj P, \true)$.
+			Since, $k = \nlvl(c) -2$ it follows that either $\rep(P',C') = \false$ or $m \not \models \nex(P',C')$ for all $P \in \overlay(L,P)$. Therefore $m \not \models \incr{k}	{C}{\rho}$, this is a contradiction.
 		
 		\item 
 			Otherwise let $P \in \overlay(L, C_{k+2})$. We show that 
-			$m \models \vFound{}{P}{C} \wedge \vRepaired{}{P}{C}$ implies  that $t$ satisfies the general increasing condition.
-			If $m \models \vFound{}{P}{C}$, there is a morphism
+			$m \models \vFound{}{P}{C'} \wedge \vRepaired{}{P}{C'}$ implies  that $t$ satisfies the general increasing formula.
+			If $m \models \vFound{}{P}{C'}$, there is a morphism
 			$p: P \inj G$ with $m = p \circ i_L^P$ and $p \models \neg \exists(
 			i_P^Q:P \inj Q, \true)$ for all $Q \in \eol(P,i_{C_{k+2}}^P, a^r_{k+2})$.
 			Therefore, $q:= p \circ 
 			i_{C_{k+2}}^P\not \models 
 			\exists(a_{k+2}^r:C_{k+2} \inj C', \true)$. 
 			
-			If $i_L^P(L \setminus K) \cap i_{C_{k+2}}^P(C_{k+2} \setminus C_{k+1}) \neq \emptyset$,
-			$\track_t \circ q$ is not total and the general increasing condition is satisfied. 
+			For $\vRepaired{}{P}{C'}$ there are two cases. Either $\vRepaired{}{P}{C'} = \true$ or $\vRepaired{}{P}{C'}$ is the condition described in Definition \ref{def_appl_cond} and $m \models \vRepaired{}{P}{C'}$. 
+			In the first case, if $\vRepaired{}{P}{C'} = \true$ it follows that 
+			$i_L^P(L \setminus K) \cap i_{C_{k+2}}^P(C_{k+2} \setminus C_{k+1}) \neq \emptyset$. 
+			Therefore $\track_t \circ q$ is not total and the general increasing formula is satisfied. 
 			
-			Otherwise,  if $\track_t \circ q$ is total, and there is 
-			a morphism $p: P' \inj H$ with 
-			$\track_t\circ q = p \circ i_{C_{k+1}}^{P'}$.
-			Since $m \models \vRepaired{}{P}{C}$,  all morphisms $p \circ 
-			i_{C_{k+2}}^{P'}$ with $n = p \circ i_R^Q$ satisfy 
-			$\exists(C', \true)$. Therefore, $\track_t \circ q \models 
-			\exists(C', \true)$ and the general increasing condition is satisfied.
+			Otherwise,  if $\vRepaired{}{P}{C'}$ is the condition described in Definition \ref{def_appl_cond} and $m \models \vRepaired{}{P}{C'}$, $\track_t \circ q$ is total and there is 
+			a morphism $p': P' \inj H$ with 
+			$\track_t\circ q = p' \circ i_{C_{k+2}}^{P'}$.
+			Since $m \models \vRepaired{}{P}{C'}$,  all morphisms $p'':P' \inj H$ with $n = p'' \circ i_R^Q$ satisfy $\bigvee_{Q \in \eol(P',i_{C_{k+2}}^{P'}, a^r_{k+2})}  \exists(i_{P'}^Q:P' \inj Q,\true)$. 
+			It follows that $p'' \circ i_{C_{k+2}}^P \models \exists(C', \true)$ and in particular that $\track_t\circ q = p' \circ i_{C_{k+2}}^{P'} \models \exists(C', \true)$. Therefore, the general increasing formula is satisfied.
 	\end{enumerate}	 
-	In summary, $\rho$ is a consistency increasing rule at layer $k$.
+	In summary, $\rho$ is a direct consistency increasing rule at layer $k$.
 \end{proof}
+
+
+Note that $\incr{k}{C'}{\rho}$ is only evaluated to $\true$ if 
+an occurrence $p: C_{k+2} \inj G$ that does not satisfy $\exists(C', \true)$ is either removed or satisfies $\exists(C', \true)$ in the derived graph.
+For all smaller improvements, i.e. a similar improvement for a subgraph $C'' \in \ig{C_{k+2}}{C'}$ of $C'$, $\incr{k}{C'}{\rho}$ would be evaluated to $\false$.
+For any larger improvements, i.e. the same improvement for a supergraph $C'' \in \ig{C'}{C_{k+3}}$ of $C'$, $\incr{k}{C'}{\rho}$ will also be evaluated to $\false$ if the repaired occurrence of $C_{k+2}$ satisfies $\exists(C', \true)$.
+In both cases, the application condition would prohibit the transformation, even though it would be direct consistency-increasing.
+To solve this problem, several application conditions could be combined by
+$$\bigvee_{C' \in \ig{C_{k+2}}{C_{k+3}}} \incr{k}{C'}{\rho}.$$ 
+This application condition will be evaluated to $\true$ if the cases described above occur, with the drawback that this results in a huge condition, even if duplicate conditions are removed.
+At least all duplicates of $\main{}{}$ can be removed, since they are identical for each $\incr{k}{C'}{\rho}$ and only need to be constructed once.
+
+In general, these application conditions are a compromise between condition size and restrictiveness. 
+They are very restrictive because they do not allow deletions of occurrences of existentially bound graphs and insertions of universally bound graphs.
+For example, any of these application conditions with the rule \texttt{moveFeature} and the constraint $c_1$ will be equivalent to $\false$; the maintaining part of the condition will always be evaluated to $\false$, since \texttt{moveFeature} always removes occurrences of the existentially bound graph $C_2^1$.
+Changing the conditions constructed by $\maintaining()$ to check whether two nodes of type \texttt{Feature} are connected to a node of type \texttt{Class} will give application conditions that can be satisfied with \texttt{moveFeature}. However, for a similar rule moving two nodes of type \texttt{Feature}, this newly constructed $\maintaining()$ would still be evaluated to $\false$.
+So this would only lead to a slight decrease in restrictiveness. 
+
+The conditions constructed by $\rem()$ and $\nin()$ could be modified in a similar way.
+For $\rem()$ and an occurrence $p$ of the universally bound graph $C_{j}$, by checking whether there are two occurrences $p_1,p_2$ of $C_{j}$ with $p = p_1 \circ a_j = p_2 \circ a_j$, and for $\nin()$, by checking whether an introduced occurrence $p$ of $C_j$ satisfies $\exists(C_{j+1}, \true)$.
+As above, this only leads to a small decrease of restrictiveness. 
+Also, the consistency increasing application condition becomes more and more restrictive as $k$ increases, since the number of conditions and in particular the number of negative application conditions also increases.
