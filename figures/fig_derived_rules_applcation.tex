@@ -1,5 +1,6 @@
 \begin{figure}
 \center
+
 	\begin{tikzpicture}
 		\node (L) at (0,2) {$L$};
 		\node (K) at (2,2) {$K$};
@@ -9,6 +10,11 @@
 		\node (H) at (4,0) {$R'$};
 		\node (1) at (1,1) {(1)};
 		\node (2) at (3,1) {(2)};
+		\node (3) at (1,-1) {(3)};		
+		\node (4) at (3,-1) {(4)};
+		\node (G') at (0, -2) {$G$};
+		\node (D') at (2, -2) {$D$};		
+		\node (H') at (4, -2) {$H$};		
 		
 		\draw[left hook-stealth] (K) edge node [above] {$l$}  (L); 
 		\draw[right hook-stealth] (K) edge node [above] {$r$}  (R); 
@@ -17,6 +23,12 @@
 		\draw[left hook-stealth] (K) edge node[fill = white] {$k$} (D);  
 		\draw[left hook-stealth] (L) -- node[left]{$i_L^{L'}$} (G);
 		\draw[left hook-stealth] (R) edge node [right] {$i_R^{R'}$} (H);    
+		\draw[left hook-stealth] (D') edge node [above] {$g$}  (G');
+		\draw[right hook-stealth] (D') edge node [above] {$h$}  (H');
+		\draw[left hook-stealth] (G) -- node[left]{$m'$} (G');
+		\draw[left hook-stealth] (D) edge node[fill = white]{$k'$} (D');
+		\draw[left hook-stealth] (H) -- node[right]{$n'$} (H');
 	\end{tikzpicture}
-	\caption{Pushout diagram for Lemma \ref{derived_appl}}\label{fig_dpo_construction}
+	
+	\caption{Pushout diagram for the construction of basic increasing rules.}\label{fig_derived_rules_applcation}
 \end{figure}

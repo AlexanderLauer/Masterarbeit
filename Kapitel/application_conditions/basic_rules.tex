@@ -111,7 +111,9 @@ Of course, this second case only occurs if $k < \nlvl(c)-2$, where $c$ is the co
 This property has the advantage that the application conditions for basic increasing rules are less complex and smaller, since it can be determined exactly how this rule removes a violation, and therefore no overlaps need to be considered.
 
 This, at first sight, seems to be a restriction of the set of basic increasing rules, but the context of any rule $\rho$ that satisfies all the properties of a basic increasing rule except that $C_{k+2}$ is a subgraph of the left-hand side can be extended so that this new rule $\rho'$ is a basic increasing rule and the semantic of $\rho'$ is a subset of the semantic of $\rho$. 
-A method for deriving these rules will be presented later.
+A characterisation for these derived rules will be presented later. In particular, derived rules are all amalgamated rules \cite{biermann2010parallel} of 
+$\rle{L'}{l'}{K}{r'}{R}$, $\rle{C_{k+2}}{\id}{C_{k+2}}{id}{C_{k+2}}$ and $\rho= \rle{L}{l}{K}{r}{R}$ such that injective morphisms 
+$l_1 : L' \inj C_{k+2}$, $l_2 : L' \inj L$, $k_1 : K' \inj C_{k+2}$, $k_2 : K' \inj K$, $r_1 : R' \inj C_{k+2}$ and $r_1 : R' \inj R$ exists. 
 
 Basic increasing rules at layer $k$ are called \emph{deleting basic increasing rules} when $p$ is removed and \emph{inserting basic increasing rules} when an intermediate graph is inserted.
 For our repair process, we will introduce the restriction that deleting basic increasing rules may only delete edges but not nodes of $C_{k+2}$, since otherwise it is not possible to decide, given a rule set and a constraint, whether this rule set is able to repair an arbitrary graph based only on deleting basic increasing rules.
@@ -120,7 +122,7 @@ Then it is unknown whether this node is connected to nodes that do not belong to
 
 
 \begin{definition}[\textbf{basic increasing rule}]\label{def_basicIncreasing}
-	Given a constraint $c$ in UANF and a  direct consistency-maintaining rule $\rho = (\ac,  L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ up to layer $-1 \leq k \leq \nlvl(c) -2$, where $k$ is odd. Then, $\rho$ is a  
+	Given a constraint $c$ in UANF and a  direct consistency-maintaining rule $\rho = (\ac,  L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ at layer $-1 \leq k \leq \nlvl(c) -2$, where $k$ is odd. Then, $\rho$ is a  
 	\emph{basic increasing rule w.r.t $c$ at layer 
 	$k$} if a morphism $p: C_{k+2} 
 	\inj L$, called the \emph{increasing morphism}, exists such that either 
@@ -160,7 +162,7 @@ As mentioned above, given a direct consistency-maintaining rule $\rho$, we can d
 						\ig{C_{k+2}}{C_{k+3}} &\text{otherwise.}
 					\end{cases}
 	$$
-	For $P \in \mathbf{G}$ and $L' \in \overlay(L,P)$: If the diagram shown 
+	For $P \in \mathbf{G}$ and $(L', i_L^{L'}, i_P^{L'}) \in \overlay(L,P)$: If the diagram shown 
 	in Figure 
 	\ref{fig_dpo_construction} is a transformation, i.e. (1) and (2) are 
 	pushouts, and 
@@ -186,28 +188,39 @@ As mentioned above, given a direct consistency-maintaining rule $\rho$, we can d
 
 \input{figures/fig_derived_rules}
 
-Obviously, a rule $\rho'$ contained in the set of rules derived from a rule $\rho$ is only applicable to a match $m'$ if $\rho$ is applicable to a match $m$ with $m = m' \circ i$, where $i$ is the inclusion of the left side of $\rho$ in the left side of $\rho'$.
-Therefore, given a set of rules $\mathcal{R}$, extending $\mathcal{R}$ by the set of all derived rules for each rule of $\mathcal{R}$ does not extend the expressiveness of $\mathcal{R}$.
-The main idea of the concept of derived rules is to extend a given set of rules by as many basic increasing rules as possible without extending the expressiveness of that set.
+The following lemma shows that a derived rule $\rho'$ of $\rho$ is only applicable at a graph $G$ if $\rho$ is also applicable at $G$ and the derived graphs of these transformations are identical. 
 
-\begin{lemma}
-Given a constraint $c$ in UANF and a rule 
-	 $\rho = (\ac, \rle{L}{l}{K}{r}{R})$ 
-	be given, such that $\rho$ is 
-	a direct maintaining rule up to layer $-1 \leq k \leq \nlvl(c)-2$, where $k$ is odd, which is universally deleting and intermediate inserting according to Definition 
-	\ref{def_basicIncreasing}. Then every rule contained in the set of derived rules of $\rho$ at layer $k$ is a basic increasing rule.
+\begin{lemma}\label{derived_appl}
+	Given a graph $G$ and rules $\rho = \rle{L}{l}{K}{r}{R}$ and $\rho' = \rle{L'}{l'}{K'}{r'}{R'}$ such that $\rho'$ is a derived rule of $\rho$. 
+	Then, $\rho'$ is only applicable at match $m': L' \inj G$ if $\rho$ is applicable at match $m' \circ i_L^{L'}$ where $i_L^{L'}$ is the morphism shown in Figure \ref{fig_dpo_construction}.
 \end{lemma}
-
 \begin{proof}
-	Let $\rho' = (\ac', \rle{L'}{l'}{K'}{r'}{R'})$ be one of these derived rules. Since $\rho'$ deletes and inserts exactly the same elements as $\rho$ and $m', \models \ac' \iff m' \circ i_L^{L'} \models \ac$, $\rho'$ is a direct consistency maintaining rule up to layer $k$ and is universally deleting or intermediate inserting according definition \ref{def_basicIncreasing}.
-	It follows that $\rho'$ is a basic increasing rule at layer $k$.
+	Consider the transformation composed of the pushouts $(3)$ and $(4)$ given in Figure \ref{fig_derived_rules_applcation}.
+	Since $\rho'$ is a derived rule of $\rho$, the squares $(1)$ and $(2)$ are pushouts. 
+	Therefore, the squares $(1)+(3)$ and $(2)+(4)$ are also pushouts \cite{hartmut2006fundamentals}. It follows that $\rho$ is applicable at match $m' \circ i_L^{L'}$.
 \end{proof}
+\input{figures/fig_derived_rules_applcation}
+Therefore extending a rule set $\mathcal{R}$ by the set of all derived rules for each rule of $\mathcal{R}$ does not extend the semantic of $\mathcal{R}$.
+The main idea of the concept of derived rules is to extend a given set of rules by as many basic increasing rules as possible without extending its semantic.
 
-In transformations via a rule $\rho$ such that the match intersects an occurrence of a universally bound graph $C_{k+2}$, $\rho$ can be replaced by a derived rule of $\rho$ at level $k$. 
+%\begin{lemma}
+%Given a constraint $c$ in UANF and a rule 
+%	 $\rho = (\ac, \rle{L}{l}{K}{r}{R})$ 
+%	be given, such that $\rho$ is 
+%	a direct maintaining rule up to layer $-1 \leq k \leq \nlvl(c)-2$, where $k$ is odd, which is universally deleting and intermediate inserting according to Definition 
+%	\ref{def_basicIncreasing}. Then every rule contained in the set of derived rules of $\rho$ at layer $k$ is a basic increasing rule.
+%\end{lemma}
+%
+%\begin{proof}
+%	Let $\rho' = (\ac', \rle{L'}{l'}{K'}{r'}{R'})$ be one of these derived rules. Since $\rho'$ deletes and inserts exactly the same elements as $\rho$ and $m', \models \ac' \iff m' \circ i_L^{L'} \models \ac$, $\rho'$ is a direct consistency maintaining rule up to layer $k$ and is universally deleting or intermediate inserting according definition \ref{def_basicIncreasing}.
+%	It follows that $\rho'$ is a basic increasing rule at layer $k$.
+%\end{proof}
+
+In transformations via a rule $\rho$ such that the match intersects an occurrence of a universally bound graph $C_{k+2}$, $\rho$ can be replaced by a derived rule of $\rho$ at layer $k$. 
 
 \begin{lemma}
 Given a constraint $c$ in UANF and a rule $\rho = (\ac, \rle{L}{l}{K}{r}{R})$.
-	Then, for each transformation $$t: G \Longrightarrow_{\rho,m}H$$ such that an occurrence $p:C_{k+2} \inj G$ of a universally bound graph $C_{k+2}$ with $p(C_{k+2}) \cap m(L) \neq \emptyset$ exists, there exists a transformation $$t': G \Longrightarrow_{\rho', m'}H$$ where $\rho'$ is a derived rule of $\rho$ at layer $k$.
+	Then, for each transformation $$t: G \Longrightarrow_{\rho,m}H$$ such that an occurrence $p:C_{k+2} \inj G$ of a universally bound graph $C_{k+2}$ with $p(C_{k+2}) \cap m(L) \neq \emptyset$ exists, there is a transformation $$t': G \Longrightarrow_{\rho', m'}H$$ where $\rho'$ is a derived rule of $\rho$ at layer $k$.
 \end{lemma}
 
 \begin{proof}
