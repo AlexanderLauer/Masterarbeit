@@ -45,7 +45,7 @@ Then the concurrent rule $\rho$ of any repairing sequence for $c$ is a $c'$-pres
 \input{Algorithms/algo_non-conflict_free}
 
 The \emph{conflict graph} for a set of constraints and \emph{circular conflicts} for it are defined in a similar way to the conflict graph and circular conflicts for a constraint. 
-A set of constraints is called \emph{circular conflict free} if each of its constraints is circular conflict free and there is no sequence $c = c_0, \ldots c_n = c$ such that $c_i$ has a conflict with $c_{i+1}$ for all $0\leq i < n$. In other words, the conflict graph of this set is acyclic.
+A set of constraints is called \emph{circular conflict free} if each of its constraints is circular conflict free and there is no sequence $c = c_0, \ldots, c_n = c$ such that $c_i$ has a conflict with $c_{i+1}$ for all $0\leq i < n$. In other words, the conflict graph of this set is acyclic.
 
 \begin{definition}[\textbf{conflict graphs, circular conflicts}]
 	Given a set of constraints $\mathcal{C}$ in UANF. The \emph{conflict graph} of $\mathcal{C}$ is constructed in the following way. For each constraint $c \in \mathcal{C}$ there is a node. If there is a conflict between $c$ and $c'$, there exists an edge $e$ with $\src(e) = c$ and $\tar(e) = c'$.
@@ -57,7 +57,7 @@ A set of constraints $\mathcal{C}$ is called \emph{circular conflict free} if ev
 \end{definition}
 
 \begin{example}
-	Consider the rules \emph{\texttt{resolve, resolve2, createFeatures}} and constraints $c_1$ and $c_5$ given in figures \ref{fig:constraint_conflict} and \ref{fig:constraints}.
+	Consider the rules \emph{\texttt{resolve, resolve2, createFeatures}} and constraints $c_1$ and $c_5$ given in Figures \ref{fig:constraint_conflict} and \ref{fig:constraints}.
 The constraint set $\mathcal{C} = \{c_1, c_5\}$ is a multiplicity which states that \enquote{Each node of type \emph{\texttt{Class}} is connected to exactly two nodes of type \emph{\texttt{Feature}}}.
 	With the rule set $\mathcal{R}_1 = \{\emph{\texttt{resolve}}, \emph{\texttt{createFeatures}}\}$, there is only one conflict in $\mathcal{C}$; $c_1$ has a conflict with $c_5$, since applying \emph{\texttt{createFeatures}} could lead to inserting the universally bound graph of $c_5$. With the rule set $\mathcal{R}_2 = \{\emph{\texttt{resolve2}}, \emph{\texttt{createFeatures}}\}$ there are two conflicts. Again, there is a conflict of $c_1$ with $c_5$, but also a conflict of $c_5$ with $c_1$, since applying \emph{\texttt{resolve}} can destroy an occurrence of the existentially bound graph of $c_1$.
 	
@@ -75,7 +75,7 @@ conflict graph.
 \begin{definition}[\textbf{topological ordering of a graph}]
 	Given is a graph $G$. A sequence $(v_1, \ldots, v_n)$ of nodes of $G$ is called a \emph{topological ordering} of $G$ if no edge $e \in E_G$ exists with $\src(e) = v_i$, $\tar(e) = v_j$ and $i \geq j$. The topological ordering of a circular conflict-free set of constraints $\mathcal{C}$ is the topological order of its conflict graph.
 \end{definition}
-It is well known that every directed acyclic graph has a topological ordering, and therefore every conflict graph of a circular conflict-free set of constraints also has a topological ordering.
+It is well known that every directed acyclic graph has a topological ordering that can be computed in $\Theta(|V| + |E|)$ where $V$ and $E$ are the set of nodes and edges of the respective graph \cite{cormen2022introduction}. Therefore every conflict graph of a circular conflict-free set of constraints also has a topological ordering .
 
 The repair process is given in Algorithm \ref{Algo_non-conflict_free} and proceeds as follows. 
 First, the topological ordering of the constraint set is determined (line 1). Then Algorithm \ref{Algo_conflict_free} is used to repair each constraint of $\mathcal{C}$ in the order of the topological ordering (lines 2 -- 4). 

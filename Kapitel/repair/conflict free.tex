@@ -1,31 +1,50 @@
 \subsection{Rule-based Graph Repair for one Constraint}
 
-In the following, we present our graph repair process for a circular conflict-free constraint in UANF. 
-The process is shown in Algorithm \ref{Algo_conflict_free} and proceeds as follows.
-The algorithm starts by finding all occurrences of $C_{\kmax +2}$ that do 
-not satisfy $\cut{0}{\scond{\kmax+2}{c}}$ (line 2). This condition is equal to $\false$ if 
-$\kmax +2 = \nlvl(c)-2$ and equal to $\exists(C_{\kmax +2}, \true)$ otherwise. 
-If $P$ is empty, it must follow that $G \models_{\kmax+2} c$, and so we will apply repairing sequences at occurrences contained in this set.
+In the following, we present our graph repair process for a circular conflict-free constraint in UANF.
+We first start with an algorithm which calculated $\kmax$ given a graph $G$ and a constraint $c$ in UANF, it is shown in Algorithm \ref{Algo_kmax}.  
+\input{Algorithms/algo_determine_kmax}
+
+\begin{theorem}
+	Given a graph $G$ and a constraint $c$ in UANF, Algorithm \ref{Algo_kmax} returns $\maxk{c}{G}$.  
+\end{theorem}
+\begin{proof}
+	If $G \models c$, then $\kmax = \nlvl(c)-1$ which will be returned by the algorithm. 
+	Otherwise, if $G \not \models c$, Corollary \ref{corol:satisfaction} implies that $G \not \models_k c$ for all even $-1 \leq k < \nlvl(c)$. Therefore, $\kmax$ must be odd. 
+	If the algorithm returns $k$, which is odd,  it holds that $G \not \models_{k+2} c$ and Lemma \ref{lem_ex_lower} implies that $k$ must be equal to $\kmax$. 
+
+\end{proof}
+The repair process is shown in Algorithm \ref{Algo_conflict_free} and proceeds as follows.
+The algorithm starts by finding all potentially increasing occurrences  $p$ of $C_{\kmax +2}$ at layer $\kmax$ w.r.t. $c$. Recall, these occurrences satisfy the following: 
+\begin{enumerate}
+	\item $p \not \models d$.
+	\item $p = a_{\kmax+1} \circ \ldots \circ a_0 \circ q$ where  
+	$a_i \circ \ldots \circ q \models \scond{i+1}{\cut{\kmax}{c}}$ for all  $0 \leq i \leq \kmax$ and $q: \emptyset \inj G$ is the empty morphism.
+\end{enumerate}
+The condition $d$ is equal to $\false$ if 
+$\kmax +2 = \nlvl(c)-2$ and equal to $\exists(C_{\kmax +2}, \true)$ otherwise.
+All these occurrences are contained in the set $P$ (line 3).  
+If $P$ is empty,  Lemma \ref{num_violations} implies $G \models_{\kmax+2} c$, and so we only will apply repairing sequences at occurrences contained in this set.
 It may be sufficient to repair only some of these occurrences. 
 Since we do not know which of these are likely to increase the 
-consistency, we choose one at random (line 3). 
+consistency, we choose one at random (line 4). 
 For example, for existentially bound constraints $d$, i.e. their equivalent constraint in UANF is $\forall(\emptyset,d)$, there may exist occurrences of $C_{\kmax +2}$ whose repair will never lead to an increase of the largest satisfied layer. 
 
-There are two ways to repair the selected occurrence, either by destroying it, or by inserting elements such that the occurrence satisfies $\cut{0}{\scond{\kmax+2}{c}}$. The algorithm chooses one of these options (line 4) and applies the appropriate repair sequence 
-(lines 5--11). Note that there may be no repair sequence for $C_{\kmax+2}$, since this graph is universally bound. If this is the case, we use the repairing sequence for $C_{\kmax+3}$. This must exist because $C_{\kmax+3}$ is existentially bound.
+There are two ways to repair the selected occurrence, either by destroying it, or by inserting elements such that the occurrence satisfies $\cut{0}{\scond{\kmax+2}{c}}$. The algorithm chooses one of these options (line 5) and applies the appropriate repair sequence 
+(lines 6--12). Note that there may be no repair sequence for $C_{\kmax+2}$, since this graph is universally bound. If this is the case, we use the repairing sequence for $C_{\kmax+3}$. This must exist because $C_{\kmax+3}$ is existentially bound and $\mathcal{R}$ is a repairing set for $c$.
 
 If the repairing sequence for  $C_{\kmax+2}$ was applied, occurrences of existentially bound graphs may have been destroyed.
 Note that these can only be occurrences of graphs $C_i$ such that $C_{\kmax+2}$ has a conflict with $C_i$.
-This could lead to a reduction of the largest satisfied layer. Therefore the algorithm finds all these destroyed occurrences, in particular it finds all occurrences $p$ of universally bound graphs $C_i$ such that an occurrence $q$ of $C_{i+1}$ with $p = q \circ a_j$ has been removed (line 7).
+This could lead to a reduction of the largest satisfied layer. Therefore the algorithm finds all these destroyed occurrences, in particular it finds all occurrences $p$ of universally bound graphs $C_i$ such that an occurrence $q$ of $C_{i+1}$ with $p = q \circ a_j$ has been removed (line 8).
 If the repairing sequence for $C_{\kmax+3}$ has been applied, occurrences of universally bound graphs may have been inserted. 
 Again, these can only be occurrences of graphs $C_i$ such that 
-$C_{\kmax+2}$ has a conflict with $C_i$ and this could lead to a decrease of the largest satisfied layer. Again, the algorithm finds all inserted occurrences of universally bound graphs (line 10).
+$C_{\kmax+2}$ has a conflict with $C_i$ and this could lead to a decrease of the largest satisfied layer. Again, the algorithm finds all inserted occurrences of universally bound graphs (line 11). Again, in both cases, the algorithm only finds potentially increasing occurrences at the respective layer w.r.t. $c$. 
 If the largest satisfied layer has not been reduced, the algorithm chooses the next occurrence in $P$.
 
-Otherwise, the largest satisfied layer must be restored. To do this, the occurrences contained in $M$ must be repaired. 
+Otherwise, the largest satisfied layer must be restored. To do this, all newly inserted potentially increasing occurrences of universally bound graphs and potentially increasing occurrences $p$ of   universally bound graphs $C_j$ such that $p \models \exists(C_{j+1}, \true)$ and  $\track \circ p \not\models \exists(C_{j+1}, \true)$ where $\track$ is the morphism of the repairing sequence application are collected in the set $M$ and must be repaired. Again, it might be sufficient to only repair some of these occurrences in order to restore the largest satisfied layer. 
+Since it is unclear for which  of these occurrences a deletion or extensions leads to increase of the largest satisfied layer, we select one at random. 
 Repairing these occurrences may again result in the insertion of existentially bound graphs or the removal of universally bound graphs. 
-These occurrences are added to $H$, and this process is repeated until 
-the largest satisfied layer is restored, i.e. $H \models_{\kmax}c$ (line 12 -- 25).
+These occurrences are added to $M$, and this process is repeated until 
+the largest satisfied layer is restored, i.e. $H \models_{\kmax}c$ (line 13 -- 26).
 The whole process is repeated until a graph satisfying $c$ is derived. 
 
 From this it is clear why $c$ must be circular conflict free. 
@@ -35,15 +54,15 @@ For example, consider the constraint $c_3$ given in Figure \ref{fig:conflict_exa
 The set of rules used for the transformations $t_1$ and $t_2$ in figure \ref{fig:conflict_example} forms a repairing set. 
 During a repair process using Algorithm \ref{Algo_conflict_free}, where the starting graph is the first graph of $t_1$, it is possible for the Algorithm \ref{Algo_conflict_free} to enter an infinite loop by alternately applying $t_1$ and $t_2$.
 
-Optimisation of the repair algorithm in terms of the number of elements inserted or deleted can be achieved by using partial repairing sequences where possible.
-For example, consider the repairing sequence
-$$ C_k \Longrightarrow C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$
-with $C_1 \in \ig{C_k}{C_{k+1}}$. 
-For an occurrence $p$ of $C_k$, which already satisfies the condition $\exists(C_1, \true)$, it may be sufficient to apply only the sequence
-$$C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$ at $p$. 
-But then you have to check that no occurrences of existentially bound graphs have been destroyed, and that no occurrences of universally bound graphs $C_i$ such that $C_k$ has no conflict with $C_i$ have been inserted.
-If this is the case, the transformations must be reversed and another (partial) repairing sequence must be used.
-Even though this would lead to an optimisation in terms of the number of elements inserted and deleted, it would lead to an increase in runtime due to the reversal of transformations.
+%Optimisation of the repair algorithm in terms of the number of elements inserted or deleted can be achieved by using partial repairing sequences where possible.
+%For example, consider the repairing sequence
+%$$ C_k \Longrightarrow C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$
+%with $C_1 \in \ig{C_k}{C_{k+1}}$. 
+%For an occurrence $p$ of $C_k$, which already satisfies the condition $\exists(C_1, \true)$, it may be sufficient to apply only the sequence
+%$$C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$ at $p$. 
+%But then you have to check that no occurrences of existentially bound graphs have been destroyed, and that no occurrences of universally bound graphs $C_i$ such that $C_k$ has no conflict with $C_i$ have been inserted.
+%If this is the case, the transformations must be reversed and another (partial) repairing sequence must be used.
+%Even though this would lead to an optimisation in terms of the number of elements inserted and deleted, it would lead to an increase in runtime due to the reversal of transformations.
 
 For any circular conflict-free constraint, Algorithm \ref{Algo_conflict_free} will always terminate according to the following Theorem.
 
@@ -52,30 +71,31 @@ For any circular conflict-free constraint, Algorithm \ref{Algo_conflict_free} wi
 
 
 \begin{theorem}
-Given n graph $G$,  a circular conflict free condition $c$ in UANF and 
+Given a graph $G$,  a circular conflict free condition $c$ in UANF and 
 	a repairing set $\mathcal{R}$ of $c$. 
-	Then, Algorithm \ref{Algo_conflict_free} with input $G$,$c$ and $\mathcal{R}$ 
+	Then, Algorithm \ref{Algo_conflict_free} with input $G$, $c$ and $\mathcal{R}$ 
 	terminates and returns a graph $H$ with $H \models c$.
 \end{theorem}
 \begin{proof}
 	If Algorithm \ref{Algo_conflict_free} terminates, it returns a graph 
 	that satisfies $c$. Therefore, it is sufficient to show that Algorithm 
 	\ref{Algo_conflict_free} terminates.
-	Since $G$ is finite, the set $P$ must also be finite. If a repairing sequence has been applied, the set $M$ contains only occurrences of graphs $C_j$ such that $C_{\kmax +2}$ has a (transitive) conflict with $C_j$, since the repairing sequence is not able to destroy or insert occurrences of $C_i$ such that $C_{\kmax +2}$ has no (transitive) conflict with $C_i$. Since $G$ is finite, $|M|$ must also be finite.
+	Since $G$ is finite, the set $P$ must also be finite. If a repairing sequence has been applied, the set $M$ contains only occurrences of graphs $C_j$ such that $C_{\kmax +2}$ causes a (transitive) conflict with $C_j$, since the repairing sequence is not able to destroy or insert occurrences of $C_i$ such that $C_{\kmax +2}$ does not cause a conflict with $C_i$. 
+	Note that this is also the case for repairing sequence for universally bound graphs. Since $G$ is finite, $|M|$ must also be finite.
 	
 	If the derived graph does not satisfy $\cut{\maxk{c}{G}}{c}$, we need to restore the largest satisfied layer.
-	Since the largest satisfied layer only decreases if an occurrence of an existentially bound graph is destroyed or an occurrence of universally bound graphs is inserted, and $M$ contains all these occurrences, we only need to consider the occurrences contained in $M$.
-	Applying repairing sequences to occurrences $p :C_j \inj H \in M$ could again lead to the insertion of universally bound graphs or the removal of existentially bound graphs. The set $M'$ contains all these occurrences, and again these are only occurrences of $C_i$ such that $C_j$ has a (transitive) conflict with $C_i$.
-	Since $c$ is free of circular conflict, $M'$ cannot contain any occurrences of $C_{\kmax +2}$, otherwise $C_j$ would have a (transitive) conflict with $C_{\kmax +2}$ and therefore $C_{\kmax +2}$ has a circular conflict. Therefore no occurrences of $C_{\kmax +3}$ are destroyed and no occurrences of $C_{\kmax+2}$ are inserted.
-	In addition, $C_{\kmax +2}$ has a (transitive) conflict with $C_i$, and repairing any $p \ in M'$ will not lead to insertion of an occurrence of $C_{\kmax +2}$ or removal of an occurrence of $C_{\kmax +3}$.
+	Since the largest satisfied layer only decreases if an occurrence of an existentially bound graph $C_j$ is destroyed such that an occurrence $p$ of $C_{j-1}$ satisfies $\exists(C_j, \true)$  and $\track \circ p$ does not satisfy $\exists(C_j, \true)$ or an occurrence of universally bound graphs is inserted, and $M$ contains all these occurrences that can also improve the satisfaction at layer (see Lemma \ref{num_violations}) , we only need to consider the occurrences contained in $M$.
+	Applying repairing sequences to occurrences $p :C_j \inj H \in M$ could again lead to the insertion of universally bound graphs or the removal of existentially bound graphs. The set $M'$ contains all these occurrences, and again these are only occurrences of $C_i$ such that $C_j$ causes a (transitive) conflict for $C_i$.
+	Since $c$ is free of circular conflict, $M'$ cannot contain any occurrences of $C_{\kmax +2}$, otherwise $C_j$ would have cause a (transitive) conflict for $C_{\kmax +2}$ and therefore $C_{\kmax +2}$ has a circular conflict. Therefore no occurrences of $C_{\kmax +3}$ are destroyed and no occurrences of $C_{\kmax+2}$ are inserted.
+	In addition, $C_{\kmax +2}$ causes a (transitive) conflict for $C_i$, and repairing any $p \in M'$ will not lead to insertion of an occurrence of $C_{\kmax +2}$ or removal of an occurrence of $C_{\kmax +3}$.
 	
-	Since $c$ is circular conflict free, there must exist graphs $C_i$, such that $C_i$ has no conflict with any other graph $C_{i'}$ and $C_{\kmax+2}$ has a (transitive) conflict with $C_i$. 
+	Since $c$ is circular conflict free, there must exist graphs $C_i$, such that $C_i$ causes no conflict with any other graph $C_{i'}$ and $C_{\kmax+2}$ causes a (transitive) conflict for $C_i$. 
 Therefore, the application of repairing sequences at occurrences of these graphs will not lead to the insertion or removal of any universally or existentially bound graph, respectively.
 	Since $c$ is finite, the number of graphs $C_i$ 
-	such that $C_{\kmax+2}$ has a (transitive) conflict with $C_i$ is finite.
-	Since $|M'|$ is also finite, after a finite number of applications of  repairing sequences, $M'$ contains only occurrences of graphs that have no conflicts. After a repairing sequence has been applied to all these occurrences, $M'$ is empty and $H \models_{\maxk{c}{G}} c$, since all occurrences $p$ of $C_j$ which have either been inserted or an occurrence $q$ of $C_{j+1}$ with $p = a_j \circ q$ has been removed satisfy $\exists (C_{j+1},\true)$. 
+	such that $C_{\kmax+2}$ causes (transitive) conflict with $C_i$ is finite.
+	Since $|M'|$ is also finite, after a finite number of applications of  repairing sequences, $M'$ contains only occurrences of graphs that do not cause any conflicts. After a repairing sequence has been applied to all these occurrences, $M'$ is empty and $H \models_{\maxk{c}{G}} c$, since all occurrences $p$ of $C_j$ which have either been inserted or an occurrence $q$ of $C_{j+1}$ with $p = a_j \circ q$ has been removed satisfy $\exists (C_{j+1},\true)$ or have been removed. 
 	
-	Therefore, after a finite number of iterations, the set $P$ is empty and the largest satisfied layer has been increased by at least $1$.
+	Therefore, after a finite number of iterations, the set $P$ is empty and Lemma \ref{num_violations} implies that the largest satisfied layer has been increased by at least $1$.
 It follows that after a finite number of iterations $G \models c$. 
 Then Algorithm \ref{Algo_conflict_free} terminates and returns $G$.
 \end{proof}
@@ -86,7 +106,7 @@ Then Algorithm \ref{Algo_conflict_free} terminates and returns $G$.
 	the graphs shown in Figure \ref{fig:constraints}.
 	This constraint is circular conflict free and a repairing set for $c$ is 
 	given in Figure \ref{fig:rep}.
-	There does exist a repairing sequence for $C_2^2$ via the rule 		
+	There is a repairing sequence for $C_2^2$ via the rule 		
 	\emph{\texttt{remove}} and a repairing sequence for $C_2^1$ via the rule 
 	\emph{\texttt{insert}}.
 	Using the rule set $\{\emph{\texttt{remove}},\emph{\texttt{insert}}\}$,
@@ -94,9 +114,9 @@ Then Algorithm \ref{Algo_conflict_free} terminates and returns $G$.
 	$G_1, G_2$ or $G_3$ given in Figure \ref{fig:rep}, depending on the repairing sequences used.
 \end{example}
 
-If $\mathcal{R}$ is not a repairing set for a constraint $c$ in UANF, it is unclear whether a graph $G$ can be repaired with this set of rules.
-The only approach is a brute-force approach using consistency-maintaining or consistency-increasing rules up to layer $\kmax$. This can be done by equipping the rules of $\mathcal{R}$ with maintaining, increasing or basic application conditions. 
-In this case, we can repair $G$ by brute-force if there is a sequence $$G \Longrightarrow_{\rho_1} \ldots \Longrightarrow_{\rho_n} H$$ of transformations with $\rho_1, \ldots, \rho_n \in \mathcal{R}$ such that each transformation is consistency-maintaining or consistency-increasing w.r.t. $c$ and $H \models c$. 
-If no such sequence exists, this approach cannot repair $G$, even if $G$ can be repaired with rules of $\mathcal{R}$.
+%If $\mathcal{R}$ is not a repairing set for a constraint $c$ in UANF, it is unclear whether a graph $G$ can be repaired with this set of rules.
+%The only approach is a brute-force approach using consistency-maintaining or consistency-increasing rules up to layer $\kmax$. This can be done by equipping the rules of $\mathcal{R}$ with maintaining, increasing or basic application conditions. 
+%In this case, we can repair $G$ by brute-force if there is a sequence $$G \Longrightarrow_{\rho_1} \ldots \Longrightarrow_{\rho_n} H$$ of transformations with $\rho_1, \ldots, \rho_n \in \mathcal{R}$ such that each transformation is consistency-maintaining or consistency-increasing w.r.t. $c$ and $H \models c$. 
+%If no such sequence exists, this approach cannot repair $G$, even if $G$ can be repaired with rules of $\mathcal{R}$.
 
 \input{figures/fig_example_repair}

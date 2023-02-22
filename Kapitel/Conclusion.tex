@@ -1,6 +1,6 @@
 \section{Conclusion}\label{conclusion}
 
-In summary, we have introduced a new concept of consistency, which leads to the new notions of the notions of consistency-maintaining and consistency-increasing transformations and rules, which is finer-grained, compared to the already existing notions of consistency preserving, consistency guaranteeing, consistency sustaining and consistency improving. Finer-grained, in the sense that the smallest increases and decreases of consistency can be detected, namely the insertion or removal of one graph element.
+In summary, we have introduced a new concept of consistency, which leads to the new notions of consistency-maintaining and consistency-increasing transformations and rules, which is more fine-grained, compared to the already existing notions of consistency preserving, consistency guaranteeing, consistency sustaining and consistency improving. Finer-grained, in the sense that the smallest increases and decreases of consistency can be detected, namely the insertion or removal of one graph element.
 We have compared our notions with the already existing notions mentioned above. The notions of consistency-maintaining and consistency-improving are related to the notions of consistency-preserving and consistency-guaranteeing, and are generally not related to the notions of consistency-sustaining and consistency-improving. Only in special cases, for specific constraints, are these notions related or even identical.
 
 
@@ -11,7 +11,13 @@ We have introduced a rule-based graph repair process based on our new notions of
 We present characterisations of these circular conflict free constraints and a characterisation of a rule set that is able to repair a constraint using our repair process. 
 In addition, we extend the notion of conflicts in constraints to the notion of conflicts between constraints, and present a rule-based graph repair process for a satisfiable circular conflict free set of constraints, which is based on the repair process for one constraint.
 
-Future work is to extend the notions of consistency-maintaining and consistency-increasing transformations for all types of nested constraints, and a rule-based repair process for all satisfiable nested constraints. 
+Future work is to extend the notions of consistency-maintaining and consistency-increasing transformations for all types of nested constraints, and a rule-based repair process for all satisfiable nested constraints, i.e. constraints that also use Boolean operators.
+
+There are further optimisations for the  application conditions for general rules. First, not all overlaps in the set $\mathbf{P}_{C'}$ need to be considered in order to construct the no violation inserted part of the maintaining application condition. Some of these constructed conditions are implied by other conditions and can therefore be removed. 
+Second, the application condition constructed from the violation removed part of the consistency increasing application condition is way too restrictive since all occurrences of $P'$ that extend $R$ must satisfy $\exists(C', \true)$ after the transformation, since we are unable to transform information about occurrences of $C_{k+2}$ from $\nex(P,C')$ to $\rep(P,C')$. Obviously,  only one of these occurrences of $P'$ would be sufficient to claim that the transformation is consistency-increasing. 
+We are confident that, with some additional theory, the $\nex(P,C')$ and $\rep(P,C')$ parts of the application can be combined in order to construct less restrictive application conditions. 
+
 Although we have presented characterisations for circular conflict-free constraints, it remains unclear for which practical applications our approach is suitable. This may require implementation and further evaluation of the repair process, characterisations and construction of application conditions.
+In addition, the notion of conflict between constraints is very strict, and we are confident that there is a repair process that uses the repair process for one constraint to repair a set of constraints in parallel. To do this, the conflict graph for all graphs of all constraints must be acyclic, i.e. there is no circular conflict in set of all graphs of all constraints. Then, we are able repair all constraints using Algorithm \ref{Algo_conflict_free}. The challenge of this approach is to decide which occurrences of which graphs need to be repaired in order to increase consistency.
 
  

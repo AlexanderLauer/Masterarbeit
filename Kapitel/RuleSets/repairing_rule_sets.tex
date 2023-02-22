@@ -3,13 +3,13 @@
 Given a set of rules and a constraint, it is unclear whether or not it is possible to repair a graph using the rules of that set. 
 Therefore, we introduce the notion of \emph{repairing rule sets}, which is a characterisation of rule sets that are able to repair a graph w.r.t. a circular conflict free constraint.
 First, we introduce the notion of \emph{repairing sequences}. 
-A repairing sequence is a sequence of rule applications that either destroys an occurrence of a universal or inserts an occurrence of an existentially bound graph, and is applicable to each occurrence of these graphs. 
+A repairing sequence is a sequence of rule applications that either destroys an occurrence of a universal or inserts an occurrence of an existentially bound graph, and is applicable to each occurrence of these respective graphs. 
 To ensure that these sequences are applicable to every occurrence, it is necessary to ensure that no nodes of these occurrences are removed and that the left-hand side of the first rule of the repairing sequence is contained in that occurrence. 
 In other words, every repairing sequence of $C_k$ starts with a transformation
 originating in $C_k$ if $C_k$ is universally bound and $C_{k-1}$ if 
 $C_k$ is existentially bound.
 
-\begin{definition}[\textbf{repairing sequence}]
+\begin{definition}[\textbf{repairing sequence}]\label{rep_sequence}
 	Let a constraint $c$ in UANF and a set of rules $\mathcal{R}$ be given. 
 	\begin{enumerate}
 		\item 
@@ -19,11 +19,10 @@ $C_k$ is existentially bound.
 			\overset{t_n}{\Longrightarrow}_{\rho_n, m_n} 
 			G_n$$
 			with $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
-			of $C_k$} if $G_n \models_{k}c$, $\track_{t_n} \circ \ldots \circ 
-			\track_{t_1} \circ \id_{C_{k-1}}$ is total and the concurrent rule 
+			for $C_k$} if $G_n \models_{k}c$, $\track_{t_n} \circ \ldots \circ 
+			\track_{t_1} \circ \id_{C_{k-1}}$ is total. And for each universally bound graph $C_j$ such that $C_k$ does not cause a conflict for $C_j$,  the concurrent rule 
 			of this sequence is a basic consistency maintaining rule w.r.t.
-			$\forall(C_j, \false)$ for all universally bound graphs $C_j$ 
-			such that $C_k$ has no conflict with $C_j$. 
+			$\forall(C_j, \false)$. 
 		\item	
 			If $C_k$ is universally bound, a sequence of transformations  
 			$$C_k = G_0 \overset{t_1}{\Longrightarrow}_{\rho_1,m_1} G_1 
@@ -31,18 +30,20 @@ $C_k$ is existentially bound.
 			\overset{t_n}{\Longrightarrow}_{\rho_n, m_n} 
 			G_n$$
 			with $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
-			of $C_k$} if $G_n \models_k c$, for each node $v \in V_{G_0}$ there 
-			does exist a node $v' \in V_{G_n}$ with $v' = \track_{t_n}(\ldots 
+			for $C_k$} if $G_n \models_k c$, for each node $v \in V_{G_0}$ there 
+			is a node $v' \in V_{G_n}$ with $v' = \track_{t_n}(\ldots 
 			\track_{t_1}(v))$ and the concurrent rule 
 			of this sequence  
 			is a basic consistency maintaining 
-			rule w.r.t. $\forall(C_j, \true)$ for universally bound graphs 
+			rule w.r.t. $\forall(C_j, \false)$ for all universally bound graphs 
 			$C_j$.
 	\end{enumerate}
 \end{definition}
-
-In both cases the insertion of additional elements, i.e. $G_n \neq C_{k+1}$ if $C_k$ is existentially bound and $G_n \neq C$ for all $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, could lead to the insertion of universally bound graphs. 
-For an existentially bound graph, this can happen if there is an overlap with a universally bound graph in a similar way as shown in figure \ref{fig:example_univ}. 
+Note that this definition prohibits the deletion of nodes of $V_G$. If nodes are deleted, there is no guarantee that the repairing sequence is applicable at every occurrence of the corresponding graph since the dangling edge condition can be violated.
+Also note that a repairing sequence for a universally bound graph $C_j$ can only insert occurrences of an existentially bound graph $C_k$ if $C_j$ causes a conflict for $C_j$.
+ 
+In both cases of Definition \ref{rep_sequence} the insertion of additional elements, i.e. $G_n \neq C_{k+1}$ if $C_k$ is existentially bound and $G_n \neq C$ for all $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, could lead to the insertion of universally bound graphs. 
+For an existentially bound graph, this can happen if there is an overlap with a universally bound graph in a similar way as shown in Figure \ref{fig:example_univ}. 
 To ensure that this does not happen, we need the additional condition that the concurrent rule is a basic consistency maintaining rule with respect to certain constraints.
 If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n = C$ with $C \in \ig{C_{k-1}}{C_k}$ if $C_k$ is universally bound, this condition is not needed as  the following Theorem shows.
 \input{figures/fig_example_univ}
@@ -65,7 +66,7 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n = C$ with $C \in \ig{C_{k-1
 			$$C_k \Longrightarrow_{\rho_1,m_1} \ldots \Longrightarrow_{\rho_n, 	
 			m_n} C$$ 
 			with $\rho_i \in \mathcal{R}$, $C \in \ig{C_{k-1}}{C_k}$, $C\models_k c$ and for each 
-			node $v \in V_{G_0}$ there does exist a node $v' \in V_{G_n}$ with 
+			node $v \in V_{G_0}$ there is a node $v' \in V_{G_n}$ with 
 			$v' = \track_{t_n}(\ldots \track_{t_1}(v))$.
 			Then, this is a repairing sequence for $C_k$.
 	\end{enumerate}
@@ -73,22 +74,24 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n = C$ with $C \in \ig{C_{k-1
 \begin{proof}
 	\begin{enumerate}
 		\item 
-			If $C_k$ is existentially bound, the concurrent rule is given by 
-			$\rho = \rle{C_{k-1}}{\id}{C_{k-1}}{a_k}{C_k}$.
-			Let $C_j$ be a universally bound graph such that $C_k$ has no 
-			conflict with $C_j$ and  $\rho$ is not a 
-			basic consistency maintaining rule w.r.t. $\forall(C_j, \true)$.
+			If $C_k$ is existentially bound, we need to show that the concurrent
+			$\rho = \rle{C_{k-1}}{\id}{C_{k-1}}{a_k}{C_k}$ is a basic consistency maintaining rule w.r.t. $\forall(C_j, \false)$ for all universally bound $C_j$ such that $C_k$ does not cause a conflict with $C_j$.
+			Assume that $C_j$ is a universally bound graph such that $C_k$ does not cause a 
+			conflict for $C_j$ and  $\rho$ is not a 
+			basic consistency maintaining rule w.r.t. $\forall(C_j, \false)$.
 			With Lemma \ref{basic_conflict} follows immediately that 
-			$C_k$ has a conflict with $C_j$, this is a contradiction.
+			$C_k$ causes a conflict for $C_j$, this is a contradiction.
 		\item
 			If $C_k$ is universally bound, the concurrent rule is given  by 
 			$\rho = \rle{C_k}{a_{k-1}^r}{C}{\id}{C}$. 
 			Then, $\rho$ is a basic consistency maintaining rule w.r.t. 
-			$\forall(C_j, \true)$ for all universally bound graphs since 
+			$\forall(C_j, \false)$ for all universally bound graphs since 
 			$\rho$ does not insert any elements. 
 	\end{enumerate}
 \end{proof}
  
+Note that this characterisation is similar to the construction of repairing rules in \cite{sandmann2019rule}. 
+
 \begin{definition}[\textbf{repairing rule set}]
 	Let a set of rules $\mathcal{R}$ and a circular conflict free constraint $c$ 
 	in UANF be given. 
@@ -100,7 +103,7 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially or $G_n = C$ with $C \in \ig{C_{k-1
 \end{definition}
 
 Note that there cannot exist a repairing sequence for a universally bound graphs $C_k$ such that $C_k \setminus C_{k-1}$ does not contain any edges. 
-Therefore, there is no repairing set for all constraints of the form $\forall(C_1, \false)$ such that $E_{C_1} = \emptyset$.
+Therefore, there is no repairing set for all constraints of the form $\forall(C_1, \false)$ such that $E_{C_1} = \emptyset$. 
 
 \begin{theorem}
 	Let a circular conflict free constraint $c$ in UANF and a repairing set 

@@ -6,23 +6,24 @@
 	a repairing set $\mathcal{R}$ for $c$.}
 	\KwResult{A graph $H$ with $H \models c$.}
 	\While{$G \not \models c$}{
-		$P \gets \{q: C_{\kmax + 2} \inj H \mid q \not \models \cut{0}{\scond{\kmax 
-		+2}{c}}\}$\;
+		Determine $\kmax$ using Algorithm \ref{Algo_kmax} \;
+		$P \gets \{p: C_{\kmax + 2} \inj H \mid p \not \models \cut{0}{\scond{\kmax 
+		+2}{c}} $ and $p$ is a potentially increasing occurrence at layer $\kmax$ w.r.t. $c \}$\;
 		Choose $p \in P$ uniformly at random \;
 		Choose $r \in \{0,1\}$ uniformly at random\;
+		
 		
 		\uIf{$r = 0$ and $\mathcal{R}$ contains a repairing sequence for 
 		$C_{\kmax +2}$}{
 			Apply the repairing sequence for $C_{\kmax+2}$ at match $p$ and let 
 			$H$ be the derived graph \;
-			$M \gets \{q :C_j \inj H \mid j \text{ odd and } \neg \exists q' C_j: 
-			\inj G(\track\circ q' = q) \}$\;
+			$M \gets \{q :C_j \inj H \mid j < \kmax+2 \text{ odd and } \neg \exists q': C_j: 
+			\inj G(\track\circ q' = q) \text{ and $q$ is a potentially increasing occurrence at layer $j-2$ w.r.t. $c$} \}$\;
 		}\Else{
 			Apply the repairing sequence for $C_{\kmax+3}$ at match $p$ and let 
-			$H$ be the derived graph \;
-			$M \gets \{q: C_j \inj H \mid j \text{ odd and } \exists q':C_{j+1} 
-			\inj G(q = q' \circ a_j \wedge \track \circ q' \text{ is not total})
-			\}$\;
+			$H$ be the derived graph and $\track$ the track morphism \;
+			$M \gets \{q: C_j \inj H \mid j< \kmax +2 \text{ odd and } \exists q':C_{j} 
+			\inj G(q = \track \circ q' \text{ is total, } q' \models\exists(C_{j+1}, \true) \text{ and }  q \not \models\exists(C_{j+1}, \true))\text{ and $q$ is a potentially increasing occurrence at layer $j-2$ w.r.t. $c$}\}$\;
 		}
 		\While{$H \not \models_{\maxk{c}{G}}c$}{
 			Choose $p:C_j \inj H \in M$ uniformly at random \;
@@ -32,17 +33,18 @@
 			$C_j$}{
 				Apply the repairing sequence for $C_{j}$ at match $p$ and 
 				let $H'$ be the derived graph \;
-				$M' \gets \{q: C_i \inj H' \mid i \text{ odd and } \neg \exists 
-				q':C_i \inj H(\track \circ q' = q)\} $ \;
+				$M' \gets \{q: C_{j'} \inj H' \mid {j'} \text{ odd and } \neg \exists 
+				q':C_{j'} \inj H(\track \circ q' = q) \text{ and $q$ is a potentially increasing occurrence at layer $j'-2$ w.r.t. $c$} \} $ \;
 				 
 			}\Else{
 				Apply the repairing sequence for $C_{j+1}$ at match $p$ and 
-				let $H'$ be the derived graph \;
-				$M ' \gets \{q: C_i \inj H' \mid i \text{ odd and } \exists q': 		
-				C_{i+1} \inj G(q = q' \circ a_j \wedge \track \circ q' 
-				\text{ is not total})\}$\;
+				let $H'$ be the derived graph and $\track$ the track morphism\;
+				
+				$M' \gets \{q: C_{j'} \inj H' \mid j< \kmax +2 \text{ odd and } \exists q':C_{j'} 
+			\inj H(q = \track \circ q' \text{ is total, } q' \models\exists(C_{j'+1}, \true) \text{ and }  q \not \models\exists(C_{j'+1}, \true)) \text{ and $q$ is a potentially increasing occurrence at layer $j'-2$ w.r.t. $c$}\}$\;
 			}
-			$M \gets (M \setminus \{p\}) \cup M'$ \;
+
+			$M \gets M' \cup \{\track \circ q \mid q \in M\setminus\{p\} \text{ and } \track \circ q \text{ is total}\}$ \;
 			$H \gets H'$\;
 		}	
 		$G \gets H$\;	

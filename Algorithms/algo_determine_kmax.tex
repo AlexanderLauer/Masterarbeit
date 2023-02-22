@@ -1,0 +1,24 @@
+\SetKw{KwBy}{by}
+\begin{figure}
+\centering
+\begin{algorithm}[H]
+	%\DontPrintSemicolon
+	\KwData{A graph $G$, a constraint $c$ in UANF.}
+	\KwResult{$\kmax$.}
+	
+	\If{$G \models c$}{
+		\KwRet{$\nlvl(c) -1$};	
+	}
+
+	\For{$i\gets -1$ \KwTo $\nlvl(c)-1$ \KwBy $2$ }{
+		\If{$G \not \models \cut{i}{c}$}{
+			\KwRet{$i-2$}\;
+		}
+	}
+
+
+
+\caption{Determine $\kmax$.}\label{Algo_kmax}
+
+\end{algorithm}
+\end{figure}

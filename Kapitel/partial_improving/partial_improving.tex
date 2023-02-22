@@ -90,20 +90,25 @@ The \emph{number of violations $\nv{j}{G}$ at layer $-1 \leq j < \nlvl(c)$ in $G
 \end{definition}
 Note that the second and third cases of Definition \ref{def:num_violations} only occur if $G \not \models c$ and $\scond{\kmax}{c}$ is a existential condition. So $e$ is also existentially bound or equal to $\false$ if $c$ ends with $\forall(C_{\nlvl(c)}, \false)$ and $\kmax = \nlvl(c) -2$. 
 Also note that the sets described above do contain occurrences of $C_{\kmax +2}$ whose removal (or repair such that they satisfy $\exists(C_{\kmax +3}, \true)$) will never lead to an increase of the largest satisfied layer. 
-In particular, only the occurrences of $p: C_{\kmax +2} \inj G$ such that the following holds affect the largest satisfied layer.
-\begin{enumerate}
-	\item $p \not \models \exists(C_{\kmax +3}, \true)$.
-	\item $p = a_{\kmax+1} \circ \ldots \circ a_0 \circ q$ where  
-	$a_i \circ \ldots \circ q \models \scond{i+1}{\cut{\kmax}{c}}$ for all  $0 \leq i \leq \kmax$ and $q: \emptyset \inj G$ is the empty morphism.
-\end{enumerate}
+In particular, only the occurrences of $p: C_{\kmax +2} \inj G$ that are so-called \emph{potentially increasing occurrences at layer $\kmax$ w.r.t. $c$} need to be considered. 
+
+\begin{definition}[\textbf{potentially increasing occurrences at layer}]
+	Given a graph $G$, a constraint $c$ in UANF and an occurrence $p: C_{k+2} \inj G$ of an universally bound graph $C_k$. 
+	Then $p$ is called a \emph{potentially increasing occurrence at layer $k$ w.r.t. $c$} if 
+	\begin{enumerate}
+		\item $p \not \models \cut{0}{\scond{k+2}{c}}$.
+		\item $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ where $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ and $q: \emptyset \inj G$ is the empty morphism. 
+	\end{enumerate}
+\end{definition}
+
 We will show this in the following lemma.
 \begin{lemma}\label{num_violations}
 	Given a graph $G$, a constraint $c$ in UANF and an odd $-1 \leq k < \nlvl(c)-3$ such that $G \models_k c$. 
-	Then, $$G \models_{k+2} c$$ if for all occurrences $p: C_{k+2} \inj G$ of $C_{k+2}$ where  $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ with the empty morphism $q: \emptyset \inj G$ it holds that $p \models \exists(C_{k+3}, \true)$. 
+	Then, $$G \models_{k+2} c$$ if for all occurrences $p: C_{k+2} \inj G$ of $C_{k+2}$ where  $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ with the empty morphism $q: \emptyset \inj G$ it holds that $p \models \cut{0}{\scond{\kmax+2}{c}}$. 
 \end{lemma}
 \begin{proof}
-	Assume that $G \not \models_{k+2} c$ and for all occurrence $p: C_{k+2} \inj G$ where $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ it holds that $p \models \exists(C_{k+3},\true)$. 
-	Since $G \not \models_{k} c$ and  $G \not \models_{k+2} c$ there must be a morphism $p :C_{k+2} \inj G$ such that $p \not \models \exists(C_{k+3}, \true)$, $p = a_{k+1} \circ \ldots \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$. This is a contradiction.
+	Assume that $G \not \models_{k+2} c$ and for all occurrence $p: C_{k+2} \inj G$ where $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ it holds that $p \models \cut{0}{\scond{\kmax+2}{c}}$.
+	Since $G \models_{k} c$ and  $G \not \models_{k+2} c$ there must be a morphism $p :C_{k+2} \inj G$ such that $p \not \models \cut{0}{\scond{\kmax+2}{c}}$, $p = a_{k+1} \circ \ldots \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$. This is a contradiction.
 \end{proof}
 Only considering the occurrence of $C_{\kmax+2}$ as described above will lead to a more precise definition of the number of violations, and therefore of the consistency maintaining and increasing rules, with the drawback that the application conditions designed for this more precise version will be much more complex, since it will be necessary to check that repaired occurrences satisfy the additional condition.
 We have therefore decided to use this less precise definition of the number of violations.

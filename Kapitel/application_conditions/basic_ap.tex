@@ -1,6 +1,6 @@
 \subsection{Application Conditions for Basic Rules}
 Let us now introduce the application conditions for basic increasing rules.
-Since basic rules are consistency-maintaining at a certain layer $k$ it suffices to check whether $m \circ i \exists(C_{k+3}, \true)$ if $\rho$ is a deleting rule, and whether $m \circ i \models \exists(C', \true)$ if $\rho$ is an inserting rule, where $m$ is the match of the transformation and $i$ is the increasing morphism of $\rho$.
+Since basic rules are consistency-maintaining at a certain layer $k$ it suffices to check whether $m \circ i \models \exists(C_{k+3}, \true)$ if $\rho$ is a deleting rule, and whether $m \circ i \models \exists(C', \true)$ if $\rho$ is an inserting rule, where $m$ is the match of the transformation and $i$ is the increasing morphism of $\rho$.
 
 \begin{definition}[\textbf{application conditions for basic increasing rules}]\label{def_basic_ap}
 Given a constraint $c$ in UANF and a basic increasing rule  $\rho = (\ac,L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ w.r.t. $c$ at layer $-1 \leq k\leq \nlvl(c)-2$, where $k$ is odd.
@@ -33,22 +33,22 @@ Let us now show that basic increasing rules equipped with the application condit
 \begin{proof}
 	Given a graph $G$ with $\kmax = k$. We show that each transformation 
 	$t: G \Longrightarrow_{\rho', m}H$ is direct consistency increasing w.r.t. $c$.
-	Since, $\rho'$ is a basic increasing rule at layer $k$, $\rho'$ is also a consistency maintaining transformation at layer $k$ and $t$ satisfies the deletion, inserting, universally and existentially conditions.
-Therefore, we only need to show that $t$ satisfies the special increasing or general increasing condition respectively.
+	Since, $\rho'$ is a basic increasing rule at layer $k$, $\rho'$ is also a consistency maintaining transformation at layer $k$ and $t$ satisfies the no new violation by deletion, no new violation by insertion, no satisfied layer reduction by insertion and no satisfied layer reduction by deletion formulas.
+Therefore, we only need to show that $t$ satisfies the special increasing or general increasing formula respectively.
 	\begin{enumerate}
 		\item 
 			If $\rho'$ is a deleting rule, $r \circ l^{-1} \circ i$ is not 
 			total, where $i$ is the increasing morphism of $\rho'$. 
 			If $k = \nlvl(c)-2$, the transformation satisfies
-			the special increasing condition, since one occurrence of $C_{k+2}$ is removed.
-			If $k < \nlvl(c)-2$, since $m \models \apb{k}{\rho}$, the morphism $m \circ i$ does not satisfy $\exists (C_{k+3}, \true)$. Since this occurrence is destroyed, $t$ satisfies the general increasing condition.
+			the special increasing formula, since one occurrence of $C_{k+2}$ is removed.
+			If $k < \nlvl(c)-2$, since $m \models \apb{k}{\rho}$, the morphism $m \circ i$ does not satisfy $\exists (C_{k+3}, \true)$. Since this occurrence is destroyed, $t$ satisfies the general increasing formula.
 		\item
 			If $\rho'$ is an inserting rule with $C' \in \ig{C_{k+2}}{C_{k+3}}$,
 			then $k \leq \nlvl(c)-2$.
 			The morphism $m \circ i$ does not satisfy $\exists(C', \true)$, since 
-			$m \models \apb{k}{\rho}$. But it holds that $\track_t \circ m 
-			\circ i \models \exists(C, \true)$ and therefore $t$ satisfies 
-			the general increasing condition.  
+			$m \models \apb{k}{\rho}$. Since $\rho'$ is a inserting rule it holds that $\track_t \circ m 
+			\circ i = n \circ r \circ l^{-1} \circ i \models \exists(C', \true)$ and therefore $t$ satisfies 
+			the general increasing formula.  
 	\end{enumerate}
 	In summary, $\rho'$ is a basic direct consistency increasing rule at layer $k$ w.r.t. $c$.
 \end{proof}
