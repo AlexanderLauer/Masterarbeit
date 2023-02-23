@@ -1,0 +1,30 @@
+\section*{Abstract}
+Model-driven software engineering is a suitable method for dealing with the ever-increasing complexity of software development processes. 
+Graphs and graph transformations have proven useful for representing such models and changes to them. 
+These models must satisfy certain sets of constraints. An example are the multiplicities of a class structure. 
+During the development process, a change to a model may result in an inconsistent model that must be transformed into a consistent model. 
+This problem is called \emph{rule-based graph repair} and is defined as follows: Given a graph $G$, a constraint $c$ such that $G$ does not satisfy $c$, and a set of rules $\mathcal{R}$, use the rules of $\mathcal{R}$ to construct a graph that satisfies $c$.
+
+In this paper we introduce new notions of consistency, which we call \emph{consistency-maintaining} and \emph{consistency-increasing} transformations and rules, respectively. These notions are finer than those already known. Finer in the sense that even the smallest changes, insertions or deletions of individual edges or nodes can be considered as increasing or decreasing consistency. 
+Furthermore, we extend these notions to \emph{direct consistency-maintaining} and \emph{direct consistency-maintaining} transformations and rules respectively, which prohibit the insertion of new violations altogether, and compare our notions with the existing ones to reveal connections and differences.
+
+We present methods for constructing application conditions that are \emph{direct consistency-maintaining} or \emph{direct consistency-increasing}. In the latter case, we present two types of application conditions, one for general rules and one for a particular set of rules, which we call \emph{basic increasing rules}. 
+The application conditions for \emph{basic increasing rules} have the advantage that they are less complex and restrictive than the application conditions for general rules.
+
+Finally, we present an \emph{rule-based graph repair} approach that is able to repair certain constraints, which we call \emph{circular conflict free constraints}, and certain sets of constraints, which we call \emph{circular conflict free set of constraints}.
+
+\section*{Zusammenfassung}
+Model-driven software engineering ist eine geeignete Methode, um die ständig wachsende Komplexität von Softwareentwicklungsprozessen zu bewältigen. 
+Graphen und Graphtransformationen haben sich bewährt, um solche Modelle und Änderungen der Modelle darzustellen. 
+Diese Modelle müssen bestimmte Mengen von Bedingungen (constraints) erfüllen. Ein einfachen Beispiel hierfür sind die Multiplizitäten einer Klassenstruktur. 
+Während des Entwicklungsprozesses kann eine Änderung eines Modelles jedoch zu einem inkonsistenten Modell führen, welches wieder in ein konsistentes Modell überführt werden muss. 
+Dieses Problem heißt \emph{rule-based graph repair} und ist folgendermaßen definiert: Seien ein Graph $G$, ein constraint $c$, sodass $G$ nicht $c$ erfüllt, und eine Menge von Regeln $\mathcal{R}$ gegeben, verwende die Regeln von $\mathcal{R}$, um einen Graphen zu konstruieren, der $c$ erfüllt. 
+
+In dieser Arbeit führen wir neue Begriffe von Konsistenz ein, die wir \emph{consistency-maintaining} bzw. \emph{consistency-increasing} Transformationen und Regeln nennen. Diese Begriffe sind feiner im Vergleich zu bereits bekannten Begriffen. Feiner in dem Sinne, dass auch kleinste Änderungen, das Einfügen oder Löschen von einzelnen Kanten oder Knoten als eine Vergrößerung oder Verschlechterung der Konsistenz angesehen werden kann. 
+Des Weiteren erweitern wir diese Begriffe zu den Begriffen \emph{direct consistency-maintaining} bzw. \emph{direct consistency-increasing} Transformationen und Regeln, die das Einfügen von neuen Verletzungen gänzlich verbieten, und vergleichen unsere Begrifflichkeiten mit den bereits existierenden, um Zusammenhänge und Unterschiede aufzudecken.
+
+Wir präsentieren Methoden, um Awendungsbedingungen zu konstruieren, die \emph{direct consistency-maintaining} bzw. \emph{direct consistency-increasing} sind. Im zweiten Fall präsentieren wir zwei Arten von Anwendungsbedingungen, einmal für allgemeine Regeln und einmal für eine bestimmte Menge von Regeln, die wir \emph{basic increasing rules} nennen. 
+Anwendungsbedingungen für \emph{basic increasing rules} haben den Vorteil, dass diese weniger komplex und restriktiv sind als die Anwendungsbedingungen für allgemeine Regeln. 
+
+Schließlich stellen wir einen \emph{rule-based graph repair} Ansatz vor, der in der Lage ist, bestimmte constraints, die wir \emph{circular conflict free constraints} nennen, und bestimmte Mengen von constraints, die wir \emph{circular conflict free set of constraints} nennen, zu reparieren.
+
