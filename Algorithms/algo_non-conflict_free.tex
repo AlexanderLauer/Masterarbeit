@@ -5,7 +5,7 @@
 	\KwData{A graph $G$, circular constraint-conflict free set of constraints $
 	\mathcal{C}$ and a repairing set $\mathcal{R}$ for $\mathcal{C}$.}
 	\KwResult{A graph $H$ with $H \models \bigwedge_{c \in \mathcal{C}}c$.}
-	$(c_1, \ldots ,c_n) \gets $ topological ordering of $\mathcal{C}$ \;
+	$(c_1, \ldots ,c_n) \gets $ topological ordering of $\mathcal{C} w.r.t. \mathcal{R}$ \;
 	\For{$i \gets 1$ \KwTo $n$}{
 		
 		Repair $c_i$ in $G$ with Algorithm \ref{Algo_conflict_free}, let $H$ be the 		returned graph \;

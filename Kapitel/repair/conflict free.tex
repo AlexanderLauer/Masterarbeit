@@ -55,17 +55,17 @@ For example, consider the constraint $c_3$ given in Figure \ref{fig:conflict_exa
 The set of rules used for the transformations $t_1$ and $t_2$ in figure \ref{fig:conflict_example} forms a repairing set. 
 During a repair process using Algorithm \ref{Algo_conflict_free}, where the starting graph is the first graph of $t_1$, Algorithm \ref{Algo_conflict_free} can enter an infinite loop by alternately applying $t_1$ and $t_2$.
 
-%Optimisation of the repair algorithm in terms of the number of elements inserted or deleted can be achieved by using partial repairing sequences where possible.
-%For example, consider the repairing sequence
-%$$ C_k \Longrightarrow C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$
-%with $C_1 \in \ig{C_k}{C_{k+1}}$. 
-%For an occurrence $p$ of $C_k$, which already satisfies the condition $\exists(C_1, \true)$, it may be sufficient to apply only the sequence
-%$$C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$ at $p$. 
-%But then you have to check that no occurrences of existentially bound graphs have been destroyed, and that no occurrences of universally bound graphs $C_i$ such that $C_k$ has no conflict with $C_i$ have been inserted.
-%If this is the case, the transformations must be reversed and another (partial) repairing sequence must be used.
-%Even though this would lead to an optimisation in terms of the number of elements inserted and deleted, it would lead to an increase in runtime due to the reversal of transformations.
+Optimisation of the repair algorithm in terms of the number of elements inserted or deleted can be achieved by using partial repairing sequences where possible.
+For example, consider the repairing sequence
+$$ C_k \Longrightarrow C' \Longrightarrow \ldots \Longrightarrow C_{k+1}$$
+with $C' \in \ig{C_k}{C_{k+1}}$. 
+For an occurrence $p$ of $C_k$, which already satisfies the condition $\exists(C_1, \true)$, it may be sufficient to apply only the sequence
+$$C_1 \Longrightarrow \ldots \Longrightarrow C_{k+1}$$ at $p$. 
+Then, we need to check that no occurrences of existentially bound graphs have been destroyed, and that no occurrences of universally bound graphs $C_i$ such that $C_k$ does not cause a conflict for $C_i$ have been inserted. This can be achieved by replacing the application of the repairing sequence by an application of its concurrent rule, and by equipping this concurrent rule with its (basic) consistency-increasing application condition of $c$ at layer $k$ with $C_{k+1}$. 
+If the application condition is not satisfied, another (partial) repairing sequence must be used.
+Although this would lead to an optimisation in terms of the number of elements inserted and deleted, it would lead to an increase in runtime due to the construction of application conditions.
 
-For any circular conflict-free constraint, Algorithm \ref{Algo_conflict_free} will always terminate according to the following Theorem.
+For any circular conflict-free constraint, Algorithm \ref{Algo_conflict_free} is correct and will always terminate according to the following Theorem.
 
 
 \input{Algorithms/conflict_free_repair_repairing_set}
@@ -85,12 +85,12 @@ Given a graph $G$,  a circular conflict free constraint $c$ in UANF and
 	Note that this is also the case for repairing sequence for universally bound graphs. Since $G$ is finite, $|M|$ must also be finite.
 	
 	If the derived graph does not satisfy $\cut{\maxk{c}{G}}{c}$, we need to restore the largest satisfied layer.
-	Since the largest satisfied layer only decreases if an occurrence of an existentially bound graph $C_j$ is destroyed such that an occurrence $p$ of $C_{j-1}$ satisfies $\exists(C_j, \true)$  and $\track \circ p$ does not satisfy $\exists(C_j, \true)$ or an occurrence of universally bound graphs is inserted, and $M$ contains all these occurrences that can also improve the satisfaction at layer (see Lemma \ref{num_violations}) , we only need to consider the occurrences contained in $M$.
+	Since the largest satisfied layer only decreases if an occurrence of an existentially bound graph $C_j$ is destroyed such that an occurrence $p$ of $C_{j-1}$ satisfies $\exists(C_j, \true)$  and $\track \circ p$ does not satisfy $\exists(C_j, \true)$ or an occurrence of universally bound graphs is inserted, and $M$ contains all these occurrences that can also improve the satisfaction at layer (see Lemma \ref{num_violations}). So we only need to consider the occurrences contained in $M$.
 	Applying repairing sequences to occurrences $p :C_j \inj H \in M$ could again lead to the insertion of universally bound graphs or the removal of existentially bound graphs. The set $M'$ contains all these occurrences, and again these are only occurrences of $C_i$ such that $C_j$ causes a (transitive) conflict for $C_i$.
 	Since $c$ is free of circular conflict, $M'$ cannot contain any occurrences of $C_{\kmax +2}$, otherwise, $C_j$ would have caused a (transitive) conflict for $C_{\kmax +2}$ and therefore $C_{\kmax +2}$ has a circular conflict. Therefore no occurrences of $C_{\kmax +3}$ are destroyed and no occurrences of $C_{\kmax+2}$ are inserted.
 	In addition, $C_{\kmax +2}$ causes a (transitive) conflict for $C_i$, and repairing any $p \in M'$ will not lead to the insertion of an occurrence of $C_{\kmax +2}$ or removal of an occurrence of $C_{\kmax +3}$.
 	
-	Since $c$ is circular conflict free, there must exist graphs $C_i$, such that $C_i$ causes no conflict with any other graph $C_{i'}$ and $C_{\kmax+2}$ causes a (transitive) conflict for $C_i$. 
+	Since $c$ is circular conflict free, there must exist graphs $C_i$, such that $C_i$ does not cause a conflict with any other graph $C_{i'}$ and $C_{\kmax+2}$ causes a (transitive) conflict for $C_i$. 
 Therefore, the application of repairing sequences at occurrences of these graphs will not lead to the insertion or removal of any universally or existentially bound graph, respectively.
 	Since $c$ is finite, the number of graphs $C_i$ 
 	such that $C_{\kmax+2}$ causes (transitive) conflict with $C_i$ is finite.

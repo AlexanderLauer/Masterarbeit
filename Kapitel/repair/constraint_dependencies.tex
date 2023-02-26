@@ -1,8 +1,8 @@
 \subsection{Conflicts within Conditions}
 During a repair process, inserting elements of an existentially bound constraint $C_j$ could also insert new occurrences of universally bound graphs $C_i$.
-This insertion is unproblematic if $i > \kmax+2$, but if $i \leq \kmax+2$ it could lead either to the insertion of new violations or to a reduction of the largest satisfied layer.
+This insertion is unproblematic if $i > \kmax+2$, but if $i \leq \kmax+2$ it could lead either to the insertion of new violations or a reduction of the largest satisfied layer.
 In addition, removing elements of a universally bound graph $C_j$ may destroy occurrences of an existentially bound graph $C_i$.
-Again, this can lead to the insertion of new violations or to a reduction of the largest satisfied layer.
+Again, this can lead to the insertion of new violations or a reduction of the largest satisfied layer.
 
 We will now introduce the notion of \emph{conflicts within conditions}, which states that $C_j$ has a conflict with $C_i$ if and only if one of the cases described above can occur. 
 Note that conflicts can only occur between existentially and universally bound graphs, and vice versa. There cannot be a conflict between two existentially bound or two universally bound graphs, since the insertion of elements cannot destroy occurrences of existentially bound graphs, and the removal of elements cannot insert new occurrences of universally bound graphs.
@@ -10,7 +10,7 @@ Note that conflicts can only occur between existentially and universally bound g
 
 \begin{definition}[\textbf{conflicts within conditions}]\label{def_conflicts}
 	Given a condition $c$ in UANF.
-	A existentially bound graph $C_k$ \emph{causes a conflict for} an universally bound 
+	An existentially bound graph $C_k$ \emph{causes a conflict for} a universally bound 
 	graph $C_j$ if there is a transformation $t: G \Longrightarrow_{\rho} H$ with 
 	$\rho = \rle{C_{k-1}}{\id}{C_{k-1}}{a_{k-1}}{C_k}$ such that
 	$$\exists p:C_j \inj H(\neg \exists 	q:C_j \inj G(\track_t \circ q = p)).$$
@@ -24,11 +24,11 @@ Note that conflicts can only occur between existentially and universally bound g
 
 
 In addition, we introduce \emph{conflict graphs}, which represent the conflicts within a constraint via a graph.
-With these we are able to define \emph{transitive conflicts}, \emph{circular conflicts} and their absence, which will be a necessary property for the termination of our repair process.
+With these, we are able to define \emph{transitive conflicts}, \emph{circular conflicts} and their absence, which will be a necessary property for the termination of our repair process.
 Intuitively, as the name suggests, a condition $c$ contains a circular conflict if a graph $C_k$ has a conflict with itself or if there exists a sequence $C_k= C_{j_1}, \ldots, C_{j_n}= C_k$ of graphs such that $C_{j_i}$ has a conflict with $C_{j_{i+1}}$. We can check this property by checking whether the 
 conflict graph contains cycles.
 Note that conflict graphs contain additional edges that do not correspond to the conflicts within the constraint. 
-These edges ensure that during repair it is possible to choose whether a violation is removed by deletion or insertion. Otherwise it must be done alternately. That is, after a violation is removed by deletion, all violations introduced by that deletion must be removed by insertion, and vice versa. This also makes the definition of a repairing set more restrictive.
+These edges ensure that during repair it is possible to choose whether a violation is removed by deletion or insertion. Otherwise, it must be done alternately. That is after a violation is removed by deletion, all violations introduced by that deletion must be removed by insertion, and vice versa. This also makes the definition of a repairing set more restrictive.
 
 
 \begin{definition}[\textbf{conflict graph, circular conflicts}]\label{conflicts_within}
@@ -56,7 +56,7 @@ In other words, a condition $c$ is \emph{circular conflict free} if its conflict
 	does not imply that \enquote{ $C_k$ causes a conflict for $C_j$} as shown by 
 	constraint $c_4$ given in Figure \ref{fig:conflict_example}.
 	The conflict graph of $c_4$ is also shown in Figure \ref{fig:conflict_graph}. 
-	It can be seen that $c_4$ is a circular conflict free constraint.
+	It can be seen that $c_4$ is a circular conflict-free constraint.
 	
 \end{example}
 
@@ -66,7 +66,7 @@ In other words, a condition $c$ is \emph{circular conflict free} if its conflict
 We will now present two characterisations of conflicts. The first one is based on the applicability of certain rules and the second one is based on the notion of basic maintaining rules.
  
 For $C_k$, which is existentially bound, and $C_j$, which is universally bound, the first characterisation checks whether for each overlap of $C_k$ and $C_j$, such that the overlap morphisms restricted to $C_k \setminus C_{k+1}$ and $C_j$ overlap, the rule that only deletes $C_k\setminus C_{k-1}$ is applicable.
-If this is not possible, there is no a transformation as described in Definition \ref{conflicts_within}.
+If this is not possible, there is no transformation as described in Definition \ref{conflicts_within}.
 If $C_j$ is universally bound and $C_k$ is existentially bound, the characterisation checks whether for each overlap of $C_k$ and $C_j$ such that 
 the elements of $C_j \setminus C_{j-1}$ and $C_k$ overlap, a rule is applicable which only removes elements of $C_j \setminus C_{j-1}$. 
 Again, if this is not possible, there is no transformation as described in Definition \ref{conflicts_within}.
@@ -99,7 +99,7 @@ Given a constraint $c$ in UANF.
 Given a condition $c$ in UANF.
 \begin{enumerate}
 \item 
-\enquote{$\Longrightarrow$}: Let $C_k$ be an existentially bound graph that causes a conflict for an universally bound graph $C_j$. 
+\enquote{$\Longrightarrow$}: Let $C_k$ be an existentially bound graph that causes a conflict for a universally bound graph $C_j$. 
 Then, there is a transformation $t: G \Longrightarrow_{\rho,m} H$ with $\rho = \rle{C_{k-1}}{\id}{C_{k-1}}{a_{k-1}}{C_k}$ such that a new occurrence $p$ of $C_j$ is inserted. 
 Since only elements of $C_k \setminus C_{k-1}$ are inserted, it holds that $p(C_j) \cap n(C_k\setminus C_{k-1}) \neq \emptyset$, where $n$ is the co-match of $t$. 
 The overlap $(P, p,i_{C_k}^P)$ with $P = p(C_j) \cup n(C_k)$ and $i_{C_k}^P = n$ is the one we are looking for. Since $\rho^{-1}$ is applicable at match $n$, it holds that $DP_{\rho^{-1},n} \subseteq GP_{\rho^{-1},n}$. It also holds that $GP_{\rho^{-1},n} = GP_{\rho^{-1},i_{C_k}^P}$ and $DP_{\rho^{-1}, i_{C_k}^P} \subseteq  DP_{\rho^{-1}, n}$. It follows that $DP_{\rho^{-1}, i_{C_k}^P} \subseteq GP_{\rho^{-1},n} = GP_{\rho^{-1},i_{C_k}^P}$ and therefore, the rule $\rho^{-1}$ is applicable at the match $i_{C_k} ^P$. 
@@ -130,25 +130,24 @@ Our second characterisation of conflicts is based on the notion of basic maintai
 	\begin{enumerate}
 		\item 
 			Let $C_k$ be an existentially and $C_j$ be a universally bound graph 
-			of $c$. Then, $C_k$ has a  conflict with $C_j$ if and only if  
+			of $c$. Then, $C_k$ causes a conflict for $C_j$ if and only if  
 			the rule $\rho = \rle{C_{k-1}}{\id}{C_{k-1}}{a_{k-1}}{C_k}$
-			is not a basic consistency maintaining rule up to layer $-1$ w.r.t. 
+			is not a basic consistency maintaining rule w.r.t. 
 			$\forall(a_{j-1} \circ \ldots 
 			\circ a_0: C_0 \inj C_j, \false)$.
 		\item
-			Let $C_k$ be a universally and $C_j$ be an existentially bound graph 
-			of $c$. Then, $C_k$ has a conflict with $C_j$ if and only if a
+			Let $C_j$ be a universally and $C_k$ be an existentially bound graph 
+			of $c$. Then, $C_j$ causes a conflict for $C_k$ if and only if a
 			rule
-			$\rho = \rle{C_k}{a_{k-1}^r}{C}{\id}{C}$ with $C \in 
-			\ig{C_{k-1}}{C_k}$ is not a basic consistency  maintaining rule up to 
-			layer $-1$ w.r.t. 
-			$\exists(a_{j-1}\circ \ldots \circ a_0: C_0 \inj C_j, \true)$.
+			$\rho = \rle{C_j}{a_{j-1}^r}{C}{\id}{C}$ with $C \in 
+			\ig{C_{j-1}}{C_j}$ is not a basic consistency  maintaining rule w.r.t. 
+			$\exists(a_{k-1}\circ \ldots \circ a_0: C_0 \inj C_k, \true)$.
 	\end{enumerate}
 \end{lemma}
 \begin{proof}
 	\begin{enumerate}
 		\item 
-			Let $C_k$ be an existentially and $C_j$ an universally bound graph of 
+			Let $C_k$ be an existentially and $C_j$ a universally bound graph of 
 			$c$.
 			
 			\enquote{$\Longrightarrow$}: Assume that $C_k$ causes a conflict for
@@ -157,11 +156,11 @@ Our second characterisation of conflicts is based on the notion of basic maintai
 			{a_{k-1}}{C_k}$ such that a new occurrence $p: C_j \inj H$ has been 
 			inserted. 
 			Then, $t$ does not satisfy the no satisfied layer reduction by insertion formula and
-			$\rho$ is not a basic maintaining rule up to layer $-1$.
+			$\rho$ is not a basic maintaining rule w.r.t.$\forall(a_{j-1} \circ \ldots 
+			\circ a_0: C_0 \inj C_j, \false)$ .
 			
 			\enquote{$\Longleftarrow$}: Assume that $\rho = \rle{C_{k-1}}{\id}
-			{C_{k-1}}{a_{k-1}}{C_k}$ is not a basic maintaining rule up to layer 
-			$-1$ w.r.t. $\forall(a_{j-1} \circ \ldots \circ a_0: C_0 \inj C_j, 
+			{C_{k-1}}{a_{k-1}}{C_k}$ is not a basic maintaining rule w.r.t. $\forall(a_{j-1} \circ \ldots \circ a_0: C_0 \inj C_j, 
 			\false)$. Since this constraint only contains universally 
 			bound graphs, there must exist a transformation $t: G 
 			\Longrightarrow_{\rho} H$ that does not satisfy 
@@ -170,25 +169,24 @@ Our second characterisation of conflicts is based on the notion of basic maintai
 			follows that $C_k$ causes a conflict for $C_j$.
 			
 		\item 
-			Let $C_k$ be a universally and $C_j$ be an existentially bound graph 
-			of $c$ and $c' = \exists(a_{j-1}\circ \ldots \circ a_0: C_0 \inj C_j, 
-		\true)$ .
+			Let $C_j$ be a universally and $C_k$ be an existentially bound graph 
+			of $c$ and $c' = \exists(a_{k-1}\circ \ldots \circ a_0: C_0 \inj C_k, 
+		\true)$.
 			
-			\enquote{$\Longrightarrow$}: Assume that $C_k$ causes a conflict for 
-			$C_j$. Therefore, there is a transformation $t: G 
-			\Longrightarrow_{\rho} H$ with $\rho = \rle{C_k}{a_{k-1}^r}{C}{\id} 
-			{C}$, for a $C \in \ig{C_{k-1}}{C_k}$ such that an occurrence of 
-			$C_j$ has been destroyed. Then, $t$ does not satisfy 
+			\enquote{$\Longrightarrow$}: Assume that $C_j$ causes a conflict for 
+			$C_k$. Therefore, there is a transformation $t: G 
+			\Longrightarrow_{\rho} H$ with $\rho = \rle{C_j}{a_{j-1}^r}{C}{\id} 
+			{C}$, for a $C \in \ig{C_{j-1}}{C_j}$ such that an occurrence of 
+			$C_k$ has been destroyed. Then, $t$ does not satisfy 
 			the no satisfied layer reduction by insertion formula.
 			Therefore, $\rho$ is not a basic consistency-maintaining rule 
-			w.r.t. $c$ up to layer $-1$. 
+			w.r.t. $c'$. 
 			
-			\enquote{$\Longleftarrow$}: Assume that $\rho = \rle{C_k}{a_{k-1}^r}
-			{C}{\id} {C}$ is a not a basic increasing rule w.r.t. $c$ up to 
-			layer $-1$.  
+			\enquote{$\Longleftarrow$}: Assume that $\rho = \rle{C_j}{a_{j-1}^r}
+			{C}{\id} {C}$ is a not a basic increasing rule w.r.t. $c'$.  
 			Therefore, there is transformation $t: G \Longrightarrow_{
-			\rho} H$ that does not satisfy the no satisfied layer reduction by insertion formula and an occurrence of $C_j$ has been removed by $t$.
-			It follows that  $C_k$ causes a conflict for $C_j$.
+			\rho} H$ that does not satisfy the no satisfied layer reduction by insertion formula and an occurrence of $C_k$ has been removed by $t$.
+			It follows that  $C_j$ causes a conflict for $C_k$.
 
 		
 	\end{enumerate}
