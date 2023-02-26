@@ -26,14 +26,14 @@
 		outside/.style={draw=black!60}
 	]
 	
-		\node(name)[anchor = west] {conflict graph with $\mathcal{C}_1$};
+		\node(name)[anchor = west] {conflict graph with $\mathcal{R}_1$};
 		\node(1) [circle, draw, below right= 30pt and 5pt of name.west,anchor = west] {$c_1$};
 		\node(2) [circle, draw, right= 40pt of 1] {$c_5$};
 		\path[->] (1) edge [bend left =20] (2);
 		
 		\node(C_32-out) [outside, fit={(name) (1) (2)}]{};
 		
-		\node(name2)[anchor = west, right = 20pt of name] {conflict graph with $\mathcal{C}_2$};
+		\node(name2)[anchor = west, right = 20pt of name] {conflict graph with $\mathcal{R}_2$};
 		\node(12) [circle, draw, below right= 30pt and 5pt of name2.west,anchor = west] {$c_1$};
 		\node(22) [circle, draw, right= 40pt of 12] {$c_5$};
 		\path[->] (22) edge [bend right =20] (12);

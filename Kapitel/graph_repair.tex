@@ -2,8 +2,8 @@
 
 In the following, we present our rule-based graph repair approach.
 First, we propose a graph repair process for a constraint in UANF, and second, a repair process for a set of constraints in UANF, both based on a given set of rules $\mathcal{R}$. In addition, we need to make further assumptions for these constraints and sets of constraints, namely that they are \emph{circular conflict free}, in order to guarantee that our approach terminates. 
-Intuitively, a constraint is \emph{circular conflict free} if during a repair of an occurrence of a universally bound graph $C_k$, no new occurrences of $C_k$ not satisfying $\exists(C_{k+1}, \true)$ will be inserted and every occurrences of $C_k$ that satisfied  $\exists(C_{k+1}, \true)$ also satisfies $\exists(C_{k+1}, \true)$ after the repair. 
-A set of constraints $\mathcal{C}$ is \emph{circular conflict free} if there is a sequence $c_1, \ldots, c_n$ with $c_i \in \mathcal{C}$ such that a repair of a constraint $c_i$ will not destroy the  satisfaction of $c_j$ for all $j  < i$.
+Intuitively, a constraint is \emph{circular conflict free} if, during a repair of an occurrence of a universally bound graph $C_k$, no new occurrences of $C_k$ that do not satisfy $\exists(C_{k+1}, \true)$ are inserted, and any occurrences of $C_k$ that satisfied $\exists(C_{k+1}, \true)$ also satisfy $\exists(C_{k+1}, \true)$ after the repair. 
+A set of constraints $\mathcal{C}$ is \emph{circular conflict free} if there exists a sequence $c_1, \ldots, c_n$ with $c_i \in \mathcal{C}$ such that repairing a constraint $c_i$ does not destroy the satisfaction of $c_j$ for all $j < i$.
 
 \input{Kapitel/repair/constraint_dependencies}
 \input{Kapitel/RuleSets/repairing_rule_sets}

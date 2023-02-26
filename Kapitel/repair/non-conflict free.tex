@@ -15,14 +15,14 @@ Then $\mathcal{R}$ is called a \emph{repairing set for $\mathcal{C}$} if $\mathc
 \end{definition}
 
 We also extend the notion of conflicts to \emph{conflicts between constraints}. 
-Intuitively, a constraint $c$ has a conflict with another constraint $c'$ if one of its graphs has a conflict with a graph of $c'$.
+Intuitively, a constraint $c$ causes a conflict for another constraint $c'$ if one of its graphs causes a conflict for a graph of $c'$.
 
 \begin{definition}[\textbf{conflict between constraints}]
 	Let the constraints $c$, $c'$ in UANF and a set of rules $\mathcal{R}$ be given. 
-Then $c$ has a conflict with $c'$ w.r.t. $\mathcal{R}$ if a repairing sequence 
+Then $c$ \emph{causes a conflict} for $c'$ w.r.t. $\mathcal{R}$ if a repairing sequence 
 $$C_k = G_0 \Longrightarrow_{\rho_1,m_1} \dots \Longrightarrow_{\rho_n,m_n}
 	G_n$$
-	exists for a graph $C_k$ of $c$ such that the concurrent rule of that 
+	for a graph $C_k$ of $c$ exists such that the concurrent rule of that 
 	sequence is not a basic consistency maintaining rule w.r.t. $\forall(C_j, 
 	\false)$ or $\exists(C_j,\true)$ for any universally or existentially bounded 
 	graph $C_j$ of $c'$.
@@ -30,40 +30,40 @@ $$C_k = G_0 \Longrightarrow_{\rho_1,m_1} \dots \Longrightarrow_{\rho_n,m_n}
 \end{definition}
 
 The following lemma is a useful statement for proving the correctness of our repair approach. 
-It states that applying a repairing sequence to a constraint $c$ cannot destroy the satisfaction of $c'$ if $c$ has no conflict with $c'$.
+It states that applying a repairing sequence to a constraint $c$ cannot destroy the satisfaction of $c'$ if $c$ causes no conflict for $c'$.
 
 \begin{lemma}\label{lemma_preserving}
-	Let two constraints $c$ and $c'$ in UANF be given such that $c$ has no conflict with $c'$ w.r.t. to a set of rules $\mathcal{R}$.
-Then the concurrent rule $\rho$ of any repairing sequence for $c$ is a $c'$-preserving rule.
+	Given a set of rules $\mathcal{R}$ and constraints $c$ and $c'$ in UANF such that $c$ causes no conflict for $c'$ w.r.t. $\mathcal{R}$.
+Then, the concurrent rule $\rho$ of any graph of $c$ is a $c'$-preserving rule.
 \end{lemma}
 \begin{proof}
 	Suppose $\rho$ is not a $c'$-preserving rule.  Then there exists a transformation $t : G \Longrightarrow_{\rho,m} H$ such that $G \models c'$ and $H \not \models c'$. 
 	Therefore, either a universally bound graph of $c'$ has been inserted or an existentially bound graph of $c'$ has been removed.
-	It follows that $\rho$ is not a basic maintaining rule w.r.t. $\forall(C_j, \false)$ for all universally bound graphs $C_j$ of $C'$ or $\rho$ is not a basic maintaining rule w.r.t. $\exists(C_j, \true)$ for all existentially bound graphs $C_j$ of $C'$, which is a contradiction.
+	It follows that $\rho$ is not a basic maintaining rule w.r.t. $\forall(C_j, \false)$ for all universally bound graphs $C_j$ of $c'$ or $\rho$ is not a basic maintaining rule w.r.t. $\exists(C_j, \true)$ for all existentially bound graphs $C_j$ of $c'$, which is a contradiction.
 \end{proof}
 
 \input{Algorithms/algo_non-conflict_free}
 
-The \emph{conflict graph} for a set of constraints and \emph{circular conflicts} for it are defined in a similar way to the conflict graph and circular conflicts for a constraint. 
-A set of constraints is called \emph{circular conflict free} if each of its constraints is circular conflict free and there is no sequence $c = c_0, \ldots, c_n = c$ such that $c_i$ has a conflict with $c_{i+1}$ for all $0\leq i < n$. In other words, the conflict graph of this set is acyclic.
+The \emph{conflict graph} for a set of constraints and \emph{circular conflicts of a set of constraints} are defined in a similar way to the conflict graph and circular conflicts for one constraint. 
+A set of constraints is called \emph{circular conflict free} if each of its constraints is circular conflict-free and there is no sequence $c = c_0, \ldots, c_n = c$ such that $c_i$ has a conflict with $c_{i+1}$ for all $0\leq i < n$. In other words, the conflict graph of this set is acyclic.
 
 \begin{definition}[\textbf{conflict graphs, circular conflicts}]
-	Given a set of constraints $\mathcal{C}$ in UANF. The \emph{conflict graph} of $\mathcal{C}$ is constructed in the following way. For each constraint $c \in \mathcal{C}$ there is a node. If there is a conflict between $c$ and $c'$, there exists an edge $e$ with $\src(e) = c$ and $\tar(e) = c'$.
+	Given a set of rules $\mathcal{R}$ and a set of constraints $\mathcal{C}$ in UANF. The \emph{conflict graph} of $\mathcal{C}$  w.r.t. $\mathcal{R}$ is constructed in the following way. For each constraint $c \in \mathcal{C}$ there is a node. If $c$ causes a conflict for $c'$ w.r.t. $\mathcal{R}$, there is an edge $e$ with $\src(e) = c$ and $\tar(e) = c'$.
 	
 	A constraint $c$ has a \emph{transitive conflict} with $c'$ if the 
 conflict graph of $\mathcal{C}$ contains a path from $c$ to $c'$. 
 A constraint $c$ has a \emph{circular conflict} if $c$ has a transitive conflict with itself. 
-A set of constraints $\mathcal{C}$ is called \emph{circular conflict free} if every constraint in $\mathcal{C}$ is circular conflict free and $\mathcal{C}$ contains no circular conflicts.
+A set of constraints $\mathcal{C}$ is called \emph{circular conflict free w.r.t. $\mathcal{R}$} if every constraint in $\mathcal{C}$ is circular conflict-free and $\mathcal{C}$ contains no circular conflicts.
 \end{definition}
 
 \begin{example}
 	Consider the rules \emph{\texttt{resolve, resolve2, createFeatures}} and constraints $c_1$ and $c_5$ given in Figures \ref{fig:constraint_conflict} and \ref{fig:constraints}.
 The constraint set $\mathcal{C} = \{c_1, c_5\}$ is a multiplicity which states that \enquote{Each node of type \emph{\texttt{Class}} is connected to exactly two nodes of type \emph{\texttt{Feature}}}.
-	With the rule set $\mathcal{R}_1 = \{\emph{\texttt{resolve}}, \emph{\texttt{createFeatures}}\}$, there is only one conflict in $\mathcal{C}$; $c_1$ has a conflict with $c_5$, since applying \emph{\texttt{createFeatures}} could lead to inserting the universally bound graph of $c_5$. With the rule set $\mathcal{R}_2 = \{\emph{\texttt{resolve2}}, \emph{\texttt{createFeatures}}\}$ there are two conflicts. Again, there is a conflict of $c_1$ with $c_5$, but also a conflict of $c_5$ with $c_1$, since applying \emph{\texttt{resolve}} can destroy an occurrence of the existentially bound graph of $c_1$.
+	With the rule set $\mathcal{R}_1 = \{\emph{\texttt{resolve}}, \emph{\texttt{createFeatures}}\}$, there is only one conflict in $\mathcal{C}$; $c_1$ causes a conflict for $c_5$, since applying \emph{\texttt{createFeatures}} could lead to inserting the universally bound graph of $c_5$. With the rule set $\mathcal{R}_2 = \{\emph{\texttt{resolve2}}, \emph{\texttt{createFeatures}}\}$ there are two conflicts. Again, $c_1$ causes a conflict for $c_5$ and  $c_5$ causes a conflict for $c_1$, since applying \emph{\texttt{resolve}} can destroy an occurrence of the existentially bound graph of $c_1$.
 	
-	Therefore, our approach can repair with the rule set $\mathcal{R}_1$ 
-	but not with  $\mathcal{R}_2$ because in this case, $\mathcal{C}$ is 
-	not circular conflict free.
+	Therefore, our approach will terminate with the rule set $\mathcal{R}_1$ 
+	but not with  $\mathcal{R}_2$ because $\mathcal{C}$ is 
+	not circular conflict free w.r.t. $\mathcal{R}_2$.
 	
 \end{example}
 \input{figures/fig_example_constraint_conflict}
@@ -75,26 +75,24 @@ conflict graph.
 \begin{definition}[\textbf{topological ordering of a graph}]
 	Given is a graph $G$. A sequence $(v_1, \ldots, v_n)$ of nodes of $G$ is called a \emph{topological ordering} of $G$ if no edge $e \in E_G$ exists with $\src(e) = v_i$, $\tar(e) = v_j$ and $i \geq j$. The topological ordering of a circular conflict-free set of constraints $\mathcal{C}$ is the topological order of its conflict graph.
 \end{definition}
-It is well known that every directed acyclic graph has a topological ordering that can be computed in $\Theta(|V| + |E|)$ where $V$ and $E$ are the set of nodes and edges of the respective graph \cite{cormen2022introduction}. Therefore every conflict graph of a circular conflict-free set of constraints also has a topological ordering .
+It is well known that every directed acyclic graph has a topological ordering that can be computed in $\Theta(|V| + |E|)$ where $V$ and $E$ are the set of nodes and edges of the respective graph \cite{cormen2022introduction}. Therefore every conflict graph of a circular conflict-free set of constraints also has a topological ordering.
 
 The repair process is given in Algorithm \ref{Algo_non-conflict_free} and proceeds as follows. 
 First, the topological ordering of the constraint set is determined (line 1). Then Algorithm \ref{Algo_conflict_free} is used to repair each constraint of $\mathcal{C}$ in the order of the topological ordering (lines 2 -- 4). 
 This ensures that the satisfaction of a constraint that has already been repaired is not destroyed by the repair of another constraint. 
 \begin{theorem}
-	Given a graph $G$, a satisfiable, circular  conflict-free set of constraints in UANF, $\mathcal{C}$, and a set of rules $\mathcal{R}$.
+	Given rule set $\mathcal{R}$, a graph $G$ and a satisfiable of constraints in UANF $\mathcal{C}$ which is circular conflict free w.r.t. $\mathcal{R}$.
 Then Algorithm \ref{Algo_non-conflict_free} terminates and returns a graph $H$ with $H \models \mathcal{C}$.
 \end{theorem}
 \begin{proof}
-	Since $\mathcal{C}$ is finite and every $c \in \mathcal{C}$ is circular conflict free,  Algorithm \ref{Algo_conflict_free} terminates for every $c \in \mathcal{C}$. Therefore  Algorithm \ref{Algo_non-conflict_free} will also terminate.
+	Since $\mathcal{C}$ is finite and every $c \in \mathcal{C}$ is circular conflict-free,  Algorithm \ref{Algo_conflict_free} terminates for every $c \in \mathcal{C}$. Therefore,  Algorithm \ref{Algo_non-conflict_free} will also terminate.
 	It remains to show that the returned graph satisfies $\mathcal{C}$.
-	Let $(c_1, \ldots, c_n)$ be a topological ordering of $\mathcal{C}$. Then no constraint $c_j$ with $j \neq 1$ has a conflict with $c_1$, and by Lemma \ref{lemma_preserving} it follows that the concurrent rule of every repair sequence for every $c_i$ with $2 \leq i \leq n$ is a $c_1$-preserving rule.
-	In general, the concurrent rule of each repairing sequence for $c_j$ is a
+	Let $(c_1, \ldots, c_n)$ be a topological ordering of $\mathcal{C}$ w.r.t. $\mathcal{R}$. Then, no constraint $c_j$ with $j \neq 1$ causes a conflict for $c_1$, and  Lemma \ref{lemma_preserving} implies that the concurrent rule of every repairing sequence for every graph of $c_i$ with $2 \leq i \leq n$ is a $c_1$-preserving rule.
+	In general, the concurrent rule of each repairing sequence for graphs of $c_j$ is a
 	$c_i$-preserving rule if $i < j$.
-	Note that in Algorithm \ref{Algo_non-conflict_free} each repairing sequence 
-	can be replaced by its concurrent rule. 
 	After one iteration it holds that $G \models c_1$. Suppose that after $m$ iterations it holds that $G \models c_i$ for all $1 \leq i \leq m$.
 	In iteration $m+1$, $c_{m+1}$ is repaired by Algorithm 
- \ref{Algo_non-conflict_free}. Since each concurrent rule of each repairing sequence of $c_{m+1}$ is a $c_i$-preserving rule for all $1 \leq i \leq m$, the application of repairing sequence can be replaced by its concurrent rule, and Algorithm \ref{Algo_non-conflict_free} applies only these concurrent rules, it follows that $H \models c_i$ for all $1 \leq i \leq m+1$.  
+ \ref{Algo_non-conflict_free}. Since each concurrent rule of each repairing sequence for graphs of  $c_{m+1}$ is a $c_i$-preserving rule for all $1 \leq i \leq m$ and the application of repairing sequence can be replaced by an application of its concurrent rule, it follows that  $ H \models c_i$ for all $1 \leq i \leq m+1$.  
 	Therefore, after $n$ iterations, $H \models c_i$ for all $1 \leq i \leq n$ 
 	and the returned graph $G$ satisfies 
 	$\mathcal{C}$.

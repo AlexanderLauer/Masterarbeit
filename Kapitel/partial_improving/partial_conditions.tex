@@ -1,12 +1,12 @@
-\subsection{Satisfaction until after Layer}
+\subsection{Satisfaction up to Layer}
 
 \input{figures/fig_constraints}
 \input{figures/fig_graph}
 
-The goal of our approach is to increase the consistency of a constraint layer by layer, as we have already mentioned. To do this, we introduce a notion of partial consistency, called \emph{Satisfaction until after layer}, which allows us to check whether a constraint is satisfied at a particular layer by checking whether the so-called \emph{truncated condition after layer} is satisfied at that layer.
+The goal of our approach is to increase the consistency of a constraint layer by layer, as we have already mentioned. To do this, we introduce a notion of partial consistency, called \emph{satisfaction up to layer}, which allows us to check whether a constraint is satisfied at a particular layer by checking whether the so-called \emph{truncated condition after layer} is satisfied at that layer.
 
 We first define the \emph{subcondition at layer} $-1 \leq k \leq \nlvl(c)$ of a condition $c$. As the name suggests, the subcondition at layer $0 \leq k \leq \nlvl(c)$ denotes the subcondition of $c$ with layer $k$. 
-We also define the subcondition at layer $-1$, which is $\true$. This will be useful for defining the satisfaction at layer when a graph does not satisfy any layer of a constraint.
+We also define the subcondition at layer $-1$, which is $\true$. This will be useful for evaluating the satisfaction up to layer when a graph does not satisfy any layer of a constraint.
  
 \begin{definition}[\textbf{subcondition at layer}]
 Let a condition $c$ in ANF be given. The \emph{subcondition at layer $-1 \leq k \leq \nlvl(c)$}, denoted by $\scond{k}{c}$, is the subcondition $d$ of $c$ with $\lay(d) = k$ if $0 \leq k \leq \nlvl(c)$ and $\true$ if $k = -1$. 
@@ -16,8 +16,7 @@ Note that by definition the subcondition at layer $k$ is always a condition over
 \begin{example}
 	Consider the condition $ c =\forall(a_0:C_0 \inj C_1, \exists(a_1: C_1
 	\inj C_2, \forall(a_2:C_2 \inj C_3, \false)))$.
-	Then, $\scond{1}{c} = \exists(a_1:C_1 \inj C_2, \forall(a_2: C_2 \inj C_3,
-	\false))$.
+	Then, 
 	\begin{enumerate}
 		\item $\scond{-1}{c} = \true$.
 		\item $\scond{0}{c} =  \forall(a_0:C_0 \inj C_1, \exists(a_1: C_1
@@ -32,7 +31,7 @@ Note that by definition the subcondition at layer $k$ is always a condition over
 Let us first introduce an operator which allows to replace a subcondition $\scond{k}{c}$ by an arbitrary condition over $C_k$, called \emph{replacement starting from layer}.
 
 \begin{definition}[\textbf{replacement starting from layer}]
-Given a condition $c = Q(a_0: C_0 \inj C_1, d)$, with $Q \in \{\forall, \exists\}$, in ANF, and a condition $e$ over $C_k$ in ANF.  
+Given a condition $c = Q(a_0: C_0 \inj C_1, d)$ in ANF  with $Q \in \{\forall, \exists\}$ and a condition $e$ over $C_k$ in ANF.  
 The \emph{replacement starting from layer $k$ in $c$ by $e$}, denoted by $\repl{k}{c}{e}$, is defined recursively as
 \begin{equation*}
 	\repl{k}{c}{e} := 
@@ -45,7 +44,7 @@ The \emph{replacement starting from layer $k$ in $c$ by $e$}, denoted by $\repl{
 
 \begin{example}
 Consider the conditions $c := \forall(a_0: C_0 \inj C_1, \exists(a_1: C_1 \inj C_2, \true))$ and $e = \exists(a'_1: C_1 \inj C_3, d)$. 
-The replacement of layer $1$ in $c$ by $e$ is given by
+The replacement starting from layer $1$ in $c$ by $e$ is given by
 $$\repl{1}{c}{e} = \forall(a_0: C_0 \inj C_1, \exists(a'_1: C_1 \inj C_3, d)).$$ 
 \end{example}
 
@@ -82,21 +81,21 @@ The truncated conditions of $c_2$ after layer $-1 \leq k < 3$ are given by
 
 
 Note that the truncated condition of a condition $c$ at layer $\nlvl(c) -1$ is $c$ itself.
-With these prerequisites we can now introduce \emph{satisfaction until after layer}, which allows us to check whether a condition is satisfied up to a given layer. A morphism or graph satisfies a condition or constraint until after a layer if it satisfies the truncated condition after that layer.
+With these prerequisites, we can now introduce \emph{satisfaction up to layer}, which allows us to check whether a condition is satisfied up to a given layer. A morphism or graph satisfies a condition or constraint up to a layer if it satisfies the truncated condition after that layer.
 
 
-\begin{definition}[\textbf{satisfaction until after layer}]
+\begin{definition}[\textbf{satisfaction up to layer}]
 Let a graph $G$ and a condition $c$ in UANF be given.
-A morphism $p: C_0 \inj G$ \emph{satisfies $c$ until after layer $-1 \leq k < \nlvl(c)$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
+A morphism $p: C_0 \inj G$ \emph{satisfies $c$ up to layer  $-1 \leq k < \nlvl(c)$}, denoted by $p \models_k c$, if $$p\models \cut{k}{c}.$$
 
-A graph $G$ satisfies a constraint $c$ until after layer $-1 \leq k < \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
+A graph $G$ satisfies a constraint $c$ up to layer $-1 \leq k < \nlvl(c)$, denoted by $G \models_k c$, if $q: \emptyset \inj G$ satisfies $\cut{k}{c}$.
 The largest $-1 \leq k < \nlvl(c)$ such that $G \models_k c$ and there is no $k < j < \nlvl(c)$ with $G \models_j c$, called the \emph{largest satisfied layer}, is denoted by $\maxk{c}{G}$. 
 When $c$ and $G$ are clear from the context, we use the abbreviation $\kmax$.
 \end{definition}
 
 Note that given a graph $G$ and a constraint $c$, $\maxk{c}{G}$ always exists, since $\cut{-1}{c} = \true$ and every graph satisfies $\true$.
 Moreover, if $p \models_{\nlvl(c)-1} c$, i.e. $\kmax = \nlvl(c)-1$, it immediately follows that $p \models c$. 
-\begin{example}
+\begin{example}\label{ex_graph}
 Consider the graph $G$ given in Figure \ref{fig:graph} and the constraint $c_2$ given in Figure \ref{fig:constraints}. 
 This graph does not satisfy $c_2$ because the occurrence of \emph{\texttt{Class}} denoted with \emph{\texttt{gc2}}  does not satisfy $\scond{1}{c_2} = \exists(C_2^2,(\forall C_3^2,(\exists C_4^2,\true)))$, but it satisfies $\cut{1}{c_2} = \forall(C_1^1, \exists(C_2^2, \true))$ and therefore $$G \models_1 c_2 \text{ and } \kmax = 1.$$
 \end{example}
@@ -107,15 +106,15 @@ This graph does not satisfy $c_2$ because the occurrence of \emph{\texttt{Class}
 
 Given a graph $G$, a condition $c$ and a morphism $p : C_0 \inj G$.
 Suppose that $p \models_k c$ with $0 \leq k < \nlvl(c)$. 
-Then we can infer results for the satisfaction until after other layers.
+Then we can infer results for the satisfaction until up to other layers.
 If $k$ is even, i.e. $\scond{k}{c}$ is a universal condition,  we can conclude that $p \models_j c$ for all $k < j < \nlvl(c)$ and especially $p \models c$.
 It also follows that $p \models_j c$ for all odd $0 \leq j < k$, i.e. $\scond{j}{c}$ is an existential condition. 
-We present these results in the following lemmas, and an overview is given in Table \ref{table_satisfaction_at_layer}.
+We present these results in the following lemmas,  an overview is given in Table \ref{table_satisfaction_at_layer}.
 
-We start by examining the consequences for the satisfaction until after layer $\nlvl(c) > j > k$ if $p \models_k c$. Our first lemma shows that replacing the subcondition $\scond{k+1}{c}$ by any condition over $C_{k+1}$ leads to a condition that is satisfied by $p$ if $k$ is even.
+We start by examining the consequences for the satisfaction up to layer $\nlvl(c) > j > k$. Our first lemma shows that replacing the subcondition $\scond{k+1}{c}$ by any condition over $C_{k+1}$ leads to a condition that is satisfied by $p$ if $k$ is even.
 
 \begin{lemma}\label{lemma_help_lay_sat}
-Given a graph $G$, a condition $c$ in UANF and a morphism $p : C_0 \inj G$ with $p \models_k c$ and $-1 \leq k < \nlvl(c)$  even.
+Given a graph $G$, a condition $c$ in UANF and a morphism $p : C_0 \inj G$ with $p \models_k c$ where $-1 \leq k < \nlvl(c)$ is even.
 Then, for any condition $f$ over $C_{k+1}$ it holds that
 $$p \models \repl{k + 1}{c}{f}.$$
 \end{lemma}
@@ -126,14 +125,14 @@ After this, we can conclude that this statement holds for all $-1 \leq i < \nlvl
 
 Let $q: C_{j} \inj G$ be a morphism such that $q \models \forall(a_j:C_{j} \inj C_{j+1}, \false)$. 
 This morphism must exist, since $j$ is the smallest even number with $p \models_j c$.
-Therefore, there does not exist a morphism $q': C_{j+1} \inj G$ with $q = q' \circ a_j$.
+Therefore, there is no morphism $q': C_{j+1} \inj G$ with $q = q' \circ a_j$.
 Hence, for every condition $f$ over $C_{j+1}$ a morphism $q': C_{j+1} \inj G$ with $q \not \models f$ and $q = q' \circ a_j$ cannot exist. 
 It follows immediately that $q \models \forall(a_j:C_{j} \inj C_{j+1}, f)$ and with that $p \models \repl{j + 1}{c}{f}$.
 
 We can now conclude that for every even $j < k \leq \nlvl(c)$, such that $p \models_k c$, and every condition $d$ over $C_{k + 1}$ it holds that $p \models \repl{k + 1}{c}{d}$ because $\repl{k + 1}{c}{d} = \repl{j+1}{c}{\scond{j+1}{\repl{k+1}{c}{d}}}$.
 \end{proof}
 
-As a direct consequence of the previous lemma, a morphism which satisfies the condition at layer $k$, where $k$ is even, also satisfies the condition at layer
+As a direct consequence of the previous lemma, a morphism which satisfies a condition up to layer $k$, where $k$ is even, also satisfies the condition at layer
 $j$ for all $j > k$.
 
 
@@ -148,7 +147,7 @@ If $0 \leq k < \nlvl(c)$ is even, i.e. $\scond{k}{c}$ is a universal condition, 
 Follows immediately by using Lemma \ref{lemma_help_lay_sat} and setting $f$ equal to $\scond{k+1}{\cut{j}{c}}$.
 \end{proof}
 
-Since a morphism $p$ satisfies a condition $c$ in UANF if and only if $p$ satisfies $c$ at layer $\nlvl(c)-1$, we can conclude the following.
+Since a morphism $p$ satisfies a condition $c$ in UANF if and only if $p$ satisfies $c$ up to layer $\nlvl(c)-1$, we can conclude the following.
 
 
 \begin{corollary}\label{corol:satisfaction}
@@ -159,8 +158,8 @@ Since a morphism $p$ satisfies a condition $c$ in UANF if and only if $p$ satisf
 In the following, we will mostly assume that $\kmax$ is odd. This is because an even $\kmax$ implies that the condition is already satisfied.
 Furthermore, this allows us to make statements about the satisfaction of other conditions. Given a graph $G$, a morphism $p : C_0 \inj G$ and a condition $c$ such that $p \models_k c$ for an even $-1 \leq k < \nlvl(c)$. It follows that $p \models c$ and in particular $p \models c'$ for each condition $c'$ with  $\cut{k}{c} = \cut{k}{c'}$.
 
-Let us now examine the satisfaction until after layer $j$ with $-1 < j < k$. If $j$ is odd, i.e. $\scond{j}{c}$ is an existential condition, we can conclude that $p \models_j c$ as shown in the next lemma.
-If $j$ is even, i.e. $\scond{j}{c}$ is universally bound, we can only make statements that depend on $\kmax$. If $\kmax < \nlvl(c) -1$, then $p \not \models_j c$. Otherwise $p \models c$ and therefore $\kmax = \nlvl(c)-1$ would immediately follow Corollary from \ref{corol:satisfaction}.
+Let us now examine the satisfaction up to layer $j$ with $-1 < j < k$. If $j$ is odd, i.e. $\scond{j}{c}$ is an existential condition, we can conclude that $p \models_j c$ as shown in the next lemma.
+If $j$ is even, i.e. $\scond{j}{c}$ is universally bound, we can only make statements that depend on $\kmax$. If $\kmax < \nlvl(c) -1$, then $p \not \models_j c$. Otherwise, Corollary \ref{corol:satisfaction} implies  that $p \models c$ and therefore $\kmax = \nlvl(c)-1$.
 If $\kmax = \nlvl(c)-1$, we can say that there is at least one even $j \leq \kmax$ with $p \models_j c$ if $c$ ends with $\forall(C_{\nlvl(c)}, \false)$.
 An overview of these relations is given in Table \ref{table_abh_kmax}.
 
@@ -189,18 +188,37 @@ Let $\ell < j'$, such that $\scond{\ell}{c}$ is a existential condition and let 
 	We begin with Table \ref{table_satisfaction_at_layer}.
 	\begin{enumerate}
 		\item $j < k$, $j$ and $k$ are even. We set $k = 2$ and $j = 0$. 
-			 It follows that $\cut{k}{c} = \forall(C_1^1, \exists(C_2^2, \forall (C_3^2, \false)))$ and $\cut{j}{c} = \forall(C_1^1,\false)$.  Then, $C_2^2 \models_2 c_2$, $C_2^2 \not \models_0 c_2$
-			  and $\emptyset \models_2 c_2$ and $\emptyset \models_0 c_2$.
+			 It follows that $\cut{k}{c} = \forall(C_1^1, \exists(C_2^2, \forall (C_3^2, \false)))$ and $\cut{j}{c} = \forall(C_1^1,\false)$.  Then,
+			 \begin{enumerate}
+			 \item $C_2^2 \models_2 c_2$ and $C_2^2 \not \models_0 c_2$.
+			  
+			  \item $\emptyset \models_2 c_2$ and $\emptyset \models_0 c_2$.
+			  
+\end{enumerate}
 		\item $j <k$, $k$ is odd and $j$ is even. We set $k = 3$ and $j = 0$. 
 		It follows that $\cut{k}{c_2} = c_2$ and $\cut{j}{c} = \forall(C_1^1,\false)$.
-		Then, $C_4^2 \models_3 c_2$, $C_4^2 \not \models_0 c_2$ and $\emptyset \models_3 c_2$ and $\emptyset \models_0 c_2$.
+		Then,
+		\begin{enumerate}
+			\item $C_4^2 \models_3 c_2$ and $C_4^2 \not \models_0 c_2$.
+			\item $\emptyset \models_3 c_2$ and $\emptyset \models_0 c_2$.
+\end{enumerate}				
+		 
 		
 		\item $j > k$, $k$ is odd and $j$ is even. We set $k = 1$ and $j = 2$. It follows that 
-		$\cut{k}{c} = \forall(C_1^1, \exists(C_2^2,\true))$ and $\cut{j}{c} = \forall(C_1^1, \exists(C_2^2, \forall (C_3^2, \false)))$. Then, $C_2^2 \models_1 c_2$, $C_2^2 \models_2 c_2$ and  $C_3^2 \models_1 c_2$ and $C_3^2 \not \models_2 c_2$. 
-		\item $j >k$, $k$ and $j$ are odd. We set $k = 1$ and $j = 3$. It follows that $\cut{k}{c} = \forall(C_1^1, \exists(C_2^2,\true))$ and $\cut{j}{c} = c_2$. Then, $C_2^2 \models_1 c_2$, $C_2^2 \models_3 c_2$ and $C_3^2 \models_1 c_2$ and $C_3^2 \not \models_3 c_2$. Since  $\cut{j}{c} = c_2$ this is also a counterexample for the \enquote{?} in the column \enquote{$p \models c$}.
+		$\cut{k}{c} = \forall(C_1^1, \exists(C_2^2,\true))$ and $\cut{j}{c} = \forall(C_1^1, \exists(C_2^2, \forall (C_3^2, \false)))$. Then,
+		\begin{enumerate}
+			\item $C_2^2 \models_1 c_2$ and $C_2^2 \models_2 c_2$.
+			\item $C_3^2 \models_1 c_2$ and $C_3^2 \not \models_2 c_2$.	
+\end{enumerate}				
+		  
+		\item $j >k$, $k$ and $j$ are odd. We set $k = 1$ and $j = 3$. It follows that $\cut{k}{c} = \forall(C_1^1, \exists(C_2^2,\true))$ and $\cut{j}{c} = c_2$. Then,
+		\begin{enumerate}
+		 \item $C_2^2 \models_1 c_2$ and $C_2^2 \models_3 c_2$.
+		 \item $C_3^2 \models_1 c_2$ and $C_3^2 \not \models_3 c_2$.
+\end{enumerate}	 Since  $\cut{j}{c} = c_2$ this is also a counterexample for the \enquote{?} in the column denoted by \enquote{$p \models c$}.
 		
 	\end{enumerate}
-	For the \enquote{?} in Table \ref{table_abh_kmax} the graph $C_2^2$ satisfies $c_2$ and therefore $\kmax = 3 = \nlvl(c_2)-1$. 
+	For the \enquote{?} in Table \ref{table_abh_kmax}, the graph $C_2^2$ satisfies $c_2$ and therefore $\kmax = 3 = \nlvl(c_2)-1$. 
 	But, $C_2^2 \models_2 c_2$ and $C_2^2 \not \models_0 c_2$.
 \end{example}
 

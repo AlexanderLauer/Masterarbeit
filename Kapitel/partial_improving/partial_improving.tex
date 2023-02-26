@@ -1,19 +1,19 @@
 \subsection{Consistency Increasing and Maintaining Transformations and Rules}
-Using satisfaction until after layer, an increase of consistency can be detected in the following way: Let $t: G \Longrightarrow H$ be a transformation. 
-If the largest satisfied layer in $H$ is greater than the largest satisfied layer in $G$, i.e. $\maxk{c}{G} < \maxk{c}{H}$, we consider the transformation as consistency increasing. 
-However, the notion of consistency increasing should also be able to detect the smallest changes made by a transformation that lead to an increase of consistency, namely the insertion of a single edges or nodes of an existentially bound graph.
-To remedy this problem, we introduce \emph{intermediate conditions}, which are used to detect this type of increase by checking whether an intermediate condition not satisfied by $G$ is satisfied by $H$.
-Obviously, a decrease of consistency can be detected in a similar way, by checking whether an intermediate condition satisfied by $G$ is not satisfied by $H$.  
-Intuitively, the last graph of a truncated condition $c$ will be replaced by an intermediate graph of the penultimate graph and the last graph of this truncated condition.
+Using satisfaction up to layer, an increase of consistency can be detected in the following way: Let $t: G \Longrightarrow H$ be a transformation. 
+If the largest satisfied layer in $H$ is greater than the largest satisfied layer in $G$, i.e. $\maxk{c}{G} < \maxk{c}{H}$, we consider the transformation as consistency-increasing. 
+However, the notion of consistency-increasing should also be able to detect the smallest changes made by a transformation that leads to an increase of consistency, namely the insertion of a single edge or node of an existentially bound graph.
+To do this, we introduce \emph{intermediate conditions}, which are used to detect this type of increase by checking whether an intermediate condition not satisfied by $G$ is satisfied by $H$.
+A decrease of consistency can be detected in a similar way, by checking whether an intermediate condition satisfied by $G$ is not satisfied by $H$.  
+Intuitively, the last graph of a truncated condition $c$ is replaced by an intermediate graph of the penultimate graph and the last graph of that truncated condition.
 
-If $c$ ends with an existentially bound condition, the constructed intermediate condition is weaker than $c$, in the sense that the satisfaction of $c$ implies the satisfaction of the intermediate condition as shown by Lemma \ref{lemma_intermediateCondition}. 
+If $c$ ends with an existential condition, the constructed intermediate condition is weaker than $c$, in the sense that the satisfaction of $c$ implies the satisfaction of the intermediate condition, as shown by Lemma \ref{lemma_intermediateCondition}. 
 
 
-Conversely, if $c$ ends with a universally bound condition, the opposite holds: satisfying an intermediate condition implies the satisfaction of $c$. 
-This is why we have designed intermediate conditions so that they only replace graphs on existential layers.
+Conversely, if $c$ ends with a universal condition, the opposite holds: The satisfaction of an  intermediate condition implies the satisfaction of $c$. 
+For this reason, we have designed intermediate conditions so that they only replace graphs on existential layers.
 
 \begin{definition}[\textbf{intermediate condition}]
-	Let a condition $c$ in UANF be given and let $0 \leq k < \nlvl(c)$ be odd, i.e. $\scond{k}{c}$ is a existential condition. The \emph{intermediate condition}, denoted by $\ic{k}{c} {C'}$, of $c$ at layer $k$ with $C' \in \ig{C_k} {C_{k+1}}$ is defined as
+	Given a condition $c$ in UANF  and let $0 \leq k < \nlvl(c)$ be odd, i.e. $\scond{k}{c}$ is an existential condition. The \emph{intermediate condition}, denoted by $\ic{k}{c} {C'}$, of $c$ at layer $k$ with $C' \in \ig{C_k} {C_{k+1}}$ is defined as
 	$$\ic{k}{c}{C'} := \repl{k}{c}{\exists(a_k^r:C_k \inj C', \true)}.$$
 \end{definition}
 
@@ -23,7 +23,7 @@ This is why we have designed intermediate conditions so that they only replace g
 \end{lemma}
 \begin{proof}
 	Assume that $G \models \cut{k}{c}$, i.e. $G \models_k c$. If there is an even $-1 \leq j < k$ such that $G \models_j c$, $G \models \ic{k}{c}{C'}$ follows with Lemma \ref{lemma_help_lay_sat}. 
-	Otherwise, if there is no such $j$, for all morphism $p: C_k \inj G$ such that there is a morphism $p': C_{k+1} \inj G$ with $p = p' \circ a_k$, there is also a morphism $q: C' \inj G$ with $p = q \circ a_k^r$ where $a_k^r: C_k \inj C$ is the restriction of $a_k$ and $q$ is restriction of $p$ to the domain $C$.  It follows that $G \models \ic{k}{c}{C'}$.
+	Otherwise, if there is no such $j$, for all morphism $p: C_k \inj G$ such that there is a morphism $p': C_{k+1} \inj G$ with $p = p' \circ a_k$, there is also a morphism $q: C' \inj G$ with $p = q \circ a_k^r$ where $a_k^r: C_k \inj C$ is the restriction of $a_k$ and $q$ is a restriction of $p$ to the domain $C$.  It follows that $G \models \ic{k}{c}{C'}$.
 \end{proof}
 
 %\begin{definition}[\textbf{partial condition}]
@@ -45,35 +45,35 @@ This is why we have designed intermediate conditions so that they only replace g
 %\end{definition}
 
 \begin{example}
-Consider the constraint $c_1$ given in Figure \ref{fig:constraints}. 
+Consider constraint $c_1$ given in Figure \ref{fig:constraints}. 
 Since $C_2^2 \in \ig{C_1^1}{C_2^1}$, we can construct an intermediate condition of $c_1$ at layer $1$ with $C_2^2$ as $\ic{1}{c_1}{C_2^2} = \forall (C_1^1 \exists (C_2^2, \true))$. 
 While $c_1$ checks whether each node of type \emph{\texttt{Class}} is connected to at least two nodes of  type \emph{\texttt{Feature}}, the intermediate condition checks whether each node of type \emph{\texttt{Class}} is connected to at least one node of type \emph{\texttt{Feature}} which is trivially satisfied if $c_1$ is satisfied.
 \end{example}
 
 
 
-With the results above, we are now ready to define the notions of \emph{consistency increasement} and \emph{maintainment}, where increasement is a special case of maintainment. A transformation $t$ is considered as consistency maintaining if it does not decrease consistency in the finer grained sense as described above, while $t$ is considered as 
-consistency increasing if it increases the consistency.
+With the results above, we are now ready to define the notions of \emph{consistency-increasement} and \emph{consistency-maintainment}, where increasement is a special case of maintainment. A transformation $t$ is  consistency-maintaining if it does not decrease consistency in the finer-grained sense as described above, while $t$ is 
+consistency-increasing if it increases the consistency.
 
 These notions are designed to detect only transformations that maintain (or increase) the consistency of the first two unsatisfied layers of a constraint $c$. 
-That means, given a graph $G$ and a constraint $c$,  a transformation $ t:G \Longrightarrow H$ is considered as  consistency maintaining if the largest satisfied layer has not decreased, i.e. if $\maxk{c}{G} \leq \maxk{c}{H}$, and at least as many increasing insertions or deletions have been made as decreasing ones.
+That means, given a graph $G$ and a constraint $c$,  a transformation $ t:G \Longrightarrow H$ is  consistency-maintaining if the largest satisfied layer has not decreased, i.e. if $\maxk{c}{G} \leq \maxk{c}{H}$, and at least as many increasing insertions or deletions have been made as decreasing ones.
 An increasing deletion is the deletion of an occurrence of $C_{\maxk{c}{G} +2}$ that does not satisfy $\exists(C_{\maxk{c}{G}+3},\true)$, an increasing insertion is the insertion of elements, such that for at least one occurrence $p$ of $C_{\maxk{c}{G}+2}$ it holds that $p \not \models \exists(C',\true)$ and $\track_t \circ p \models \exists(C',\true)$ for an intermediate graph $C' \in \ig{C_{\maxk{c}{G}+2}}{ C_{\maxk{c}{G}+3}}$.
 Decreasing insertions and deletions are the opposite of increasing ones. 
-That is, a decreasing insertion is the insertion of an occurrence of $C_{\maxk{c}{G}+2}$ that does not satisfy $\exists(C_{\maxk{c}{G}+3}, \true)$ and a decreasing deletion is the deletion of elements such that for one occurrence $p$ of 
+A decreasing insertion is the insertion of an occurrence of $C_{\maxk{c}{G}+2}$ that does not satisfy $\exists(C_{\maxk{c}{G}+3}, \true)$ and a decreasing deletion is the deletion of elements such that for one occurrence $p$ of 
 $C_{\maxk{c}{G}+2}$ with $p \models \exists(C', \true)$ it holds that 
 $\track_t \circ p \not \models \exists(C', \true)$ for an intermediate graph
-$C'\ig{C_{\maxk{c}{G}+2}}{ C_{\maxk{c}{G}+3}}$.
-If $\maxk{c}{G} < \maxk{c}{H}$ or the number of increasing insertions and deletions is greater than the number of decreasing ones, $t$ is considered as consistency increasing.
+$C'\in \ig{C_{\maxk{c}{G}+2}}{ C_{\maxk{c}{G}+3}}$.
+If $\maxk{c}{G} < \maxk{c}{H}$ or the number of increasing insertions and deletions is greater than the number of decreasing ones, $t$ is consistency-increasing.
 
 To evaluate this, we define the \emph{number of violations}.
-Intuitively, for all occurrences $p$ of $C_{\kmax+2}$ the number of graphs $C' \in \ig{C_{\kmax+2}}{C_{\kmax+3}}$ with $p \not \models \exists C'$ is added up, and by comparing these numbers for $G$ and $H$ it can be determined whether there have been more increasing insertions and deletions than decreasing ones.
+Intuitively, for all occurrences $p$ of $C_{\kmax+2}$ the number of graphs $C' \in \ig{C_{\kmax+2}}{C_{\kmax+3}}$ with $p \not \models \exists (C', \true)$ is added up, and by comparing these numbers for $G$ and $H$ it can be determined whether there have been more increasing insertions and deletions than decreasing ones.
 
 The number of violations is defined for each layer of the constraint, but only for the first unsatisfied layer the sum is calculated as described above.
 For all layers $k$ with $k \leq \kmax$ it is set to $0$ and for all layers $k$ with $k > \kmax + 1$ it is set to $\infty$. 
 In this way, a transformation $t: G \Longrightarrow H$ that increases the largest satisfied layer can be easily detected, since the number of violations in $H$ at layer $\kmax + 1$ will be set to $0$.
 
 \begin{definition}[\textbf{number of violations}]\label{def:num_violations}
-Given a graph $G$ and a constraint $c$ in UANF, and let $e = \scond{\kmax + 2}{c}$.
+Given a graph $G$, a constraint $c$ in UANF and let $e = \scond{\kmax + 2}{c}$.
 The \emph{number of violations $\nv{j}{G}$ at layer $-1 \leq j < \nlvl(c)$ in $G$} is defined as:
 
 \begin{equation*}
@@ -88,12 +88,12 @@ The \emph{number of violations $\nv{j}{G}$ at layer $-1 \leq j < \nlvl(c)$ in $G
 				 \end{cases}
 \end{equation*}
 \end{definition}
-Note that the second and third cases of Definition \ref{def:num_violations} only occur if $G \not \models c$ and $\scond{\kmax}{c}$ is a existential condition. So $e$ is also existentially bound or equal to $\false$ if $c$ ends with $\forall(C_{\nlvl(c)}, \false)$ and $\kmax = \nlvl(c) -2$. 
-Also note that the sets described above do contain occurrences of $C_{\kmax +2}$ whose removal (or repair such that they satisfy $\exists(C_{\kmax +3}, \true)$) will never lead to an increase of the largest satisfied layer. 
-In particular, only the occurrences of $p: C_{\kmax +2} \inj G$ that are so-called \emph{potentially increasing occurrences at layer $\kmax$ w.r.t. $c$} need to be considered. 
+Note that the second and third cases of Definition \ref{def:num_violations} only occur if $G \not \models c$ and $\scond{\kmax}{c}$ is an existential condition. So $e$ is also an existential condition or equal to $\false$ if $c$ ends with $\forall(C_{\nlvl(c)}, \false)$ and $\kmax = \nlvl(c) -2$. 
+Also note that the sets described above do contain occurrences of $C_{\kmax +2}$ whose removal (or repair so that they satisfy $\exists(C_{\kmax +3}, \true)$) will never lead to an increase of the largest satisfied layer. 
+In particular, only the occurrences of $p: C_{\kmax +2} \inj G$, which are so-called \emph{potentially increasing occurrences at layer $\kmax$ w.r.t. $c$}, need to be considered. 
 
 \begin{definition}[\textbf{potentially increasing occurrences at layer}]
-	Given a graph $G$, a constraint $c$ in UANF and an occurrence $p: C_{k+2} \inj G$ of an universally bound graph $C_k$. 
+	Given a graph $G$, a constraint $c$ in UANF and an occurrence $p: C_{k+2} \inj G$ of a universally bound graph $C_k$. 
 	Then $p$ is called a \emph{potentially increasing occurrence at layer $k$ w.r.t. $c$} if 
 	\begin{enumerate}
 		\item $p \not \models \cut{0}{\scond{k+2}{c}}$.
@@ -101,24 +101,23 @@ In particular, only the occurrences of $p: C_{\kmax +2} \inj G$ that are so-call
 	\end{enumerate}
 \end{definition}
 
-We will show this in the following lemma.
+In the following lemma, we will show that only these occurrences need to be considered.
 \begin{lemma}\label{num_violations}
-	Given a graph $G$, a constraint $c$ in UANF and an odd $-1 \leq k < \nlvl(c)-3$ such that $G \models_k c$. 
-	Then, $$G \models_{k+2} c$$ if for all occurrences $p: C_{k+2} \inj G$ of $C_{k+2}$ where  $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ with the empty morphism $q: \emptyset \inj G$ it holds that $p \models \cut{0}{\scond{\kmax+2}{c}}$. 
+	Given a graph $G$, a constraint $c$ in UANF and an odd $-1 \leq k < \nlvl(c)-2$ such that $G \models_k c$. 
+	Then, $$G \models_{k+2} c$$ if for all occurrences $p: C_{k+2} \inj G$ of $C_{k+2}$ where  $p = a_{k+1} \circ \ldots \circ a_0 \circ q$, $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ and $q: \emptyset \inj G$ is the empty morphism, it holds that $p \models \cut{0}{\scond{\kmax+2}{c}}$. 
 \end{lemma}
 \begin{proof}
 	Assume that $G \not \models_{k+2} c$ and for all occurrence $p: C_{k+2} \inj G$ where $p = a_{k+1} \circ \ldots \circ a_0 \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$ it holds that $p \models \cut{0}{\scond{\kmax+2}{c}}$.
 	Since $G \models_{k} c$ and  $G \not \models_{k+2} c$ there must be a morphism $p :C_{k+2} \inj G$ such that $p \not \models \cut{0}{\scond{\kmax+2}{c}}$, $p = a_{k+1} \circ \ldots \circ q$ and $a_i \circ \ldots \circ q \models \scond{i+1}{\cut{k}{c}}$ for all $0 \leq i \leq k$. This is a contradiction.
 \end{proof}
-Only considering the occurrence of $C_{\kmax+2}$ as described above will lead to a more precise definition of the number of violations, and therefore of the consistency maintaining and increasing rules, with the drawback that the application conditions designed for this more precise version will be much more complex, since it will be necessary to check that repaired occurrences satisfy the additional condition.
+Only considering the occurrence of $C_{\kmax+2}$ as described above will lead to a more precise definition of the number of violations, and therefore to a more precise definition of consistency maintaining and increasing transformations and rules, with the drawback that the application conditions designed for this more precise version will be much more complex, since it will be necessary to check that repaired occurrences satisfy the additional condition.
 We have therefore decided to use this less precise definition of the number of violations.
 
 
-Using the number of violations, we are now ready to define \emph{consistency maintaining} and \emph{increasing} transformations and rules by checking that the number of violations has not increased or, in the case of consistency increasing, has decreased.
-In addition, we will also introduce a weaker notion, called \emph{consistency maintaining and increasing rules at layer}.
+Using the number of violations, we are now ready to define \emph{consistency-maintaining} and \emph{consistency-increasing} transformations and rules by checking that the number of violations has not increased or, in the case of consistency-increasing, has decreased.
+In addition, we will also introduce weaker notions, called \emph{consistency-maintaining rules at layer} and \emph{consistency-increasing rules at layer}.
 Intuitively, a rule is consistency-maintaining or consistency-increasing w.r.t. $c$ at layer $k$ if all of its applications at graphs $G$ with $G \models_k c$ are consistency-maintaining or consistency-increasing w.r.t. $c$. 
-This notion will be important for our application conditions, since these only consider graphs of a constraint up to a certain layer. 
-Therefore, it is clear, that rule equipped with these application conditions are not consistency-maintaining or consistency-increasing rules with the advantage of less complex  application conditions. 
+This weaker notion will be important for our consistency-increasing application condition, since the graphs at the first unsatisfied layer must be considered, and constructing a consistency-increasing application condition will lead to huge application conditions.
 
 \begin{definition}[\textbf{consistency maintaining and increasing transformations and rules}]
 	Given a graph $G$, a constraint $c$ in UANF and a rule $\rho$.
@@ -127,19 +126,18 @@ Therefore, it is clear, that rule equipped with these application conditions are
 	The transformation is called \emph{consistency-increasing w.r.t. $c$} 
 	if it is consistency-maintaining w.r.t. $c$ and 
 	$$\nv{\maxk{c}{G}+1}{ H} < \nv{\maxk{c}{G}+1}{ G}.$$
-	A rule $\rho$ is called \emph{consistency maintaining or increasing  w.r.t $c$}, 
+	A rule $\rho$ is called \emph{consistency maintaining or increasing  w.r.t. $c$}, 
 	if all of its transformations are. 
 	
 	A rule $\rho$ is called \emph{consistency maintaining w.r.t. $c$ at layer $-1 \leq k < \nlvl(c)$} if all transformations $t: G \Longrightarrow_{\rho,m} H$ with $\maxk{c}{G} = k$ are consistency maintaining w.r.t. $c$. 
 	Analogously, a rule $\rho$ is called \emph{consistency increasing w.r.t. $c$ at layer $-1 \leq k < \nlvl(c)$} if all transformations $t: G \Longrightarrow_{\rho,m} H$ with $\maxk{c}{G} = k$ are consistency-increasing w.r.t. $c$.
 \end{definition}
 
-Note that if $G \models c$, there is no consistency-increasing transformation $G \Longrightarrow H$ w.r.t $c$, since $\nv{j}{G} = 0$ for all $0 \leq j < \nlvl(c)$. 
-Also note that a consistency-maintaining rule at layer $\nlvl(c)-1$ w.r.t. $c$ is also a consistency-maintaining rule w.r.t. $c$, since all graphs to which this rule is applied satisfy $c$. For the same reason, there is no consistency-increasing rule at layer $\nlvl(c)-1$ w.r.t. $c$.
-Also, no plain rule $\rho$ is consistency-increasing w.r.t $c$, since a graph $G$ satisfying $c$ such that a transformation $t: G \Longrightarrow_{\rho,m} H$ exists can always be constructed. 
+Note that if $G \models c$, there is no consistency-increasing transformation $G \Longrightarrow H$ w.r.t. $c$, since $\nv{j}{G} = 0$ for all $0 \leq j < \nlvl(c)$. 
+No plain rule $\rho$ is consistency-increasing w.r.t $c$, since a graph $G$ satisfying $c$ such that a transformation $t: G \Longrightarrow_{\rho,m} H$ exists can always be constructed. 
 Therefore, every consistency-increasing rule must have at least one application condition.
 
-As mentioned above, a transformation is considered to be consistency-increased if the largest satisfied layer is increasing. This property is already indirectly embedded in the definition of consistency-increasing transformations. 
+As mentioned above, a transformation is consistency-increasing if the largest satisfied layer is increased. This property is already indirectly embedded in the definition of consistency-increasing transformations. 
 
 \begin{theorem}
 	Given a rule $\rho$, a constraint $c$ in UANF and a graph $G$ with $G \not 
@@ -149,8 +147,8 @@ As mentioned above, a transformation is considered to be consistency-increased i
 \end{theorem}
 
 \begin{proof}
-No $\ell >\maxk{c}{G}$ with $G\models_{\ell} c$ exists. Hence, $\nv{\maxk{c}{G} + 1}{G} > 0$. 
-Since $\maxk{c}{H} > \maxk{c}{G}$, $\nv{\maxk{c}{G}+1}{H} = 0$, which immediately implies that $t$ is consistency-increasing w.r.t. $c$.
+There is no $\ell >\maxk{c}{G}$ with $G\models_{\ell} c$. So, $\nv{\maxk{c}{G} + 1}{G} > 0$. 
+Since $\maxk{c}{H} > \maxk{c}{G}$, it follows that $\nv{\maxk{c}{G}+1}{H} = 0$, which immediately implies that $t$ is consistency-increasing w.r.t. $c$.
 \end{proof}
 
 Since there are no consistency-increasing transformations starting from consistent graphs, there are no infinitely long sequences of consistency-increasing transformations.
@@ -171,20 +169,20 @@ We show that $G_x \models_{\maxk{c}{G_0} + 2} c$ holds after a maximum of $x := 
 Note that $x$ must be finite, since $G_0$ contains only a finite number of occurrences of $C_{\maxk{c}{G_0}+2}$. Since every transformation is consistency-increasing 
 w.r.t. $C$, it follows that $\nv{\maxk{c}{G_{i}}+1}{G_{i+1}} \leq \nv{\maxk{c}{G_i}+1}{G_{i}}-1$ after each transformation.
 Therefore, after at most $x$ transformations, $\nv{\maxk{c}{G_0}+1}{G_{j}} \leq \nv{\maxk{c}{G_0}+1}{G_{0}}-x = 0$ and thus $G_x \models_{\maxk{c}{G_0}+ 2} c$.
-If this is applied iteratively, it follows that after a finite number of transformations there must exist a graph $G_k$ with $G_k \models c$. 
+If this is applied iteratively, it follows that after a finite number of transformations, there must exist a graph $G_k$ with $G_k \models c$. 
 Since there is no consistency increasing transformation $G_k \Longrightarrow_{\rho_k, m_k} G_{k+1}$, the sequence must be finite.
 \end{proof}
 
 \subsection{Direct Consistency Maintaining and Increasing Transformations}
 We will now introduce stricter versions of consistency-increasing and consistency-main\-taining transformations, called \emph{direct consistency-maintaining} and \emph{direct consistency-increasing} transformations and rules.
-These are consistency-maintaining and consistency-increasing  transformations, which do not perform any unnecessary insertions and deletions.
+These are consistency-maintaining and consistency-increasing  transformations which do not perform any unnecessary insertions and deletions.
 For example, given a constraint $c$ in UANF and graphs $G$ with $G \not \models c$ and $H$ with $H \models c$, the transformation $t:G \Longrightarrow_{\rho, \id_G} H$ via the rule $\rho = \rle{G}{l}{\emptyset}{r}{H}$ is a consistency-increasing transformation. 
 Therefore, the notions of consistency-increasing and consistency-maintaining transformations  allow insertions or deletions that are unnecessary in order to increase or maintain consistency. 
 That is, deleting occurrences of existentially bound graphs, deleting occurrences $p: C_k \inj G$ of universally bound graphs $C_k$ satisfying $\exists(C_{k+1}, \true)$ or inserting occurrences of universally bound graphs and inserting occurrences $p$ of intermediate graphs $C'\in \ig{C_{k-1}}{C_{k}}$ such that each occurrence $q$ of $C_{k-1}$ with $q = p \circ a^r_{k-1}$ already satisfies $\exists(C', \true)$.
 
-\emph{Direct consistency-increasing} and \emph{maintaining} transformations are more restricted, in the sense that these unnecessary deletions and insertions cause a transformation not to be direct consistency-increasing or direct consistency maintaining, respectively. 
+\emph{Direct consistency-increasing} and \emph{direct consistency-maintaining} transformations are more restricted, in the sense that these unnecessary deletions and insertions cause a transformation not to be direct consistency-increasing or direct consistency-maintaining, respectively. 
 In addition, we can use second-order logic formulas to characterise these transformations. 
-Furthermore, these formulas ensure that now new violations are inserted.
+Furthermore, these formulas ensure that no new violations are inserted.
 Thus, the removal of one violation is sufficient to state that the transformation is (direct) consistency-increasing, which can also be expressed using a second-order logic formula.
 We start by introducing \emph{direct consistency-maintaining} transformations, rules and the weaker notion of \emph{direct consistency-maintaining rules at layer}. The definition of direct consistency maintaining transformations consists of the following formulas:
 \begin{enumerate}
@@ -196,7 +194,7 @@ Therefore, this condition checks that this case does not occur.
 			 
 	\item	
 		\emph{No new violation by insertion:}
-		This condition ensures that the consistency is not decreased by inserting an occurrence of $C_{\kmax +2}$. Again, this only causes a new violation to be inserted if that occurrence does not satisfy $\exists(C_{\kmax +3}, \true)$. The condition checks that this is not the case.
+		This condition ensures that the consistency is not decreased by inserting an occurrence of $C_{\kmax +2}$. Again, this will only cause a new violation if the new occurrence does not satisfy $\exists(C_{\kmax +3}, \true)$. The condition checks that this is not the case.
 	\item
 		\emph{No satisfied layer reduction by insertion:}
 			This condition ensures that the largest satisfied layer is not reduced by inserting a universally bound graph $C_j$. This can only happen if $j \leq \kmax$, and the condition checks that no occurrences of such universally bound graphs are inserted.
@@ -206,13 +204,13 @@ Therefore, this condition checks that this case does not occur.
 			This condition ensures that the largest satisfied layer is not reduced by deleting an existentially bound graph $C_j$. Again, this can only happen if $j \leq \kmax$. The condition checks that no occurrences of such existentially bound graphs are deleted.
 \end{enumerate}
 
-The \emph{no new violation by deletion} and \emph{no new violation by insertion} conditions ensure that the number of violations is not increased, and the \emph{no satisfied layer reduction by insertion} and \emph{no satisfied layer reduction deletion} conditions ensure that the largest satisfied layer is not reduced.
+The \emph{no new violation by deletion} and \emph{no new violation by insertion} formulas ensure that the number of violations is not increased, and the \emph{no satisfied layer reduction by insertion} and \emph{no satisfied layer reduction deletion} formulas ensure that the largest satisfied layer is not reduced.
 Of course, the insertion of universal and deletion of existential graphs  does not necessarily lead to a decrease of the largest satisfied layer, but it can also be considered as an unnecessary insertion or deletion. 
 
-Since a condition $c$ in UANF is also allowed to end with $\forall(C_{\nlvl(c)},\false)$, \emph{no new violation by deletion} and \emph{no new violation by insertion} contain case discrimination.  
-If the constraint $c$ ends with $\forall(C_{\nlvl(c)},\false)$ and $\kmax = \nlvl(c) -2$, there is no graph $C_{\kmax +3}$ and thus no intermediate graphs. Therefore, there is no new violation by deletion and this formula is set equal to $\true$ and the \emph{no new violation by insertion} formula will check that no new occurrence of $C_{\kmax +2}$ are introduced at all. 
+Since a condition, $c$ in UANF is also allowed to end with $\forall(C_{\nlvl(c)},\false)$, the \emph{no new violation by deletion} and \emph{no new violation by insertion} formulas contain case discrimination.  
+If the constraint $c$ ends with $\forall(C_{\nlvl(c)},\false)$ and $\kmax = \nlvl(c) -2$, there is no graph $C_{\kmax +3}$ and thus no intermediate graphs. Therefore, there is no new violation by deletion, this formula is set equal to $\true$ and the \emph{no new violation by insertion} formula will check that no new occurrence of $C_{\kmax +2}$ are introduced at all. 
 
-For the rest of this paper, we will assume that the empty conjunction is always equal to $\true$.
+For the rest of this thesis, we will assume that the empty conjunction is always equal to $\true$.
  
 
 \begin{definition}[\textbf{direct consistency maintaining transformations and rules}]
@@ -292,7 +290,7 @@ It follows immediately that either the \emph{no satisfied layer reduction by ins
 This is a contradiction. 
 \end{proof}
 
-With this we are now going to show that a direct consistency-maintaining transformation is also a consistency-maintaining transformation.
+With this, we are now going to show that a direct consistency-maintaining transformation is also a consistency-maintaining transformation.
 
 \begin{theorem}\label{thm:direct_maintaining_to_maintaining}
 	Given a graph $G$, a constraint $c$ in UANF, a rule $\rho$ and a direct consistency-maintaining transformation $t: G \Longrightarrow_{\rho,m} H$ w.r.t. $c$. 
@@ -317,7 +315,7 @@ Then, $t$ is also a consistency-maintaining transformation.
 	{C_{\kmax +3}}$ 
 	such that either \ref{proof_direct_minimal_1}. or 
 	\ref{proof_direct_minimal_2}. below is satisfied. Note that this is only the case if 
-	$d \neq \false$. Otherwise there must be a morphism $p$ which satisfies 
+	$d \neq \false$. Otherwise, there must be a morphism $p$ which satisfies 
 	\ref{proof_direct_minimal_2}.
 	\begin{enumerate}
 		\item \label{proof_direct_minimal_1}
@@ -328,9 +326,9 @@ Then, $t$ is also a consistency-maintaining transformation.
 			There is no morphism $q : C_{\kmax +2} \inj G$ with $p = \track_t 
 			\circ q$. 		
 	\end{enumerate}
-	This is a contradiction, if \ref{proof_direct_minimal_1} is satisfied, $q'$ 
+	This is a contradiction if \ref{proof_direct_minimal_1}. is satisfied, $q'$ 
 	does not satisfy the \emph{no new violation by deletion} formula. If 
-	(\ref{proof_direct_minimal_2}) is satisfied, $p$ does not satisfy the
+	\ref{proof_direct_minimal_2}. is satisfied, $p$ does not satisfy the
 	\emph{no new violation by insertion} formula since $p$ only satisfies  $\ic{0}{d}{C_{k+2}}$ 
 	if $p$ satisfies $\ic{0}{d}{C'}$ for all $C' \in \ig{C_{k+1}}{C_{k+2}}$.
 	It follows that 
@@ -340,8 +338,8 @@ Then, $t$ is also a consistency-maintaining transformation.
 The following corollary arises as a direct consequence of Theorem \ref{thm:direct_maintaining_to_maintaining}.
 \begin{corollary}
 	Given a constraint $c$ in UANF and a rule $\rho$. 
-	If $\rho$ is a direct consistency-maintaining rule w.r.t. $c$, $\rho$ is also a consistency-maintaining rule w.r.t. $c$.
-	If $\rho$ is a direct consistency-maintaining rule w.r.t. $c$ at layer $-1 \leq k \leq \nlvl(c)$, $\rho$ is also a consistency-maintaining rule w.r.t. $c$ at layer $k$.
+	If $\rho$ is a direct consistency-maintaining rule w.r.t. $c$, the $\rho$ is also a consistency-maintaining rule w.r.t. $c$.
+	If $\rho$ is a direct consistency-maintaining rule w.r.t. $c$ at layer $-1 \leq k \leq \nlvl(c)$, then $\rho$ is also a consistency-maintaining rule w.r.t. $c$ at layer $k$.
 \end{corollary}
 Let us now introduce the notions of \emph{direct consistency-increasing} transformations, rules and  \emph{direct consistency-increasing rules at layer}. Similar to the definition of con\-sis\-ten\-cy-maintaining and consistency-increasing transformations, the notion of \emph{direct consistency-increasing transformations} is based on the notion of direct consistency-maintaining transformations, in the sense that a direct consistency-increasing transformation is also a direct consistency-maintaining one. Since a direct consistency-maintaining transformation $t$ does not introduce any new violations, it is sufficient that $t$ removes at least one violation to say that $t$ is direct consistency-increasing.
 
@@ -351,13 +349,13 @@ So we will use two second-order logic formulas, one for the general case and one
 \begin{enumerate}
 	\item	
 		\emph{General increasing formula}:
-			This formula is satisfied if either an occurrence of $C_{\kmax +2}$ that does not satisfy $\exists(\kmax+3, \true)$ is deleted, or an occurrence of $C_{\kmax +2}$ which does not satisfy $\exists(C', \true)$ in the first graph of the transformation satisfies $\exists(C', \true)$ in the second graph of the transformation where
+			This formula is satisfied if either an occurrence of $C_{\kmax +2}$ that does not satisfy $\exists(C_{\kmax+3}, \true)$ is deleted, or an occurrence of $C_{\kmax +2}$ which does not satisfy $\exists(C', \true)$ in the first graph of the transformation satisfies $\exists(C', \true)$ in the second graph of the transformation where
 $C' \in \ig{C_{\kmax +2}}{C_{\kmax +3}}$. Both cases result in the removal of a violation.
 	\item 
 		\emph{Special increasing formula}:
 		This formula is satisfied if an occurrence of $C_{\kmax+2}$ is 
 		removed. 
-		In the special case this is the only way to remove a violation.
+		In the special case, this is the only way to remove a violation.
 \end{enumerate}
 
 \begin{definition}[\textbf{direct consistency-increasing transformations and rules}]\label{def_direct_improving}
@@ -390,8 +388,8 @@ $C' \in \ig{C_{\kmax +2}}{C_{\kmax +3}}$. Both cases result in the removal of a 
 Note that the satisfaction of the \emph{no satisfied layer reduction by insertion} and \emph{no satisfied layer reduction by deletion} formulas  not only ensure that the largest satisfied layer does not decrease, as shown in Lemma \ref{lemma_consistent}, but also prevent further unnecessary insertions and deletions, since inserting a universally bound graph and deleting an existentially bound graph will never lead to an increase in consistency.
 
 
-Now, we will show the already indicated relation between direct consistency-increasing and consistency-increasing transformations, namely that a direct consistency-increasing transformation is also consistency-increasing transformation.
-Counterexamples in which the inversion of the implication does not hold can be easily constructed, showing that these notions are not identical but related. 
+Now, we will show the already indicated relation between direct consistency-increasing and consistency-increasing transformations, namely that a direct consistency-increasing transformation is also a consistency-increasing transformation.
+Counterexamples in which the inversion of the implication does not hold can be easily constructed to show that these notions are not identical but related. 
 
 \begin{theorem}\label{lemma:direct_implies_normal}
 	Given a constraint $c$ in UANF, a rule $\rho$, a graph $G$ with 
@@ -402,12 +400,12 @@ Counterexamples in which the inversion of the implication does not hold can be e
 
 \begin{proof}
 	Theorem \ref{thm:direct_maintaining_to_maintaining} implies that 
-	$t$ is a consistency maintaining transformation. Therefore, it is 
+	$t$ is a consistency-maintaining transformation. Therefore, it is 
 	sufficient to show that $\nv{\maxk{c}{G} + 1}{H} < \nv{\maxk{c}{G} + 1}{G}$.
 	Let $\kmax = \maxk{c}{G}$ and $d = \scond{\kmax+2}{c}$ with $d \neq \false$.
 
-	Then, the general increasing formula is satisfied, so there exists a intermediate graph $C' \in \ig{C_{\kmax+2}}{C_{\kmax+3}}$ and a morphism $p:C_{\kmax+2} \inj G$ with $p \not \models \ic{0}{d}{C'}$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \ic{0}{d}{C'}$ or $\track \circ p$ is not total.
-	In both cases the following applies: 
+	Then, the general increasing formula is satisfied, so there exists an intermediate graph $C' \in \ig{C_{\kmax+2}}{C_{\kmax+3}}$ and a morphism $p:C_{\kmax+2} \inj G$ with $p \not \models \ic{0}{d}{C'}$, such that either $\track \circ p$ is total and $\track_t \circ p  \models \ic{0}{d}{C'}$ or $\track \circ p$ is not total.
+	In both cases, the following applies: 
 	\begin{equation*}
 		\begin{split}
 			p &\in \{q \mid q:C_{\kmax+2} \inj G \text{ and } q \not \models \ic{0}{d}{C'}\} 
@@ -433,8 +431,8 @@ Counterexamples in which the inversion of the implication does not hold can be e
 Again, the following corollary is a direct consequence of Theorem \ref{lemma:direct_implies_normal}. 
 \begin{corollary}
 	Given a constraint $c$ in UANF and a rule $\rho$. 
-	If $\rho$ is a direct consistency-increasing rule w.r.t. $c$, $\rho$ is also a consistency-increasing rule w.r.t. $c$.
-	If $\rho$ is a direct consistency-increasing rule w.r.t. $c$ at layer $-1 \leq k \leq \nlvl(c)$, $\rho$ is also a consistency-increasing rule w.r.t. $c$ at layer $k$.
+	If $\rho$ is a direct consistency-increasing rule w.r.t. $c$, then $\rho$ is also a consistency-increasing rule w.r.t. $c$.
+	If $\rho$ is a direct consistency-increasing rule w.r.t. $c$ at layer $-1 \leq k \leq \nlvl(c)$, then $\rho$ is also a consistency-increasing rule w.r.t. $c$ at layer $k$.
 \end{corollary}
 \input{figures/fig_example_direct}
 

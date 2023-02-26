@@ -1,7 +1,7 @@
 \subsection{Comparison with other concepts of Consistency}\label{comp_general}
-In this chapter, the notions of (direct) consistency increase and maintainment are compared to the already known notions of consistency guaranteeing, consistency preserving \cite{habel2009correctness}, (direct) consistency increasing and sustaining \cite{kosiol2022sustaining}, in order to reveal relations between them and to ensure that (direct) consistency increase and 
+In this chapter, the notions of (direct) consistency increase and maintainment are compared to the already known notions of consistency-guaranteeing, consistency-preserving \cite{habel2009correctness}, (direct) consistency-increasing and sustaining \cite{kosiol2022sustaining}, in order to reveal relations between them and to ensure that (direct) consistency-increase and 
 maintainment are indeed new notions of consistency. 
-These relationships are summarized in Figure \ref{fig:consistency_relations}.
+These relationships are summarised in Figure \ref{fig:consistency_relations}.
 
 \input{figures/consistency_relations}
 
@@ -38,7 +38,7 @@ We begin by examining the implications that can be drawn about a consistency-mai
 			\ref{fig:example_direct} and constraint
 			$c_1$ shown in Figure \ref{fig:constraints}.
 			As discussed in Example \ref{ex_direct}, $t_2$ is consistency-increasing and thus consistency-maintaining w.r.t. $c_1$. 
-			But $t$ is not a $c$-guaranteeing transformation, since all 
+			But $t_2$ is not a $c$-guaranteeing transformation, since all 
 			occurrences of nodes of type \texttt{Class} do not satisfy 
 			$\exists(C_2^1, \true)$.
 		\item 
@@ -95,8 +95,8 @@ consistency-maintaining and increasing.
 	\end{enumerate}
 \end{proof}
 \input{figures/fig_counterexamples_increasing}
-This shows, that in general the notions of (direct) consistency increase and maintainment are not related to (direct) consistency improve- and sustainment.
-We have only shown some of these relations. Since by definition, (direct) consistency improvement implies (direct) consistency sustainment are related we can conclude results for all pairs of consistency types \cite{kosiol2022sustaining}.
+This shows, that in general the notions of (direct) consistency increase and maintainment are not related to (direct) consistency improvement and sustainment.
+We have shown only some of these relationships. Since (direct) consistency improvement (direct) consistency sustainment, consistency-preserving and consistency-guaranteeing are related, we can conclude results for all pairs of consistency types \cite{kosiol2022sustaining}.
 An overview of these is given in Table \ref{table_cons_relations}.
 
 For some special cases, we can infer other types of relationships.

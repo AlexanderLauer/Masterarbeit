@@ -2,15 +2,15 @@
 
 In this section, we summarise other concepts for rule-based graph repair.\\ \\
 \textbf{Iterative Development of Consistency-Preserving Rule-Based Refactorings}: Becker et al. \cite{becker2011iterative} introduced an interactive approach to construct con\-sis\-tency-\-pre\-ser\-ving transformation based on their invariant checker introduced in \cite{becker2006symbolic} for so-called \emph{well-formedness constraints}. These are constraints of the form $\neg \exists (c_1, \true)$ or $\neg \exists (C_1, \neg \exists C_2, \true)$.
-Given a consistent graph, a well-formedness constraint and a refactoring specification, which is a set of rules in the single-pushout approach \cite{hartmut2006fundamentals}, the invariant checker constructs all minimal counterexamples that lead to a non-consistency preserving transformation via rules of the refactoring specification. If there are no such counterexamples, then any transformation is consistency-preserving.
+Given a consistent graph, a well-formedness constraint and a refactoring specification, which is a set of rules in the single-pushout approach \cite{hartmut2006fundamentals}, the invariant checker constructs all minimal counterexamples that lead to a non-consistency preserving transformation via rules of the refactoring specification. If there are no such counterexamples, then any transformation with a rule of the refactoring specification is consistency-preserving.
 This approach is designed to be fully interactive, requiring the user to revise the refactoring specification until no counterexamples are returned.
 \\ \\
-\textbf{Ensuring Consistency of Conditional Graph Grammars:} Heckel and Wagner \cite{heckel1995ensuring} have presented an approach to construct consistency-preserving application conditions for rules in the single-pushout approach and a constraint of the form $\forall(C_1, \exists (C'_1, \true)) \wedge \ldots \wedge \forall(C_n, \exists (C'_n, \true))$.
-Although the constructed application conditions are not presented as nested-conditions, they can be transformed into nested conditions of the form $\forall(C_1, \exists(C_1^1, \true) \vee \ldots \vee \exists(C_1^{k_1}, \true)) \wedge \ldots \wedge \forall(C_n, \exists(C_n^1, \true) \vee \ldots \vee \exists(C_1^{k_n}, \true))$.
+\textbf{Ensuring Consistency of Conditional Graph Grammars:} Heckel and Wagner \cite{heckel1995ensuring} have presented an approach to construct consistency-preserving application conditions for rules in the single-pushout approach and  constraints of the form $\forall(C_1, \exists (C'_1, \true)) \wedge \ldots \wedge \forall(C_n, \exists (C'_n, \true))$.
+Although the constructed application conditions are not presented as nested conditions, they can be transformed into nested conditions of the form $\forall(C_1, \exists(C_1^1, \true) \vee \ldots \vee \exists(C_1^{k_1}, \true)) \wedge \ldots \wedge \forall(C_n, \exists(C_n^1, \true) \vee \ldots \vee \exists(C_1^{k_n}, \true))$.
 \\ \\
 \textbf{Sustaining and Improving graduated Graph Consistency}:
 Kosiol et al. \cite{kosiol2022sustaining} have introduced the notions of (direct) consistency-sustaining and (direct) consistency-improving transformations as already introduced in section \ref{sec_consistency}.
-This approach is designed for rules in the double-pushout approach and nested-conditions in ANF. 
+This approach is designed for rules in the double-pushout approach and nested conditions in ANF. 
 They have introduced a method to construct consistency-sustaining application conditions, a sufficient criterion for consistency-sustaining  transformations and a necessary criterion for consistency-improving transformations, which have been implemented and evaluated. 
 \\ \\
 \textbf{Constructing optimized constraint-preserving application conditions for mo\-del transformation rules}:
@@ -23,10 +23,10 @@ For example, a weakest consistency-preserving application condition is implied b
 Sandmann and Habel \cite{sandmann2019rule} have introduced a repair process for so-called \emph{proper constraints} based on so-called \emph{repair programs}. 
 A constraint in ANF is called \emph{proper} if it ends with $\exists(C, \true)$ or is of the form $\exists(C_1, \forall(C_2, \false))$ or $\forall(C_1, \false)$.
 The authors describe a method for inductively constructing a repair program consisting of rules in the double-pushout approach that, when applied to a non-consistent graph, returns a consistent graph. 
-They also introduce graph repair given a set of rules $\mathcal{R}$. 
-The approach can be used to repair a graph with rules from $\mathcal{R}$ if there is a repair program such that for every rule in the repair program there is an equivalent rule in $\mathcal{R}$.
+They also introduce a graph repair approach given a set of rules $\mathcal{R}$. 
+Their approach can be used to repair a graph with rules from $\mathcal{R}$ if there is a repair program such that for every rule in the repair program there is an equivalent rule in $\mathcal{R}$.
 \\ \\
 \textbf{Rule-based Repair of EMF Models}:
 Nassar et al. \cite{nassar2017rule, nassar2017rule1} introduced a repair approach for models of the \emph{eclipse modeling framework} (EMF) \cite{steinberg2008emf}. In particular, this approach is able to repair multiplicities of a given EMF metamodel. 
 Multiplicities can be described as nested conditions of the form $\forall(C_1, \exists(C_2, \true))$ and $\forall(C_1, \false)$. 
-The approach was implemented using two Eclipse plugins in Henshin \cite{arendt2010henshin}. One plugin derives rules for the repair process from a metamodel. The other plugin is an implementation of the repair process.
+The approach was implemented using two Eclipse plugins in Henshin \cite{arendt2010henshin}. One plugin derives rules for the repair process from a metamodel. The other plugin is an implementation of the repairing process.

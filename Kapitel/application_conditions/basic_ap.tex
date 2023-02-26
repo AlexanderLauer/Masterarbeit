@@ -1,6 +1,6 @@
 \subsection{Application Conditions for Basic Rules}
 Let us now introduce the application conditions for basic increasing rules.
-Since basic rules are consistency-maintaining at a certain layer $k$ it suffices to check whether $m \circ i \models \exists(C_{k+3}, \true)$ if $\rho$ is a deleting rule, and whether $m \circ i \models \exists(C', \true)$ if $\rho$ is an inserting rule, where $m$ is the match of the transformation and $i$ is the increasing morphism of $\rho$.
+Since basic rules are direct consistency-maintaining at a certain layer $k$ it is sufficient to check whether $m \circ i \not\models \exists(C_{k+3}, \true)$ if $\rho$ is a deleting rule, and whether $m \circ i \not\models \exists(C', \true)$ if $\rho$ is an inserting rule, where $m$ is the match of the transformation and $i$ is the increasing morphism of $\rho$.
 
 \begin{definition}[\textbf{application conditions for basic increasing rules}]\label{def_basic_ap}
 Given a constraint $c$ in UANF and a basic increasing rule  $\rho = (\ac,L \xhookleftarrow{l} K \xhookrightarrow{r} R)$ w.r.t. $c$ at layer $-1 \leq k\leq \nlvl(c)-2$, where $k$ is odd.
@@ -18,7 +18,7 @@ where $a= a_{k+2}$, if $\rho$ is a deleting rule, $a = a_{k+2}^r: C_{k+2} \inj C
 
 These application conditions are much easier to construct and smaller than those constructed by Definition \ref{def_appl_cond}. 
 Note that in the case of an inserting rule $\rho$ which inserts an intermediate graph $C$, the application condition only checks whether the increasing morphism does not satisfy $\exists(C, \true)$. But an application of this rule could also lead to a consistency increasing transformation w.r.t. $c$ if the increasing morphism satisfies $\exists(C, \true)$ and another intermediate graph $C'$ is inserted. To check this, conditions similar to those constructed via Definition \ref{def_appl_cond} must be constructed.
-At first sight this seems like a restriction, but via the notion of derived rules we are able to dissolve this restriction, since the set of derived rules of $\rho$ will contain an inserting basic increasing rule with $C'$, so that this rule, equipped with the corresponding basic application condition, can be used to perform this consistency-increasing transformation. For example, consider the rule \texttt{assignFeature} and constraint $c_1$ given in Figure \ref{fig:constraints}, there is a consistency increasing transformation $t: C_2^2 \Longrightarrow_{\texttt{assignFeature},m} C_2^1$ such that $m \not \models \apb{-1}{\texttt{assignFeature}}$, but there is also a transformation $t: C_2^2 \Longrightarrow_{\texttt{assignFeature3},m'} C_2^1$ with 
+At first sight, this seems like a restriction, but via the notion of derived rules, we are able to dissolve this restriction, since the set of derived rules of $\rho$ will contain an inserting basic increasing rule with $C'$, so that this rule, equipped with the corresponding basic application condition, can be used to perform this consistency-increasing transformation. For example, consider the rule \texttt{assignFeature} and constraint $c_1$ given in Figure \ref{fig:constraints}, there is a consistency increasing transformation $t: C_2^2 \Longrightarrow_{\texttt{assignFeature},m} C_2^1$ such that $m \not \models \apb{-1}{\texttt{assignFeature}}$, but there is also a transformation $t: C_2^2 \Longrightarrow_{\texttt{assignFeature3},m'} C_2^1$ with 
 $m' \models \apb{-1}{\texttt{assignFeature3}}$.
 
 Let us now show that basic increasing rules equipped with the application condition constructed by Definition \ref{def_basic_ap} are indeed direct consistency increasing rules at layer.
@@ -58,7 +58,7 @@ Therefore, we only need to show that $t$ satisfies the special increasing or gen
 \begin{example}
 	Again, consider the rule \emph{\texttt{assignFeature}}, its derived rule 
 	\emph{\texttt{assignFeatur3}} and $c_1$.
-	The application condition for these rules at layer $-1$ w.r.t. $c_1$ 
+	The basic application condition for these rules at layer $-1$ w.r.t. $c_1$ 
 	is given in Figure  \ref{fig:example_basic_ap}.
 \end{example}
 \input{figures/fig_basic_example}
