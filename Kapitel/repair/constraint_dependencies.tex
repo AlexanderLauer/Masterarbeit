@@ -28,7 +28,8 @@ With these, we are able to define \emph{transitive conflicts}, \emph{circular co
 Intuitively, as the name suggests, a condition $c$ contains a circular conflict if a graph $C_k$ has a conflict with itself or if there exists a sequence $C_k= C_{j_1}, \ldots, C_{j_n}= C_k$ of graphs such that $C_{j_i}$ has a conflict with $C_{j_{i+1}}$. We can check this property by checking whether the 
 conflict graph contains cycles.
 Note that conflict graphs contain additional edges that do not correspond to the conflicts within the constraint. 
-These edges ensure that during repair it is possible to choose whether a violation is removed by deletion or insertion. Otherwise, it must be done alternately. That is after a violation is removed by deletion, all violations introduced by that deletion must be removed by insertion, and vice versa. This also makes the definition of a repairing set more restrictive.
+These edges ensure that during repair it is possible to choose whether a violation is removed by deletion or insertion. Otherwise, it must be done alternately. That is after a violation is removed by deletion, all violations introduced by that deletion must be removed by insertion, and vice versa. The absence of these additional edges would also lead to a more restrictive definition of repairing sets. 
+Intuitively, if a graph $C_k$ causes a conflict for $C_j$, the conflict graph of that constraint contains an edge from a node labelled $k'$ to a node labelled $j'$ if $C_k$ is the domain or co-domain of the morphism $a_{k'}$, $C_j$ is the domain or co-domain of the morphism $a_{j'}$ and $k' \neq j'$.
 
 
 \begin{definition}[\textbf{conflict graph, circular conflicts}]\label{conflicts_within}

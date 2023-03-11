@@ -5,7 +5,7 @@ In this chapter, we introduce some formal prerequisites such as graphs, graph mo
 \subsection{Graphs and Graph morphisms}
 We start by introducing graphs and graph morphisms according to \cite{hartmut2006fundamentals}.
 
-\begin{definition}[\textbf{graph}, \cite{hartmut2006fundamentals}]
+\begin{definition}[\textbf{graph} \cite{hartmut2006fundamentals}]
 	A \emph{graph} $G = (V,E,\src, \tar)$ consists of a set of
 	 vertices (or nodes)
 	$V$, a set of edges $E$ and two mappings $\src, \tar: E \to 
@@ -21,7 +21,7 @@ We start by introducing graphs and graph morphisms according to \cite{hartmut200
 For the rest of this thesis, we will assume that all graphs are finite, i.e.
 given a graph $G$, the sets $V_G$ and $E_G$ are finite.
 	
-\begin{definition}[\textbf{graph morphism}, \cite{hartmut2006fundamentals}]
+\begin{definition}[\textbf{graph morphism} \cite{hartmut2006fundamentals}]
 	Let graphs $G$ and $H$ be given. A \emph{graph morphism}
 	$f : G \to H$ consists of two mappings $f_V: V_G \to V_H$
 	and $f_E: E_G \to E_H$ such that the source and target 
@@ -104,7 +104,7 @@ properties. The more general notion of \emph{nested graph conditions} allows the
  
 
 
-\begin{definition}[\textbf{nested graph condition},\cite{habel2009correctness}]
+\begin{definition}[\textbf{nested graph condition} \cite{habel2009correctness}]
 A \emph{nested graph condition} over a graph $C_0$ is defined recursively as
 
 \begin{enumerate}
@@ -137,7 +137,7 @@ Since these are the only types of conditions that will be used in this paper, we
 	The compact notation of this condition is given by $\forall(C_1, \exists(C_2, \true))$.
 \end{example}
 
-\begin{definition}[\textbf{semantic of graph conditions},\cite{habel2009correctness}]
+\begin{definition}[\textbf{semantic of graph conditions} \cite{habel2009correctness}]
 	Given a graph $G$, a condition $c$ over $C_0$ and a graph 
 	morphism $p: C_0 \inj G$. Then $p$ satisfies $c$,
 	denoted by $p \models c$, if
@@ -162,7 +162,7 @@ Since these are the only types of conditions that will be used in this paper, we
 Our approach is designed to repair a specific type of constraint, constraints  without any boolean operators. Each of these conditions can be transformed into an equivalent condition in so-called \emph{alternating quantifier normal form} \cite{sandmann2019rule}. As the name suggests, these are conditions with alternating quantifiers and without any Boolean operators.
 
 
-\begin{definition}[\textbf{alternating quantifier normal form (ANF)},\cite{sandmann2019rule}]
+\begin{definition}[\textbf{alternating quantifier normal form (ANF)} \cite{sandmann2019rule}]
 	Conditions in \emph{alternating quantifier normal form} (ANF) 
 	are defined recursively as 
 	
@@ -196,7 +196,7 @@ Using the \emph{shift over morphism} construction, we are able to transform a
 nested condition over $C$ into a nested condition over $C'$ via an injective 
 morphism $i : C \inj C'$ \cite{habel2009correctness}.
 
-\begin{definition}[\textbf{shift over morphism},\cite{habel2009correctness}]
+\begin{definition}[\textbf{shift over morphism} \cite{habel2009correctness}]
 	Let a condition $c$ over $C_0$ and a morphism $i:C_0 \inj C_0'$ be given.
 	The \emph{shift of $c$ over $i$}, denoted by $\shiftm(c,i)$, is given by 
 	\begin{enumerate}
@@ -239,7 +239,7 @@ Later, we will use application conditions to ensure that transformations cannot 
 For example, application conditions that prevent a transformation 
 if $G \models c$ and $H\not \models c$.
 
-\begin{definition}[\textbf{rules and application conditions},\cite{hartmut2006fundamentals}]
+\begin{definition}[\textbf{rules and application conditions} \cite{hartmut2006fundamentals}]
 	A \emph{plain rule} $\rho = \rle{L}{l}{K}{r}{R}$ consists of 
 	graphs $L,K,R$ and inclusions $l: K \inj L$ 
 	and $r:  K \inj R$. The rule $\rho^{-1} = \rle{R}{r}{K}{l}{L}$
@@ -255,7 +255,7 @@ if $G \models c$ and $H\not \models c$.
 
 
 
-\begin{definition}[\textbf{graph transformation},\cite{hartmut2006fundamentals}]
+\begin{definition}[\textbf{graph transformation} \cite{hartmut2006fundamentals}]
 	Let a rule $\rho = (\ap_L,\rho', \ap_R)$, a graph $G$ 
 	and a morphism $m: L \inj G$,
 	called the \emph{match}, be given. Then, a \emph{graph 
@@ -273,7 +273,7 @@ The presence of right application conditions leads to unpleasant side effects.
 The satisfaction of a right application condition can only be checked after 
 the transformation. The transformation must therefore be reversed if the co-match does not satisfy this condition. To avoid this, we introduce the \emph{shift over rule} operation, which is capable of transforming a right into an equivalent
 left application condition \cite{habel2009correctness}. 
-\begin{definition}[\textbf{shift over rule},\cite{habel2009correctness}]\label{def:shift}
+\begin{definition}[\textbf{shift over rule} \cite{habel2009correctness}]\label{def:shift}
 	Let a rule $\rho = \rle{L}{l}{K}{r}{R}$ with the right
 	application condition $\ap$  be given. The \emph{shift of $\ap$ over 
 	$\rho$}, denoted with $\shift(\ap, \rho)$, is defined as
@@ -338,7 +338,7 @@ Since we will only consider injective matches, the set $IP_{\rho,m}$ is always e
 
 Via the \emph{track morphism} it is possible to track elements across a transformation \cite{plump2005confluence}.
 
-\begin{definition}[\textbf{track morphism},\cite{plump2005confluence}]
+\begin{definition}[\textbf{track morphism} \cite{plump2005confluence}]
 	Consider the transformation $t$ shown in figure \ref{fig_dpo}.
 	The \emph{track morphism} of $t$, denoted by  $\track_t: G \dashrightarrow H$, is 
 	a partial morphism defined as
@@ -371,7 +371,7 @@ For example, given a transformation $t: G \Longrightarrow H$, the track morphism
 
 Given a sequence of transformations, the notion of \emph{concurrent rules}
 can be used to describe this sequence by a rule. In other words, any sequence of transformations can be replaced by a transformation via its concurrent rule \cite{ehrig2010parallelism}.
-\begin{definition}[\textbf{concurrent rule},\cite{ehrig2010parallelism}]
+\begin{definition}[\textbf{concurrent rule} \cite{ehrig2010parallelism}]
 	Let the rules $\rho_1 = \rle{L_1}{l_1}{K_1}{r_1}{R_1}$, $\rho_2 = \rle{L_2}
 	{l_2}{K_2}{r_2}{R_2}$ and a sequence of transformations 
 	$$G_1 \Longrightarrow_{\rho_1,m_1} G_2 \Longrightarrow_{\rho_2,m_2}G_3$$ 
@@ -391,7 +391,7 @@ Namely, the notions of consistency preserving and guaranteeing transformations
 \cite{habel2009correctness} and the notions of (direct) consistency sustaining and improving transformations \cite{kosiol2022sustaining}.
 Later, we will examine how these concepts differ from and correlate to our newly introduced concept of consistency.
 
-\begin{definition}[\textbf{consistency preserving and guaranteeing transformations},\cite{habel2009correctness}]
+\begin{definition}[\textbf{consistency preserving and guaranteeing transformations} \cite{habel2009correctness}]
 	Let a constraint $c$ and a transformation $t: G \Longrightarrow H$ be given. 
 	Then, $t$ is called \emph{$c$-preserving} if 
 	$$ G \models c \implies H \models c.$$
@@ -403,7 +403,7 @@ While consistency preserving and guaranteeing transformations are defined for ne
 
 
 
-\begin{definition}[\textbf{consistency sustaining and improving transformations},\cite{kosiol2022sustaining}]
+\begin{definition}[\textbf{consistency sustaining and improving transformations} \cite{kosiol2022sustaining}]
 	Let a constraint $c$ in ANF and a transformation $t: G 
 	\Longrightarrow_{\rho} H$ be given.
 	If $c$ is existentially bound, $t$ is called \emph{consistency sustaining 
@@ -421,7 +421,7 @@ While consistency preserving and guaranteeing transformations are defined for ne
 \end{definition}
 
 The even stricter notion of direct sustaining and improving transformations prohibits the insertion of new violations altogether.
-\begin{definition}[\textbf{direct sustaining and improving transformations},\cite{kosiol2022sustaining}]
+\begin{definition}[\textbf{direct sustaining and improving transformations} \cite{kosiol2022sustaining}]
 	Let a constraint $c$ in ANF and a transformation $t: G \Longrightarrow_{\rho} 
 	H$ be given. If $c$ is existential, $t$ is called \emph{direct 
 	consistency sustaining w.r.t. $c$} if $t$ is $c$-preserving and 

@@ -359,6 +359,7 @@ $C' \in \ig{C_{\kmax +2}}{C_{\kmax +3}}$. Both cases result in the removal of a 
 \end{enumerate}
 
 \begin{definition}[\textbf{direct consistency-increasing transformations and rules}]\label{def_direct_improving}
+	
 	Given a constraint $c$ in UANF, a rule $\rho$, a graph $G$ with 
 	$G \not \models c$ and let $e = \scond{\kmax +2}{c}$.  
 	
@@ -449,8 +450,6 @@ Again, the following corollary is a direct consequence of Theorem \ref{lemma:dir
 	
 	The transformation $t_2$ is consistency increasing w.r.t. $c_1$. The number of violations in the first graph is equal to $14$. The occurrence \emph{\texttt{c1}} does not satisfy $\exists(I_3, \true)$, $\exists(I_4, \true)$, $\exists(I_5, \true)$ and $\exists(I_6, \true)$. Both occurrences \emph{\texttt{c2}} and \emph{\texttt{c3}} do not satisfy $\exists(I_2, \true)$, $\exists(I_3, \true)$, 
 	$\exists(I_4, \true)$, $\exists(I_5, \true)$ and $\exists(I_6, \true)$.
-	
 	In the second graph, \emph{\texttt{c1}} does not satisfy $\exists(I_2, \true)$, $\exists(I_4, \true)$, $\exists(I_5, \true)$ and $\exists(I_6, \true)$ and both \emph{\texttt{c2}} and \emph{\texttt{c3}} do not satisfy $\exists(I_6,\true)$. Therefore, the number of violations in the second graph is $6$.
-
-	But $t_2$ is not a direct consistency increasing transformation, since \emph{\texttt{c1}} satisfies $\exists(I_3,\true)$ in the first but not in the second graph, and the \emph{no new violation by deletion} formula is not satisfied.
+But $t_2$ is not a direct consistency increasing transformation, since \emph{\texttt{c1}} satisfies $\exists(I_3,\true)$ in the first but not in the second graph, and the \emph{no new violation by deletion} formula is not satisfied.
 \end{example}

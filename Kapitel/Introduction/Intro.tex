@@ -11,17 +11,17 @@ In particular, we will consider the problem of \emph{rule-based graph repair}, w
 Because of the versatility of graphs and graph transformations, the concept of graph repair can be used to resolve inconsistencies for all kinds of graph-like structures.  
 
 There are several rule-based graph repair approaches and we will now briefly discuss some of them.
+A rule-based graph repair approach for so-called proper constraints has been introduced by Sandmann and Habel \cite{sandmann2019rule}.
+Nassar et al. have presented a repair approach to repair multiplicities for EMF models \cite{nassar2017rule,nassar2017rule1}. 
 Habel and Pennemann have introduced the notions of \emph{consistency-preserving} and \emph{consistency-guaranteeing} transformations \cite{habel2009correctness}. As the name suggests, these binary notions allow to decide whether a transformation guarantees or preserves the consistency of the derived graph. In addition, they presented application conditions which guarantee that a transformation via rules equipped with them is consistency-preserving or consistency-guaranteeing respectively. 
 Kosiol et al. have presented the graduated notions of \emph{consistency-sustaining} and \emph{consistency-improving} transformations and rules \cite{kosiol2022sustaining}. In contrast to the notions of consistency-preserving and consistency-guaranteeing, these notions allow an evaluation  of the magnitude of the inconsistency of a graph. They have also presented consistency-sustaining application conditions. 
-Nassar et al. have optimised the construction of the application conditions mentioned above \cite{nassar2020constructing}.
-There is a rule-based graph repair approach for so-called proper constraints introduced by Sandmann and Habel \cite{sandmann2019rule}.
-Nassar et al. have presented a repair approach to repair multiplicities for EMF models \cite{nassar2017rule,nassar2017rule1}. 
+
 
 None of these approaches is able to repair multiple constraints with a nesting level higher than $2$, and the application conditions constructed are very complex. 
 
-In this thesis, we will introduce a rule-based graph repair process for certain constraints in alternating normal-form (ANF), so-called \emph{circular conflict-free constraints}, and for sets of these constraints. 
+In this thesis, we will introduce a rule-based graph repair approach for certain constraints in alternating normal-form (ANF), so-called \emph{circular conflict-free constraints}, and for specific sets of these constraints, called \emph{circular conflict-free sets of constraints}.
 
-The main idea of our approach is to increase the consistency of a graph level by level. That is, given a constraint $c = \forall(C_1, \exists(C_2, \forall(C_3, \exists(C_4, \ldots)))$ and an inconsistent graph $G$, in the first step we repair the graph such that the derived graph satisfies $\forall(C_1, \exists(C_2, \true))$. 
+The main idea of our approach for one constraint is to increase the consistency of a graph level by level. That is, given a constraint $c = \forall(C_1, \exists(C_2, \forall(C_3, \exists(C_4, \ldots)))$ and an inconsistent graph $G$, in the first step we repair the graph such that the derived graph satisfies $\forall(C_1, \exists(C_2, \true))$. 
 
 In the next step, we repair the graph until it satisfies $\forall(C_1, \exists(C_2, \forall(C_3, \exists(C_4, \true)))$ and so on until finally, the derived graph satisfies $c$.
 Note that we always repair two nesting levels at a time, since $\forall(C_1, \true)$ is always satisfied, and the satisfaction of $\forall(C_1, \false)$ immediately implies the satisfaction of $c$. Therefore, a process that repairs only one nesting level would return a consistent graph after at most two iterations, with the drawback that many occurrences of graphs are simply deleted. 
@@ -37,10 +37,12 @@ Intuitively, a rule is (direct) consistency-maintaining at layer or (direct) con
 We will present direct consistency-maintaining and two types of direct consistency-increasing application conditions at layer. One for general rules and one for a specific set of rules called \emph{basic increasing rules}. For basic increasing rules, we are able to construct direct consistency-increasing application conditions at layer that are less restrictive and less complex compared to the general ones. 
 We will show that each of the constructed application conditions produces consistency-maintaining rules or consistency-increasing rules at layer.
 
-We introduce the notion of \emph{circular conflict-free constraints} and \emph{circular conflict-free sets of constraints}.
-Intuitively, a constraint $c$ is \emph{circular conflict free}, if there is an ordering $C_0, \ldots, C_n$ of all graphs of $c$ such that there is no $j<i$ such that a repair of $C_i$ leads to the insertion of a new violation of $C_j$. Analogously, a set of constraint $\mathcal{C}$ is \emph{circular conflict free}, if there is an ordering $c_1, \ldots, c_n$ of all constraints of $\mathcal{C}$ such that there is no $j <i$ such that a repair of $c_i$ at all graphs satisfying $c_j$ leads to a graph  not satisfying $c_j$.
 
-Finally, we present two rule-based graph repair approaches. The first is for a \emph{circular conflict-free} constraint and the second for a \emph{circular conflict-free set of constraints}, which uses the repair approach for one constraint. 
+
+
+Finally, we present two rule-based graph repair approaches. The first  for one \emph{circular conflict-free} constraint and the second for a \emph{circular conflict-free set of constraints}, which uses the repair approach for one constraint. 
+Intuitively, a constraint $c$ is \emph{circular conflict free}, if there is an ordering $C_0, \ldots, C_n$ of all graphs of $c$ such that there is no $j<i$ such that a repair of $C_i$ leads to the insertion of a new violation of $C_j$. Analogously, a set of constraint $\mathcal{C}$ is \emph{circular conflict free}, if there is an ordering $c_1, \ldots, c_n$ of all constraints of $\mathcal{C}$ such that there is no $j <i$ such that a repair of $c_i$ at all graphs satisfying $c_j$ leads to a graph  not satisfying $c_j$. 
+
 Both processes make use of a given set of rules $\mathcal{R}$ and we present a characterisation of when such a set of rules is able to repair the constraint or the set of constraints, respectively. We will use the notions of \emph{consistency-maintainment} and \emph{consistency-increasement} to characterise sequences of transformations, that are able to repair an occurrence of a graph $C_k$ without introducing new violations of certain other graphs of the constraint, and in particular of $C_k$ itself.
 Of course, this is only a sufficient criterion, since it depends strongly on the input graph whether a consistent graph can be derived by applying the rules of $\mathcal{R}$. In addition, we show the correctness and termination of our approach. 
 

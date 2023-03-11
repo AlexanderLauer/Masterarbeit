@@ -9,7 +9,7 @@ We will now present our rule-based repair approach for a set of constraints in U
 
 To guarantee that a set of constraints can be repaired by a set of rules, we need to extend the notion of repairing sets such that a set of rules is called a \emph{repairing set} for a set of constraints if it is a repairing set for every constraint in the constraint set.
 \begin{definition}[\textbf{repairing set for a set of constraints}]
-	Given a set of constraints $\mathcal{C}$ and a set of rules $\mathcal{R}$. 
+	Given a set $\mathcal{C}$ of constraints in UANF  and a set of rules $\mathcal{R}$. 
 Then $\mathcal{R}$ is called a \emph{repairing set for $\mathcal{C}$} if $\mathcal{R}$ is a repairing set for all constraints $c \in \mathcal{C}$.
 
 \end{definition}
@@ -48,9 +48,9 @@ The \emph{conflict graph} for a set of constraints and \emph{circular conflicts 
 A set of constraints is called \emph{circular conflict free} if each of its constraints is circular conflict-free and there is no sequence $c = c_0, \ldots, c_n = c$ such that $c_i$ has a conflict with $c_{i+1}$ for all $0\leq i < n$. In other words, the conflict graph of this set is acyclic.
 
 \begin{definition}[\textbf{conflict graphs, circular conflicts}]
-	Given a set of rules $\mathcal{R}$ and a set of constraints $\mathcal{C}$ in UANF. The \emph{conflict graph} of $\mathcal{C}$  w.r.t. $\mathcal{R}$ is constructed in the following way. For each constraint $c \in \mathcal{C}$ there is a node. If $c$ causes a conflict for $c'$ w.r.t. $\mathcal{R}$, there is an edge $e$ with $\src(e) = c$ and $\tar(e) = c'$.
+	Given a set of rules $\mathcal{R}$ and a set $\mathcal{C}$ of constraints  in UANF. The \emph{conflict graph} of $\mathcal{C}$  w.r.t. $\mathcal{R}$ is constructed in the following way. For each constraint $c \in \mathcal{C}$ there is a node. If $c$ causes a conflict for $c'$ w.r.t. $\mathcal{R}$, there is an edge $e$ with $\src(e) = c$ and $\tar(e) = c'$.
 	
-	A constraint $c$ causes a \emph{transitive conflict w.r.t. $\mathcal{R}$} for $c'$ if the 
+	A constraint $c$ causes a \emph{transitive conflict } for $c'$ w.r.t. $\mathcal{R}$ if the 
 conflict graph of $\mathcal{C}$ w.r.t. $\mathcal{R}$ contains a path from $c$ to $c'$. 
 A constraint $c$ has a \emph{circular conflict w.r.t. $\mathcal{R}$} if $c$ has a transitive conflict with itself. 
 A set of constraints $\mathcal{C}$ is called \emph{circular conflict free w.r.t. $\mathcal{R}$} if every constraint in $\mathcal{C}$ is circular conflict-free and $\mathcal{C}$ contains no circular conflicts w.r.t. $\mathcal{R}$.
@@ -81,7 +81,7 @@ The repair process is given in Algorithm \ref{Algo_non-conflict_free} and procee
 First, the topological ordering of the constraint set is determined (line 1). Then Algorithm \ref{Algo_conflict_free} is used to repair each constraint of $\mathcal{C}$ in the order of the topological ordering (lines 2 -- 4). 
 This ensures that the satisfaction of a constraint that has already been repaired is not destroyed by the repair of another constraint. 
 \begin{theorem}
-	Given rule set $\mathcal{R}$, a graph $G$ and a satisfiable set of constraints in UANF $\mathcal{C}$, which is circular conflict free w.r.t. $\mathcal{R}$.
+	Given rule set $\mathcal{R}$, a graph $G$ and a satisfiable circular conflict free set of constraints $\mathcal{C}$, such that $\mathcal{R}$ is a repairing set for $\mathcal{C}$.
 Then Algorithm \ref{Algo_non-conflict_free} terminates and returns a graph $H$ with $H \models \mathcal{C}$.
 \end{theorem}
 \begin{proof}

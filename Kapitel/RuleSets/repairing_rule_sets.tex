@@ -18,10 +18,10 @@ $C_k$ is existentially bound.
 			\overset{t_2}{\Longrightarrow}_{\rho_2,m_2} \ldots 
 			\overset{t_n}{\Longrightarrow}_{\rho_n, m_n} 
 			G_n$$
-			with $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
+			with plain rules $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
 			for $C_k$} if $G_n \models_{k}c$, $\track_{t_i} \circ \ldots \circ 
 			\track_{t_1} \circ \id_{C_{k-1}}$ is total for all $1 \leq i \leq n$. And for each universally bound graph $C_j$ such that $C_k$ does not cause a conflict for $C_j$,  the concurrent rule 
-			of this sequence is a basic consistency maintaining rule w.r.t.
+			of this sequence is a basic consistency-maintaining rule w.r.t.
 			$\forall(C_j, \false)$. 
 		\item	
 			If $C_k$ is universally bound, a sequence of transformations  
@@ -29,12 +29,12 @@ $C_k$ is existentially bound.
 			\overset{t_2}{\Longrightarrow}_{\rho_2,m_2} \ldots 
 			\overset{t_n}{\Longrightarrow}_{\rho_n, m_n} 
 			G_n$$
-			with $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
+			with plain rules $\rho_i \in \mathcal{R}$ is called a \emph{repairing sequence 
 			for $C_k$} if $G_n \models_k c$, for each node $v \in V_{G_0}$ there 
 			is a node $v' \in V_{G_n}$ with $v' = \track_{t_n}(\ldots 
 			\track_{t_1}(v))$ and the concurrent rule 
 			of this sequence  
-			is a basic consistency maintaining 
+			is a basic consistency-maintaining 
 			rule w.r.t. $\forall(C_j, \false)$ for all universally bound graphs 
 			$C_j$.
 	\end{enumerate}
@@ -56,7 +56,7 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially bound or $G_n = C$ with $C \in \ig{
 			$$C_{k-1} \Longrightarrow_{\rho_1,m_1} \ldots 
 			\Longrightarrow_{\rho_n,
 				m_n} C_k$$ 
-			with $\rho_i \in \mathcal{R}$ such that $\track_{t_i} \circ 
+			with plain rules $\rho_i \in \mathcal{R}$ such that $\track_{t_i} \circ 
 			\ldots \track_{t_1} \circ 
 			 \id_{C_{k-1}}$ is 
 			total for all $1 \leq i \leq n$ and $C_k \models_{k}c$. Then, this is a repairing sequence 
@@ -65,7 +65,7 @@ If $G_n = C_{k+1}$ if $C_k$ is existentially bound or $G_n = C$ with $C \in \ig{
 			If $C_k$ is universally bound and there is  a sequence 
 			$$C_k \Longrightarrow_{\rho_1,m_1} \ldots \Longrightarrow_{\rho_n, 	
 			m_n} C$$ 
-			with $\rho_i \in \mathcal{R}$, $C \in \ig{C_{k-1}}{C_k}$, $C\models_k c$ and for each 
+			with plain rules $\rho_i \in \mathcal{R}$, $C \in \ig{C_{k-1}}{C_k}$ such that $C\models_k c$ and for each 
 			node $v \in V_{G_0}$ there is a node $v' \in V_{G_n}$ with 
 			$v' = \track_{t_n}(\ldots \track_{t_1}(v))$.
 			Then, this is a repairing sequence for $C_k$.

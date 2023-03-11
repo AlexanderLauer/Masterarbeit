@@ -93,7 +93,7 @@ The largest $-1 \leq k < \nlvl(c)$ such that $G \models_k c$ and there is no $k 
 When $c$ and $G$ are clear from the context, we use the abbreviation $\kmax$.
 \end{definition}
 
-Note that given a graph $G$ and a constraint $c$, $\maxk{c}{G}$ always exists, since $\cut{-1}{c} = \true$ and every graph satisfies $\true$.
+Note that given a graph $G$ and a constraint $c$, $\maxk{c}{G}$ always exists, since every graph satisfies $\true$ and $\cut{-1}{c} = \true$.
 Moreover, if $p \models_{\nlvl(c)-1} c$, i.e. $\kmax = \nlvl(c)-1$, it immediately follows that $p \models c$. 
 \begin{example}\label{ex_graph}
 Consider the graph $G$ given in Figure \ref{fig:graph} and the constraint $c_2$ given in Figure \ref{fig:constraints}. 
